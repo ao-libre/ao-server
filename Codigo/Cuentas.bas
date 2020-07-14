@@ -1,7 +1,7 @@
 Attribute VB_Name = "Cuentas"
 Option Explicit
 
-Sub LoadUserFromCharfile(ByVal Userindex As Integer)
+Sub LoadUserFromCharfile(ByVal UserIndex As Integer)
 
     '*************************************************
     'Author: Juan Andres Dalmasso (CHOTS)
@@ -12,18 +12,18 @@ Sub LoadUserFromCharfile(ByVal Userindex As Integer)
 
     Set Leer = New clsIniManager
 
-    Call Leer.Initialize(CharPath & UCase$(UserList(Userindex).Name) & ".chr")
+    Call Leer.Initialize(CharPath & UCase$(UserList(UserIndex).Name) & ".chr")
 
     'Cargamos los datos del personaje
-    Call LoadUserInit(Userindex, Leer)
+    Call LoadUserInit(UserIndex, Leer)
     
     'Cargamos las estadisticas del usuario
-    Call LoadUserStats(Userindex, Leer)
+    Call LoadUserStats(UserIndex, Leer)
     
     'Cargamos las estadisticas de las quests
-    Call LoadQuestStats(Userindex, Leer)
+    Call LoadQuestStats(UserIndex, Leer)
 
-    Call LoadUserReputacion(Userindex, Leer)
+    Call LoadUserReputacion(UserIndex, Leer)
 
     Set Leer = Nothing
 
@@ -81,7 +81,7 @@ Public Sub BorrarUsuarioCharfile(ByVal UserName As String)
                 Call WriteVar(AccountCharfile, "INIT", "CANTIDADPERSONAJES", NumberOfCharacters - 1)
 
                 'Por ultimo borramos el archivo.
-                Kill(CharPath & UCase$(UserName) & ".chr")
+                Kill (CharPath & UCase$(UserName) & ".chr")
                 
                 Exit Sub
             End If
@@ -183,13 +183,13 @@ Public Function PersonajeCantidadVotosCharfile(ByVal UserName As String) As Inte
 
 End Function
 
-Public Sub MarcarPjComoQueYaVotoCharfile(ByVal Userindex As Integer, _
+Public Sub MarcarPjComoQueYaVotoCharfile(ByVal UserIndex As Integer, _
                                          ByVal NumeroEncuesta As Integer)
     '***************************************************
     'Author: Juan Andres Dalmasso (CHOTS)
     'Last Modification: 19/09/2018
     '***************************************************
-    Call WriteVar(CharPath & UserList(Userindex).Name & ".chr", "CONSULTAS", "Voto", str(NumeroEncuesta))
+    Call WriteVar(CharPath & UserList(UserIndex).Name & ".chr", "CONSULTAS", "Voto", Str(NumeroEncuesta))
 
 End Sub
 
@@ -203,7 +203,7 @@ Public Function GetUserAmountOfPunishmentsCharfile(ByVal UserName As String) As 
 
 End Function
 
-Public Sub SendUserPunishmentsCharfile(ByVal Userindex As Integer, _
+Public Sub SendUserPunishmentsCharfile(ByVal UserIndex As Integer, _
                                        ByVal UserName As String, _
                                        ByVal Count As Integer)
 
@@ -213,7 +213,7 @@ Public Sub SendUserPunishmentsCharfile(ByVal Userindex As Integer, _
     '***************************************************
     While Count > 0
 
-        Call WriteConsoleMsg(Userindex, Count & " - " & GetVar(CharPath & UserName & ".chr", "PENAS", "P" & Count), FontTypeNames.FONTTYPE_INFO)
+        Call WriteConsoleMsg(UserIndex, Count & " - " & GetVar(CharPath & UserName & ".chr", "PENAS", "P" & Count), FontTypeNames.FONTTYPE_INFO)
         Count = Count - 1
     Wend
 
@@ -669,7 +669,7 @@ Sub SaveUserGuildAspirantCharfile(ByVal UserName As String, _
 
 End Sub
 
-Sub SendCharacterInfoCharfile(ByVal Userindex As Integer, ByVal UserName As String)
+Sub SendCharacterInfoCharfile(ByVal UserIndex As Integer, ByVal UserName As String)
 
     '***************************************************
     'Author: Juan Andres Dalmasso (CHOTS)
@@ -706,7 +706,7 @@ Sub SendCharacterInfoCharfile(ByVal Userindex As Integer, ByVal UserName As Stri
     With UserFile
         .Initialize (CharPath & UserName & ".chr")
     
-        Call Protocol.WriteCharacterInfo(Userindex, UserName, .GetValue("INIT", "Raza"), .GetValue("INIT", "Clase"), .GetValue("INIT", "Genero"), .GetValue("STATS", "ELV"), .GetValue("STATS", "GLD"), .GetValue("STATS", "Banco"), .GetValue("REP", "Promedio"), .GetValue("GUILD", "Pedidos"), gName, Miembro, .GetValue("FACCIONES", "EjercitoReal"), .GetValue("FACCIONES", "EjercitoCaos"), .GetValue("FACCIONES", "CiudMatados"), .GetValue("FACCIONES", "CrimMatados"))
+        Call Protocol.WriteCharacterInfo(UserIndex, UserName, .GetValue("INIT", "Raza"), .GetValue("INIT", "Clase"), .GetValue("INIT", "Genero"), .GetValue("STATS", "ELV"), .GetValue("STATS", "GLD"), .GetValue("STATS", "Banco"), .GetValue("REP", "Promedio"), .GetValue("GUILD", "Pedidos"), gName, Miembro, .GetValue("FACCIONES", "EjercitoReal"), .GetValue("FACCIONES", "EjercitoCaos"), .GetValue("FACCIONES", "CiudMatados"), .GetValue("FACCIONES", "CrimMatados"))
 
     End With
     
@@ -823,7 +823,7 @@ Public Sub SaveUserToAccountCharfile(ByVal UserName As String, _
 
 End Sub
 
-Public Sub LoginAccountCharfile(ByVal Userindex As Integer, ByVal UserName As String)
+Public Sub LoginAccountCharfile(ByVal UserIndex As Integer, ByVal UserName As String)
 
     '***************************************************
     'Author: Juan Andres Dalmasso (CHOTS)
@@ -875,7 +875,7 @@ Public Sub LoginAccountCharfile(ByVal Userindex As Integer, ByVal UserName As St
     Set Account = Nothing
     Set CharFile = Nothing
 
-    Call WriteUserAccountLogged(Userindex, UserName, AccountHash, NumberOfCharacters, Characters)
+    Call WriteUserAccountLogged(UserIndex, UserName, AccountHash, NumberOfCharacters, Characters)
 
     Exit Sub
 ErrorHandler:
@@ -917,7 +917,7 @@ Public Function GetUserAmountOfPunishments(ByVal UserName As String) As Integer
 
 End Function
 
-Public Sub SendUserPunishments(ByVal Userindex As Integer, _
+Public Sub SendUserPunishments(ByVal UserIndex As Integer, _
                                ByVal UserName As String, _
                                ByVal Count As Integer)
 
@@ -927,9 +927,9 @@ Public Sub SendUserPunishments(ByVal Userindex As Integer, _
     'Writes a console msg for each punishment
     '***************************************************
     If Not Database_Enabled Then
-        Call SendUserPunishmentsCharfile(Userindex, UserName, Count)
+        Call SendUserPunishmentsCharfile(UserIndex, UserName, Count)
     Else
-        Call SendUserPunishmentsDatabase(Userindex, UserName, Count)
+        Call SendUserPunishmentsDatabase(UserIndex, UserName, Count)
 
     End If
 

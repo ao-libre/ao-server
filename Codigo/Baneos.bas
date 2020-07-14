@@ -40,13 +40,13 @@ Public Sub UnBan(ByVal Name As String)
     
     'Remove it from the banned people database
     Call WriteVar(App.Path & "\logs\" & "BanDetail.dat", Name, "BannedBy", "NOBODY")
-    Call WriteVar(App.Path & "\logs\" & "BanDetail.dat", Name, "Reason", "NO REASON")
+    Call WriteVar(App.Path & "\logs\" & "BanDetail.dat", Name, "Razon", "NO Razon")
 
 End Sub
 
 Public Sub BanCharacter(ByVal bannerUserIndex As Integer, _
                         ByVal UserName As String, _
-                        ByVal Reason As String)
+                        ByVal Razon As String)
     '***************************************************
     'Author: Juan Martin Sotuyo Dodero (Maraxus)
     'Last Modification: 03/02/07
@@ -86,10 +86,10 @@ Public Sub BanCharacter(ByVal bannerUserIndex As Integer, _
                         Call WriteConsoleMsg(bannerUserIndex, "El personaje ya se encuentra baneado.", FontTypeNames.FONTTYPE_INFO)
                     
                     Else
-                        Call LogBanFromName(UserName, bannerUserIndex, Reason)
+                        Call LogBanFromName(UserName, bannerUserIndex, Razon)
                         Call SendData(SendTarget.ToAdmins, 0, PrepareMessageConsoleMsg("Servidor> " & .Name & " ha baneado a " & UserName & ".", FontTypeNames.FONTTYPE_SERVER))
                         
-                        Call SaveBan(UserName, Reason, .Name)
+                        Call SaveBan(UserName, Razon, .Name)
                         
                         If (UserPriv And rank) = (.flags.Privilegios And rank) Then
                             .flags.Ban = 1
@@ -115,7 +115,7 @@ Public Sub BanCharacter(ByVal bannerUserIndex As Integer, _
                 Call WriteConsoleMsg(bannerUserIndex, "No puedes banear a al alguien de mayor jerarquia.", FontTypeNames.FONTTYPE_INFO)
             Else
             
-                Call LogBan(tUser, bannerUserIndex, Reason)
+                Call LogBan(tUser, bannerUserIndex, Razon)
                 Call SendData(SendTarget.ToAdmins, 0, PrepareMessageConsoleMsg("Servidor> " & .Name & " ha baneado a " & UserList(tUser).Name & ".", FontTypeNames.FONTTYPE_SERVER))
                 
                 'Ponemos el flag de ban a 1
@@ -130,7 +130,7 @@ Public Sub BanCharacter(ByVal bannerUserIndex As Integer, _
                 
                 Call LogGM(.Name, "BAN a " & UserName)
                 
-                Call SaveBan(UserName, Reason, .Name)
+                Call SaveBan(UserName, Razon, .Name)
                 
                 Call CloseSocket(tUser)
 
@@ -146,33 +146,39 @@ End Sub
 '                   Baneo de IP's
 '**********************************************************
 
-Public Sub BanIP(ByVal UserIndex As Integer, ByVal Razon As String)
-
+Public Sub BanIP(ByVal bannerUserIndex As Integer, ByVal Nick As String, ByVal Razon As String)
+    
+    Dim TargetIndex As Integer: TargetIndex = NameIndex(Nick)
+    
     'Si esta offline...
-    If UserIndex <= 0 Then Exit Sub
+    If TargetIndex <= 0 Then
+        Call WriteConsoleMsg(bannerUserIndex, "El usuario no se encuentra online.", FontTypeNames.FONTTYPE_INFO)
+        Exit Sub
+    End If
     
     'Si es Admin, Dios o Semi-Dios...
-    If Not .flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios Or PlayerType.SemiDios) Then Exit Sub
-    
-    With UserList(UserIndex)
+    If Not UserList(bannerUserIndex).flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios Or PlayerType.SemiDios) Then Exit Sub
+
+    With UserList(TargetIndex)
         
         'Registramos la accion en los logs.
-        Call LogGM(.Name, "/BanIP " & bannedIP & " por " & Reason)
+        Call LogGM(UserList(bannerUserIndex).Name, "/BanIP " & .IP & " por " & Razon)
                 
         If BanIpBuscar(.IP) > 0 Then
-            Call WriteConsoleMsg(UserIndex, "La IP " & .IP & " ya se encuentra en la lista de IP's restringidas.", FontTypeNames.FONTTYPE_INFO)
+            Call WriteConsoleMsg(bannerUserIndex, "La IP " & .IP & " ya se encuentra en la lista de IP's restringidas.", FontTypeNames.FONTTYPE_INFO)
                 
         Else
             
             Call BanIpAgrega(.IP)
       
             'Find every player with that ip and ban him!
+            Dim i As Long
             For i = 1 To LastUser
 
                 If UserList(i).ConnIDValida Then
                     
                     If UserList(i).IP = .IP Then
-                        Call BanCharacter(UserIndex, UserList(i).Name, "IP POR " & Razon)
+                        Call BanCharacter(bannerUserIndex, UserList(i).Name, "IP POR " & Razon)
                     End If
 
                 End If
@@ -237,11 +243,11 @@ Public Function BanIpQuita(ByVal IP As String) As Boolean
 
     On Error Resume Next
 
-    Dim n As Long: n = BanIpBuscar(IP)
+    Dim N As Long: N = BanIpBuscar(IP)
 
-    If n > 0 Then
+    If N > 0 Then
     
-        Call BanIps.Remove(n)
+        Call BanIps.Remove(N)
         Call BanIpGuardar
         
         ' Agrego la regla al firewall para que borre la regla de la IP a desbanear.
@@ -304,3 +310,135 @@ End Sub
 '*******************************************************************************
 '                   Baneo de numeros de serie del disco duro
 '*******************************************************************************
+
+Public Sub BanHD(ByVal bannerUserIndex As Integer, ByVal Nick As String, ByVal Razon As String)
+    
+    Dim TargetIndex As Integer: TargetIndex = NameIndex(Nick)
+    
+    'Si esta offline...
+    If TargetIndex <= 0 Then
+        Call WriteConsoleMsg(bannerUserIndex, "El usuario no se encuentra online.", FontTypeNames.FONTTYPE_INFO)
+        Exit Sub
+    End If
+    
+    With UserList(TargetIndex)
+   
+        If LenB(.HD) > 0 Then
+            
+            'Registramos la accion en los logs.
+            Call LogGM(UserList(bannerUserIndex).Name, "/Tolerancia0 " & .HD & " por " & Razon)
+            
+            If BuscarRegistroHD(.HD) > 0 Then
+                Call WriteConsoleMsg(bannerUserIndex, "El usuario ya se encuentra baneado.", FontTypeNames.FONTTYPE_INFO)
+                
+            Else
+            
+                Call AgregarRegistroHD(.HD)
+                
+                Call WriteConsoleMsg(bannerUserIndex, "Has baneado el disco duro " & .HD & " del usuario " & .Name, FontTypeNames.FONTTYPE_INFO)
+                
+                Dim i As Long
+                For i = 1 To LastUser
+    
+                    If UserList(i).ConnIDValida Then
+                        
+                        If UserList(i).HD = .HD Then
+                            Call BanCharacter(bannerUserIndex, UserList(i).Name, "Ban de serial de disco duro.")
+                        End If
+
+                    End If
+
+                Next i
+
+            End If
+
+        End If
+    
+    End With
+
+End Sub
+
+Public Function RemoverRegistroHD(ByVal HD As String) As Boolean '//Disco.
+    
+    On Error Resume Next
+ 
+    Dim N As Long: N = BuscarRegistroHD(HD)
+    
+    If N > 0 Then
+    
+        Call BanHDs.Remove(N)
+        
+        Call RegistroBanHD
+        
+        RemoverRegistroHD = True
+        
+    Else
+        RemoverRegistroHD = False
+        
+    End If
+   
+End Function
+
+Public Sub AgregarRegistroHD(ByVal HD As String)
+    
+    Call BanHDs.Add(HD)
+ 
+    Call RegistroBanHD
+
+End Sub
+
+Public Function BuscarRegistroHD(ByVal HD As String) As Long '//Disco.
+    
+    Dim Dale As Boolean: Dale = True
+    Dim LoopC As Long: LoopC = 1
+
+    Do While LoopC <= BanHDs.Count And Dale
+        Dale = (BanHDs.Item(LoopC) <> HD)
+        LoopC = LoopC + 1
+    Loop
+    
+    If Dale Then
+        BuscarRegistroHD = 0
+    Else
+        BuscarRegistroHD = LoopC - 1
+    End If
+    
+End Function
+
+Public Sub RegistroBanHD() '//Disco.
+    
+    Dim ArchN As Long
+    Dim LoopC As Long
+        
+    ArchN = FreeFile()
+    Open App.Path & "\Dat\BanHDs.dat" For Output As #ArchN
+    
+        For LoopC = 1 To BanHDs.Count
+            Print #ArchN, BanHDs.Item(LoopC)
+        Next LoopC
+    
+    Close #ArchN
+    
+End Sub
+
+Public Sub BanHDCargar() '//Disco.
+    
+    Dim ArchN As Long
+    Dim Tmp As String
+    Dim ArchivoBanHD As String
+    
+    Do While BanHDs.Count > 0
+        Call BanHDs.Remove(1)
+    Loop
+    
+    ArchN = FreeFile()
+    Open App.Path & "\Dat\BanHDs.dat" For Input As #ArchN
+    
+    Do While Not EOF(ArchN)
+        Line Input #ArchN, Tmp
+        Call BanHDs.Add(Tmp)
+    Loop
+    
+    Close #ArchN
+    
+End Sub

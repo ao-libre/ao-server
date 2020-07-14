@@ -125,7 +125,7 @@ Public Sub SaveRecords()
 
 End Sub
 
-Public Sub AddRecord(ByVal Userindex As Integer, _
+Public Sub AddRecord(ByVal UserIndex As Integer, _
                      ByVal Nickname As String, _
                      ByVal Reason As String)
     '**************************************************************
@@ -139,7 +139,7 @@ Public Sub AddRecord(ByVal Userindex As Integer, _
     With Records(NumRecords)
         .Usuario = UCase$(Nickname)
         .Fecha = Format(Now, "DD/MM/YYYY hh:mm:ss")
-        .Creador = UCase$(UserList(Userindex).Name)
+        .Creador = UCase$(UserList(UserIndex).Name)
         .Motivo = Reason
         .NumObs = 0
 
@@ -147,7 +147,7 @@ Public Sub AddRecord(ByVal Userindex As Integer, _
 
 End Sub
 
-Public Sub AddObs(ByVal Userindex As Integer, _
+Public Sub AddObs(ByVal UserIndex As Integer, _
                   ByVal RecordIndex As Integer, _
                   ByVal Obs As String)
 
@@ -160,7 +160,7 @@ Public Sub AddObs(ByVal Userindex As Integer, _
         .NumObs = .NumObs + 1
         ReDim Preserve .Obs(1 To .NumObs)
         
-        .Obs(.NumObs).Creador = UCase$(UserList(Userindex).Name)
+        .Obs(.NumObs).Creador = UCase$(UserList(UserIndex).Name)
         .Obs(.NumObs).Fecha = Now
         .Obs(.NumObs).Detalles = Obs
 

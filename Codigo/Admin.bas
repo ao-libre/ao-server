@@ -326,22 +326,6 @@ Public Sub BorrarUsuario(ByVal UserIndex As Integer, ByVal UserName As String, B
 
 End Sub
 
-Public Function BANCheck(ByVal Name As String) As Boolean
-
-    '***************************************************
-    'Author: Unknown
-    'Last Modification: 18/09/2018
-    '18/09/2018 CHOTS: Checks database too
-    '***************************************************
-    If Not Database_Enabled Then
-        BANCheck = BANCheckCharfile(Name)
-    Else
-        BANCheck = BANCheckDatabase(Name)
-
-    End If
-
-End Function
-
 Public Function PersonajeExiste(ByVal UserName As String) As Boolean
 
     '***************************************************
@@ -388,26 +372,6 @@ Public Function PersonajePerteneceCuenta(ByVal UserName As String, _
     End If
 
 End Function
-
-Public Sub UnBan(ByVal Name As String)
-    '***************************************************
-    'Author: Unknown
-    'Last Modification: 18/09/2018
-    '18/09/2018 CHOTS: Checks database too
-    '***************************************************
-    
-    If Not Database_Enabled Then
-        Call UnBanCharfile(Name)
-    Else
-        Call UnBanDatabase(Name)
-
-    End If
-    
-    'Remove it from the banned people database
-    Call WriteVar(App.Path & "\logs\" & "BanDetail.dat", Name, "BannedBy", "NOBODY")
-    Call WriteVar(App.Path & "\logs\" & "BanDetail.dat", Name, "Reason", "NO REASON")
-
-End Sub
 
 Public Function GetUserGuildIndex(ByVal UserName As String) As Integer
 
@@ -477,101 +441,3 @@ Public Function UserDarPrivilegioLevel(ByVal Name As String) As PlayerType
     End If
 
 End Function
-
-Public Sub BanCharacter(ByVal bannerUserIndex As Integer, _
-                        ByVal UserName As String, _
-                        ByVal Reason As String)
-    '***************************************************
-    'Author: Juan Martin Sotuyo Dodero (Maraxus)
-    'Last Modification: 03/02/07
-    '22/05/2010: Ya no se peude banear admins de mayor rango si estan online.
-    '***************************************************
-
-    Dim tUser     As Integer
-
-    Dim UserPriv  As Byte
-
-    Dim cantPenas As Byte
-
-    Dim rank      As Integer
-    
-    If InStrB(UserName, "+") Then
-        UserName = Replace(UserName, "+", " ")
-
-    End If
-    
-    tUser = NameIndex(UserName)
-    
-    rank = PlayerType.Admin Or PlayerType.Dios Or PlayerType.SemiDios Or PlayerType.Consejero
-    
-    With UserList(bannerUserIndex)
-
-        If tUser <= 0 Then
-            Call WriteConsoleMsg(bannerUserIndex, "El usuario no esta online.", FontTypeNames.FONTTYPE_SERVER)
-            
-            If PersonajeExiste(UserName) Then
-                UserPriv = UserDarPrivilegioLevel(UserName)
-                
-                If (UserPriv And rank) > (.flags.Privilegios And rank) Then
-                    Call WriteConsoleMsg(bannerUserIndex, "No puedes banear a al alguien de mayor jerarquia.", FontTypeNames.FONTTYPE_INFO)
-                Else
-
-                    If BANCheck(UserName) Then
-                        Call WriteConsoleMsg(bannerUserIndex, "El personaje ya se encuentra baneado.", FontTypeNames.FONTTYPE_INFO)
-                    Else
-                        Call LogBanFromName(UserName, bannerUserIndex, Reason)
-                        Call SendData(SendTarget.ToAdmins, 0, PrepareMessageConsoleMsg("Servidor> " & .Name & " ha baneado a " & UserName & ".", FontTypeNames.FONTTYPE_SERVER))
-                        
-                        Call SaveBan(UserName, Reason, .Name)
-                        
-                        If (UserPriv And rank) = (.flags.Privilegios And rank) Then
-                            .flags.Ban = 1
-                            Call SendData(SendTarget.ToAdmins, 0, PrepareMessageConsoleMsg(.Name & " banned by the server por bannear un Administrador.", FontTypeNames.FONTTYPE_FIGHT))
-                            Call CloseSocket(bannerUserIndex)
-
-                        End If
-                        
-                        Call LogGM(.Name, "BAN a " & UserName)
-
-                    End If
-
-                End If
-
-            Else
-                Call WriteConsoleMsg(bannerUserIndex, "El pj " & UserName & " no existe.", FontTypeNames.FONTTYPE_INFO)
-
-            End If
-
-        Else
-
-            If (UserList(tUser).flags.Privilegios And rank) > (.flags.Privilegios And rank) Then
-                Call WriteConsoleMsg(bannerUserIndex, "No puedes banear a al alguien de mayor jerarquia.", FontTypeNames.FONTTYPE_INFO)
-            Else
-            
-                Call LogBan(tUser, bannerUserIndex, Reason)
-                Call SendData(SendTarget.ToAdmins, 0, PrepareMessageConsoleMsg("Servidor> " & .Name & " ha baneado a " & UserList(tUser).Name & ".", FontTypeNames.FONTTYPE_SERVER))
-                
-                'Ponemos el flag de ban a 1
-                UserList(tUser).flags.Ban = 1
-                
-                If (UserList(tUser).flags.Privilegios And rank) = (.flags.Privilegios And rank) Then
-                    .flags.Ban = 1
-                    Call SendData(SendTarget.ToAdmins, 0, PrepareMessageConsoleMsg(.Name & " banned by the server por bannear un Administrador.", FontTypeNames.FONTTYPE_FIGHT))
-                    Call CloseSocket(bannerUserIndex)
-
-                End If
-                
-                Call LogGM(.Name, "BAN a " & UserName)
-                
-                Call SaveBan(UserName, Reason, .Name)
-                
-                Call CloseSocket(tUser)
-
-            End If
-
-        End If
-
-    End With
-
-End Sub
-

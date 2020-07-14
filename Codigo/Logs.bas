@@ -2,7 +2,7 @@ Attribute VB_Name = "Logs"
 Option Explicit
 
 Public Sub LogBan(ByVal BannedIndex As Integer, _
-           ByVal Userindex As Integer, _
+           ByVal UserIndex As Integer, _
            ByVal Motivo As String)
     '***************************************************
     'Author: Unknown
@@ -10,7 +10,7 @@ Public Sub LogBan(ByVal BannedIndex As Integer, _
     '
     '***************************************************
 
-    Call WriteVar(App.Path & "\logs\" & "BanDetail.log", UserList(BannedIndex).Name, "BannedBy", UserList(Userindex).Name)
+    Call WriteVar(App.Path & "\logs\" & "BanDetail.log", UserList(BannedIndex).Name, "BannedBy", UserList(UserIndex).Name)
     Call WriteVar(App.Path & "\logs\" & "BanDetail.log", UserList(BannedIndex).Name, "Reason", Motivo)
     
     'Log interno del servidor, lo usa para hacer un UNBAN general de toda la gente banned
@@ -24,7 +24,7 @@ Public Sub LogBan(ByVal BannedIndex As Integer, _
 End Sub
 
 Public Sub LogBanFromName(ByVal BannedName As String, _
-                   ByVal Userindex As Integer, _
+                   ByVal UserIndex As Integer, _
                    ByVal Motivo As String)
     '***************************************************
     'Author: Unknown
@@ -32,7 +32,7 @@ Public Sub LogBanFromName(ByVal BannedName As String, _
     '
     '***************************************************
 
-    Call WriteVar(App.Path & "\logs\" & "BanDetail.dat", BannedName, "BannedBy", UserList(Userindex).Name)
+    Call WriteVar(App.Path & "\logs\" & "BanDetail.dat", BannedName, "BannedBy", UserList(UserIndex).Name)
     Call WriteVar(App.Path & "\logs\" & "BanDetail.dat", BannedName, "Reason", Motivo)
     
     'Log interno del servidor, lo usa para hacer un UNBAN general de toda la gente banned
@@ -52,12 +52,12 @@ Public Sub LogServerStartTime()
     'Last Modify Date: 15/03/2011
     'Logs Server Start Time.
     '*****************************************************************
-    Dim n As Integer
+    Dim N As Integer
 
-    n = FreeFile
-    Open App.Path & "\logs\Main.log" For Append Shared As #n
-    Print #n, Date & " " & time & " server iniciado " & GetVersionOfTheServer()
-    Close #n
+    N = FreeFile
+    Open App.Path & "\logs\Main.log" For Append Shared As #N
+    Print #N, Date & " " & time & " server iniciado " & GetVersionOfTheServer()
+    Close #N
 
 End Sub
 
@@ -68,7 +68,7 @@ Public Sub LogCriticEvent(Desc As String)
     '
     '***************************************************
 
-    On Error GoTo ErrHandler
+    On Error GoTo errHandler
 
     Dim nfile As Integer
 
@@ -79,7 +79,7 @@ Public Sub LogCriticEvent(Desc As String)
     
     Exit Sub
 
-ErrHandler:
+errHandler:
 
 End Sub
 
@@ -90,7 +90,7 @@ Public Sub LogEjercitoReal(Desc As String)
     '
     '***************************************************
 
-    On Error GoTo ErrHandler
+    On Error GoTo errHandler
 
     Dim nfile As Integer
 
@@ -101,7 +101,7 @@ Public Sub LogEjercitoReal(Desc As String)
     
     Exit Sub
 
-ErrHandler:
+errHandler:
 
 End Sub
 
@@ -112,7 +112,7 @@ Public Sub LogEjercitoCaos(Desc As String)
     '
     '***************************************************
 
-    On Error GoTo ErrHandler
+    On Error GoTo errHandler
 
     Dim nfile As Integer
 
@@ -123,7 +123,7 @@ Public Sub LogEjercitoCaos(Desc As String)
 
     Exit Sub
 
-ErrHandler:
+errHandler:
 
 End Sub
 
@@ -134,7 +134,7 @@ Public Sub LogIndex(ByVal index As Integer, ByVal Desc As String)
     '
     '***************************************************
 
-    On Error GoTo ErrHandler
+    On Error GoTo errHandler
 
     Dim nfile As Integer
 
@@ -145,7 +145,7 @@ Public Sub LogIndex(ByVal index As Integer, ByVal Desc As String)
     
     Exit Sub
 
-ErrHandler:
+errHandler:
 
 End Sub
 
@@ -156,7 +156,7 @@ Public Sub LogError(Desc As String)
     '
     '***************************************************
 
-    On Error GoTo ErrHandler
+    On Error GoTo errHandler
 
     Dim nfile As Integer
 
@@ -167,7 +167,7 @@ Public Sub LogError(Desc As String)
     
     Exit Sub
 
-ErrHandler:
+errHandler:
 
 End Sub
 
@@ -178,7 +178,7 @@ Public Sub LogRetos(Desc As String)
     '
     '***************************************************
 
-    On Error GoTo ErrHandler
+    On Error GoTo errHandler
 
     Dim nfile As Integer
 
@@ -189,7 +189,7 @@ Public Sub LogRetos(Desc As String)
     
     Exit Sub
 
-ErrHandler:
+errHandler:
 
 End Sub
 
@@ -199,7 +199,7 @@ Public Sub LogDatabaseError(Desc As String)
     'Last Modification: 09/10/2018
     '***************************************************
 
-    On Error GoTo ErrHandler
+    On Error GoTo errHandler
 
     Dim nfile As Integer
         nfile = FreeFile ' obtenemos un canal
@@ -212,7 +212,7 @@ Public Sub LogDatabaseError(Desc As String)
     
     Debug.Print Desc
     
-ErrHandler:
+errHandler:
 
 End Sub
 
@@ -223,7 +223,7 @@ Public Sub LogStatic(Desc As String)
     '
     '***************************************************
 
-    On Error GoTo ErrHandler
+    On Error GoTo errHandler
 
     Dim nfile As Integer
 
@@ -234,7 +234,7 @@ Public Sub LogStatic(Desc As String)
 
     Exit Sub
 
-ErrHandler:
+errHandler:
 
 End Sub
 
@@ -245,7 +245,7 @@ Public Sub LogTarea(Desc As String)
     '
     '***************************************************
 
-    On Error GoTo ErrHandler
+    On Error GoTo errHandler
 
     Dim nfile As Integer
 
@@ -256,11 +256,11 @@ Public Sub LogTarea(Desc As String)
 
     Exit Sub
 
-ErrHandler:
+errHandler:
 
 End Sub
 
-Public Sub LogClanes(ByVal str As String)
+Public Sub LogClanes(ByVal Str As String)
     '***************************************************
     'Author: Unknown
     'Last Modification: -
@@ -271,12 +271,12 @@ Public Sub LogClanes(ByVal str As String)
 
     nfile = FreeFile ' obtenemos un canal
     Open App.Path & "\logs\clanes.log" For Append Shared As #nfile
-    Print #nfile, Date & " " & time & " " & str
+    Print #nfile, Date & " " & time & " " & Str
     Close #nfile
 
 End Sub
 
-Public Sub LogIP(ByVal str As String)
+Public Sub LogIP(ByVal Str As String)
     '***************************************************
     'Author: Unknown
     'Last Modification: -
@@ -287,12 +287,12 @@ Public Sub LogIP(ByVal str As String)
 
     nfile = FreeFile ' obtenemos un canal
     Open App.Path & "\logs\IP.log" For Append Shared As #nfile
-    Print #nfile, Date & " " & time & " " & str
+    Print #nfile, Date & " " & time & " " & Str
     Close #nfile
 
 End Sub
 
-Public Sub LogDesarrollo(ByVal str As String)
+Public Sub LogDesarrollo(ByVal Str As String)
     '***************************************************
     'Author: Unknown
     'Last Modification: -
@@ -303,7 +303,7 @@ Public Sub LogDesarrollo(ByVal str As String)
 
     nfile = FreeFile ' obtenemos un canal
     Open App.Path & "\logs\desarrollo" & Month(Date) & Year(Date) & ".log" For Append Shared As #nfile
-    Print #nfile, Date & " " & time & " " & str
+    Print #nfile, Date & " " & time & " " & Str
     Close #nfile
 
 End Sub
@@ -315,7 +315,7 @@ Public Sub LogGM(Nombre As String, texto As String)
     '
     '***************************************************
 
-    On Error GoTo ErrHandler
+    On Error GoTo errHandler
 
     Dim nfile As Integer
 
@@ -327,7 +327,7 @@ Public Sub LogGM(Nombre As String, texto As String)
     
     Exit Sub
 
-ErrHandler:
+errHandler:
 
 End Sub
 
@@ -338,7 +338,7 @@ Public Sub LogAsesinato(texto As String)
     '
     '***************************************************
 
-    On Error GoTo ErrHandler
+    On Error GoTo errHandler
 
     Dim nfile As Integer
     
@@ -350,7 +350,7 @@ Public Sub LogAsesinato(texto As String)
     
     Exit Sub
 
-ErrHandler:
+errHandler:
 
 End Sub
 
@@ -361,7 +361,7 @@ Public Sub logVentaCasa(ByVal texto As String)
     '
     '***************************************************
 
-    On Error GoTo ErrHandler
+    On Error GoTo errHandler
 
     Dim nfile As Integer
 
@@ -375,7 +375,7 @@ Public Sub logVentaCasa(ByVal texto As String)
     
     Exit Sub
 
-ErrHandler:
+errHandler:
 
 End Sub
 
@@ -386,7 +386,7 @@ Public Sub LogHackAttemp(texto As String)
     '
     '***************************************************
 
-    On Error GoTo ErrHandler
+    On Error GoTo errHandler
 
     Dim nfile As Integer
 
@@ -399,7 +399,7 @@ Public Sub LogHackAttemp(texto As String)
     
     Exit Sub
 
-ErrHandler:
+errHandler:
 
 End Sub
 
@@ -410,7 +410,7 @@ Public Sub LogCheating(texto As String)
     '
     '***************************************************
 
-    On Error GoTo ErrHandler
+    On Error GoTo errHandler
 
     Dim nfile As Integer
 
@@ -421,7 +421,7 @@ Public Sub LogCheating(texto As String)
     
     Exit Sub
 
-ErrHandler:
+errHandler:
 
 End Sub
 
@@ -432,7 +432,7 @@ Public Sub LogCriticalHackAttemp(texto As String)
     '
     '***************************************************
 
-    On Error GoTo ErrHandler
+    On Error GoTo errHandler
 
     Dim nfile As Integer
 
@@ -445,7 +445,7 @@ Public Sub LogCriticalHackAttemp(texto As String)
     
     Exit Sub
 
-ErrHandler:
+errHandler:
 
 End Sub
 
@@ -456,7 +456,7 @@ Public Sub LogAntiCheat(texto As String)
     '
     '***************************************************
 
-    On Error GoTo ErrHandler
+    On Error GoTo errHandler
 
     Dim nfile As Integer
 
@@ -468,7 +468,7 @@ Public Sub LogAntiCheat(texto As String)
     
     Exit Sub
 
-ErrHandler:
+errHandler:
 
 End Sub
 

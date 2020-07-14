@@ -1588,6 +1588,8 @@ Public Type User
     ID As Long 'CHOTS | Database ID
     AccountHash As String 'CHOTS | Account ID
     
+    HD As String
+    
     showName As Boolean 'Permite que los GMs oculten su nick con el comando /SHOWNAME
     
     Amigos(1 To MAXAMIGOS) As Amigos
@@ -1849,7 +1851,7 @@ Public Type MapBlock
 
     Blocked As Byte
     Graphic(1 To 4) As Long
-    Userindex As Integer
+    UserIndex As Integer
     NpcIndex As Integer
     ObjInfo As obj
     TileExit As WorldPos
@@ -2029,6 +2031,8 @@ Public ObjCarpintero()                    As Integer
 Public ObjArtesano()                      As Integer
 
 Public BanIps                             As Collection
+
+Public BanHDs                             As Collection
 
 Public Parties(1 To MAX_PARTIES)          As clsParty
 

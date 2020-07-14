@@ -1084,7 +1084,7 @@ Public Function UsuarioAtacaNpc(ByVal UserIndex As Integer, _
     '06/04/2020: FrankoH298 - Si un usuario ataca a un npc lo desmonta.
     '***************************************************
 
-    On Error GoTo ErrHandler
+    On Error GoTo errHandler
 
     If Not PuedeAtacarNPC(UserIndex, NpcIndex) Then Exit Function
     
@@ -1128,7 +1128,7 @@ Public Function UsuarioAtacaNpc(ByVal UserIndex As Integer, _
     
     Exit Function
     
-ErrHandler:
+errHandler:
 
     Dim UserName As String
     
@@ -1242,7 +1242,7 @@ Public Function UsuarioImpacto(ByVal AtacanteIndex As Integer, _
     '12/07/2020: Lorwik - Envio animacion de la flecha viajando
     '***************************************************
 
-    On Error GoTo ErrHandler
+    On Error GoTo errHandler
 
     Dim ProbRechazo            As Long
 
@@ -1356,7 +1356,7 @@ Public Function UsuarioImpacto(ByVal AtacanteIndex As Integer, _
     
     Exit Function
     
-ErrHandler:
+errHandler:
 
     Dim AtacanteNick As String
 
@@ -1379,7 +1379,7 @@ Public Function UsuarioAtacaUsuario(ByVal AtacanteIndex As Integer, _
     '06/04/2020: FrankoH298 - Si un usuario ataca a un npc lo desmonta.
     '***************************************************
 
-    On Error GoTo ErrHandler
+    On Error GoTo errHandler
 
     If Not PuedeAtacar(AtacanteIndex, VictimaIndex) Then Exit Function
     
@@ -1447,7 +1447,7 @@ Public Function UsuarioAtacaUsuario(ByVal AtacanteIndex As Integer, _
     
     Exit Function
     
-ErrHandler:
+errHandler:
     Call LogError("Error en UsuarioAtacaUsuario. Error " & Err.Number & " : " & Err.description)
 
 End Function
@@ -1461,7 +1461,7 @@ Public Sub UserDanoUser(ByVal AtacanteIndex As Integer, ByVal VictimaIndex As In
     '18/09/2010: ZaMa - Ahora se cosidera la defensa de los barcos siempre.
     '***************************************************
     
-    On Error GoTo ErrHandler
+    On Error GoTo errHandler
 
     Dim dano          As Long
 
@@ -1675,7 +1675,7 @@ Public Sub UserDanoUser(ByVal AtacanteIndex As Integer, ByVal VictimaIndex As In
     
     Exit Sub
     
-ErrHandler:
+errHandler:
 
     Dim AtacanteNick As String
 
@@ -1805,7 +1805,7 @@ Public Function PuedeAtacar(ByVal AttackerIndex As Integer, _
     '24/02/2009: ZaMa - Los usuarios pueden atacarse entre si.
     '02/04/2010: ZaMa - Los armadas no pueden atacar nunca a los ciudas, salvo que esten atacables.
     '***************************************************
-    On Error GoTo ErrHandler
+    On Error GoTo errHandler
 
     'MUY importante el orden de estos "IF"...
     
@@ -1982,7 +1982,7 @@ Public Function PuedeAtacar(ByVal AttackerIndex As Integer, _
     PuedeAtacar = True
     Exit Function
 
-ErrHandler:
+errHandler:
     Call LogError("Error en PuedeAtacar. Error " & Err.Number & " : " & Err.description)
 
 End Function
@@ -2004,7 +2004,7 @@ Public Function PuedeAtacarNPC(ByVal AttackerIndex As Integer, _
     '04/07/2010: ZaMa - Ahora no se puede apropiar del dragon de dd.
     '***************************************************
 
-    On Error GoTo ErrHandler
+    On Error GoTo errHandler
 
     With Npclist(NpcIndex)
     
@@ -2465,7 +2465,7 @@ Public Function PuedeAtacarNPC(ByVal AttackerIndex As Integer, _
         
     Exit Function
         
-ErrHandler:
+errHandler:
     
     Dim AtckName  As String
 
@@ -2567,7 +2567,7 @@ Public Function TriggerZonaPelea(ByVal Origen As Integer, _
 
     'TODO: Pero que rebuscado!!
     'Nigo:  Te lo redisene, pero no te borro el TODO para que lo revises.
-    On Error GoTo ErrHandler
+    On Error GoTo errHandler
 
     Dim tOrg As eTrigger
 
@@ -2590,7 +2590,7 @@ Public Function TriggerZonaPelea(ByVal Origen As Integer, _
     End If
 
     Exit Function
-ErrHandler:
+errHandler:
     TriggerZonaPelea = TRIGGER6_AUSENTE
     LogError ("Error en TriggerZonaPelea - " & Err.description)
 
@@ -2639,7 +2639,7 @@ Public Sub LanzarProyectil(ByVal UserIndex As Integer, ByVal X As Byte, ByVal Y 
     'Last Modification: 10/07/2010
     'Throws an arrow or knive to target user/npc.
     '***************************************************
-    On Error GoTo ErrHandler
+    On Error GoTo errHandler
 
     Dim MunicionSlot    As Byte
 
@@ -2805,7 +2805,7 @@ Public Sub LanzarProyectil(ByVal UserIndex As Integer, ByVal X As Byte, ByVal Y 
     
     Exit Sub
 
-ErrHandler:
+errHandler:
 
     Dim UserName As String
 

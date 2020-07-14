@@ -31,7 +31,7 @@ Option Explicit
 
 #If False Then
 
-    Dim X, Y, n, Map, Mapa, Email, max, Value As Variant
+    Dim X, Y, N, Map, Mapa, Email, max, Value As Variant
 
 #End If
 
@@ -301,17 +301,17 @@ Public Function TxtDimension(ByVal Name As String) As Long
     '
     '***************************************************
 
-    Dim n As Integer, cad As String, Tam As Long
+    Dim N As Integer, cad As String, Tam As Long
 
-    n = FreeFile(1)
-    Open Name For Input As #n
+    N = FreeFile(1)
+    Open Name For Input As #N
     Tam = 0
 
-    Do While Not EOF(n)
+    Do While Not EOF(N)
         Tam = Tam + 1
-        Line Input #n, cad
+        Line Input #N, cad
     Loop
-    Close n
+    Close N
     TxtDimension = Tam
 
 End Function
@@ -326,16 +326,16 @@ Public Sub CargarForbidenWords()
 
     ReDim ForbidenNames(1 To TxtDimension(DatPath & "NombresInvalidos.txt"))
 
-    Dim n As Integer, i As Integer
+    Dim N As Integer, i As Integer
 
-    n = FreeFile(1)
-    Open DatPath & "NombresInvalidos.txt" For Input As #n
+    N = FreeFile(1)
+    Open DatPath & "NombresInvalidos.txt" For Input As #N
     
     For i = 1 To UBound(ForbidenNames)
-        Line Input #n, ForbidenNames(i)
+        Line Input #N, ForbidenNames(i)
     Next i
     
-    Close n
+    Close N
 
     If frmMain.Visible Then frmMain.txtStatus.Text = Date & " " & time & " - NombresInvalidos.txt han cargado con exito."
 
@@ -362,7 +362,7 @@ Public Sub CargarHechizos()
     '
     '###################################################
 
-    On Error GoTo ErrHandler
+    On Error GoTo errHandler
 
     If frmMain.Visible Then frmMain.txtStatus.Text = "Cargando Hechizos."
     
@@ -484,7 +484,7 @@ Public Sub CargarHechizos()
     
     Exit Sub
 
-ErrHandler:
+errHandler:
     MsgBox "Error cargando hechizos.dat " & Err.Number & ": " & Err.description
  
 End Sub
@@ -727,7 +727,7 @@ Public Sub GrabarMapa(ByVal Map As Long, ByRef MAPFILE As String)
         Call IniManager.ChangeValue("Mapa" & Map, "Terreno", TerrainByteToString(.Terreno))
         Call IniManager.ChangeValue("Mapa" & Map, "Zona", .Zona)
         Call IniManager.ChangeValue("Mapa" & Map, "Restringir", RestrictByteToString(.Restringir))
-        Call IniManager.ChangeValue("Mapa" & Map, "BackUp", str(.BackUp))
+        Call IniManager.ChangeValue("Mapa" & Map, "BackUp", Str(.BackUp))
     
         If .Pk Then
             Call IniManager.ChangeValue("Mapa" & Map, "Pk", "0")
@@ -758,13 +758,13 @@ Sub LoadArmasHerreria()
     
     If frmMain.Visible Then frmMain.txtStatus.Text = "Cargando armas crafteables por Herreria."
     
-    Dim n As Integer, lc As Integer
+    Dim N As Integer, lc As Integer
     
-    n = val(GetVar(DatPath & "ArmasHerrero.dat", "INIT", "NumArmas"))
+    N = val(GetVar(DatPath & "ArmasHerrero.dat", "INIT", "NumArmas"))
     
-    ReDim Preserve ArmasHerrero(1 To n) As Integer
+    ReDim Preserve ArmasHerrero(1 To N) As Integer
     
-    For lc = 1 To n
+    For lc = 1 To N
         ArmasHerrero(lc) = val(GetVar(DatPath & "ArmasHerrero.dat", "Arma" & lc, "Index"))
     Next lc
     
@@ -781,13 +781,13 @@ Sub LoadArmadurasHerreria()
         
     If frmMain.Visible Then frmMain.txtStatus.Text = "Cargando armaduras crafteables por Herreria."
 
-    Dim n As Integer, lc As Integer
+    Dim N As Integer, lc As Integer
     
-    n = val(GetVar(DatPath & "ArmadurasHerrero.dat", "INIT", "NumArmaduras"))
+    N = val(GetVar(DatPath & "ArmadurasHerrero.dat", "INIT", "NumArmaduras"))
     
-    ReDim Preserve ArmadurasHerrero(1 To n) As Integer
+    ReDim Preserve ArmadurasHerrero(1 To N) As Integer
     
-    For lc = 1 To n
+    For lc = 1 To N
         ArmadurasHerrero(lc) = val(GetVar(DatPath & "ArmadurasHerrero.dat", "Armadura" & lc, "Index"))
     Next lc
     
@@ -875,13 +875,13 @@ Sub LoadObjCarpintero()
     
     If frmMain.Visible Then frmMain.txtStatus.Text = "Cargando los objetos crafteables via Carpinteria"
     
-    Dim n As Integer, lc As Integer
+    Dim N As Integer, lc As Integer
     
-    n = val(GetVar(DatPath & "ObjCarpintero.dat", "INIT", "NumObjs"))
+    N = val(GetVar(DatPath & "ObjCarpintero.dat", "INIT", "NumObjs"))
     
-    ReDim Preserve ObjCarpintero(1 To n) As Integer
+    ReDim Preserve ObjCarpintero(1 To N) As Integer
     
-    For lc = 1 To n
+    For lc = 1 To N
         ObjCarpintero(lc) = val(GetVar(DatPath & "ObjCarpintero.dat", "Obj" & lc, "Index"))
     Next lc
     
@@ -897,13 +897,13 @@ Sub LoadObjArtesano()
     
     If frmMain.Visible Then frmMain.txtStatus.Text = "Cargando los objetos crafteables del Artesano"
     
-    Dim n As Integer, lc As Integer
+    Dim N As Integer, lc As Integer
     
-    n = val(GetVar(DatPath & "ObjArtesano.dat", "INIT", "NumObjs"))
+    N = val(GetVar(DatPath & "ObjArtesano.dat", "INIT", "NumObjs"))
     
-    ReDim Preserve ObjArtesano(1 To n) As Integer
+    ReDim Preserve ObjArtesano(1 To N) As Integer
     
-    For lc = 1 To n
+    For lc = 1 To N
         ObjArtesano(lc) = val(GetVar(DatPath & "ObjArtesano.dat", "Obj" & lc, "Index"))
     Next lc
     
@@ -936,7 +936,7 @@ Sub LoadOBJData()
 
     'Call LogTarea("Sub LoadOBJData")
 
-    On Error GoTo ErrHandler
+    On Error GoTo errHandler
 
     If frmMain.Visible Then frmMain.txtStatus.Text = "Cargando base de datos de los objetos."
     
@@ -1161,18 +1161,18 @@ Sub LoadOBJData()
             'CHECK: !!! Esto es provisorio hasta que los de Dateo cambien los valores de string a numerico
             Dim i As Integer
 
-            Dim n As Integer
+            Dim N As Integer
 
             Dim S As String
 
             For i = 1 To NUMCLASES
                 S = UCase$(Leer.GetValue("OBJ" & Object, "CP" & i))
-                n = 1
+                N = 1
 
-                Do While LenB(S) > 0 And UCase$(ListaClases(n)) <> S
-                    n = n + 1
+                Do While LenB(S) > 0 And UCase$(ListaClases(N)) <> S
+                    N = N + 1
                 Loop
-                .ClaseProhibida(i) = IIf(LenB(S) > 0, n, 0)
+                .ClaseProhibida(i) = IIf(LenB(S) > 0, N, 0)
             Next i
             
             .DefensaMagicaMax = val(Leer.GetValue("OBJ" & Object, "DefensaMagicaMax"))
@@ -1235,12 +1235,12 @@ Sub LoadOBJData()
     If frmMain.Visible Then frmMain.txtStatus.Text = Date & " " & time & " - Se cargo base de datos de los objetos. Operacion Realizada con exito."
     
     Exit Sub
-ErrHandler:
+errHandler:
     MsgBox "error cargando objetos " & Err.Number & ": " & Err.description
 
 End Sub
 
-Sub LoadUserStats(ByVal Userindex As Integer, ByRef UserFile As clsIniManager)
+Sub LoadUserStats(ByVal UserIndex As Integer, ByRef UserFile As clsIniManager)
 
     '*************************************************
     'Author: Unknown
@@ -1249,7 +1249,7 @@ Sub LoadUserStats(ByVal Userindex As Integer, ByRef UserFile As clsIniManager)
     '*************************************************
     Dim LoopC As Long
 
-    With UserList(Userindex)
+    With UserList(UserIndex)
         With .Stats
 
             For LoopC = 1 To NUMATRIBUTOS
@@ -1311,14 +1311,14 @@ Sub LoadUserStats(ByVal Userindex As Integer, ByRef UserFile As clsIniManager)
 
 End Sub
 
-Sub LoadUserReputacion(ByVal Userindex As Integer, ByRef UserFile As clsIniManager)
+Sub LoadUserReputacion(ByVal UserIndex As Integer, ByRef UserFile As clsIniManager)
     '***************************************************
     'Author: Unknown
     'Last Modification: Recox
     'Recox - Castie todo a long para que sea el mismo tipo de dato que en Declares
     '***************************************************
 
-    With UserList(Userindex).Reputacion
+    With UserList(UserIndex).Reputacion
         .AsesinoRep = CLng(UserFile.GetValue("REP", "Asesino"))
         .BandidoRep = CLng(UserFile.GetValue("REP", "Bandido"))
         .BurguesRep = CLng(UserFile.GetValue("REP", "Burguesia"))
@@ -1331,7 +1331,7 @@ Sub LoadUserReputacion(ByVal Userindex As Integer, ByRef UserFile As clsIniManag
     
 End Sub
 
-Sub LoadUserInit(ByVal Userindex As Integer, ByRef UserFile As clsIniManager)
+Sub LoadUserInit(ByVal UserIndex As Integer, ByRef UserFile As clsIniManager)
 
     '*************************************************
     'Author: Unknown
@@ -1345,7 +1345,7 @@ Sub LoadUserInit(ByVal Userindex As Integer, ByRef UserFile As clsIniManager)
 
     Dim ln    As String
     
-    With UserList(Userindex)
+    With UserList(UserIndex)
         With .Faccion
             .ArmadaReal = CByte(UserFile.GetValue("FACCIONES", "EjercitoReal"))
             .FuerzasCaos = CByte(UserFile.GetValue("FACCIONES", "EjercitoCaos"))
@@ -2126,7 +2126,7 @@ Sub WriteVar(ByVal File As String, _
     
 End Sub
 
-Sub SaveUserToCharfile(ByVal Userindex As Integer, Optional ByVal SaveTimeOnline As Boolean = True)
+Sub SaveUserToCharfile(ByVal UserIndex As Integer, Optional ByVal SaveTimeOnline As Boolean = True)
     '*************************************************
     'Author: Unknown
     'Last modified: 10/10/2010 (Pato)
@@ -2147,7 +2147,7 @@ Sub SaveUserToCharfile(ByVal Userindex As Integer, Optional ByVal SaveTimeOnline
 
     Dim UserFile As String
 
-    With UserList(Userindex)
+    With UserList(UserIndex)
 
         UserFile = CharPath & UCase$(.Name) & ".chr"
     
@@ -2398,7 +2398,7 @@ Sub SaveUserToCharfile(ByVal Userindex As Integer, Optional ByVal SaveTimeOnline
 
     End With
 
-    Call SaveQuestStats(Userindex, Manager)
+    Call SaveQuestStats(UserIndex, Manager)
 
     Call Manager.DumpFile(UserFile)
 
@@ -2415,7 +2415,7 @@ ErrorHandler:
 
 End Sub
 
-Function criminal(ByVal Userindex As Integer) As Boolean
+Function criminal(ByVal UserIndex As Integer) As Boolean
     '***************************************************
     'Author: Unknown
     'Last Modification: -
@@ -2424,7 +2424,7 @@ Function criminal(ByVal Userindex As Integer) As Boolean
 
     Dim L As Long
     
-    With UserList(Userindex).Reputacion
+    With UserList(UserIndex).Reputacion
         L = (-.AsesinoRep) + (-.BandidoRep) + .BurguesRep + (-.LadronesRep) + .NobleRep + .PlebeRep
         L = L / 6
         criminal = (L < 0)
@@ -3058,35 +3058,35 @@ End Sub
 
 Public Sub ReloadNPCByIndex(ByVal NpcIndex As Integer)
 
-    On Error GoTo ErrHandler
+    On Error GoTo errHandler
 
-    Dim npcNumber As Integer
+    Dim NpcNumber As Integer
     Dim LoopC As Long
     Dim ln As String
 
     With Npclist(NpcIndex)
-        npcNumber = .Numero
-        .Name = LeerNPCs.GetValue("NPC" & npcNumber, "Name")
-        .Desc = LeerNPCs.GetValue("NPC" & npcNumber, "Desc")
+        NpcNumber = .Numero
+        .Name = LeerNPCs.GetValue("NPC" & NpcNumber, "Name")
+        .Desc = LeerNPCs.GetValue("NPC" & NpcNumber, "Desc")
 
-        .Movement = val(LeerNPCs.GetValue("NPC" & npcNumber, "Movement"))
+        .Movement = val(LeerNPCs.GetValue("NPC" & NpcNumber, "Movement"))
         .flags.OldMovement = .Movement
 
-        .flags.AguaValida = val(LeerNPCs.GetValue("NPC" & npcNumber, "AguaValida"))
-        .flags.TierraInvalida = val(LeerNPCs.GetValue("NPC" & npcNumber, "TierraInValida"))
-        .flags.Faccion = val(LeerNPCs.GetValue("NPC" & npcNumber, "Faccion"))
-        .flags.AtacaDoble = val(LeerNPCs.GetValue("NPC" & npcNumber, "AtacaDoble"))
+        .flags.AguaValida = val(LeerNPCs.GetValue("NPC" & NpcNumber, "AguaValida"))
+        .flags.TierraInvalida = val(LeerNPCs.GetValue("NPC" & NpcNumber, "TierraInValida"))
+        .flags.Faccion = val(LeerNPCs.GetValue("NPC" & NpcNumber, "Faccion"))
+        .flags.AtacaDoble = val(LeerNPCs.GetValue("NPC" & NpcNumber, "AtacaDoble"))
 
-        .NPCtype = val(LeerNPCs.GetValue("NPC" & npcNumber, "NpcType"))
+        .NPCtype = val(LeerNPCs.GetValue("NPC" & NpcNumber, "NpcType"))
 
-        .Char.body = val(LeerNPCs.GetValue("NPC" & npcNumber, "Body"))
-        .Char.Head = val(LeerNPCs.GetValue("NPC" & npcNumber, "Head"))
+        .Char.body = val(LeerNPCs.GetValue("NPC" & NpcNumber, "Body"))
+        .Char.Head = val(LeerNPCs.GetValue("NPC" & NpcNumber, "Head"))
 
-        .Attackable = val(LeerNPCs.GetValue("NPC" & npcNumber, "Attackable"))
-        .Comercia = val(LeerNPCs.GetValue("NPC" & npcNumber, "Comercia"))
-        .Hostile = val(LeerNPCs.GetValue("NPC" & npcNumber, "Hostile"))
+        .Attackable = val(LeerNPCs.GetValue("NPC" & NpcNumber, "Attackable"))
+        .Comercia = val(LeerNPCs.GetValue("NPC" & NpcNumber, "Comercia"))
+        .Hostile = val(LeerNPCs.GetValue("NPC" & NpcNumber, "Hostile"))
 
-        .GiveEXP = val(LeerNPCs.GetValue("NPC" & npcNumber, "GiveEXP")) * ExpMultiplier
+        .GiveEXP = val(LeerNPCs.GetValue("NPC" & NpcNumber, "GiveEXP")) * ExpMultiplier
 
         If HappyHourActivated And (HappyHour <> 0) Then
             .GiveEXP = .GiveEXP * HappyHour
@@ -3094,40 +3094,40 @@ Public Sub ReloadNPCByIndex(ByVal NpcIndex As Integer)
 
         .flags.ExpCount = .GiveEXP
 
-        .Veneno = val(LeerNPCs.GetValue("NPC" & npcNumber, "Veneno"))
+        .Veneno = val(LeerNPCs.GetValue("NPC" & NpcNumber, "Veneno"))
 
-        .flags.Domable = val(LeerNPCs.GetValue("NPC" & npcNumber, "Domable"))
+        .flags.Domable = val(LeerNPCs.GetValue("NPC" & NpcNumber, "Domable"))
 
-        .GiveGLD = val(LeerNPCs.GetValue("NPC" & npcNumber, "GiveGLD"))
+        .GiveGLD = val(LeerNPCs.GetValue("NPC" & NpcNumber, "GiveGLD"))
 
-        .QuestNumber = val(LeerNPCs.GetValue("NPC" & npcNumber, "QuestNumber"))
+        .QuestNumber = val(LeerNPCs.GetValue("NPC" & NpcNumber, "QuestNumber"))
 
-        .PoderAtaque = val(LeerNPCs.GetValue("NPC" & npcNumber, "PoderAtaque"))
-        .PoderEvasion = val(LeerNPCs.GetValue("NPC" & npcNumber, "PoderEvasion"))
+        .PoderAtaque = val(LeerNPCs.GetValue("NPC" & NpcNumber, "PoderAtaque"))
+        .PoderEvasion = val(LeerNPCs.GetValue("NPC" & NpcNumber, "PoderEvasion"))
 
-        .InvReSpawn = val(LeerNPCs.GetValue("NPC" & npcNumber, "InvReSpawn"))
+        .InvReSpawn = val(LeerNPCs.GetValue("NPC" & NpcNumber, "InvReSpawn"))
 
         With .Stats
-            .MaxHp = val(LeerNPCs.GetValue("NPC" & npcNumber, "MaxHP"))
+            .MaxHp = val(LeerNPCs.GetValue("NPC" & NpcNumber, "MaxHP"))
             '.MinHp = val(LeerNPCs.GetValue("NPC" & npcNumber, "MinHP"))
-            .MaxHIT = val(LeerNPCs.GetValue("NPC" & npcNumber, "MaxHIT"))
-            .MinHIT = val(LeerNPCs.GetValue("NPC" & npcNumber, "MinHIT"))
-            .def = val(LeerNPCs.GetValue("NPC" & npcNumber, "DEF"))
-            .defM = val(LeerNPCs.GetValue("NPC" & npcNumber, "DEFm"))
-            .Alineacion = val(LeerNPCs.GetValue("NPC" & npcNumber, "Alineacion"))
+            .MaxHIT = val(LeerNPCs.GetValue("NPC" & NpcNumber, "MaxHIT"))
+            .MinHIT = val(LeerNPCs.GetValue("NPC" & NpcNumber, "MinHIT"))
+            .def = val(LeerNPCs.GetValue("NPC" & NpcNumber, "DEF"))
+            .defM = val(LeerNPCs.GetValue("NPC" & NpcNumber, "DEFm"))
+            .Alineacion = val(LeerNPCs.GetValue("NPC" & NpcNumber, "Alineacion"))
 
         End With
 
-        .Invent.NroItems = val(LeerNPCs.GetValue("NPC" & npcNumber, "NROITEMS"))
+        .Invent.NroItems = val(LeerNPCs.GetValue("NPC" & NpcNumber, "NROITEMS"))
 
         For LoopC = 1 To .Invent.NroItems
-            ln = LeerNPCs.GetValue("NPC" & npcNumber, "Obj" & LoopC)
+            ln = LeerNPCs.GetValue("NPC" & NpcNumber, "Obj" & LoopC)
             .Invent.Object(LoopC).ObjIndex = val(ReadField(1, ln, 45))
             .Invent.Object(LoopC).Amount = val(ReadField(2, ln, 45))
         Next LoopC
 
         For LoopC = 1 To MAX_NPC_DROPS
-            ln = LeerNPCs.GetValue("NPC" & npcNumber, "Drop" & LoopC)
+            ln = LeerNPCs.GetValue("NPC" & NpcNumber, "Drop" & LoopC)
             .Drop(LoopC).ObjIndex = val(ReadField(1, ln, 45))
 
             If .Drop(LoopC).ObjIndex = iORO Then
@@ -3139,21 +3139,21 @@ Public Sub ReloadNPCByIndex(ByVal NpcIndex As Integer)
 
         Next LoopC
 
-        .flags.LanzaSpells = val(LeerNPCs.GetValue("NPC" & npcNumber, "LanzaSpells"))
+        .flags.LanzaSpells = val(LeerNPCs.GetValue("NPC" & NpcNumber, "LanzaSpells"))
 
         If .flags.LanzaSpells > 0 Then ReDim .Spells(1 To .flags.LanzaSpells)
 
         For LoopC = 1 To .flags.LanzaSpells
-            .Spells(LoopC) = val(LeerNPCs.GetValue("NPC" & npcNumber, "Sp" & LoopC))
+            .Spells(LoopC) = val(LeerNPCs.GetValue("NPC" & NpcNumber, "Sp" & LoopC))
         Next LoopC
 
         If .NPCtype = eNPCType.Entrenador Then
-            .NroCriaturas = val(LeerNPCs.GetValue("NPC" & npcNumber, "NroCriaturas"))
+            .NroCriaturas = val(LeerNPCs.GetValue("NPC" & NpcNumber, "NroCriaturas"))
             ReDim .Criaturas(1 To .NroCriaturas) As tCriaturasEntrenador
 
             For LoopC = 1 To .NroCriaturas
-                .Criaturas(LoopC).NpcIndex = LeerNPCs.GetValue("NPC" & npcNumber, "CI" & LoopC)
-                .Criaturas(LoopC).NpcName = LeerNPCs.GetValue("NPC" & npcNumber, "CN" & LoopC)
+                .Criaturas(LoopC).NpcIndex = LeerNPCs.GetValue("NPC" & NpcNumber, "CI" & LoopC)
+                .Criaturas(LoopC).NpcName = LeerNPCs.GetValue("NPC" & NpcNumber, "CN" & LoopC)
             Next LoopC
 
         End If
@@ -3166,38 +3166,38 @@ Public Sub ReloadNPCByIndex(ByVal NpcIndex As Integer)
             '    .Respawn = 1
             'End If
 
-            .BackUp = val(LeerNPCs.GetValue("NPC" & npcNumber, "BackUp"))
-            .RespawnOrigPos = val(LeerNPCs.GetValue("NPC" & npcNumber, "OrigPos"))
-            .AfectaParalisis = val(LeerNPCs.GetValue("NPC" & npcNumber, "AfectaParalisis"))
+            .BackUp = val(LeerNPCs.GetValue("NPC" & NpcNumber, "BackUp"))
+            .RespawnOrigPos = val(LeerNPCs.GetValue("NPC" & NpcNumber, "OrigPos"))
+            .AfectaParalisis = val(LeerNPCs.GetValue("NPC" & NpcNumber, "AfectaParalisis"))
 
-            .Snd1 = val(LeerNPCs.GetValue("NPC" & npcNumber, "Snd1"))
-            .Snd2 = val(LeerNPCs.GetValue("NPC" & npcNumber, "Snd2"))
-            .Snd3 = val(LeerNPCs.GetValue("NPC" & npcNumber, "Snd3"))
+            .Snd1 = val(LeerNPCs.GetValue("NPC" & NpcNumber, "Snd1"))
+            .Snd2 = val(LeerNPCs.GetValue("NPC" & NpcNumber, "Snd2"))
+            .Snd3 = val(LeerNPCs.GetValue("NPC" & NpcNumber, "Snd3"))
 
         End With
 
         '<<<<<<<<<<<<<< Expresiones >>>>>>>>>>>>>>>>
-        .NroExpresiones = val(LeerNPCs.GetValue("NPC" & npcNumber, "NROEXP"))
+        .NroExpresiones = val(LeerNPCs.GetValue("NPC" & NpcNumber, "NROEXP"))
 
         If .NroExpresiones > 0 Then
             ReDim .Expresiones(1 To .NroExpresiones) As String
         End If
 
         For LoopC = 1 To .NroExpresiones
-            .Expresiones(LoopC) = LeerNPCs.GetValue("NPC" & npcNumber, "Exp" & LoopC)
+            .Expresiones(LoopC) = LeerNPCs.GetValue("NPC" & NpcNumber, "Exp" & LoopC)
         Next LoopC
         '<<<<<<<<<<<<<< Expresiones >>>>>>>>>>>>>>>>
 
         'Tipo de items con los que comercia
-        .TipoItems = val(LeerNPCs.GetValue("NPC" & npcNumber, "TipoItems"))
+        .TipoItems = val(LeerNPCs.GetValue("NPC" & NpcNumber, "TipoItems"))
 
-        .Ciudad = val(LeerNPCs.GetValue("NPC" & npcNumber, "Ciudad"))
+        .Ciudad = val(LeerNPCs.GetValue("NPC" & NpcNumber, "Ciudad"))
 
     End With
 
     Exit Sub
 
-ErrHandler:
+errHandler:
     Call LogError("Error en ReloadNPCIndexByFile - Err: " & Err.Number & " " & Err.description)
 
 End Sub
