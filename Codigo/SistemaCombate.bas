@@ -206,7 +206,7 @@ Public Function UserImpactoNpc(ByVal UserIndex As Integer, _
             
             MunicionObjIndex = UserList(UserIndex).Invent.MunicionEqpObjIndex
             
-            'Tiene munici�n?
+            'Tiene munición?
             If MunicionObjIndex <> 0 Then
                 'si es un caza oculto no manda la animacion de flecha
                 If Not (UserList(Userindex).Clase = eClass.Hunter And UserList(Userindex).flags.Oculto = 1) Then
