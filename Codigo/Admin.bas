@@ -260,7 +260,7 @@ Sub WorldSave()
 
 End Sub
 
-Public Sub Encarcelar(ByVal Userindex As Integer, _
+Public Sub Encarcelar(ByVal UserIndex As Integer, _
                       ByVal Minutos As Long, _
                       Optional ByVal GmName As String = vbNullString)
     '***************************************************
@@ -268,29 +268,33 @@ Public Sub Encarcelar(ByVal Userindex As Integer, _
     'Last Modification: 26/08/2018
     'Shak: Agregamos el array.
     'Recox: Arreglado problema de tiempo en carcel
+    'Jopi: Los GM's no van a la carcel.
     '***************************************************
-
-    UserList(Userindex).Counters.Pena = Minutos * 60
     
-    Call WarpUserChar(Userindex, Prision.Map, Prision.X, Prision.Y, True)
+    'Los GM's no van a la carcel.
+    If Not UserList(UserIndex).flags.Privilegios And (PlayerType.User) Then Exit Sub
+    
+    UserList(UserIndex).Counters.Pena = Minutos * 60
+    
+    Call WarpUserChar(UserIndex, Prision.Map, Prision.X, Prision.Y, True)
     
     If LenB(GmName) = 0 Then
-        Call WriteConsoleMsg(Userindex, "Has sido encarcelado, deberas permanecer en la carcel " & Minutos & " minutos.", FontTypeNames.FONTTYPE_INFO)
+        Call WriteConsoleMsg(UserIndex, "Has sido encarcelado, deberas permanecer en la carcel " & Minutos & " minutos.", FontTypeNames.FONTTYPE_INFO)
     Else
-        Call WriteConsoleMsg(Userindex, GmName & " te ha encarcelado, deberas permanecer en la carcel " & Minutos & " minutos.", FontTypeNames.FONTTYPE_INFO)
+        Call WriteConsoleMsg(UserIndex, GmName & " te ha encarcelado, deberas permanecer en la carcel " & Minutos & " minutos.", FontTypeNames.FONTTYPE_INFO)
 
     End If
 
-    If UserList(Userindex).flags.Traveling = 1 Then
-        UserList(Userindex).flags.Traveling = 0
-        UserList(Userindex).Counters.goHome = 0
-        Call WriteMultiMessage(Userindex, eMessages.CancelHome)
+    If UserList(UserIndex).flags.Traveling = 1 Then
+        UserList(UserIndex).flags.Traveling = 0
+        UserList(UserIndex).Counters.goHome = 0
+        Call WriteMultiMessage(UserIndex, eMessages.CancelHome)
 
     End If
 
 End Sub
 
-Public Sub BorrarUsuario(ByVal Userindex As Integer, ByVal UserName As String, ByVal AccountHash As String)
+Public Sub BorrarUsuario(ByVal UserIndex As Integer, ByVal UserName As String, ByVal AccountHash As String)
 
     '********************************************************************************
     'Author: Recox
@@ -301,16 +305,16 @@ Public Sub BorrarUsuario(ByVal Userindex As Integer, ByVal UserName As String, B
     
     'Podria estar de mas, pero... Existe el personaje?
     If Not PersonajeExiste(UserName) Then
-        Call WriteErrorMsg(Userindex, "El personaje no existe.")
-        Call CloseSocket(Userindex)
+        Call WriteErrorMsg(UserIndex, "El personaje no existe.")
+        Call CloseSocket(UserIndex)
         Exit Sub
     End If
 
     'IMPORTANTE! - El personaje pertenece a esta cuenta?
     If Not PersonajePerteneceCuenta(UserName, AccountHash) Then
-        Call WriteErrorMsg(Userindex, "Ha ocurrido un error, por favor inicie sesion nuevamente.")
+        Call WriteErrorMsg(UserIndex, "Ha ocurrido un error, por favor inicie sesion nuevamente.")
         
-        Call CloseSocket(Userindex)
+        Call CloseSocket(UserIndex)
         Exit Sub
     End If
     
@@ -449,131 +453,6 @@ Public Sub CopyUser(ByVal UserName As String, ByVal newName As String)
         Call CopyUserDatabase(UserName, newName)
 
     End If
-
-End Sub
-
-Public Sub BanIpAgrega(ByVal IP As String)
-    '***************************************************
-    'Author: Unknown
-    'Last Modification: -
-    '
-    '***************************************************
-
-    Call BanIps.Add(IP)
-    Call BanIpGuardar
-    
-    ' Agrego la regla al firewall para que bloquee la IP
-    Call Shell("netsh.exe advfirewall firewall add rule name=""Baneo de IP " & IP & """ dir=in protocol=any action=block remoteip=" & IP)
-    
-End Sub
-
-Public Function BanIpBuscar(ByVal IP As String) As Long
-    '***************************************************
-    'Author: Unknown
-    'Last Modification: -
-    '
-    '***************************************************
-
-    Dim Dale  As Boolean
-    Dim LoopC As Long
-    
-    Dale = True
-    LoopC = 1
-
-    Do While LoopC <= BanIps.Count And Dale
-        Dale = (BanIps.Item(LoopC) <> IP)
-        LoopC = LoopC + 1
-    Loop
-    
-    If Dale Then
-        BanIpBuscar = 0
-    Else
-        BanIpBuscar = LoopC - 1
-
-    End If
-
-End Function
-
-Public Function BanIpQuita(ByVal IP As String) As Boolean
-    '***************************************************
-    'Author: Unknown
-    'Last Modification: -
-    '
-    '***************************************************
-
-    On Error Resume Next
-
-    Dim n As Long
-    
-    n = BanIpBuscar(IP)
-
-    If n > 0 Then
-        Call BanIps.Remove(n)
-        Call BanIpGuardar
-        
-        ' Agrego la regla al firewall para que borre la regla de la IP a desbanear.
-        Call Shell("netsh.exe advfirewall firewall delete rule name=""Baneo de IP " & IP & """ dir=in protocol=any action=block remoteip=" & IP)
-        
-        BanIpQuita = True
-    Else
-        BanIpQuita = False
-
-    End If
-
-End Function
-
-Public Sub BanIpGuardar()
-    '***************************************************
-    'Author: Unknown
-    'Last Modification: -
-    '
-    '***************************************************
-
-    Dim ArchivoBanIp As String
-
-    Dim ArchN        As Long
-
-    Dim LoopC        As Long
-    
-    ArchivoBanIp = App.Path & "\Dat\BanIps.dat"
-    
-    ArchN = FreeFile()
-    Open ArchivoBanIp For Output As #ArchN
-    
-    For LoopC = 1 To BanIps.Count
-        Print #ArchN, BanIps.Item(LoopC)
-    Next LoopC
-    
-    Close #ArchN
-
-End Sub
-
-Public Sub BanIpCargar()
-    '***************************************************
-    'Author: Unknown
-    'Last Modification: -
-    '
-    '***************************************************
-
-    Dim ArchN        As Long
-
-    Dim Tmp          As String
-
-    Dim ArchivoBanIp As String
-    
-    ArchivoBanIp = App.Path & "\Dat\BanIps.dat"
-    
-    Set BanIps = New Collection
-    
-    ArchN = FreeFile()
-    Open ArchivoBanIp For Input As #ArchN
-    
-    Do While Not EOF(ArchN)
-        Line Input #ArchN, Tmp
-        BanIps.Add Tmp
-    Loop
-    
-    Close #ArchN
 
 End Sub
 
