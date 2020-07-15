@@ -23053,6 +23053,8 @@ Public Sub WriteUserAccountLogged(ByVal Userindex As Integer, _
 
         End If
 
+        Call SaveLastIpsAccountCharfile(UserName, UserList(Userindex).IP)
+
     End With
 
     Exit Sub
