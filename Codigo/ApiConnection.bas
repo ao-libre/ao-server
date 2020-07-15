@@ -48,11 +48,11 @@ Public Sub ApiEndpointSendWelcomeEmail(ByVal UserName As String, ByVal Password 
     Call SendPOSTRequest(Endpoint, Parameters)
 End Sub
 
-Public Sub ApiEndpointSendLoginAccountEmail(ByVal Email As String)
+Public Sub ApiEndpointSendLoginAccountEmail(ByVal Email As String, ByVal IpsUsadas As String)
     'Este endpoint envia un email de login cada ves que un usuario se conecta
     Endpoint = ApiUrlServer & "/api/v1/emails/loginAccount"
     
-    Parameters = "emailTo=" & Email
+    Parameters = "emailTo=" & Email & "&ipsUsadas=" & IpsUsadas
 
     Call SendPOSTRequest(Endpoint, Parameters)
 End Sub

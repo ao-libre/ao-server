@@ -817,7 +817,7 @@ Sub ConnectAccount(ByVal Userindex As Integer, _
     'Si no tienen interes en usarlo pueden desactivarlo en el Server.ini
     If ConexionAPI Then
         'Pasamos UserName tambien como email, ya que son lo mismo.... :(
-        Call ApiEndpointSendLoginAccountEmail(UserName)
+        Call ApiEndpointSendLoginAccountEmail(UserName, GetUserLastIps(UserName))
     End If
 
 
