@@ -2440,7 +2440,6 @@ Public DescripcionServidor As String
 
 Public NombreServidor As String
 
-
 #If AntiExternos Then
 Public Security As New clsSecurity
 #End If
