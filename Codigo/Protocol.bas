@@ -6054,14 +6054,13 @@ Private Sub HandleOnline(ByVal Userindex As Integer)
                 ' Agregamos el nombre al final del string.
                 Call SB.Append(UserList(i).Name)
                 
-                ' Incrementamos en 1 el contador de jugadores online que son trabajadores.
-                CountTrabajadores = CountTrabajadores + 1
-                
                 ' Si es trabajador...
-                if UserList(i).Counters.Trabajando > 10 Then
+                If UserList(i).Clase = eClass.Worker Then
                     
                     ' Si es Cazador y tiene 100 en supervivencia o es Game Master.
-                    If EsGm(Userindex) Or (.Clase = eClass.Hunter And .Stats.UserSkills(eSkill.Supervivencia) = 100) Then
+                    If EsGm(UserIndex) Or (.Clase = eClass.Hunter And .Stats.UserSkills(eSkill.Supervivencia) = 100) Then
+                        ' Incrementamos en 1 el contador de jugadores online que son trabajadores.
+                        CountTrabajadores = CountTrabajadores + 1
                         ' Agregamos un sufijo que indique que es un trabajador.
                         Call SB.Append(" [T]")
                     End If
@@ -6080,8 +6079,13 @@ Private Sub HandleOnline(ByVal Userindex As Integer)
 
         Next i
         
-        Call WriteConsoleMsg(Userindex, SB.toString, FontTypeNames.FONTTYPE_INFO)
-        Call WriteConsoleMsg(Userindex, "Usuarios en linea: " & CStr(Count) & " (" & CStr(CountTrabajadores) & " trabajando)", FontTypeNames.FONTTYPE_INFOBOLD)
+        Call WriteConsoleMsg(UserIndex, SB.toString, FontTypeNames.FONTTYPE_INFO)
+        Call WriteConsoleMsg(UserIndex, "Usuarios en linea: " & CStr(Count), FontTypeNames.FONTTYPE_INFOBOLD)
+
+        ' Si es Cazador y tiene 100 en supervivencia o es Game Master.
+        If EsGm(UserIndex) Or (.Clase = eClass.Hunter And .Stats.UserSkills(eSkill.Supervivencia) = 100) Then
+            Call WriteConsoleMsg(UserIndex, "Trabajadores en linea:" & CStr(CountTrabajadores), FontTypeNames.FONTTYPE_INFOBOLD)
+        End If
         
         ' Liberamos los recursos del generador de strings
         Set SB = Nothing
@@ -19435,7 +19439,7 @@ Public Sub WriteChangeBankSlot(ByVal Userindex As Integer, ByVal Slot As Byte)
         Call .WriteInteger(obData.MinDef)
         Call .WriteLong(obData.Valor)
         Call .WriteBoolean(ItemIncompatibleConUser(Userindex, ObjIndex))
-        
+
     End With
 
     Exit Sub
@@ -19963,7 +19967,6 @@ Public Sub WriteChangeNPCInventorySlot(ByVal Userindex As Integer, _
         Call .WriteInteger(ObjInfo.MaxDef)
         Call .WriteInteger(ObjInfo.MinDef)
         Call .WriteBoolean(ItemIncompatibleConUser(Userindex, obj.objIndex))
-
     End With
 
     Exit Sub
@@ -21133,6 +21136,7 @@ Public Sub WriteChangeUserTradeSlot(ByVal Userindex As Integer, _
             Call .WriteLong(SalePrice(ObjIndex))
             Call .WriteASCIIString(ObjData(ObjIndex).Name)
             Call .WriteBoolean(ItemIncompatibleConUser(Userindex, ObjIndex))
+            
         Else ' Borra el item
             Call .WriteLong(0)
             Call .WriteByte(0)
