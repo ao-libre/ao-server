@@ -137,7 +137,7 @@ RequiredLevel=25
 RequiredNPCs=3
 RequiredNPC1=531-100
 RequiredNPC2=530-100
-RequiredNPC3=522-100
+RequiredNPC3=523-100
  
 RewardEXP=50000
 RewardGLD=100000
