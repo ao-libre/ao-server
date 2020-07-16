@@ -157,13 +157,17 @@ Private Function CheckInt(ByVal Userindex As Integer, _
  
             Case 4
  
-                If (.Counters.Cheat.UsarItem = MaxTol) Then
-                    Msj = .Name & ". -" & "Sobrepaso el intervalo de Usar Items 3 veces seguidas." & vbNewLine & "Posible edicion de intervalos."
-                    .Counters.Cheat.UsarItem = 0
-                    CheckInt = True
+                If (.Counters.Trabajando = 1) Then
+                    CheckInt = False
+
+                    If (.Counters.Cheat.UsarItem = MaxTol) Then
+                        Msj = .Name & ". -" & "Sobrepaso el intervalo de Usar Items 3 veces seguidas." & vbNewLine & "Posible edicion de intervalos."
+                        .Counters.Cheat.UsarItem = 0
+                        CheckInt = True
  
-                    Exit Function
+                        Exit Function
  
+                    End If
                 End If
      
         End Select
