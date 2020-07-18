@@ -546,9 +546,9 @@ Sub DropObj(ByVal Userindex As Integer, _
 
                 End If
             
-                Call MakeObj(DropObj, Map, X, Y)
                 Call QuitarUserInvItem(Userindex, Slot, DropObj.Amount)
                 Call UpdateUserInv(False, Userindex, Slot)
+                Call MakeObj(DropObj, Map, X, Y)
             
                 If ObjData(DropObj.ObjIndex).OBJType = eOBJType.otBarcos Then
                     Call WriteConsoleMsg(Userindex, "ATENCION!! ACABAS DE TIRAR TU BARCA!", FontTypeNames.FONTTYPE_WARNING)
