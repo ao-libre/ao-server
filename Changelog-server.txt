@@ -1080,3 +1080,11 @@ Mapa 31, Mapa 32, Mapa 34, Mapa 35, Mapa 45, Mapa 78, Mapa 79, Mapa 87, Mapa 292
 * 16/07/2020: Si es un cazador oculto no manda la animacion de flecha (waltersit0)
 * 16/07/2020: Arreglo el nro de jugadores online y ahora solo los cazadores con 100 en supervivencia pueden ver los trabajadores (RecoX)
 * 16/07/2020: Acomodo archivo de configuracion para el server de test.  (RecoX)
+
+-v0.13.46
+* 19/07/2020: Posible arreglo al floodeo del anticheat (Gexur)
+* 19/07/2020: Muevo el guild news mas abajo, para evitar error de guerra de clanes (Cucsifae)
+* 19/07/2020: Ahora el pirata puede usar Galeon y Galera (Recox)
+* 19/07/2020: El worldsave avisa antes de 15 segundos que se hace (como siempre estuvo), se saco los 5 minutos por que genera falla de seguridad al juego permitiendo llenar el buffer (MAX_ITEMS) en el tiempo restante, ahora ya
+no es tan simple hacerlo con objetos de valor. TODO: Cambiar a algo que funcione un poco mejor y que borre todo... (Recox)
+* 19/07/2020: Lo ultimo que se hace al tirar un objeto es crearlo en el piso lo primero es eliminarlo del inventario de usuario (Cucsifae)
