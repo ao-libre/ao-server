@@ -22881,9 +22881,8 @@ Private Sub HandleLoginExistingAccount(ByVal Userindex As Integer)
     '
     '***************************************************
     If UserList(Userindex).incomingData.Length < 6 Then
-        Err.Raise UserList(Userindex).incomingData.NotEnoughDataErrCode
+        Call Err.Raise(UserList(Userindex).incomingData.NotEnoughDataErrCode)
         Exit Sub
-
     End If
 
     On Error GoTo errHandler
@@ -22898,14 +22897,18 @@ Private Sub HandleLoginExistingAccount(ByVal Userindex As Integer)
     Call buffer.ReadByte
 
     Dim UserName As String
-
     Dim Password As String
-
     Dim version  As String
     
     UserName = buffer.ReadASCIIString()
     Password = buffer.ReadASCIIString()
-
+    
+    'Convert version number to string
+    version = CStr(buffer.ReadByte()) & "." & CStr(buffer.ReadByte()) & "." & CStr(buffer.ReadByte())
+    
+    'If we got here then packet is complete, copy data back to original queue
+    Call UserList(Userindex).incomingData.CopyBuffer(buffer)
+    
     If Not CuentaExiste(UserName) Then
         Call WriteErrorMsg(Userindex, "La cuenta no existe.")
         Call CloseSocket(Userindex)
@@ -22913,18 +22916,14 @@ Private Sub HandleLoginExistingAccount(ByVal Userindex As Integer)
 
     End If
 
-    'Convert version number to string
-    version = CStr(buffer.ReadByte()) & "." & CStr(buffer.ReadByte()) & "." & CStr(buffer.ReadByte())
-
     If Not VersionOK(version) Then
         Call WriteErrorMsg(Userindex, "Esta version del juego es obsoleta, la ultima version es la " & ULTIMAVERSION & ". Tu Version " & version & ". La misma se encuentra disponible en www.argentumonline.org")
     Else
         Call ConnectAccount(Userindex, UserName, Password)
 
     End If
-
-    'If we got here then packet is complete, copy data back to original queue
-    Call UserList(Userindex).incomingData.CopyBuffer(buffer)
+    
+    Exit Sub
     
 errHandler:
 
