@@ -76,7 +76,7 @@ Public Sub AddCount(ByVal Userindex As Integer, _
             .Counters.Cheat.AtacaArco = (.Counters.Cheat.AtacaArco + 1)
  
             If CheckInt(Userindex, Msj, 1) Then
-                MsjCheat Userindex, Msj
+                Call MsjCheat(Userindex, Msj)
             End If
                         
         End If
@@ -85,7 +85,7 @@ Public Sub AddCount(ByVal Userindex As Integer, _
             .Counters.Cheat.AtacaComun = (.Counters.Cheat.AtacaComun + 1)
  
             If CheckInt(Userindex, Msj, 2) Then
-                MsjCheat Userindex, Msj
+                Call MsjCheat(Userindex, Msj)
             End If
                         
         End If
@@ -94,7 +94,7 @@ Public Sub AddCount(ByVal Userindex As Integer, _
             .Counters.Cheat.CastSpell = (.Counters.Cheat.CastSpell + 1)
  
             If CheckInt(Userindex, Msj, 3) Then
-                MsjCheat Userindex, Msj
+                Call MsjCheat(Userindex, Msj)
             End If
                         
         End If
@@ -103,7 +103,7 @@ Public Sub AddCount(ByVal Userindex As Integer, _
             .Counters.Cheat.UsarItem = (.Counters.Cheat.UsarItem + 1)
  
             If CheckInt(Userindex, Msj, 4) Then
-                MsjCheat Userindex, Msj
+                Call MsjCheat(Userindex, Msj)
             End If
                         
         End If
@@ -125,7 +125,7 @@ Private Function CheckInt(ByVal Userindex As Integer, _
             Case 1
    
                 If (.Counters.Cheat.AtacaArco = MaxTol) Then
-                    Msj = .Name & ". -" & "Sobrepaso el intervalo de Ataca Arco 3 veces seguidas." & vbNewLine & "Posible edicion de intervalos."
+                    Msj = ". -" & "Sobrepaso el intervalo de Ataca Arco 3 veces seguidas." & vbNewLine & "Posible edicion de intervalos."
                     .Counters.Cheat.AtacaArco = 0
                     CheckInt = True
  
@@ -136,7 +136,7 @@ Private Function CheckInt(ByVal Userindex As Integer, _
             Case 2
  
                 If (.Counters.Cheat.AtacaComun = MaxTol) Then
-                    Msj = .Name & ". -" & "Sobrepaso el intervalo de Ataca Comun 3 veces seguidas." & vbNewLine & "Posible edicion de intervalos."
+                    Msj = ". -" & "Sobrepaso el intervalo de Ataca Comun 3 veces seguidas." & vbNewLine & "Posible edicion de intervalos."
                     .Counters.Cheat.AtacaComun = 0
                     CheckInt = True
   
@@ -147,7 +147,7 @@ Private Function CheckInt(ByVal Userindex As Integer, _
             Case 3
  
                 If (.Counters.Cheat.CastSpell = MaxTol) Then
-                    Msj = .Name & ". -" & "Sobrepaso el intervalo de Cast Spell 3 veces seguidas." & vbNewLine & "Posible edicion de intervalos."
+                    Msj = ". -" & "Sobrepaso el intervalo de Cast Spell 3 veces seguidas." & vbNewLine & "Posible edicion de intervalos."
                     .Counters.Cheat.CastSpell = 0
                     CheckInt = True
  
@@ -160,7 +160,7 @@ Private Function CheckInt(ByVal Userindex As Integer, _
                If (.Counters.Trabajando = 1) Then Exit Function
 
                 If (.Counters.Cheat.UsarItem = MaxTol) Then
-                    Msj = .Name & ". -" & "Sobrepaso el intervalo de Usar Items 3 veces seguidas." & vbNewLine & "Posible edicion de intervalos."
+                    Msj = ". -" & "Sobrepaso el intervalo de Usar Items 3 veces seguidas." & vbNewLine & "Posible edicion de intervalos."
                     .Counters.Cheat.UsarItem = 0
                     CheckInt = True
  

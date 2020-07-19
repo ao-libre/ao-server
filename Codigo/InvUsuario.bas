@@ -2400,6 +2400,7 @@ Sub TirarTodosLosItems(ByVal Userindex As Integer)
                     If .Clase = eClass.Pirat Then
 
                         ' Si tiene galeon equipado
+                        ' TODO: USAR ESTA FUNCION ACA: EsGaleon(Barco)
                         If .Invent.BarcoObjIndex = 476 Then
 
                             ' Limitacion por nivel, despues dropea normalmente
