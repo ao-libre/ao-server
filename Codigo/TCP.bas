@@ -817,7 +817,7 @@ Sub ConnectAccount(ByVal Userindex As Integer, _
     'Si no tienen interes en usarlo pueden desactivarlo en el Server.ini
     If ConexionAPI Then
         'Pasamos UserName tambien como email, ya que son lo mismo.... :(
-        Call ApiEndpointSendLoginAccountEmail(UserName)
+        Call ApiEndpointSendLoginAccountEmail(UserName, GetLastIpsAccount(UserName), UserList(Userindex).IP)
     End If
 
 
@@ -1469,8 +1469,6 @@ Sub ConnectUser(ByVal Userindex As Integer, _
     
         Call WriteLoggedMessage(Userindex)
     
-        Call modGuilds.SendGuildNews(Userindex)
-    
         ' Esta protegido del ataque de npcs por 5 segundos, si no realiza ninguna accion
         Call IntervaloPermiteSerAtacado(Userindex, True)
     
@@ -1490,6 +1488,8 @@ Sub ConnectUser(ByVal Userindex As Integer, _
         Call Statistics.UserConnected(Userindex)
     
         Call MostrarNumUsers
+        
+        Call modGuilds.SendGuildNews(Userindex)
         
         'Aqui solo vamos a hacer un request a los endpoints de la aplicacion en Node.js
         'el repositorio para hacer funcionar esto, es este: https://github.com/ao-libre/ao-api-server
