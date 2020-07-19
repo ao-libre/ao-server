@@ -1,3 +1,4 @@
+Attribute VB_Name = "Trabajo"
 'Argentum Online 0.12.2
 'Copyright (C) 2002 Marquez Pablo Ignacio
 '
@@ -42,7 +43,7 @@ Public Sub DoPermanecerOculto(ByVal Userindex As Integer)
     '13/01/2010: ZaMa - Now hidden on boat pirats recover the proper boat body.
     '13/01/2010: ZaMa - Arreglo condicional para que el bandido camine oculto.
     '********************************************************
-    On Error GoTo ErrHandler
+    On Error GoTo errHandler
 
     With UserList(Userindex)
         .Counters.TiempoOculto = .Counters.TiempoOculto - 1
@@ -85,7 +86,7 @@ Public Sub DoPermanecerOculto(ByVal Userindex As Integer)
     
     Exit Sub
 
-ErrHandler:
+errHandler:
     Call LogError("Error en Sub DoPermanecerOculto")
 
 End Sub
@@ -99,7 +100,7 @@ Public Sub DoOcultarse(ByVal Userindex As Integer)
     '13/01/2010: ZaMa - El pirata se transforma en galeon fantasmal cuando se oculta en agua.
     '***************************************************
 
-    On Error GoTo ErrHandler
+    On Error GoTo errHandler
 
     Dim Suerte As Double
 
@@ -166,7 +167,7 @@ Public Sub DoOcultarse(ByVal Userindex As Integer)
     
     Exit Sub
 
-ErrHandler:
+errHandler:
     Call LogError("Error en Sub DoOcultarse")
 
 End Sub
@@ -300,7 +301,7 @@ Public Sub FundirMineral(ByVal Userindex As Integer)
     '
     '***************************************************
 
-    On Error GoTo ErrHandler
+    On Error GoTo errHandler
 
     With UserList(Userindex)
 
@@ -319,7 +320,7 @@ Public Sub FundirMineral(ByVal Userindex As Integer)
 
     Exit Sub
 
-ErrHandler:
+errHandler:
     Call LogError("Error en FundirMineral. Error " & Err.Number & " : " & Err.description)
 
 End Sub
@@ -331,7 +332,7 @@ Public Sub FundirArmas(ByVal Userindex As Integer)
     '
     '***************************************************
 
-    On Error GoTo ErrHandler
+    On Error GoTo errHandler
 
     With UserList(Userindex)
 
@@ -351,7 +352,7 @@ Public Sub FundirArmas(ByVal Userindex As Integer)
     End With
     
     Exit Sub
-ErrHandler:
+errHandler:
     Call LogError("Error en FundirArmas. Error " & Err.Number & " : " & Err.description)
 
 End Sub
@@ -868,7 +869,7 @@ Public Sub CarpinteroConstruirItem(ByVal Userindex As Integer, ByVal ItemIndex A
     '22/05/2010: ZaMa - Los caos ya no suben plebe al trabajar.
     '28/05/2010: ZaMa - Los pks no suben plebe al trabajar.
     '***************************************************
-    On Error GoTo ErrHandler
+    On Error GoTo errHandler
 
     Dim CantidadItems   As Integer
 
@@ -1000,7 +1001,7 @@ Public Sub CarpinteroConstruirItem(ByVal Userindex As Integer, ByVal ItemIndex A
     End With
     
     Exit Sub
-ErrHandler:
+errHandler:
     Call LogError("Error en CarpinteroConstruirItem. Error " & Err.Number & " : " & Err.description & ". UserIndex:" & Userindex & ". ItemIndex:" & ItemIndex)
 
 End Sub
@@ -1516,7 +1517,7 @@ Sub DoDomar(ByVal Userindex As Integer, ByVal NpcIndex As Integer)
     '01/05/2010: ZaMa - Agrego bonificacion 11% para domar con flauta magica.
     '***************************************************
 
-    On Error GoTo ErrHandler
+    On Error GoTo errHandler
 
     Dim puntosDomar      As Integer
 
@@ -1620,7 +1621,7 @@ Sub DoDomar(ByVal Userindex As Integer, ByVal NpcIndex As Integer)
     
     Exit Sub
 
-ErrHandler:
+errHandler:
     Call LogError("Error en DoDomar. Error " & Err.Number & " : " & Err.description)
 
 End Sub
@@ -1826,7 +1827,7 @@ Public Sub DoPescar(ByVal Userindex As Integer)
     '28/05/2010: ZaMa - Los pks no suben plebe al trabajar.
     '26/10/2018: CHOTS - Multiplicador de oficios
     '***************************************************
-    On Error GoTo ErrHandler
+    On Error GoTo errHandler
 
     Dim Suerte        As Integer
 
@@ -1866,11 +1867,35 @@ Public Sub DoPescar(ByVal Userindex As Integer)
             End If
 
             CantidadItems = CantidadItems * OficioMultiplier
-            
+
+            Dim i As Long
+
             With MiObj
-                .Amount = CantidadItems
-                .ObjIndex = Pescado
+    
+                If PescaEvent.Activado = 1 Then
+
+                    For i = 1 To PescaEvent.CantidadDeZonas
+
+                        If UserList(Userindex).Pos.Map = Zona(i).Mapa Then
+                            MiObj.ObjIndex = Evento_Pesca.DamePez(i)
+                        Else
+                            .Amount = CantidadItems
+                            MiObj.ObjIndex = Pescado
+                        End If
+
+                    Next i
+
+                Else
+                    .Amount = CantidadItems
+                    MiObj.ObjIndex = Pescado
+                End If
+
             End With
+
+            'With MiObj
+            '    .Amount = CantidadItems
+            '    .ObjIndex = Pescado
+            'End With
             
             If Not MeterItemEnInventario(Userindex, MiObj) Then
                 Call TirarItemAlPiso(.Pos, MiObj)
@@ -1911,7 +1936,7 @@ Public Sub DoPescar(ByVal Userindex As Integer)
 
     Exit Sub
 
-ErrHandler:
+errHandler:
     Call LogError("Error en DoPescar. Error " & Err.Number & " : " & Err.description)
 
 End Sub
@@ -1924,7 +1949,7 @@ Public Sub DoPescarRed(ByVal Userindex As Integer)
     '26/10/2018: CHOTS - Multiplicador de oficios
     '26/05/2020: Fakkerz - Agregado render de dano faltante
     '***************************************************
-    On Error GoTo ErrHandler
+    On Error GoTo errHandler
 
     Dim iSkill        As Integer
 
@@ -2009,7 +2034,7 @@ Public Sub DoPescarRed(ByVal Userindex As Integer)
     
     Exit Sub
 
-ErrHandler:
+errHandler:
     Call LogError("Error en DoPescarRed")
 
 End Sub
@@ -2034,7 +2059,7 @@ Public Sub DoRobar(ByVal LadrOnIndex As Integer, ByVal VictimaIndex As Integer)
     '23/04/2010: ZaMa - El alcance de robo pasa a ser de 1 tile.
     '*************************************************
 
-    On Error GoTo ErrHandler
+    On Error GoTo errHandler
 
     Dim OtroUserIndex As Integer
 
@@ -2226,7 +2251,7 @@ Public Sub DoRobar(ByVal LadrOnIndex As Integer, ByVal VictimaIndex As Integer)
 
     Exit Sub
 
-ErrHandler:
+errHandler:
     Call LogError("Error en DoRobar. Error " & Err.Number & " : " & Err.description)
 
 End Sub
@@ -2546,7 +2571,7 @@ Public Sub QuitarSta(ByVal Userindex As Integer, ByVal Cantidad As Integer)
     '
     '***************************************************
 
-    On Error GoTo ErrHandler
+    On Error GoTo errHandler
 
     UserList(Userindex).Stats.MinSta = UserList(Userindex).Stats.MinSta - Cantidad
 
@@ -2555,7 +2580,7 @@ Public Sub QuitarSta(ByVal Userindex As Integer, ByVal Cantidad As Integer)
     
     Exit Sub
 
-ErrHandler:
+errHandler:
     Call LogError("Error en QuitarSta. Error " & Err.Number & " : " & Err.description)
     
 End Sub
@@ -2574,7 +2599,7 @@ Public Sub DoTalar(ByVal Userindex As Integer, _
     '28/05/2010: ZaMa - Los pks no suben plebe al trabajar.
     '26/10/2018: CHOTS - Multiplicador de oficios
     '***************************************************
-    On Error GoTo ErrHandler
+    On Error GoTo errHandler
 
     Dim Suerte        As Integer
 
@@ -2659,7 +2684,7 @@ Public Sub DoTalar(ByVal Userindex As Integer, _
 
     Exit Sub
 
-ErrHandler:
+errHandler:
     Call LogError("Error en DoTalar")
 
 End Sub
@@ -2676,7 +2701,7 @@ Public Sub DoMineria(ByVal Userindex As Integer)
     '28/05/2010: ZaMa - Los pks no suben plebe al trabajar.
     '26/10/2018: CHOTS - Multiplicador de oficios
     '***************************************************
-    On Error GoTo ErrHandler
+    On Error GoTo errHandler
 
     Dim Suerte        As Integer
 
@@ -2758,7 +2783,7 @@ Public Sub DoMineria(ByVal Userindex As Integer)
 
     Exit Sub
 
-ErrHandler:
+errHandler:
     Call LogError("Error en Sub DoMineria")
 
 End Sub
