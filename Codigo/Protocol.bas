@@ -22881,9 +22881,8 @@ Private Sub HandleLoginExistingAccount(ByVal Userindex As Integer)
     '
     '***************************************************
     If UserList(Userindex).incomingData.Length < 6 Then
-        Err.Raise UserList(Userindex).incomingData.NotEnoughDataErrCode
+        Call Err.Raise(UserList(Userindex).incomingData.NotEnoughDataErrCode)
         Exit Sub
-
     End If
 
     On Error GoTo errHandler
@@ -22898,9 +22897,7 @@ Private Sub HandleLoginExistingAccount(ByVal Userindex As Integer)
     Call buffer.ReadByte
 
     Dim UserName As String
-
     Dim Password As String
-
     Dim version  As String
     
     UserName = buffer.ReadASCIIString()
