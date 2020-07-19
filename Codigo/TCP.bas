@@ -394,7 +394,7 @@ Sub ConnectNewUser(ByVal Userindex As Integer, _
         .Hogar = Hogar
 
         'CHOTS | Accounts
-        .AccountHash = AccountHash
+        .Account.Hash = AccountHash
 
         'Primero agregamos los items, ya que en caso de que el nivel
         'Inicial sea mayor al de un newbie, los items se borran automaticamente.
@@ -891,7 +891,9 @@ Sub CloseSocket(ByVal Userindex As Integer)
             Call ResetUserSlot(Userindex)
 
         End If
-            
+        
+        .Account.LoggedIn = False
+        
         Call LiberarSlot(Userindex)
             
     End With
@@ -1648,7 +1650,7 @@ Sub ResetBasicUserInfo(ByVal Userindex As Integer)
     With UserList(Userindex)
         .Name = vbNullString
         .ID = 0
-        .AccountHash = vbNullString
+        .Account.Hash = vbNullString
         .Desc = vbNullString
         .DescRM = vbNullString
         .Pos.Map = 0
@@ -2006,16 +2008,25 @@ Sub CloseUser(ByVal Userindex As Integer)
         'If MapInfo(Map).NumUsers > 0 Then
         '    Call SendToUserArea(UserIndex, "QDL" & .Char.charindex)
         'End If
-    
-        If MapInfo(Map).NumUsers > 0 Then
-            Call SendData(SendTarget.ToPCAreaButIndex, Userindex, PrepareMessageRemoveCharDialog(.Char.CharIndex))
-
+        
+        If Map > 0 Then
+        
+            If MapInfo(Map).NumUsers > 0 Then
+                Call SendData(SendTarget.ToPCAreaButIndex, Userindex, PrepareMessageRemoveCharDialog(.Char.CharIndex))
+            End If
+            
+            'Update Map Users
+            MapInfo(Map).NumUsers = MapInfo(Map).NumUsers - 1
+        
+            If MapInfo(Map).NumUsers < 0 Then
+                MapInfo(Map).NumUsers = 0
+            End If
+            
         End If
-    
+        
         'Borrar el personaje
         If .Char.CharIndex > 0 Then
             Call EraseUserChar(Userindex, .flags.AdminInvisible = 1)
-
         End If
     
         'Borrar mascotas
@@ -2027,15 +2038,7 @@ Sub CloseUser(ByVal Userindex As Integer)
             End If
 
         Next i
-    
-        'Update Map Users
-        MapInfo(Map).NumUsers = MapInfo(Map).NumUsers - 1
-    
-        If MapInfo(Map).NumUsers < 0 Then
-            MapInfo(Map).NumUsers = 0
 
-        End If
-    
         ' Si el usuario habia dejado un msg en la gm's queue lo borramos
         If Ayuda.Existe(.Name) Then Call Ayuda.Quitar(.Name)
     

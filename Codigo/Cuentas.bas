@@ -1,6 +1,32 @@
 Attribute VB_Name = "Cuentas"
 Option Explicit
 
+'CHOTS | Accounts
+Public Type AccountCharacter
+
+    Name As String
+    body As Integer
+    Head As Integer
+    weapon As Integer
+    shield As Integer
+    helmet As Integer
+    Class As Byte
+    race As Byte
+    Map As Integer
+    level As Byte
+    Gold As Long
+    criminal As Boolean
+    dead As Boolean
+    gameMaster As Boolean
+
+End Type
+
+Public Type Account
+        Personajes(1 To 10) As AccountCharacter
+        LoggedIn As Boolean
+        Hash As String 'CHOTS | Account ID
+End Type
+
 Sub LoadUserFromCharfile(ByVal Userindex As Integer)
 
     '*************************************************
@@ -81,7 +107,7 @@ Public Sub BorrarUsuarioCharfile(ByVal UserName As String)
                 Call WriteVar(AccountCharfile, "INIT", "CANTIDADPERSONAJES", NumberOfCharacters - 1)
 
                 'Por ultimo borramos el archivo.
-                Kill(CharPath & UCase$(UserName) & ".chr")
+                Kill (CharPath & UCase$(UserName) & ".chr")
                 
                 Exit Sub
             End If
@@ -189,7 +215,7 @@ Public Sub MarcarPjComoQueYaVotoCharfile(ByVal Userindex As Integer, _
     'Author: Juan Andres Dalmasso (CHOTS)
     'Last Modification: 19/09/2018
     '***************************************************
-    Call WriteVar(CharPath & UserList(Userindex).Name & ".chr", "CONSULTAS", "Voto", str(NumeroEncuesta))
+    Call WriteVar(CharPath & UserList(Userindex).Name & ".chr", "CONSULTAS", "Voto", Str(NumeroEncuesta))
 
 End Sub
 
@@ -833,51 +859,66 @@ Public Sub LoginAccountCharfile(ByVal Userindex As Integer, ByVal UserName As St
 
     Dim Account            As clsIniManager
     Dim CharFile           As clsIniManager
+
     Dim i                  As Long
+
     Dim AccountHash        As String
+
     Dim NumberOfCharacters As Byte
-    Dim Characters()       As AccountUser
     Dim CurrentCharacter   As String
 
     Set Account = New clsIniManager
     Set CharFile = New clsIniManager
 
     AccountHash = GetVar(AccountPath & UCase$(UserName) & ".acc", "INIT", "Hash")
+    
     Call Account.Initialize(AccountPath & AccountHash & ".ach")
+    
     NumberOfCharacters = val(Account.GetValue("INIT", "CantidadPersonajes"))
-
-    If NumberOfCharacters > 0 Then
-        ReDim Characters(1 To NumberOfCharacters) As AccountUser
-
-        For i = 1 To NumberOfCharacters
-            CurrentCharacter = Account.GetValue("PERSONAJES", "Personaje" & i)
-
-            Call CharFile.Initialize(CharPath & CurrentCharacter & ".chr")
-
-            Characters(i).Name = CurrentCharacter
-            Characters(i).body = val(CharFile.GetValue("INIT", "Body"))
-            Characters(i).Head = val(CharFile.GetValue("INIT", "Head"))
-            Characters(i).weapon = val(CharFile.GetValue("INIT", "Arma"))
-            Characters(i).shield = val(CharFile.GetValue("INIT", "Escudo"))
-            Characters(i).helmet = val(CharFile.GetValue("INIT", "Casco"))
-            Characters(i).Class = val(CharFile.GetValue("INIT", "Clase"))
-            Characters(i).race = val(CharFile.GetValue("INIT", "Raza"))
-            Characters(i).Map = val(ReadField(1, CharFile.GetValue("INIT", "Position"), 45))
-            Characters(i).level = val(CharFile.GetValue("STATS", "ELV"))
-            Characters(i).Gold = val(CharFile.GetValue("STATS", "GLD"))
-            Characters(i).criminal = (val(CharFile.GetValue("REP", "Promedio")) < 0)
-            Characters(i).dead = CBool(val(CharFile.GetValue("FLAGS", "Muerto")))
-            Characters(i).gameMaster = EsGmChar(CurrentCharacter)
-        Next i
-
-    End If
-
+    
+    With UserList(Userindex).Account
+    
+        If NumberOfCharacters > 0 Then
+    
+            For i = 1 To NumberOfCharacters
+                
+                CurrentCharacter = Account.GetValue("PERSONAJES", "Personaje" & i)
+                Call CharFile.Initialize(CharPath & CurrentCharacter & ".chr")
+                
+                With .Personajes(i)
+    
+                    .Name = CurrentCharacter
+                    .body = val(CharFile.GetValue("INIT", "Body"))
+                    .Head = val(CharFile.GetValue("INIT", "Head"))
+                    .weapon = val(CharFile.GetValue("INIT", "Arma"))
+                    .shield = val(CharFile.GetValue("INIT", "Escudo"))
+                    .helmet = val(CharFile.GetValue("INIT", "Casco"))
+                    .Class = val(CharFile.GetValue("INIT", "Clase"))
+                    .race = val(CharFile.GetValue("INIT", "Raza"))
+                    .Map = val(ReadField(1, CharFile.GetValue("INIT", "Position"), 45))
+                    .level = val(CharFile.GetValue("STATS", "ELV"))
+                    .Gold = val(CharFile.GetValue("STATS", "GLD"))
+                    .criminal = (val(CharFile.GetValue("REP", "Promedio")) < 0)
+                    .dead = CBool(val(CharFile.GetValue("FLAGS", "Muerto")))
+                    .gameMaster = EsGmChar(CurrentCharacter)
+                
+                End With
+                
+            Next i
+    
+        End If
+        
+        .LoggedIn = True
+        
+    End With
+    
     Set Account = Nothing
     Set CharFile = Nothing
 
-    Call WriteUserAccountLogged(Userindex, UserName, AccountHash, NumberOfCharacters, Characters)
+    Call WriteUserAccountLogged(Userindex, UserName, AccountHash, NumberOfCharacters, UserList(Userindex).Account.Personajes)
 
     Exit Sub
+    
 ErrorHandler:
     Call LogError("Error in LoginAccountCharfile: " & UserName & ". " & Err.Number & " - " & Err.description)
 

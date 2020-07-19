@@ -83,7 +83,7 @@ Sub SaveUserToDatabase(ByVal Userindex As Integer, _
 
     With UserList(Userindex)
     
-        If GetCountUserAccount(.AccountHash) >= 10 Then
+        If GetCountUserAccount(.Account.Hash) >= 10 Then
             Call WriteErrorMsg(Userindex, "No puedes crear mas de 10 personajes.")
             Call CloseSocket(Userindex)
             Exit Sub
@@ -171,7 +171,7 @@ Sub InsertUserToDatabase(ByVal Userindex As Integer, _
 
         query = "INSERT INTO user SET "
         query = query & "name = '" & .Name & "', "
-        query = query & "account_id = (SELECT id FROM account WHERE hash = '" & .AccountHash & "'), "
+        query = query & "account_id = (SELECT id FROM account WHERE hash = '" & .Account.Hash & "'), "
         query = query & "level = " & .Stats.ELV & ", "
         query = query & "exp = " & .Stats.Exp & ", "
         query = query & "elu = " & .Stats.ELU & ", "
@@ -2710,7 +2710,7 @@ Public Sub LoginAccountDatabase(ByVal Userindex As Integer, ByVal UserName As St
 
     Dim NumberOfCharacters As Byte
 
-    Dim Characters()       As AccountUser
+    Dim Characters()       As AccountCharacter
 
     Call Database_Connect
 
@@ -2741,7 +2741,7 @@ Public Sub LoginAccountDatabase(ByVal Userindex As Integer, ByVal UserName As St
     NumberOfCharacters = 0
 
     If Not Database_RecordSet.RecordCount = 0 Then
-        ReDim Characters(1 To Database_RecordSet.RecordCount) As AccountUser
+        ReDim Characters(1 To Database_RecordSet.RecordCount) As AccountCharacter
         Database_RecordSet.MoveFirst
 
         While Not Database_RecordSet.EOF

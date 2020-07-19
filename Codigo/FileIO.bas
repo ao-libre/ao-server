@@ -1407,7 +1407,7 @@ Sub LoadUserInit(ByVal Userindex As Integer, ByRef UserFile As clsIniManager)
 
         End If
 
-        .AccountHash = CStr(UserFile.GetValue("INIT", "AccountHash"))
+        .Account.Hash = CStr(UserFile.GetValue("INIT", "AccountHash"))
         .Genero = CByte(UserFile.GetValue("INIT", "Genero"))
         .Clase = CByte(UserFile.GetValue("INIT", "Clase"))
         .raza = CByte(UserFile.GetValue("INIT", "Raza"))
@@ -2228,7 +2228,7 @@ Sub SaveUserToCharfile(ByVal Userindex As Integer, Optional ByVal SaveTimeOnline
     
         Call Manager.ChangeValue("CONTACTO", "Email", CStr(.Email))
     
-        Call Manager.ChangeValue("INIT", "AccountHash", CStr(.AccountHash))
+        Call Manager.ChangeValue("INIT", "AccountHash", CStr(.Account.Hash))
         Call Manager.ChangeValue("INIT", "Genero", CByte(.Genero))
         Call Manager.ChangeValue("INIT", "Raza", CByte(.raza))
         Call Manager.ChangeValue("INIT", "Hogar", CByte(.Hogar))

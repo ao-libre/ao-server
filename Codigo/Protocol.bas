@@ -443,7 +443,7 @@ Public Function HandleIncomingData(ByVal Userindex As Integer) As Boolean
                 Or packetID = ClientPacketID.CambiarContrasena) Then
             
             'Vierifico si el user esta logeado
-            If Not .flags.UserLogged Then
+            If Not .Account.LoggedIn Then
                 Call CloseSocket(Userindex)
                 Exit Function
             
@@ -22905,7 +22905,13 @@ Private Sub HandleLoginExistingAccount(ByVal Userindex As Integer)
     
     UserName = buffer.ReadASCIIString()
     Password = buffer.ReadASCIIString()
-
+    
+    'Convert version number to string
+    version = CStr(buffer.ReadByte()) & "." & CStr(buffer.ReadByte()) & "." & CStr(buffer.ReadByte())
+    
+    'If we got here then packet is complete, copy data back to original queue
+    Call UserList(Userindex).incomingData.CopyBuffer(buffer)
+    
     If Not CuentaExiste(UserName) Then
         Call WriteErrorMsg(Userindex, "La cuenta no existe.")
         Call CloseSocket(Userindex)
@@ -22913,18 +22919,14 @@ Private Sub HandleLoginExistingAccount(ByVal Userindex As Integer)
 
     End If
 
-    'Convert version number to string
-    version = CStr(buffer.ReadByte()) & "." & CStr(buffer.ReadByte()) & "." & CStr(buffer.ReadByte())
-
     If Not VersionOK(version) Then
         Call WriteErrorMsg(Userindex, "Esta version del juego es obsoleta, la ultima version es la " & ULTIMAVERSION & ". Tu Version " & version & ". La misma se encuentra disponible en www.argentumonline.org")
     Else
         Call ConnectAccount(Userindex, UserName, Password)
 
     End If
-
-    'If we got here then packet is complete, copy data back to original queue
-    Call UserList(Userindex).incomingData.CopyBuffer(buffer)
+    
+    Exit Sub
     
 errHandler:
 
@@ -22955,9 +22957,8 @@ Private Sub HandleLoginNewAccount(ByVal Userindex As Integer)
     'CHOTS: Fix a bug reported by @juanmz
     '***************************************************
     If UserList(Userindex).incomingData.Length < 6 Then
-        Err.Raise UserList(Userindex).incomingData.NotEnoughDataErrCode
+        Call Err.Raise(UserList(Userindex).incomingData.NotEnoughDataErrCode)
         Exit Sub
-
     End If
 
     On Error GoTo errHandler
@@ -22965,7 +22966,6 @@ Private Sub HandleLoginNewAccount(ByVal Userindex As Integer)
     'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
     Dim buffer As clsByteQueue
     Set buffer = New clsByteQueue
-
     Call buffer.CopyBuffer(UserList(Userindex).incomingData)
     
     'Remove packet ID
@@ -22977,6 +22977,12 @@ Private Sub HandleLoginNewAccount(ByVal Userindex As Integer)
 
     UserName = buffer.ReadASCIIString()
     Password = buffer.ReadASCIIString()
+    
+    'Convert version number to string
+    version = CStr(buffer.ReadByte()) & "." & CStr(buffer.ReadByte()) & "." & CStr(buffer.ReadByte())
+    
+    'If we got here then packet is complete, copy data back to original queue
+    Call UserList(Userindex).incomingData.CopyBuffer(buffer)
 
     If CuentaExiste(UserName) Then
         Call WriteErrorMsg(Userindex, "La cuenta ya existe.")
@@ -22984,17 +22990,13 @@ Private Sub HandleLoginNewAccount(ByVal Userindex As Integer)
         Exit Sub
     End If
 
-    'Convert version number to string
-    version = CStr(buffer.ReadByte()) & "." & CStr(buffer.ReadByte()) & "." & CStr(buffer.ReadByte())
-
     If Not VersionOK(version) Then
         Call WriteErrorMsg(Userindex, "Esta version del juego es obsoleta, la ultima version es la " & ULTIMAVERSION & ". Tu Version " & version & ". La misma se encuentra disponible en www.argentumonline.org")
     Else
         Call CreateNewAccount(Userindex, UserName, Password)
     End If
-
-    'If we got here then packet is complete, copy data back to original queue
-    Call UserList(Userindex).incomingData.CopyBuffer(buffer)
+    
+    Exit Sub
     
 errHandler:
 
@@ -23015,7 +23017,7 @@ Public Sub WriteUserAccountLogged(ByVal Userindex As Integer, _
                                   ByVal UserName As String, _
                                   ByVal AccountHash As String, _
                                   ByVal NumberOfCharacters As Byte, _
-                                  ByRef Characters() As AccountUser)
+                                  ByRef Characters() As AccountCharacter)
 
 '***************************************************
 'Author: Juan Andres Dalmasso (CHOTS)
