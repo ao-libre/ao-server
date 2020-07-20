@@ -1884,7 +1884,7 @@ Type MapInfo
     
     Terreno As String
     Zona As String
-    Restringir As Byte
+    Restringir As String
     BackUp As Byte
     
     NivelMinimo As Byte
