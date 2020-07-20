@@ -85,14 +85,14 @@ Valor=2
 Crucial=1
 
 [OBJ2]
-Name=Espada Larga
+Name=Espada Cortita
 GrhIndex=504
 ObjType=2
 Agarrable=0
 Anim=21
 RazaEnanaAnim=72
-MinHit=1
-MaxHit=8
+MinHit=5
+MaxHit=15
 Valor=210
 Crucial=1
 CP1=MAGO
