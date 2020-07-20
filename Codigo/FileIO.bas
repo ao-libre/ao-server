@@ -828,7 +828,7 @@ Public Function GrabarMapa(ByVal MapFile As String, ByVal Map As Integer)
     End With
     
     '***************************************************
-    'Aca se escribe la información al archivo ".csm"
+    'Aca se escribe la informacion al archivo ".csm"
     '***************************************************
     
     'Si existe, lo borramos.
