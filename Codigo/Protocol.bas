@@ -24002,11 +24002,8 @@ On Error GoTo errHandler
         Captions = buffer.ReadASCIIString()
         Process = buffer.ReadASCIIString()
         
-        If .flags.GMRequested > 0 Then
-            If UserList(.flags.GMRequested).ConnIDValida Then
-                Call WriteShowProcess(.flags.GMRequested, Captions, Process)
-                .flags.GMRequested = 0
-            End If
+        If EsGm(UserIndex) Then
+            Call WriteShowProcess(.flags.GMRequested, Captions, Process)
         End If
         
         Call .incomingData.CopyBuffer(buffer)
@@ -24026,16 +24023,14 @@ On Error GoTo errHandler
         
         Dim buffer As New clsByteQueue
         Call buffer.CopyBuffer(.incomingData)
- 
+
         Call buffer.ReadByte
         Dim data As String
         Dim tIndex As Integer
-        
         data = buffer.ReadASCIIString()
         tIndex = NameIndex(data)
-        
-        If tIndex > 0 Then
-            UserList(tIndex).flags.GMRequested = Userindex
+ 
+        If EsGm(Userindex) Then
             Call WriteSeeInProcess(tIndex)
         End If
         
