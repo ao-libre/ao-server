@@ -13514,7 +13514,7 @@ Drop1=12-1000000 'Oro
 [NPC938]
 Name=Artesano
 NpcType=9
-Desc=Hola, viajero! Traeme los materiales que necesito y puedo crearte unos objetos interesantes
+Desc= Hola, viajero! Traeme los materiales que necesito y puedo crearte unos objetos interesantes
 Head=307
 Heading=3
 Body=359
@@ -13529,7 +13529,7 @@ Comercia=0
 [NPC939]
 Name=Pele [Quest 4 Cementerio]
 NpcType=0
-Desc=Ayuda por favor!! Una horda de zombies y esqueletos estan acechando mi granja!! Por favor mata 10 zombies y 10 esqueletos!! Tendras una gran recompensa, escribe /QUEST.
+Desc= Ayuda por favor!! Una horda de zombies y esqueletos estan acechando mi granja!! Por favor mata 10 zombies y 10 esqueletos!! Tendras una gran recompensa, escribe /QUEST.
 Head=101
 Heading=3
 Body=345
@@ -13546,7 +13546,7 @@ QuestNumber=4
 [NPC940]
 Name=Margareth [Quest 2 Banderbill]
 NpcType=0
-Desc=¿Estas buscando trabajo? Escribe /QUEST
+Desc= ¿Estas buscando trabajo? Escribe /QUEST
 Head=71
 Heading=3
 Body=254
@@ -13563,7 +13563,7 @@ QuestNumber=2
 [NPC941]
 Name=Icaro [Quest 6 Banderbill]
 NpcType=0
-Desc=¡Nesecitamos ayuda! Escribe /QUEST.
+Desc= ¡Nesecitamos ayuda! Escribe /QUEST.
 Head=101
 Heading=3
 Body=349
@@ -13631,7 +13631,7 @@ QuestNumber=9
 [NPC945]
 Name=Orfeo [Quest 10 Ciudad Abandonada]
 NpcType=0
-Desc=Juro Venganza¿Te unes? Escribe /QUEST.
+Desc=Juro Venganza ¿Te unes? Escribe /QUEST.
 Head=101
 Heading=3
 Body=339
