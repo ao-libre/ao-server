@@ -1140,7 +1140,7 @@ End Type
 
 Public Type tQuestNpc
 
-    NpcIndex As Integer
+    NPCIndex As Integer
     Amount As Integer
 
 End Type
@@ -1739,7 +1739,7 @@ End Type
 
 Public Type tCriaturasEntrenador
 
-    NpcIndex As Integer
+    NPCIndex As Integer
     NpcName As String
     tmpIndex As Integer
 
@@ -1852,11 +1852,11 @@ Public Type MapBlock
     Blocked As Byte
     Graphic(1 To 4) As Long
     Userindex As Integer
-    NpcIndex As Integer
+    NPCIndex As Integer
     ObjInfo As obj
     TileExit As WorldPos
-    trigger As eTrigger
-
+    Trigger As eTrigger
+    particle_group_index As Long
 End Type
 
 'Info del mapa
@@ -1884,8 +1884,10 @@ Type MapInfo
     
     Terreno As String
     Zona As String
-    Restringir As Byte
+    Restringir As String
     BackUp As Byte
+    
+    NivelMinimo As Byte
 
 End Type
 

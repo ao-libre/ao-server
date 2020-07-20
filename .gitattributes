@@ -25,6 +25,7 @@
 *.map binary
 *.exe binary
 *.inf binary
+*.csm binary
 
 # Declare encoding of all files for code.
 *.bas encoding=ansi
