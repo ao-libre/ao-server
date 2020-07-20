@@ -3,7 +3,7 @@ Attribute VB_Name = "mLimpieza"
 
 Option Explicit
 
-Const MAXITEMS                  As Integer = 1000
+Const MAXITEMS                  As Integer = 1500
 
 Private ArrayLimpieza(MAXITEMS) As WorldPos
 
