@@ -24003,7 +24003,7 @@ End Sub
 Private Sub HandleLookProcess(ByVal Userindex As Integer)
 '***************************************************
 'Author: Franco Emmanuel Gimenez(Franeg95)
-'Last Modification: 18/10/10
+'Last Modification: Cuicui - 20/07/20
 '***************************************************
  
 On Error GoTo ErrHandler
@@ -24013,15 +24013,17 @@ On Error GoTo ErrHandler
         Call buffer.CopyBuffer(.incomingData)
  
         Call buffer.ReadByte
-        Dim data As String
+        Dim tName As String
         Dim tIndex As Integer
         
-        data = buffer.ReadASCIIString()
-        tIndex = NameIndex(data)
+        tName = buffer.ReadASCIIString()
         
-        If tIndex > 0 Then
-            UserList(tIndex).flags.GMRequested = Userindex
-            Call WriteSeeInProcess(tIndex)
+        tIndex = NameIndex(tName)
+        If EsGm(Userindex) Then
+            If tIndex > 0 Then
+                UserList(tIndex).flags.GMRequested = Userindex
+                Call WriteSeeInProcess(tIndex)
+            End If
         End If
         
         Call .incomingData.CopyBuffer(buffer)
