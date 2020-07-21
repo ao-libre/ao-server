@@ -1505,7 +1505,7 @@ Public Type UserCounters
     
     Trabajando As Long  ' Para el centinela
     Ocultando As Long   ' Unico trabajo no revisado por el centinela
-    
+    Cheat As TimeIntervalos
     failedUsageAttempts As Long
     
     goHome As Long
@@ -1663,6 +1663,8 @@ Public Type User
     cvcUser As cvc_User
     
     QuestStats As tQuestStats
+    
+    Redundance As Byte
 
 End Type
 
@@ -1727,6 +1729,7 @@ Public Type NPCFlags
     invisible As Byte
     Maldicion As Byte
     Bendicion As Byte
+    SiguiendoGm As Boolean
     
     Snd1 As Integer
     Snd2 As Integer
@@ -2437,4 +2440,6 @@ Public DescripcionServidor As String
 
 Public NombreServidor As String
 
-
+#If AntiExternos Then
+Public Security As New clsSecurity
+#End If

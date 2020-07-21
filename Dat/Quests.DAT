@@ -15,8 +15,8 @@ RewardEXP=500
 RewardOBJs=0
  
 [QUEST2]
-Nombre=Caceria de lobo
-Desc=Se han reportado muchas muertes en los alrededores de la ciudad de Banderbill. La milicia ha hecho un llamado a la comunidad para intentar solucionar este problema. Debes matar 15 Lobos y conseguir 15 Pieles de Lobo para recibir una recompensa de 200 monedas de oro y 1000 puntos de experiencia.
+Nombre=Caceria de lobos
+Desc=Se han reportado muchas muertes en los alrededores de la ciudad de Banderbill.La milicia ha hecho un llamado a la comunidad para intentar solucionar este problema.Debes matar 15 Lobos y traerme sus Pieles para recibir una recompensa.
 RequiredLevel=2
  
 RequiredOBJs=1
@@ -31,8 +31,8 @@ RewardEXP=1000
 RewardOBJs=0
  
 [QUEST3]
-Nombre=Una gran aventura
-Desc=Un simpatico personaje de la ciudad de Ullathorpe, de nombre Willdon, precisa 10 Pieles de Lobo y 10 Pieles de Oso pardo y esta dispuesto a recompensar con 2000 puntos de experiencia y una Túnica Azul a quien le entregue estos objetos.
+Nombre=Caceria salvaje
+Desc=Willdon, el guardabosques, precisa controlar la sobrepoblacion de lobos y osos en las cercanias de ullathorpe.Ayudalo a retomar el control y te recompensara !
 RequiredLevel=5
  
 RequiredOBJs=2
@@ -48,7 +48,7 @@ RewardOBJ1=238-1
 
 [QUEST4]
 Nombre=Contra los muertos Vivos
-Desc=Ayuda por favor!! Una horda de zombies y esqueletos estan acechando mi granja!! Por favor mata 10 zombies y 10 esqueletos!! Tendras una gran recompensa.
+Desc=Ayuda por favor!! Una horda de zombies y esqueletos estan acechando mi granja!! Por favor deshazte de ellos y te recompensare con parte de mis ganancias !
 RequiredLevel=15
  
 RequiredNPCs=2
@@ -63,7 +63,7 @@ RewardOBJ1=559-1
 
 [QUEST5]
 Nombre=El peligroso Dorck
-Desc=Selenna, una importante miembro del circulo de Druidas del Imperio, se encuentra preocupada por el peligro que significan las malignas criaturas que habitan en el bosque de Dorck. Cualquier aventurero que asesine 10 Aracnidos Gigantes, 10 Orcos y consiga 10 Hachas, sera recompensado con 4000 puntos de experiencia, 4000 monedas de oro y una corona de Laureles, como muestra de colaborador con el círculo de Druidas del Imperio.
+Desc=Selenna, una importante miembro del circulo de Druidas del Imperio, se encuentra preocupada por el peligro que significan las malignas criaturas que habitan en el bosque de Dorck. Cualquier aventurero que asesine a los Aracnidos Gigantes y Orcos con sus Hachas, tendra una justa recompesa !
 RequiredLevel=20
  
 RequiredOBJs=1
@@ -80,8 +80,8 @@ RewardOBJs=1
 RewardOBJ1=851-1
 
 [QUEST6]
-Nombre=De Bandidos y Asesinos
-Desc=El clan de Asesinos y Bandidos no para de fastidiar a los ciudadanos de Argentum por eso te pedimos que acabes con esta plaga de una vez por todas. Con que mates a 10 asesinos y a 10 bandidos nos alcanza.
+Nombre=Justicia Divina
+Desc=Icaro, el pregonero de Banderbill, ha dictaminado una caceria furtiva de asesinos y bandidos debido a multiples actos ilicitos que los pobladores del imperio han sufrido.Trae sus cabezas y seras bien recompensado.
 RequiredLevel=25
 
 RequiredNPCs=2
@@ -95,8 +95,8 @@ RewardOBJs=1
 RewardOBJ1=1003-1
 
 [QUEST7]
-Nombre=Minerales de Bronce, Plata y Oro
-Desc=Necesitamos minerales para construir el anillo de bodas del rey, tenes que matar 3 Etogniles de cada raza Bronce, Plata y Oro. Me ayudas?
+Nombre=Capricho del Rey
+Desc=Los caprichos de rey deben de ser cumplidos a rajatabla y nos ha pedido construir un anillo de bodas, para ello necesitamos que nos ayudes matando a las diferentes razas de Etogniles que yacen escondidos en las tierras de Argentum.Consigue lo solicitado y la recompensa sera tan grande como tu honor.
 RequiredLevel=25
 
 RequiredNPCs=3
@@ -113,8 +113,8 @@ RewardOBJ2=562-1
 RewardOBJ3=540-1
 
 [QUEST8]
-Nombre=Sombra del coloso
-Desc=Venga a mis hijos que murieron en manos de los titanes, necesito que mates a todos ellos por mi, podrias?
+Nombre=Sombras Colosales
+Desc= Sir Arthur es el protector del reino y esta reclutando gente con agallas para mantener alejado de la superficie a los titanes que amenazan con salir y destruir todo a su paso.Colosales bestias son aquellas que yacen en los Dugeons.Consigue matarlos y obtendras la mayor de todas las recompensas !
 RequiredLevel=25
 
 RequiredNPCs=3
@@ -130,14 +130,14 @@ RewardOBJ1=402-50
 RewardOBJ2=540-1
 
 [QUEST9]
-Nombre=Soy un fumado loco
-Desc=Alguien se fumo mi marihuana, necesito recuperarla!
+Nombre=Espiritu Guerrero
+Desc=Mithandrill es un elfo del bosque radicado en Arghal el cual no puede salir a recolectar moras por una constante amenaza de criaturas salvajes,asesinos y bandidos.Ayuda al elfo y seras recompensado con objetos y monedas.
 RequiredLevel=25
 
 RequiredNPCs=3
 RequiredNPC1=531-100
 RequiredNPC2=530-100
-RequiredNPC3=522-100
+RequiredNPC3=523-100
  
 RewardEXP=50000
 RewardGLD=100000
@@ -147,8 +147,8 @@ RewardOBJ1=1138-1
 RewardOBJ2=705-1
 
 [QUEST10]
-Nombre=Al fin alguien me encontro
-Desc=Tengo un gran premio de Argentum para darte si me complaces.
+Nombre= Ojo por ojo
+Desc=Orfeo, el huerfano, ha jurado vengar la muerte de sus padres y por ello a decidido entregar parte de su herencia a quienes maten las criaturas que asaltaron su ciudad.
 RequiredLevel=25
 
 RequiredNPCs=4

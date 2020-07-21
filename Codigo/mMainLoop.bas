@@ -336,6 +336,15 @@ Public Sub PasarSegundo()
             Case 300
                 Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg("Servidor> Limpieza del mundo en 5 Minuto. Atentos!!", FontTypeNames.FONTTYPE_SERVER))
 
+            Case 240
+                Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg("Servidor> Limpieza del mundo en 4 Minutos. Atentos!!", FontTypeNames.FONTTYPE_SERVER))
+
+            Case 180
+                Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg("Servidor> Limpieza del mundo en 3 Minutos. Atentos!!", FontTypeNames.FONTTYPE_SERVER))
+            
+            Case 120
+                Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg("Servidor> Limpieza del mundo en 2 Minutos. Atentos!!", FontTypeNames.FONTTYPE_SERVER))
+
             Case 60
                 Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg("Servidor> Limpieza del mundo en 1 Minuto. Atentos!!", FontTypeNames.FONTTYPE_SERVER))
    

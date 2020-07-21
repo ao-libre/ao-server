@@ -117,6 +117,50 @@ manejador:
 
 End Function
 
+
+Public Function ItemIncompatibleConUser(ByVal Userindex As Integer, _
+                            ByVal ObjIndex As Integer) As Boolean
+    '***************************************************
+    'Author: WalterSit0
+    'Last Modification: 13/07/2020
+    '13/07/2020: WalterSit0 - Devuelve true si el usuario no puede usar el item debido a su raza, sexo o clase
+    '***************************************************
+    
+    If ObjIndex = 0 Then
+        ItemIncompatibleConUser = False
+        Exit Function
+    End If
+    
+    Select Case ObjData(ObjIndex).OBJType
+
+        Case eOBJType.otWeapon, eOBJType.otAnillo, eOBJType.otFlechas, eOBJType.otEscudo
+            If ClasePuedeUsarItem(Userindex, ObjIndex) And FaccionPuedeUsarItem(Userindex, ObjIndex) Then
+                ItemIncompatibleConUser = False
+            Else
+                ItemIncompatibleConUser = True
+            End If
+            
+        Case eOBJType.otArmadura
+            If ClasePuedeUsarItem(Userindex, ObjIndex) And SexoPuedeUsarItem(Userindex, ObjIndex) And CheckRazaUsaRopa(Userindex, ObjIndex) And FaccionPuedeUsarItem(Userindex, ObjIndex) Then
+                ItemIncompatibleConUser = False
+            Else
+                ItemIncompatibleConUser = True
+            End If
+            
+        Case eOBJType.otCasco, eOBJType.otPergaminos
+            If ClasePuedeUsarItem(Userindex, ObjIndex) Then
+                ItemIncompatibleConUser = False
+            Else
+                ItemIncompatibleConUser = True
+            End If
+            
+        Case Else
+            ItemIncompatibleConUser = False
+            
+    End Select
+    
+End Function
+
 Sub QuitarNewbieObj(ByVal Userindex As Integer)
     '***************************************************
     'Author: Unknown
@@ -502,9 +546,9 @@ Sub DropObj(ByVal Userindex As Integer, _
 
                 End If
             
-                Call MakeObj(DropObj, Map, X, Y)
                 Call QuitarUserInvItem(Userindex, Slot, DropObj.Amount)
                 Call UpdateUserInv(False, Userindex, Slot)
+                Call MakeObj(DropObj, Map, X, Y)
             
                 If ObjData(DropObj.ObjIndex).OBJType = eOBJType.otBarcos Then
                     Call WriteConsoleMsg(Userindex, "ATENCION!! ACABAS DE TIRAR TU BARCA!", FontTypeNames.FONTTYPE_WARNING)

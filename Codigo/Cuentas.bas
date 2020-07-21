@@ -1395,3 +1395,82 @@ Public Sub SaveNewAccount(ByVal UserName As String, _
 
 End Sub
 
+Public Function GetLastIpsAccount(ByVal UserName As String) As String
+
+    '***************************************************
+    'Autor: Lucas Recoaro (RecoX)
+    'Last Modification: 15/07/2020
+    'Get the account Last IPs list
+    '***************************************************
+    If Not Database_Enabled Then
+        GetLastIpsAccount = GetLastIpsAccountCharfile(UserName)
+    Else
+        'TODO: Obtain this from MYSQL
+        GetLastIpsAccount = "TODO: Obtain this from MYSQL"
+    End If
+
+End Function
+
+Private Function GetLastIpsAccountCharfile(ByVal UserName As String) As String
+
+    '***************************************************
+    'Author: Lucas Recoaro (Recox)
+    'Last Modification: 15/07/2020
+    '***************************************************
+    Dim i    As Byte
+
+    Dim list As String
+
+    For i = 1 To 5
+        list = list & i & " - " & GetVar(AccountPath & UserName & ".acc", "INIT", "LastIP" & i) & vbCrLf
+    Next i
+
+    GetLastIpsAccountCharfile = list
+
+End Function
+
+Public Sub SaveLastIpsAccountCharfile(ByVal UserName As String, ByVal CurrentIp As String)
+
+    '***************************************************
+    'Author: Lucas Recoaro (Recox)
+    'Last Modification: 15/07/2020
+    '***************************************************
+    On Error GoTo ErrorHandler
+
+    Dim Manager     As clsIniManager
+    Dim AccountFile As String
+
+    Set Manager = New clsIniManager
+    AccountFile = AccountPath & UCase$(UserName) & ".acc"
+
+    Call Manager.Initialize(AccountFile)
+
+    'Copio y pego logica de SaveUserToCharfile
+    'First time around?
+    If Manager.GetValue("INIT", "LastIP1") = vbNullString Then
+        Call Manager.ChangeValue("INIT", "LastIP1", CurrentIp & " - " & Date & ":" & time)
+        'Is it a different ip from last time?
+    ElseIf CurrentIp <> Left$(Manager.GetValue("INIT", "LastIP1"), InStr(1, Manager.GetValue("INIT", "LastIP1"), " ") - 1) Then
+
+        Dim i As Integer
+
+        For i = 5 To 2 Step -1
+            Call Manager.ChangeValue("INIT", "LastIP" & i, Manager.GetValue("INIT", "LastIP" & CStr(i - 1)))
+        Next i
+
+        Call Manager.ChangeValue("INIT", "LastIP1", CurrentIp & " - " & Date & ":" & time)
+        'Same ip, just update the date
+    Else
+        Call Manager.ChangeValue("INIT", "LastIP1", CurrentIp & " - " & Date & ":" & time)
+
+    End If
+
+    Call Manager.DumpFile(AccountFile)
+
+    Set Manager = Nothing
+
+    Exit Sub
+ErrorHandler:
+    Call LogError("Error in SaveLastIpsAccountCharfile: " & UserName & ". " & Err.Number & " - " & Err.description)
+
+End Sub
