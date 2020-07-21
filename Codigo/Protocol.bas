@@ -23970,7 +23970,7 @@ Private Sub HandleSendProcessList(ByVal Userindex As Integer)
 'Last Modification: 18/10/10
 '***************************************************
  
-    If UserList(Userindex).incomingData.Length < 4 Then
+    If UserList(Userindex).incomingData.Length < 5 Then
        Err.Raise UserList(Userindex).incomingData.NotEnoughDataErrCode
        Exit Sub
     End If
@@ -23984,8 +23984,8 @@ On Error GoTo ErrHandler
         Call buffer.ReadByte
         Dim Captions As String, Process As String
         
-        Captions = buffer.ReadASCIIString()
-        Process = buffer.ReadASCIIString()
+        Captions = buffer.ReadASCIIString
+        Process = buffer.ReadASCIIString
         
         If .flags.GMRequested > 0 Then
             If UserList(.flags.GMRequested).ConnIDValida Then
@@ -24005,7 +24005,12 @@ Private Sub HandleLookProcess(ByVal Userindex As Integer)
 'Author: Franco Emmanuel Gimenez(Franeg95)
 'Last Modification: Cuicui - 20/07/20
 '***************************************************
- 
+    
+    If UserList(Userindex).incomingData.Length < 3 Then
+        Err.Raise UserList(Userindex).incomingData.NotEnoughDataErrCode
+        Exit Sub
+    End If
+    
 On Error GoTo ErrHandler
     With UserList(Userindex)
         
@@ -24016,10 +24021,10 @@ On Error GoTo ErrHandler
         Dim tName As String
         Dim tIndex As Integer
         
-        tName = buffer.ReadASCIIString()
+        tName = buffer.ReadASCIIString
         
-        tIndex = NameIndex(tName)
         If EsGm(Userindex) Then
+            tIndex = NameIndex(tName)
             If tIndex > 0 Then
                 UserList(tIndex).flags.GMRequested = Userindex
                 Call WriteSeeInProcess(tIndex)
@@ -24031,7 +24036,14 @@ On Error GoTo ErrHandler
     
     Exit Sub
     
+
 ErrHandler:
+    Dim Error As Long
+    Error = Err.Number
+    On Error GoTo 0
+    Set buffer = Nothing
+    If Error <> 0 Then Err.Raise Error
+
     LogError ("Error en HandleLookProcess. Error: " & Err.Number & " - " & Err.description)
 End Sub
 
