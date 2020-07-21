@@ -440,7 +440,7 @@ BackUp=0
 ##############################################################
 
 [NPC14] 'Vende Pociones
-Name=Lilith (Vende Pociones)
+Name=Lilith
 NpcType=0
 Desc=Hola, tengo las mejores Pociones de la Alquimia.
 Head=77
@@ -1764,6 +1764,7 @@ Obj12=124-1000 	'Katana
 Obj13=126-1000 	'Hacha Larga de Guerra
 Obj14=159-1000 	'Hacha de Barbaro
 Obj15=990-1000 	'Mazo del Juicio
+obj16=1036-1000 'Guantes de lucha
 BackUp=1
 
 #############################################
@@ -1826,7 +1827,7 @@ Obj5=501-1000 'Ropa de Campesino
 Obj6=135-1000 'Tunica Roja Burda
 obj7=238-1000 'Tunica Azul
 obj8=239-1000 'Tunica Roja
-obj9=873-1000 'Guantes de hurto
+obj9=381-1000 'Tunica de Monje
 BackUp=1
 
 #############################################
@@ -1981,6 +1982,7 @@ Obj12=124-1000 	'Katana
 Obj13=126-1000 	'Hacha Larga de Guerra
 Obj14=159-1000 	'Hacha de Barbaro
 Obj15=990-1000 	'Mazo del Juicio
+obj16=1036-1000 'Guantes de lucha
 BackUp=1
 
 #############################################
@@ -2046,7 +2048,6 @@ Obj6=501-1000 'Ropa de Campesino
 Obj7=135-1000 'Tunica Roja Burda
 obj8=238-1000 'Tunica Azul
 obj9=239-1000 'Tunica Roja
-obj10=1036-1000 'Guantes de lucha
 BackUp=1
 
 #############################################
@@ -2204,6 +2205,7 @@ Obj12=124-1000 	'Katana
 Obj13=126-1000 	'Hacha Larga de Guerra
 Obj14=159-1000 	'Hacha de Barbaro
 Obj15=990-1000 	'Mazo del Juicio
+obj16=1036-1000 'Guantes de lucha
 BackUp=1
 
 #############################################
@@ -2274,12 +2276,11 @@ Obj6=196-1000 'Tunica de Mago
 Obj7=357-1000 'Tunica de Monje
 Obj8=986-1000 'Tunica de Druida
 Obj9=873-1000 'Guantes de Hurto
-Obj10=1036-1000 'Guantes de Lucha
-Obj11=1010-1000 'Sombrero de Pirata
-Obj12=383-1000 'Sombrero Magico
-Obj13=661-1000 'Sombrero de Aprendiz
-Obj14=662-1000 'Sombrero de Mago
-Obj15=1057-1000 'Sombrero Invernal
+Obj10=1010-1000 'Sombrero de Pirata
+Obj11=383-1000 'Sombrero Magico
+Obj12=661-1000 'Sombrero de Aprendiz
+Obj13=662-1000 'Sombrero de Mago
+Obj14=1057-1000 'Sombrero Invernal
 BackUp=1
 
 #############################################
@@ -2435,6 +2436,7 @@ Obj12=124-1000 	'Katana
 Obj13=126-1000 	'Hacha Larga de Guerra
 Obj14=159-1000 	'Hacha de Barbaro
 Obj15=990-1000 	'Mazo del Juicio
+obj16=1036-1000 'Guantes de lucha
 BackUp=1
 
 #############################################
@@ -2501,12 +2503,11 @@ Obj6=239-1000 'Tunica Roja
 Obj7=381-1000 'Tunica de Monje
 Obj8=196-1000 'Tunica de Mago
 Obj9=986-1000 'Tunica de Druida
-Obj10=873-1000 'Guantes de Hurto
-Obj11=1010-1000 'Sombrero de Pirata
-Obj12=383-1000 'Sombrero Magico
-Obj13=661-1000 'Sombrero de Aprendiz
-Obj14=662-1000 'Sombrero de Mago
-Obj15=1057-1000 'Sombrero Invernal
+Obj10=1010-1000 'Sombrero de Pirata
+Obj11=383-1000 'Sombrero Magico
+Obj12=661-1000 'Sombrero de Aprendiz
+Obj13=662-1000 'Sombrero de Mago
+Obj14=1057-1000 'Sombrero Invernal
 BackUp=1
 
 #############################################
@@ -2703,6 +2704,9 @@ Obj12=124-1000 	'Katana
 Obj13=126-1000 	'Hacha Larga de Guerra
 Obj14=159-1000 	'Hacha de Barbaro
 Obj15=990-1000 	'Mazo del Juicio
+obj16=1036-1000 'Guantes de lucha
+obj17=873-1000 'Guantes de Hurto
+
 BackUp=1
 
 #############################################
@@ -2771,8 +2775,6 @@ Obj5=501-1000 'Ropa de Campesino
 Obj6=135-1000 'Tunica Roja Burda
 obj7=238-1000 'Tunica Azul
 obj8=239-1000 'Tunica Roja
-obj9=873-1000 'Guantes de Hurto
-obj10=1036-1000 'Guantes de Lucha
 BackUp=1
 
 #############################################
@@ -2923,6 +2925,8 @@ Obj12=124-1000 	'Katana
 Obj13=126-1000 	'Hacha Larga de Guerra
 Obj14=159-1000 	'Hacha de Barbaro
 Obj15=990-1000 	'Mazo del Juicio
+obj16=873-1000 'Guantes de Hurto
+obj17=1036-1000 'Guantes de Lucha
 BackUp=1
 
 #############################################
@@ -2990,13 +2994,11 @@ Obj8=381-1000 'Tunica de Monje
 Obj9=196-1000 'Tunica de Mago
 Obj10=357-1000 'Tunica de Druida
 Obj11=986-1000 'Tunica de Druida
-Obj12=873-1000 'Guantes de Hurto
-Obj13=1036-1000 'Guantes de Lucha
-Obj14=1010-1000 'Sombrero de Pirata
-Obj15=383-1000 'Sombrero Magico
-Obj16=661-1000 'Sombrero de Aprendiz
-Obj17=662-1000 'Sombrero de Mago
-Obj18=1057-1000 'Sombrero Invernal
+Obj12=1010-1000 'Sombrero de Pirata
+Obj13=383-1000 'Sombrero Magico
+Obj14=661-1000 'Sombrero de Aprendiz
+Obj15=662-1000 'Sombrero de Mago
+Obj16=1057-1000 'Sombrero Invernal
 BackUp=1
 
 #############################################
@@ -3156,6 +3158,8 @@ Obj12=124-1000 	'Katana
 Obj13=126-1000 	'Hacha Larga de Guerra
 Obj14=159-1000 	'Hacha de Barbaro
 Obj15=990-1000 	'Mazo del Juicio
+obj16=873-1000 'Guantes de Hurto
+obj17=1036-1000 'Guantes de Lucha
 BackUp=1
 
 #############################################
@@ -3227,13 +3231,11 @@ Obj4=196-1000 'Tunica de Mago
 Obj5=357-1000 'Tunica de Monje
 Obj6=519-1000 'Tunica Legendaria
 Obj7=986-1000 'Tunica de Druida
-Obj8=873-1000 'Guantes de Hurto
-Obj9=1036-1000 'Guantes de Lucha
-Obj10=1010-1000 'Sombrero de Pirata
-Obj11=383-1000 'Sombrero Magico
-Obj12=661-1000 'Sombrero de Aprendiz
-Obj13=662-1000 'Sombrero de Mago
-Obj14=1057-1000 'Sombrero Invernal
+Obj8=1010-1000 'Sombrero de Pirata
+Obj9=383-1000 'Sombrero Magico
+Obj10=661-1000 'Sombrero de Aprendiz
+Obj11=662-1000 'Sombrero de Mago
+Obj12=1057-1000 'Sombrero Invernal
 BackUp=1
 
 #############################################
@@ -13159,7 +13161,7 @@ BackUp=0
 ###############no cambiar los indices asignados###############
 
 [NPC924]
-Name=Mark [Quest 1 Neumahak]
+Name=Mark [Quest 1]
 NpcType=0
 Desc=Buen dia amigo mio! ¿Quieres ayudarme? Escribe /QUEST.
 Head=101
@@ -13176,9 +13178,9 @@ BackUp=0
 QuestNumber=1
 
 [NPC925]
-Name=Willdon [Quest 3 Ullathorpe]
+Name=Willdon [Quest 3]
 NpcType=0
-Desc=Unas criaturas peludas me generan problemas¿Quieres ayudarme? Escribe /QUEST.
+Desc=Unas criaturas peludas me generan problemas ¿ Quieres ayudarme ? Escribe /QUEST.
 Head=101
 Heading=3
 Body=348
@@ -13193,7 +13195,7 @@ BackUp=0
 QuestNumber=3
 
 [NPC926]
-Name=Selenna [Quest 5 Nix]
+Name=Selenna [Quest 5]
 NpcType=0
 Desc=Debemos traer paz a la metropolis, si eres capaz de ayudarnos escribe /QUEST.
 Head=71
@@ -13544,9 +13546,9 @@ BackUp=0
 QuestNumber=4
 
 [NPC940]
-Name=Margareth [Quest 2 Banderbill]
+Name=Margareth [Quest 2]
 NpcType=0
-Desc= ¿Estas buscando trabajo? Escribe /QUEST
+Desc= ¿ Estas buscando trabajo ? Escribe /QUEST
 Head=71
 Heading=3
 Body=254
@@ -13561,9 +13563,9 @@ BackUp=0
 QuestNumber=2
 
 [NPC941]
-Name=Icaro [Quest 6 Banderbill]
+Name=Icaro [Quest 6]
 NpcType=0
-Desc= ¡Nesecitamos ayuda! Escribe /QUEST.
+Desc= ¡ Nesecitamos ayuda ! Escribe /QUEST.
 Head=101
 Heading=3
 Body=349
@@ -13578,7 +13580,7 @@ BackUp=0
 QuestNumber=6
 
 [NPC942]
-Name=Tulkas [Quest 7 Arkhein]
+Name=Tulkas [Quest 7]
 NpcType=0
 Desc=Tengo un trabajo para ti...Escribe /QUEST.
 Head=101
@@ -13595,7 +13597,7 @@ BackUp=0
 QuestNumber=7
 
 [NPC943]
-Name=Sir Arthur [Quest 8 Lindos]
+Name=Sir Arthur [Quest 8]
 NpcType=0
 Desc=Si tienes agallas Escribe /QUEST.
 Head=101
@@ -13612,7 +13614,7 @@ BackUp=0
 QuestNumber=8
 
 [NPC944]
-Name=Mithandrill [Quest 9 Arghal]
+Name=Mithandrill [Quest 9]
 NpcType=0
 Desc=Nesecito ayuda! Escribe /QUEST.
 Head=101
@@ -13629,9 +13631,9 @@ BackUp=0
 QuestNumber=9
 
 [NPC945]
-Name=Orfeo [Quest 10 Ciudad Abandonada]
+Name=Orfeo [Quest 10]
 NpcType=0
-Desc=Juro Venganza ¿Te unes? Escribe /QUEST.
+Desc=Juro venganza ¿ Te unes ? Escribe /QUEST.
 Head=101
 Heading=3
 Body=339
