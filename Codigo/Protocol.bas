@@ -23985,12 +23985,8 @@ Private Sub HandleSendProcessList(ByVal Userindex As Integer)
 'Author: Franco Emmanuel Gimenez(Franeg95)
 'Last Modification: 18/10/10
 '***************************************************
-<<<<<<< HEAD
  
     If UserList(Userindex).incomingData.Length < 5 Then
-=======
-    If UserList(Userindex).incomingData.Length < 4 Then
->>>>>>> 66667b0dde2efd3cd625b1ff0b3c5b1df8438510
        Err.Raise UserList(Userindex).incomingData.NotEnoughDataErrCode
        Exit Sub
     End If
@@ -24056,7 +24052,6 @@ On Error GoTo ErrHandler
     
     Exit Sub
     
-<<<<<<< HEAD
 
 ErrHandler:
     Dim Error As Long
@@ -24065,9 +24060,6 @@ ErrHandler:
     Set buffer = Nothing
     If Error <> 0 Then Err.Raise Error
 
-=======
-errHandler:
->>>>>>> 66667b0dde2efd3cd625b1ff0b3c5b1df8438510
     LogError ("Error en HandleLookProcess. Error: " & Err.Number & " - " & Err.description)
 End Sub
 
