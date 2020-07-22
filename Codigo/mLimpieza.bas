@@ -3,31 +3,22 @@ Attribute VB_Name = "mLimpieza"
 
 Option Explicit
 
-Const MAXITEMS                  As Integer = 1000
+Const MAXITEMS                  As Integer = 1500
 
-Private ArrayLimpieza(MAXITEMS) As WorldPos
+Dim ItemsLimpieza As New Collection
 
 '//Desde aca establecemos el ultimo slot que se uso
 Public UltimoSlotLimpieza       As Integer
 
 Public Sub AgregarObjetoLimpieza(Pos As WorldPos)
-
-    '//Primera pos almacenada
-    If UltimoSlotLimpieza = -1 Then
-        ArrayLimpieza(0) = Pos
-        UltimoSlotLimpieza = 0
-        Exit Sub
-
-    End If
+    Dim newPos As New cWorldPos
     
-    '//En caso de no ser cero, significa que ya hay objetos, seguimos sumando +1
-    UltimoSlotLimpieza = UltimoSlotLimpieza + 1
+    newPos.X = Pos.X
+    newPos.Y = Pos.Y
     
-    ArrayLimpieza(UltimoSlotLimpieza) = Pos
+    Call ItemsLimpieza.Add(newPos)
     
-    'Alcanzamos los slots que permite almacenar?
-    '//Reservamos 100 slots por si cuando empieza a limpiar el mundo, siguen tirando objetos.
-    If UltimoSlotLimpieza = MAXITEMS - 100 Then
+    If ItemsLimpieza.Count > MAXITEMS Then
         tickLimpieza = 16
     End If
 
@@ -36,11 +27,11 @@ End Sub
 Public Sub BorrarObjetosLimpieza()
     Dim i As Long
 
-    For i = 0 To MAXITEMS
+    For i = 1 To ItemsLimpieza.Count
 
-        With ArrayLimpieza(i)
+        With ItemsLimpieza.Item(i)
 
-            If (MapData(.Map, .X, .Y).trigger <> eTrigger.CASA Or _ 
+            If (MapData(.Map, .X, .Y).trigger <> eTrigger.CASA Or _
                 MapData(.Map, .X, .Y).trigger <> eTrigger.BAJOTECHO) And _
                 MapData(.Map, .X, .Y).Blocked <> 1 Then
                 
@@ -51,6 +42,7 @@ Public Sub BorrarObjetosLimpieza()
 
     Next i
 
-    UltimoSlotLimpieza = -1
+    Set ItemsLimpieza = Nothing
+    Set ItemsLimpieza = New Collection
 
 End Sub
