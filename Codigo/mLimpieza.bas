@@ -41,8 +41,7 @@ Public Sub BorrarObjetosLimpieza()
         End With
 
     Next i
-
-    Set ItemsLimpieza = Nothing
+    
     Set ItemsLimpieza = New Collection
 
 End Sub
