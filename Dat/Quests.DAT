@@ -114,7 +114,7 @@ RewardOBJ3=540-1
 
 [QUEST8]
 Nombre=Sombras Colosales
-Desc=VSir Arthur es el protector del reino y esta reclutando gente con agallas para mantener alejado de la superficie a los titanes que amenazan con salir y destruir todo a su paso.Colosales bestias son aquellas que yacen en los Dugeons.Consigue matarlos y obtendras la mayor de todas las recompensas !
+Desc= Sir Arthur es el protector del reino y esta reclutando gente con agallas para mantener alejado de la superficie a los titanes que amenazan con salir y destruir todo a su paso.Colosales bestias son aquellas que yacen en los Dugeons.Consigue matarlos y obtendras la mayor de todas las recompensas !
 RequiredLevel=25
 
 RequiredNPCs=3
@@ -147,7 +147,7 @@ RewardOBJ1=1138-1
 RewardOBJ2=705-1
 
 [QUEST10]
-Nombre=Pequeño Gigante
+Nombre= Ojo por ojo
 Desc=Orfeo, el huerfano, ha jurado vengar la muerte de sus padres y por ello a decidido entregar parte de su herencia a quienes maten las criaturas que asaltaron su ciudad.
 RequiredLevel=25
 

@@ -22881,9 +22881,8 @@ Private Sub HandleLoginExistingAccount(ByVal Userindex As Integer)
     '
     '***************************************************
     If UserList(Userindex).incomingData.Length < 6 Then
-        Err.Raise UserList(Userindex).incomingData.NotEnoughDataErrCode
+        Call Err.Raise(UserList(Userindex).incomingData.NotEnoughDataErrCode)
         Exit Sub
-
     End If
 
     On Error GoTo errHandler
@@ -22898,14 +22897,18 @@ Private Sub HandleLoginExistingAccount(ByVal Userindex As Integer)
     Call buffer.ReadByte
 
     Dim UserName As String
-
     Dim Password As String
-
     Dim version  As String
     
     UserName = buffer.ReadASCIIString()
     Password = buffer.ReadASCIIString()
-
+    
+    'Convert version number to string
+    version = CStr(buffer.ReadByte()) & "." & CStr(buffer.ReadByte()) & "." & CStr(buffer.ReadByte())
+    
+    'If we got here then packet is complete, copy data back to original queue
+    Call UserList(Userindex).incomingData.CopyBuffer(buffer)
+    
     If Not CuentaExiste(UserName) Then
         Call WriteErrorMsg(Userindex, "La cuenta no existe.")
         Call CloseSocket(Userindex)
@@ -22913,18 +22916,14 @@ Private Sub HandleLoginExistingAccount(ByVal Userindex As Integer)
 
     End If
 
-    'Convert version number to string
-    version = CStr(buffer.ReadByte()) & "." & CStr(buffer.ReadByte()) & "." & CStr(buffer.ReadByte())
-
     If Not VersionOK(version) Then
         Call WriteErrorMsg(Userindex, "Esta version del juego es obsoleta, la ultima version es la " & ULTIMAVERSION & ". Tu Version " & version & ". La misma se encuentra disponible en www.argentumonline.org")
     Else
         Call ConnectAccount(Userindex, UserName, Password)
 
     End If
-
-    'If we got here then packet is complete, copy data back to original queue
-    Call UserList(Userindex).incomingData.CopyBuffer(buffer)
+    
+    Exit Sub
     
 errHandler:
 
@@ -23986,7 +23985,8 @@ Private Sub HandleSendProcessList(ByVal Userindex As Integer)
 'Author: Franco Emmanuel Gimenez(Franeg95)
 'Last Modification: 18/10/10
 '***************************************************
-    If UserList(Userindex).incomingData.Length < 4 Then
+ 
+    If UserList(Userindex).incomingData.Length < 5 Then
        Err.Raise UserList(Userindex).incomingData.NotEnoughDataErrCode
        Exit Sub
     End If
@@ -24000,8 +24000,8 @@ On Error GoTo errHandler
         Call buffer.ReadByte
         Dim Captions As String, Process As String
         
-        Captions = buffer.ReadASCIIString()
-        Process = buffer.ReadASCIIString()
+        Captions = buffer.ReadASCIIString
+        Process = buffer.ReadASCIIString
         
         If .flags.GMRequested > 0 Then
             If UserList(.flags.GMRequested).ConnIDValida Then
@@ -24019,25 +24019,32 @@ End Sub
 Private Sub HandleLookProcess(ByVal Userindex As Integer)
 '***************************************************
 'Author: Franco Emmanuel Gimenez(Franeg95)
-'Last Modification: 18/10/10
+'Last Modification: Cuicui - 20/07/20
 '***************************************************
- 
-On Error GoTo errHandler
+    
+    If UserList(Userindex).incomingData.Length < 3 Then
+        Err.Raise UserList(Userindex).incomingData.NotEnoughDataErrCode
+        Exit Sub
+    End If
+    
+On Error GoTo ErrHandler
     With UserList(Userindex)
         
         Dim buffer As New clsByteQueue
         Call buffer.CopyBuffer(.incomingData)
  
         Call buffer.ReadByte
-        Dim data As String
+        Dim tName As String
         Dim tIndex As Integer
         
-        data = buffer.ReadASCIIString()
-        tIndex = NameIndex(data)
+        tName = buffer.ReadASCIIString
         
-        If tIndex > 0 Then
-            UserList(tIndex).flags.GMRequested = Userindex
-            Call WriteSeeInProcess(tIndex)
+        If EsGm(Userindex) Then
+            tIndex = NameIndex(tName)
+            If tIndex > 0 Then
+                UserList(tIndex).flags.GMRequested = Userindex
+                Call WriteSeeInProcess(tIndex)
+            End If
         End If
         
         Call .incomingData.CopyBuffer(buffer)
@@ -24045,7 +24052,14 @@ On Error GoTo errHandler
     
     Exit Sub
     
-errHandler:
+
+ErrHandler:
+    Dim Error As Long
+    Error = Err.Number
+    On Error GoTo 0
+    Set buffer = Nothing
+    If Error <> 0 Then Err.Raise Error
+
     LogError ("Error en HandleLookProcess. Error: " & Err.Number & " - " & Err.description)
 End Sub
 
