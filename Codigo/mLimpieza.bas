@@ -1,11 +1,9 @@
 Attribute VB_Name = "mLimpieza"
-'Creado por shak
-
 Option Explicit
 
-Const MAXITEMS                  As Integer = 1500
+Const MAXITEMS  As Integer = 1500
 
-Dim ItemsLimpieza As New Collection
+Dim ItemsLimpieza   As New Collection
 
 '//Desde aca establecemos el ultimo slot que se uso
 Public UltimoSlotLimpieza       As Integer
@@ -25,8 +23,11 @@ Public Sub AgregarObjetoLimpieza(Pos As WorldPos)
 End Sub
 
 Public Sub BorrarObjetosLimpieza()
-    Dim i As Long
 
+    Dim i As Long
+    
+    If ItemsLimpieza.Count = 0 Then GoTo Reset
+    
     For i = 1 To ItemsLimpieza.Count
 
         With ItemsLimpieza.Item(i)
@@ -42,6 +43,7 @@ Public Sub BorrarObjetosLimpieza()
 
     Next i
     
+Reset:
     Set ItemsLimpieza = New Collection
 
 End Sub
