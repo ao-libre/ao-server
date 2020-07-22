@@ -11,6 +11,7 @@ Public UltimoSlotLimpieza       As Integer
 Public Sub AgregarObjetoLimpieza(Pos As WorldPos)
     Dim newPos As New cWorldPos
     
+    newPos.Map = Pos.Map
     newPos.X = Pos.X
     newPos.Y = Pos.Y
     

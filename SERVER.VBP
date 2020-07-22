@@ -81,6 +81,7 @@ Module=Logs; Codigo\Logs.bas
 Module=Amigos; Codigo\Amigos.bas
 Module=modAntiCheat; Codigo\modAntiCheat.bas
 Class=clsSecurity; Codigo\clsSecurity.cls
+Class=cWorldPos; Codigo\cWorldPos.cls
 IconForm="frmMain"
 Startup="Sub Main"
 HelpFile=""
