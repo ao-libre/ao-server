@@ -5,9 +5,6 @@ Const MAXITEMS  As Integer = 1500
 
 Dim ItemsLimpieza   As New Collection
 
-'//Desde aca establecemos el ultimo slot que se uso
-Public UltimoSlotLimpieza       As Integer
-
 Public Sub AgregarObjetoLimpieza(Pos As WorldPos)
     Dim newPos As New cWorldPos
     
@@ -17,7 +14,7 @@ Public Sub AgregarObjetoLimpieza(Pos As WorldPos)
     
     Call ItemsLimpieza.Add(newPos)
     
-    If ItemsLimpieza.Count > MAXITEMS Then
+    If ItemsLimpieza.Count = MAXITEMS Then
         tickLimpieza = 16
     End If
 
@@ -27,7 +24,7 @@ Public Sub BorrarObjetosLimpieza()
 
     Dim i As Long
     
-    If ItemsLimpieza.Count = 0 Then GoTo Reset
+    If ItemsLimpieza.Count = 0 Then Exit Sub
     
     For i = 1 To ItemsLimpieza.Count
 
@@ -43,8 +40,7 @@ Public Sub BorrarObjetosLimpieza()
         End With
 
     Next i
-    
-Reset:
+
     Set ItemsLimpieza = New Collection
 
 End Sub
