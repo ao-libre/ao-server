@@ -26,6 +26,9 @@ Attribute VB_Name = "InvUsuario"
 'La Plata - Pcia, Buenos Aires - Republica Argentina
 'Codigo Postal 1900
 'Pablo Ignacio Marquez
+#If False Then
+    Dim ErrHandler, Userindex As Variant
+#End If
 
 Option Explicit
 
@@ -496,7 +499,7 @@ Sub DropObj(ByVal Userindex As Integer, _
     'Last Modification: 11/5/2010
     '11/5/2010 - ZaMa: Arreglo bug que permitia apilar mas de 10k de items.
     '***************************************************
-    On Error GoTo Errhandler
+    On Error GoTo ErrHandler
     
     Dim DropObj As obj
 
@@ -583,7 +586,7 @@ Sub DropObj(ByVal Userindex As Integer, _
     
     Exit Sub
     
-Errhandler:
+ErrHandler:
     Call LogError("Error en DropObj en " & Erl & " Nick: " & UserList(Userindex).Name & " (Map: " & UserList(Userindex).Pos.Map & "). Err: " & Err.Number & " " & Err.description)
 End Sub
 
@@ -621,7 +624,7 @@ Sub MakeObj(ByRef obj As obj, _
     'Last Modification: -
     '
     '***************************************************
-    On Error GoTo Errhandler
+    On Error GoTo ErrHandler
     
 1    If obj.ObjIndex > 0 And obj.ObjIndex <= UBound(ObjData) Then
     
@@ -686,7 +689,7 @@ Sub MakeObj(ByRef obj As obj, _
             End If
 
             '//Agregamos las pos de los objetos
-31            If IsValidObjectToClean And ItemNoEsDeMapa(ObjData(obj.ObjIndex).OBJType) Then
+31            If IsValidObjectToClean And ItemNoEsDeMapa(obj.ObjIndex) Then
                 Dim xPos As WorldPos
 
                 xPos.Map = Map
@@ -710,7 +713,7 @@ Sub MakeObj(ByRef obj As obj, _
     End If
     
     Exit Sub
-Errhandler:
+ErrHandler:
         Call LogError("Error en MakeObj en " & Erl & " Map: " & Map & "-" & X & "-" & Y & ". Err: " & Err.Number & " " & Err.description)
 End Sub
 
@@ -2377,7 +2380,7 @@ Sub TirarTodosLosItems(ByVal Userindex As Integer)
     'Last Modification: 12/01/2010 (ZaMa)
     '12/01/2010: ZaMa - Ahora los piratas no explotan items solo si estan entre 20 y 25
     '***************************************************
-    On Error GoTo Errhandler
+    On Error GoTo ErrHandler
 
     Dim i         As Byte
 
@@ -2440,7 +2443,7 @@ Sub TirarTodosLosItems(ByVal Userindex As Integer)
     
     Exit Sub
     
-Errhandler:
+ErrHandler:
     Call LogError("Error en TirarTodosLosItems en linea " & Erl & " - Nick:" & UserList(Userindex).Name & ". Error: " & Err.Number & " - " & Err.description)
 
 End Sub
@@ -2531,7 +2534,7 @@ Sub TirarTodosLosItemsEnMochila(ByVal Userindex As Integer)
 
             If ItemIndex > 0 Then
                 If Not ItemSeCae(ItemIndex) Then
-                    Call WriteConsoleMsg(UserIndex, "Acabas de tirar un objeto que no se cae normalmente ya que lo tenias en tu mochila u alforja y la desequipaste o tiraste", FontTypeNames.FONTTYPE_WARNING)
+                    Call WriteConsoleMsg(Userindex, "Acabas de tirar un objeto que no se cae normalmente ya que lo tenias en tu mochila u alforja y la desequipaste o tiraste", FontTypeNames.FONTTYPE_WARNING)
                 End If
 
                 NuevaPos.X = 0
