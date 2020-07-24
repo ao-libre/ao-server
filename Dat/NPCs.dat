@@ -13161,7 +13161,7 @@ BackUp=0
 [NPC924]
 Name=Mark [Quest 1 Neumahak]
 NpcType=0
-Desc=Buen dia amigo mio! ¿Quieres ayudarme? Escribe /QUEST.
+Desc=Bienvenido a estas Tierras.. Escribe /QUEST.
 Head=101
 Heading=3
 Body=348
@@ -13178,7 +13178,7 @@ QuestNumber=1
 [NPC925]
 Name=Willdon [Quest 3 Ullathorpe]
 NpcType=0
-Desc=Unas criaturas peludas me generan problemas¿Quieres ayudarme? Escribe /QUEST.
+Desc=Unas criaturas salvajes me generan problemas,Escribe /QUEST.
 Head=101
 Heading=3
 Body=348
@@ -13546,7 +13546,7 @@ QuestNumber=4
 [NPC940]
 Name=Margareth [Quest 2 Banderbill]
 NpcType=0
-Desc= ¿Estas buscando trabajo? Escribe /QUEST
+Desc=Ven acercate tengo trabajo para ti. Escribe /QUEST
 Head=71
 Heading=3
 Body=254
@@ -13563,7 +13563,7 @@ QuestNumber=2
 [NPC941]
 Name=Icaro [Quest 6 Banderbill]
 NpcType=0
-Desc= ¡Nesecitamos ayuda! Escribe /QUEST.
+Desc=Acercate un momento y Escribe /QUEST.
 Head=101
 Heading=3
 Body=349
@@ -13631,7 +13631,7 @@ QuestNumber=9
 [NPC945]
 Name=Orfeo [Quest 10 Ciudad Abandonada]
 NpcType=0
-Desc=Juro Venganza ¿Te unes? Escribe /QUEST.
+Desc=Psss! ven te recompensare si cumples mi venganza Escribe /QUEST.
 Head=101
 Heading=3
 Body=339
