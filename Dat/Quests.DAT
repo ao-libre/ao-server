@@ -3,10 +3,10 @@ NumQuests=10
 
 [QUEST1]
 Nombre=Bichos Molestos
-Desc=Se han reportado una plaga de molestos murcielagos en todo el territorio. Por favor mata 10 murcielagos
+Desc=Se han reportado una plaga de molestos murcielagos en todo el territorio. Por favor mata 3 murcielagos
 RequiredLevel=1
  
-RequiredNPCs=1
+RequiredNPCs=3
 RequiredNPC1=500-1
  
 RewardGLD=100
