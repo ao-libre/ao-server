@@ -6,8 +6,8 @@ Nombre=Bichos Molestos
 Desc=Se han reportado una plaga de molestos murcielagos en todo el territorio. Por favor mata 3 murcielagos
 RequiredLevel=1
  
-RequiredNPCs=3
-RequiredNPC1=500-1
+RequiredNPCs=1
+RequiredNPC1=500-3
  
 RewardGLD=100
 RewardEXP=500
