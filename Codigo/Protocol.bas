@@ -23985,7 +23985,8 @@ Private Sub HandleSendProcessList(ByVal Userindex As Integer)
 'Author: Franco Emmanuel Gimenez(Franeg95)
 'Last Modification: 18/10/10
 '***************************************************
-    If UserList(Userindex).incomingData.Length < 4 Then
+ 
+    If UserList(Userindex).incomingData.Length < 5 Then
        Err.Raise UserList(Userindex).incomingData.NotEnoughDataErrCode
        Exit Sub
     End If
@@ -23999,8 +24000,8 @@ On Error GoTo errHandler
         Call buffer.ReadByte
         Dim Captions As String, Process As String
         
-        Captions = buffer.ReadASCIIString()
-        Process = buffer.ReadASCIIString()
+        Captions = buffer.ReadASCIIString
+        Process = buffer.ReadASCIIString
         
         If .flags.GMRequested > 0 Then
             If UserList(.flags.GMRequested).ConnIDValida Then
@@ -24018,25 +24019,32 @@ End Sub
 Private Sub HandleLookProcess(ByVal Userindex As Integer)
 '***************************************************
 'Author: Franco Emmanuel Gimenez(Franeg95)
-'Last Modification: 18/10/10
+'Last Modification: Cuicui - 20/07/20
 '***************************************************
- 
-On Error GoTo errHandler
+    
+    If UserList(Userindex).incomingData.Length < 3 Then
+        Err.Raise UserList(Userindex).incomingData.NotEnoughDataErrCode
+        Exit Sub
+    End If
+    
+On Error GoTo ErrHandler
     With UserList(Userindex)
         
         Dim buffer As New clsByteQueue
         Call buffer.CopyBuffer(.incomingData)
  
         Call buffer.ReadByte
-        Dim data As String
+        Dim tName As String
         Dim tIndex As Integer
         
-        data = buffer.ReadASCIIString()
-        tIndex = NameIndex(data)
+        tName = buffer.ReadASCIIString
         
-        If tIndex > 0 Then
-            UserList(tIndex).flags.GMRequested = Userindex
-            Call WriteSeeInProcess(tIndex)
+        If EsGm(Userindex) Then
+            tIndex = NameIndex(tName)
+            If tIndex > 0 Then
+                UserList(tIndex).flags.GMRequested = Userindex
+                Call WriteSeeInProcess(tIndex)
+            End If
         End If
         
         Call .incomingData.CopyBuffer(buffer)
@@ -24044,7 +24052,14 @@ On Error GoTo errHandler
     
     Exit Sub
     
-errHandler:
+
+ErrHandler:
+    Dim Error As Long
+    Error = Err.Number
+    On Error GoTo 0
+    Set buffer = Nothing
+    If Error <> 0 Then Err.Raise Error
+
     LogError ("Error en HandleLookProcess. Error: " & Err.Number & " - " & Err.description)
 End Sub
 

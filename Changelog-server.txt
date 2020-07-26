@@ -1088,3 +1088,17 @@ Mapa 31, Mapa 32, Mapa 34, Mapa 35, Mapa 45, Mapa 78, Mapa 79, Mapa 87, Mapa 292
 * 19/07/2020: El worldsave avisa antes de 15 segundos que se hace (como siempre estuvo), se saco los 5 minutos por que genera falla de seguridad al juego permitiendo llenar el buffer (MAX_ITEMS) en el tiempo restante, ahora ya
 no es tan simple hacerlo con objetos de valor. TODO: Cambiar a algo que funcione un poco mejor y que borre todo... (Recox)
 * 19/07/2020: Lo ultimo que se hace al tirar un objeto es crearlo en el piso lo primero es eliminarlo del inventario de usuario (Cucsifae)
+
+-v0.13.47
+* 21/07/2020: Actualizado Quests.DAT y NPCs.dat (Erik)
+* 21/07/2020: se modifica Bosque sur de Ullathorpe a inseguro (Lorelei)
+* 21/07/2020: Fix: Errores en el HandleLoginExistingAccount(jopiortiz)
+* 21/07/2020: Se modifica Mausoleo a Insegura (Lorelei)
+* 21/07/2020: se modifica Suburbios de Banderbill a segura (Lorelei)
+* 21/07/2020: Se modifica mapa 60 banderbill inseguro a seguro (Lorelei)
+* 21/07/2020: mapa 40 catas de ulla se modifica a insegura  (Lorelei)
+* 21/07/2020: saco bloques para pasar al costado del castillo pretoriano (ReyarB)
+* 21/07/2020: Se arreglo mensaje de intervalos por que repetia el nickname del usuario, aprolijo un poco el codigo usando `Call` (Recox)
+* 21/07/2020: Se arreglo problema que se puede atacar usuario con usuario usando montura, se arregla bug que se puede usar hechizos de curacion,etc sin bajar de la montura (Recox)
+* 21/07/2020: Se arregla problema del handleSendProcess (CuiCui)
+
