@@ -21,8 +21,10 @@ Public Type AccountCharacter
 
 End Type
 
+Public Const MAX_ACCOUNT_CHARACTERS As Byte = 10
+
 Public Type Account
-        Personajes(1 To 10) As AccountCharacter
+        Personajes(1 To MAX_ACCOUNT_CHARACTERS) As AccountCharacter
         LoggedIn As Boolean
         Hash As String 'CHOTS | Account ID
 End Type
@@ -780,7 +782,7 @@ Public Sub SaveNewAccountCharfile(ByVal UserName As String, _
         Call .ChangeValue("INIT", "UserName", UCase$(UserName))
         Call .ChangeValue("INIT", "CantidadPersonajes", 0)
 
-        .DumpFile (AccountFile)
+        Call .DumpFile(AccountFile)
 
     End With
 
