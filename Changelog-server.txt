@@ -1102,3 +1102,63 @@ no es tan simple hacerlo con objetos de valor. TODO: Cambiar a algo que funcione
 * 21/07/2020: Se arreglo problema que se puede atacar usuario con usuario usando montura, se arregla bug que se puede usar hechizos de curacion,etc sin bajar de la montura (Recox)
 * 21/07/2020: Se arregla problema del handleSendProcess (CuiCui)
 
+-v0.13.48
+* 27/07/2020: Se modifica vision grafica de las siguiente espada para enano igualando la vision grafica a todas las razas por igual que la usen (Lorelei)
+* 21/07/2020: Espadas de las Almas, Espada de fuego y Espada del Fuego eterno  (Lorelei)
+* 27/07/2020: Npc Nuevos :Lacayo Del Demonio y Hiena Del Inframundo (Lorelei)
+* 27/07/2020: Fix HappyHour: No daba experiencia extra (Wyr0x)
+* 27/07/2020: Argentun de Thorkis (ReyarB)
+* 27/07/2020: Sending item index to ItemNoEsDeMapa Function (Cucsifae)
+* 27/07/2020: Rebalanceo De titanes (Lorelei)
+* 27/07/2020: Raza ladron se agregan tal cual al manual
+Arco compuesto reforzado
+Arco de cazador
+Daga+4
+Escudo de hierro
+Armadura de cazador bajo/ alto
+Barragan de cazador e/g
+Vestido de arquera h/e/eo/m
+Se Quita :
+Armadura Elite (Lorelei)
+* 27/07/2020: Se agregan segun Manual y se arreglan algunos que ya estaban
+Aracnido de los rincones
+Aracnido gigante
+cocodrilo
+engendro de las profundidades
+escarabajo gigante
+fuego fatuo
+gorila salvaje
+gusano de arena
+hormiga gigante
+lobo
+lutra
+manta raya
+mini elemental de fuego
+tigre de bengala / tigre salvaje
+tarantula
+ucorno
+unicornio
+arbol de jungla (Lorelei)
+* 27/07/2020: quest 6,7,8y9 se modifican rewards ,se aumenta el level y se baja para balancear la exp del server (Lorelei)
+* 27/07/2020: Rebalance de espadas legendarias  
+Espada de las almas 8/20 
+Espada de fuego 8/20 
+Espada del fuego eterno 8/20 
+modifico el reward de quest 10 x2 a x1 , se le saca espada AO (Lorelei)
+* 27/07/2020: Espada AO y Arco Ao Se quitan de herreria y carpinteria y se modifican su daños Drasticamente siendo solo 1 punto mejor que las mejores armas clasicas (Lorelei)
+* 27/07/2020: Se retira Amuleto Del Silencio Del mercader (Lorelei)
+* 27/07/2020: /RMSG Ahora muestra el nick del GM (Gexur)
+* 27/07/2020: Se modifica quest 1 informacion erronea (Lorelei)
+* 27/07/2020: Redateo del ob Clase bandido tal cual manual
+Se agrega :
+Espada de plata
+Hacha de Guerra de dos filos
+Mazo del juicio
+Anillo de resistencia magica
+Anillo de disolucion magica
+Anilo de defensa magica
+Armadura de cazador alto/bajo
+Manto del dragon
+Suprema armadura dorada (Lorelei)
+* 27/07/2020:Se reduce Reward de quest 7 de 6 a 2 (Lorelei)
+
