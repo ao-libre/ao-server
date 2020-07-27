@@ -160,6 +160,5 @@ RequiredNPC4=552-2
 RewardEXP=50000
 RewardGLD=500000
  
-RewardOBJs=2
-RewardOBJ1=1138-1
+RewardOBJs=1
 RewardOBJ2=1134-1
