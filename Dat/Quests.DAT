@@ -108,9 +108,9 @@ RewardEXP=100000
 RewardGLD=10000
  
 RewardOBJs=3
-RewardOBJ1=402-6
-RewardOBJ2=405-1
-RewardOBJ3=1057-1
+RewardOBJ1=402-2
+RewardOBJ2=562-1
+RewardOBJ3=540-1
 
 [QUEST8]
 Nombre=Sombras Colosales
