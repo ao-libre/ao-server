@@ -3,11 +3,11 @@ NumQuests=10
 
 [QUEST1]
 Nombre=Bichos Molestos
-Desc=Se han reportado una plaga de molestos murcielagos en todo el territorio. Por favor mata 10 murcielagos
+Desc=Se han reportado una plaga de molestos murcielagos en todo el territorio. Por favor mata 3 murcielagos
 RequiredLevel=1
  
 RequiredNPCs=1
-RequiredNPC1=500-1
+RequiredNPC1=500-3
  
 RewardGLD=100
 RewardEXP=500
@@ -79,10 +79,9 @@ RewardEXP=5000
 RewardOBJs=1
 RewardOBJ1=851-1
 
-[QUEST6]
 Nombre=Justicia Divina
 Desc=Icaro, el pregonero de Banderbill, ha dictaminado una caceria furtiva de asesinos y bandidos debido a multiples actos ilicitos que los pobladores del imperio han sufrido.Trae sus cabezas y seras bien recompensado.
-RequiredLevel=25
+RequiredLevel=18
 
 RequiredNPCs=2
 RequiredNPC1=531-10
@@ -91,8 +90,9 @@ RequiredNPC2=530-10
 RewardEXP=7000
 RewardGLD=7000
  
-RewardOBJs=1
+RewardOBJs=2
 RewardOBJ1=1003-1
+RewardOBJ2=404-1
 
 [QUEST7]
 Nombre=Capricho del Rey
@@ -114,8 +114,8 @@ RewardOBJ3=540-1
 
 [QUEST8]
 Nombre=Sombras Colosales
-Desc= Sir Arthur es el protector del reino y esta reclutando gente con agallas para mantener alejado de la superficie a los titanes que amenazan con salir y destruir todo a su paso.Colosales bestias son aquellas que yacen en los Dugeons.Consigue matarlos y obtendras la mayor de todas las recompensas !
-RequiredLevel=25
+Desc=Sir Arthur es el protector del reino y esta reclutando gente con agallas para mantener alejado de la superficie a los titanes que amenazan con salir y destruir todo a su paso.Colosales bestias son aquellas que yacen en los Dugeons.Consigue matarlos y obtendras la mayor de todas las recompensas !
+RequiredLevel=40
 
 RequiredNPCs=3
 RequiredNPC1=930-1
@@ -126,8 +126,8 @@ RewardEXP=300000
 RewardGLD=100000
  
 RewardOBJs=2
-RewardOBJ1=402-50
-RewardOBJ2=540-1
+RewardOBJ1=402-25
+RewardOBJ2=403-1
 
 [QUEST9]
 Nombre=Espiritu Guerrero
@@ -144,7 +144,7 @@ RewardGLD=100000
  
 RewardOBJs=2
 RewardOBJ1=1138-1
-RewardOBJ2=705-1
+RewardOBJ2=532-1
 
 [QUEST10]
 Nombre= Ojo por ojo
@@ -160,6 +160,5 @@ RequiredNPC4=552-2
 RewardEXP=50000
 RewardGLD=500000
  
-RewardOBJs=2
-RewardOBJ1=1138-1
+RewardOBJs=1
 RewardOBJ2=1134-1
