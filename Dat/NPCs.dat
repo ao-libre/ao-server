@@ -13275,7 +13275,7 @@ Hostile=1
 Domable=0
 Alineacion=2
 Comercia=0
-GiveEXP=500000
+GiveEXP=150000
 MinHP=300000
 MaxHP=300000
 MaxHIT=600
@@ -13288,9 +13288,8 @@ SND1=30
 SND2=31
 SND3=32
 BackUp=0
-NROITEMS=2
-Drop1=12-100000 'Oro
-Drop2=1146-1 'Espada de Fuego
+NROITEMS=1
+Drop1=12-30000 'Oro
 
 [NPC931]
 Name=Destructor
@@ -13358,7 +13357,7 @@ Hostile=1
 Domable=0
 Alineacion=2
 Comercia=0
-GiveEXP=500000
+GiveEXP=150000
 MinHP=300000
 MaxHP=300000
 MaxHIT=600
@@ -13371,9 +13370,8 @@ SND1=30
 SND2=31
 SND3=32
 BackUp=0
-NROITEMS=2
-Drop1=12-100000 'Oro
-Drop2=1140-1 'Espada de las almas
+NROITEMS=1
+Drop1=12-30000 'Oro
 
 [NPC934]
 Name=Titan de Agua
@@ -13390,7 +13388,7 @@ Hostile=1
 Domable=0
 Alineacion=2
 Comercia=0
-GiveEXP=600000
+GiveEXP=150000
 MinHP=300000
 MaxHP=300000
 MaxHIT=600
@@ -13404,8 +13402,7 @@ SND2=31
 SND3=32
 BackUp=0
 NROITEMS=2
-Drop1=12-100000 'Oro
-Drop2=1155-1 'Espada del fuego eterno
+Drop1=12-30000 'Oro
 
 [NPC935]
 Name=Gran Dragon Negro
