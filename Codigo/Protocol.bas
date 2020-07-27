@@ -12595,7 +12595,7 @@ Private Sub HandleServerMessage(ByVal Userindex As Integer)
         If (.flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios Or PlayerType.SemiDios)) Then
             If LenB(Message) <> 0 Then
                 Call LogGM(.Name, "Mensaje Broadcast:" & Message)
-                Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg(Message, FontTypeNames.FONTTYPE_TALK))
+                Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg(UserList(Userindex).Name & "> " & Message, FontTypeNames.FONTTYPE_GUILD))
 
                 ''''''''''''''''SOLO PARA EL TESTEO'''''''
                 ''''''''''SE USA PARA COMUNICARSE CON EL SERVER'''''''''''
