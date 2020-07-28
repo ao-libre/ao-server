@@ -8170,6 +8170,7 @@ MaxDef=3
 MinDef=1
 Valor=175
 Crucial=1
+NoseCae=1
 
 [OBJ676]
 Name=Vestimenta Imperial (E/G)
@@ -8183,6 +8184,7 @@ MaxDef=3
 MinDef=1
 Valor=175
 Crucial=1
+NoseCae=1
 
 [OBJ677]
 Name=Vestimenta Legionaria
@@ -8208,6 +8210,7 @@ MaxDef=3
 MinDef=1
 Valor=175
 Crucial=1
+NoseCae=1
 
 [OBJ679]
 Name=Tunica Conspicua de Mago Imperial
@@ -12370,8 +12373,6 @@ Valor=350
 Crucial=1
 CP1=MAGO
 CP2=DRUIDA
-CP3=PIRATA
-CP4=LADRON
 LingH=5
 LingP=0
 LingO=0
@@ -12391,8 +12392,6 @@ Valor=350
 Crucial=1
 CP1=MAGO
 CP2=DRUIDA
-CP3=PIRATA
-CP4=LADRON
 LingH=5
 LingP=0
 LingO=0
