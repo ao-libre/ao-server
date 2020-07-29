@@ -1160,5 +1160,7 @@ Anilo de defensa magica
 Armadura de cazador alto/bajo
 Manto del dragon
 Suprema armadura dorada (Lorelei)
-* 27/07/2020:Se reduce Reward de quest 7 de 6 a 2 (Lorelei)
+* 27/07/2020: Se reduce Reward de quest 7 de 6 a 2 (Lorelei)
+* 27/07/2020: Vestimentas principales de cada faccion no caen al morir (Ropa comun) (Lorelei)
+* 27/07/2020:  Escudos de faccion habilitadas para ladron y pirata inclusive (Lorelei)
 
