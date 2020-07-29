@@ -13310,7 +13310,7 @@ NROITEMS=1
 Drop1=12-1000 'Oro
 
 [NPC932]
-Name=Momia Del Desierto
+Name=Momia
 NpcType=0
 Head=0
 Heading=3
@@ -13326,10 +13326,10 @@ Comercia=0
 GiveEXP=60000
 MinHP=30000
 MaxHP=30000
-MaxHIT=250
-MinHIT=200
+MaxHIT=400
+MinHIT=380
 DEF=20
-PoderAtaque=200
+PoderAtaque=900
 PoderEvasion=30
 BackUp=0
 NROITEMS=1
