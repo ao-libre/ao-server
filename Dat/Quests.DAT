@@ -1,5 +1,5 @@
 [INIT]
-NumQuests=10
+NumQuests=11
 
 [QUEST1]
 Nombre=Bichos Molestos
@@ -162,3 +162,25 @@ RewardGLD=500000
  
 RewardOBJs=1
 RewardOBJ2=1134-1
+
+[QUEST11]
+Nombre=Marcando Un nuevo Comienzo
+Desc=Zhireles es un Guerrero Veterano del Reino Helado de hace mucho tiempo y hoy es su ultimo dia protegiendo estas tierras, ante tal suceso quiere dejar su ultima huella y para eso necesita que lo ayudes a matar 3 dragones legendarios que andan merodeando por estas tierras, asi tal cual los mismo poseen unas gemas muy valiosas si son vencidos.Si logras hacerlo Zhireles esta Dispuesto a entregar una maravillosa recompensa..
+RequiredLevel=40
+ 
+RequiredOBJs=3
+RequiredOBJ1=411-1
+RequiredOBJ2=412-1
+RequiredOBJ3=413-1
+
+RequiredNPCs=3
+RequiredNPC1=798-1
+RequiredNPC2=799-1
+RequiredNPC3=800-1
+ 
+RewardGLD=80000
+RewardEXP=12000000
+ 
+RewardOBJs=2
+RewardOBJ1=481-1
+RewardOBJ2=483-1
