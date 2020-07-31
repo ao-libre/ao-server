@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 [MAPA22]
 Name=Bosque noreste de Nix
 MusicNumMp3=3
@@ -11,17 +10,3 @@ Zona=CAMPO
 Restringir=No
 BackUp= 0
 Pk=0
-=======
-[MAPA22]
-Name=Bosque noreste de Nix
-MusicNumMp3=3
-MagiaSinefecto=0
-InviSinEfecto=0
-ResuSinEfecto=0
-NoEncriptarMP=0
-Terreno=BOSQUE
-Zona=CAMPO
-Restringir=No
-BackUp= 0
-Pk=0
->>>>>>> 3a63b4b9cd66883c52ad9034b5dab66c16fdf795
