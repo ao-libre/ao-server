@@ -79,6 +79,7 @@ RewardEXP=5000
 RewardOBJs=1
 RewardOBJ1=851-1
 
+[QUEST6]
 Nombre=Justicia Divina
 Desc=Icaro, el pregonero de Banderbill, ha dictaminado una caceria furtiva de asesinos y bandidos debido a multiples actos ilicitos que los pobladores del imperio han sufrido.Trae sus cabezas y seras bien recompensado.
 RequiredLevel=18
@@ -160,7 +161,7 @@ RewardEXP=50000
 RewardGLD=500000
  
 RewardOBJs=1
-RewardOBJ2=1134-1
+RewardOBJ1=1134-1
 
 [QUEST11]
 Nombre=Marcando Un nuevo Comienzo
