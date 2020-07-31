@@ -104,13 +104,12 @@ RequiredNPC1=715-3
 RequiredNPC2=716-3
 RequiredNPC3=717-3
  
-RewardEXP=100000
+RewardEXP=500000
 RewardGLD=10000
  
-RewardOBJs=3
-RewardOBJ1=402-2
-RewardOBJ2=562-1
-RewardOBJ3=540-1
+RewardOBJs=2
+RewardOBJ1=129-1
+RewardOBJ2=659-1
 
 [QUEST8]
 Nombre=Sombras Colosales
@@ -122,12 +121,12 @@ RequiredNPC1=930-1
 RequiredNPC2=933-3
 RequiredNPC3=934-3
  
-RewardEXP=300000
+RewardEXP=800000
 RewardGLD=100000
  
 RewardOBJs=2
-RewardOBJ1=402-25
-RewardOBJ2=403-1
+RewardOBJ1=402-6
+RewardOBJ2=403-6
 
 [QUEST9]
 Nombre=Espiritu Guerrero
