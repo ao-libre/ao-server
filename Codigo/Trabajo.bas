@@ -2419,7 +2419,7 @@ Public Sub DoApunalar(ByVal Userindex As Integer, _
                 .Stats.MinHp = .Stats.MinHp - Int(dano * 2)
                 
                 'Renderizo el dano en render
-                Call SendData(SendTarget.ToPCArea, VictimNpcIndex, PrepareMessageCreateDamage(.Pos.X, .Pos.Y, Int(dano * 2), DAMAGE_PUNAL))
+                Call SendData(SendTarget.ToNPCArea, VictimNpcIndex, PrepareMessageCreateDamage(.Pos.X, .Pos.Y, Int(dano * 2), DAMAGE_PUNAL))
                 
                 Call WriteConsoleMsg(Userindex, "Has apunalado la criatura por " & Int(dano * 2), FontTypeNames.FONTTYPE_FIGHT)
                 Call CalcularDarExp(Userindex, VictimNpcIndex, dano * 2)
@@ -2525,7 +2525,7 @@ Public Sub DoGolpeCritico(ByVal Userindex As Integer, _
                 .Stats.MinHp = .Stats.MinHp - dano
                 
                 'Renderizo el dano en render
-                Call SendData(SendTarget.ToPCArea, VictimNpcIndex, PrepareMessageCreateDamage(.Pos.X, .Pos.Y, Int(dano * 2), DAMAGE_PUNAL))
+                Call SendData(SendTarget.ToNPCArea, VictimNpcIndex, PrepareMessageCreateDamage(.Pos.X, .Pos.Y, Int(dano * 2), DAMAGE_PUNAL))
                 
                 Call WriteConsoleMsg(Userindex, "Has golpeado criticamente a la criatura por " & dano & ".", FontTypeNames.FONTTYPE_FIGHT)
                 
