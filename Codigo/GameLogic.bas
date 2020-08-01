@@ -92,7 +92,7 @@ Public Sub DoTileEvents(ByVal Userindex As Integer, _
 
     Dim DestPos    As WorldPos
     
-    On Error GoTo ErrHandler
+    On Error GoTo errHandler
 
     'Controla las salidas
     If InMapBounds(Map, X, Y) Then
@@ -322,7 +322,7 @@ Public Sub DoTileEvents(ByVal Userindex As Integer, _
 
     Exit Sub
 
-ErrHandler:
+errHandler:
     Call LogError("Error en DotileEvents. Error: " & Err.Number & " - Desc: " & Err.description)
 
 End Sub
@@ -510,7 +510,7 @@ Public Function RhombLegalTilePos(ByRef Pos As WorldPos, _
     ' which starts at Pos.x - Distance and Pos.y
     ' and searchs for a valid position to drop items
     '***************************************************
-    On Error GoTo ErrHandler
+    On Error GoTo errHandler
 
     Dim i           As Long
 
@@ -622,7 +622,7 @@ Public Function RhombLegalTilePos(ByRef Pos As WorldPos, _
     
     Exit Function
     
-ErrHandler:
+errHandler:
     Call LogError("Error en RhombLegalTilePos. Error: " & Err.Number & " - " & Err.description)
 
 End Function
@@ -1021,7 +1021,7 @@ Public Sub FindLegalPos(ByVal Userindex As Integer, _
 
                 End If
             
-                Call CloseSocket(OtherUserIndex)
+                Call CloseUser(OtherUserIndex)
 
             End If
 
@@ -1126,7 +1126,7 @@ Sub LookatTile(ByVal Userindex As Integer, _
     '05/01/2020: Recox - Ahora mostramos mucha mas informacion de los personajes, como clan, nivel, vida, etc al hacerles click
     '***************************************************
 
-    On Error GoTo ErrHandler
+    On Error GoTo errHandler
 
     'Responde al click del usuario sobre el mapa
     Dim FoundChar      As Byte
@@ -1572,7 +1572,7 @@ Sub LookatTile(ByVal Userindex As Integer, _
 
     Exit Sub
 
-ErrHandler:
+errHandler:
     Call LogError("Error en LookAtTile. Error " & Err.Number & " : " & Err.description)
 
 End Sub

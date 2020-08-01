@@ -475,7 +475,7 @@ Public Function HandleIncomingData(ByVal Userindex As Integer) As Boolean
     Select Case packetID
         
         Case ClientPacketID.SendIfCharIsInChatMode        '... Chat Mode
-            Call HandleSendIfCharIsInChatMode(UserIndex)
+            Call HandleSendIfCharIsInChatMode(Userindex)
             
         Case ClientPacketID.LoginExistingChar       'OLOGIN
             Call HandleLoginExistingChar(Userindex)
@@ -1701,7 +1701,7 @@ Private Sub HandleLoginExistingChar(ByVal Userindex As Integer)
                 
     If Not AsciiValidos(UserName) Then
         Call WriteErrorMsg(Userindex, "Nombre invalido.")
-        Call CloseSocket(Userindex)
+        Call CloseUser(Userindex)
         
         Exit Sub
 
@@ -1709,8 +1709,8 @@ Private Sub HandleLoginExistingChar(ByVal Userindex As Integer)
     
     If Not PersonajeExiste(UserName) Then
         Call WriteErrorMsg(Userindex, "El personaje no existe.")
-        Call CloseSocket(Userindex)
-        
+        Call CloseUser(Userindex)
+    
         Exit Sub
 
     End If
@@ -1824,7 +1824,7 @@ Private Sub HandleLoginNewChar(ByVal Userindex As Integer)
     
     If PuedeCrearPersonajes = 0 Then
         Call WriteErrorMsg(Userindex, "La creacion de personajes en este servidor se ha deshabilitado.")
-        Call CloseSocket(Userindex)
+        Call CloseUser(Userindex)
         
         Exit Sub
 
@@ -1832,7 +1832,7 @@ Private Sub HandleLoginNewChar(ByVal Userindex As Integer)
     
     If ServerSoloGMs <> 0 Then
         Call WriteErrorMsg(Userindex, "Servidor restringido a administradores. Consulte la pagina oficial o el foro oficial para mas informacion.")
-        Call CloseSocket(Userindex)
+        Call CloseUser(Userindex)
         
         Exit Sub
 
@@ -1840,7 +1840,7 @@ Private Sub HandleLoginNewChar(ByVal Userindex As Integer)
     
     If aClon.MaxPersonajes(UserList(Userindex).IP) Then
         Call WriteErrorMsg(Userindex, "Has creado demasiados personajes.")
-        Call CloseSocket(Userindex)
+        Call CloseUser(Userindex)
         
         Exit Sub
 
@@ -2284,9 +2284,7 @@ Private Sub HandleWalk(ByVal Userindex As Integer)
     End If
     
     Dim dummy    As Long
-
     Dim TempTick As Long
-
     Dim heading  As eHeading
     
     With UserList(Userindex)
@@ -6075,7 +6073,7 @@ Private Sub HandleOnline(ByVal Userindex As Integer)
                 If UserList(i).Clase = eClass.Worker Then
                     
                     ' Si es Cazador y tiene 100 en supervivencia o es Game Master.
-                    If EsGm(UserIndex) Or (.Clase = eClass.Hunter And .Stats.UserSkills(eSkill.Supervivencia) = 100) Then
+                    If EsGm(Userindex) Or (.Clase = eClass.Hunter And .Stats.UserSkills(eSkill.Supervivencia) = 100) Then
                         ' Incrementamos en 1 el contador de jugadores online que son trabajadores.
                         CountTrabajadores = CountTrabajadores + 1
                         ' Agregamos un sufijo que indique que es un trabajador.
@@ -6096,12 +6094,12 @@ Private Sub HandleOnline(ByVal Userindex As Integer)
 
         Next i
         
-        Call WriteConsoleMsg(UserIndex, SB.toString, FontTypeNames.FONTTYPE_INFO)
-        Call WriteConsoleMsg(UserIndex, "Usuarios en linea: " & CStr(Count), FontTypeNames.FONTTYPE_INFOBOLD)
+        Call WriteConsoleMsg(Userindex, SB.toString, FontTypeNames.FONTTYPE_INFO)
+        Call WriteConsoleMsg(Userindex, "Usuarios en linea: " & CStr(Count), FontTypeNames.FONTTYPE_INFOBOLD)
 
         ' Si es Cazador y tiene 100 en supervivencia o es Game Master.
-        If EsGm(UserIndex) Or (.Clase = eClass.Hunter And .Stats.UserSkills(eSkill.Supervivencia) = 100) Then
-            Call WriteConsoleMsg(UserIndex, "Trabajadores en linea:" & CStr(CountTrabajadores), FontTypeNames.FONTTYPE_INFOBOLD)
+        If EsGm(Userindex) Or (.Clase = eClass.Hunter And .Stats.UserSkills(eSkill.Supervivencia) = 100) Then
+            Call WriteConsoleMsg(Userindex, "Trabajadores en linea:" & CStr(CountTrabajadores), FontTypeNames.FONTTYPE_INFOBOLD)
         End If
         
         ' Liberamos los recursos del generador de strings
@@ -12073,22 +12071,24 @@ Private Sub HandleKick(ByVal Userindex As Integer)
         Call buffer.ReadByte
         
         Dim UserName As String
-
         Dim tUser    As Integer
-
         Dim rank     As Integer
-
         Dim IsAdmin  As Boolean
         
         rank = PlayerType.Admin Or PlayerType.Dios Or PlayerType.SemiDios Or PlayerType.Consejero
         
         UserName = buffer.ReadASCIIString()
+        
+        'If we got here then packet is complete, copy data back to original queue
+        Call .incomingData.CopyBuffer(buffer)
+        
         IsAdmin = (.flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios)) <> 0
         
         If (.flags.Privilegios And PlayerType.SemiDios) Or IsAdmin Then
             tUser = NameIndex(UserName)
             
             If tUser <= 0 Then
+                
                 If Not (EsDios(UserName) Or EsAdmin(UserName)) Or IsAdmin Then
                     Call WriteConsoleMsg(Userindex, "El usuario no esta online.", FontTypeNames.FONTTYPE_INFO)
                 Else
@@ -12100,9 +12100,10 @@ Private Sub HandleKick(ByVal Userindex As Integer)
 
                 If (UserList(tUser).flags.Privilegios And rank) > (.flags.Privilegios And rank) Then
                     Call WriteConsoleMsg(Userindex, "No puedes echar a alguien con jerarquia mayor a la tuya.", FontTypeNames.FONTTYPE_INFO)
+                
                 Else
                     Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg(.Name & " echo a " & UserName & ".", FontTypeNames.FONTTYPE_INFO))
-                    Call CloseSocket(tUser)
+                    Call CloseUser(tUser)
                     Call LogGM(.Name, "Echo a " & UserName)
 
                 End If
@@ -12110,9 +12111,6 @@ Private Sub HandleKick(ByVal Userindex As Integer)
             End If
 
         End If
-        
-        'If we got here then packet is complete, copy data back to original queue
-        Call .incomingData.CopyBuffer(buffer)
 
     End With
 
@@ -14465,17 +14463,11 @@ Private Sub HandleGuildBan(ByVal Userindex As Integer)
         Call buffer.ReadByte
         
         Dim GuildName   As String
-
         Dim cantMembers As Integer
-
         Dim LoopC       As Long
-
         Dim member      As String
-
         Dim Count       As Byte
-
         Dim tIndex      As Integer
-
         Dim tFile       As String
         
         GuildName = buffer.ReadASCIIString()
@@ -14505,7 +14497,7 @@ Private Sub HandleGuildBan(ByVal Userindex As Integer)
                     If tIndex > 0 Then
                         'esta online
                         UserList(tIndex).flags.Ban = 1
-                        Call CloseSocket(tIndex)
+                        Call CloseUser(tIndex)
 
                     End If
 
@@ -19983,7 +19975,7 @@ Public Sub WriteChangeNPCInventorySlot(ByVal Userindex As Integer, _
         Call .WriteInteger(ObjInfo.MinHIT)
         Call .WriteInteger(ObjInfo.MaxDef)
         Call .WriteInteger(ObjInfo.MinDef)
-        Call .WriteBoolean(ItemIncompatibleConUser(Userindex, obj.objIndex))
+        Call .WriteBoolean(ItemIncompatibleConUser(Userindex, obj.ObjIndex))
     End With
 
     Exit Sub
@@ -24201,16 +24193,16 @@ Public Function PrepareMessageCharacterIsInChatMode(ByVal CharIndex As Integer) 
 
 End Function
 
-Private Sub HandleSendIfCharIsInChatMode(ByVal UserIndex As Integer)
+Private Sub HandleSendIfCharIsInChatMode(ByVal Userindex As Integer)
 
 1   On Error GoTo HandleSendIfCharIsInChatMode_Error
 
-2   With UserList(UserIndex)
+2   With UserList(Userindex)
 
 3       Call .incomingData.ReadByte
 
 8       .Char.Escribiendo = IIf(.Char.Escribiendo = 1, 2, 1)
-9       Call SendData(SendTarget.ToPCAreaButIndex, UserIndex, PrepareMessageSetTypingFlagToCharIndex(.Char.CharIndex, .Char.Escribiendo))
+9       Call SendData(SendTarget.ToPCAreaButIndex, Userindex, PrepareMessageSetTypingFlagToCharIndex(.Char.CharIndex, .Char.Escribiendo))
 
 10  End With
 

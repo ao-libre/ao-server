@@ -85,7 +85,7 @@ Sub SaveUserToDatabase(ByVal Userindex As Integer, _
     
         If GetCountUserAccount(.Account.Hash) >= 10 Then
             Call WriteErrorMsg(Userindex, "No puedes crear mas de 10 personajes.")
-            Call CloseSocket(Userindex)
+            Call CloseUser(Userindex)
             Exit Sub
         End If
 
@@ -2703,13 +2703,9 @@ Public Sub LoginAccountDatabase(ByVal Userindex As Integer, ByVal UserName As St
     On Error GoTo ErrorHandler
 
     Dim query              As String
-
     Dim AccountId          As Integer
-
     Dim AccountHash        As String
-
     Dim NumberOfCharacters As Byte
-
     Dim Characters()       As AccountCharacter
 
     Call Database_Connect

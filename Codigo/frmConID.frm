@@ -169,11 +169,13 @@ End Sub
 
 Private Sub Command3_Click()
 
-    Dim i As Integer
-
+    Dim i As Long
     For i = 1 To MaxUsers
-
-        If UserList(i).ConnID <> -1 And UserList(i).ConnIDValida And Not UserList(i).flags.UserLogged Then Call CloseSocket(i)
+        
+        If UserList(i).ConnID <> -1 And UserList(i).ConnIDValida And Not UserList(i).flags.UserLogged Then
+            Call CloseSocket(i)
+        End If
+        
     Next i
 
 End Sub

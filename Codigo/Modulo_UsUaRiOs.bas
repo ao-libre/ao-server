@@ -555,16 +555,12 @@ Public Sub MakeUserChar(ByVal toMap As Boolean, _
     '15/01/2010: ZaMa - Ahora se envia el color del nick.
     '*************************************************
 
-    On Error GoTo ErrHandler
+    On Error GoTo errHandler
 
     Dim CharIndex  As Integer
-
     Dim ClanTag    As String
-
     Dim NickColor  As Byte
-
     Dim UserName   As String
-
     Dim Privileges As Byte
     
     With UserList(Userindex)
@@ -619,6 +615,7 @@ Public Sub MakeUserChar(ByVal toMap As Boolean, _
                 End If
             
                 Call WriteCharacterCreate(sndIndex, .Char.body, .Char.Head, .Char.heading, .Char.CharIndex, X, Y, .Char.WeaponAnim, .Char.ShieldAnim, .Char.FX, 999, .Char.CascoAnim, UserName, NickColor, Privileges)
+            
             Else
                 'Hide the name and clan - set privs as normal user
                 Call AgregarUser(Userindex, .Pos.Map, ButIndex)
@@ -631,10 +628,11 @@ Public Sub MakeUserChar(ByVal toMap As Boolean, _
 
     Exit Sub
 
-ErrHandler:
-    LogError ("MakeUserChar: num: " & Err.Number & " desc: " & Err.description)
+errHandler:
+    
+    Call LogError("MakeUserChar: num: " & Err.Number & " desc: " & Err.description)
     'Resume Next
-    Call CloseSocket(Userindex)
+    Call CloseUser(Userindex)
 
 End Sub
 
@@ -674,7 +672,7 @@ Public Sub CheckUserLevel(ByVal Userindex As Integer, Optional ByVal PrintInCons
     Dim DistVida(1 To 5) As Integer
     Dim GI               As Integer 'Guild Index
     
-    On Error GoTo ErrHandler
+    On Error GoTo errHandler
     
     WasNewbie = EsNewbie(Userindex)
     
@@ -960,7 +958,7 @@ Public Sub CheckUserLevel(ByVal Userindex As Integer, Optional ByVal PrintInCons
     
     Exit Sub
 
-ErrHandler:
+errHandler:
     Call LogError("Error en la subrutina CheckUserLevel - Error : " & Err.Number & " - Description : " & Err.description)
 
 End Sub
@@ -1078,7 +1076,7 @@ Sub MoveUserChar(ByVal Userindex As Integer, ByVal nHeading As eHeading)
             End With
             
             'Actualizamos las areas de ser necesario
-            Call Areas.CheckUpdateNeededUser(UserIndex, nHeading)
+            Call Areas.CheckUpdateNeededUser(Userindex, nHeading)
         Else
             Call WritePosUpdate(Userindex)
 
@@ -1906,7 +1904,7 @@ Public Sub UserDie(ByVal Userindex As Integer, Optional ByVal AttackerIndex As I
         ' Retos nVSn. User muere
         If AttackerIndex <> 0 Then
             If .flags.SlotReto > 0 Then
-                Call Retos.UserdieFight(Userindex, AttackerIndex, False)
+                Call Retos.UserDieFight(Userindex, AttackerIndex, False)
             End If
         End If
     End With
@@ -1974,7 +1972,7 @@ Sub Tilelibre(ByRef Pos As WorldPos, _
     '23/01/2007 -> Pablo (ToxicWaste): El agua es ahora un TileLibre agregando las condiciones necesarias.
     '18/09/2010: ZaMa - Aplico optimizacion de busqueda de tile libre en forma de rombo.
     '**************************************************************
-    On Error GoTo ErrHandler
+    On Error GoTo errHandler
 
     Dim Found As Boolean
 
@@ -2025,7 +2023,7 @@ Sub Tilelibre(ByRef Pos As WorldPos, _
     
     Exit Sub
     
-ErrHandler:
+errHandler:
     Call LogError("Error en Tilelibre. Error: " & Err.Number & " - " & Err.description)
 
 End Sub
@@ -2778,7 +2776,7 @@ Public Function FarthestPet(ByVal Userindex As Integer) As Integer
     'Last Modify Date: 18/11/2009
     'Devuelve el indice de la mascota mas lejana.
     '**************************************************************
-    On Error GoTo ErrHandler
+    On Error GoTo errHandler
     
     Dim PetIndex      As Integer
 
@@ -2824,7 +2822,7 @@ Public Function FarthestPet(ByVal Userindex As Integer) As Integer
 
     Exit Function
     
-ErrHandler:
+errHandler:
     Call LogError("Error en FarthestPet")
 
 End Function

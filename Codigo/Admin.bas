@@ -303,21 +303,24 @@ Public Sub BorrarUsuario(ByVal Userindex As Integer, ByVal UserName As String, B
     If Not PersonajeExiste(UserName) Then
         Call WriteErrorMsg(Userindex, "El personaje no existe.")
         Call CloseSocket(Userindex)
+        
         Exit Sub
     End If
 
     'IMPORTANTE! - El personaje pertenece a esta cuenta?
     If Not PersonajePerteneceCuenta(UserName, AccountHash) Then
         Call WriteErrorMsg(Userindex, "Ha ocurrido un error, por favor inicie sesion nuevamente.")
-        
         Call CloseSocket(Userindex)
+        
         Exit Sub
     End If
     
     If Not Database_Enabled Then
         Call BorrarUsuarioCharfile(UserName)
+        
     Else
         Call BorrarUsuarioDatabase(UserName)
+        
     End If
 
 End Sub
@@ -609,16 +612,12 @@ Public Sub BanCharacter(ByVal bannerUserIndex As Integer, _
     '***************************************************
 
     Dim tUser     As Integer
-
     Dim UserPriv  As Byte
-
     Dim cantPenas As Byte
-
     Dim rank      As Integer
     
     If InStrB(UserName, "+") Then
         UserName = Replace(UserName, "+", " ")
-
     End If
     
     tUser = NameIndex(UserName)
@@ -635,6 +634,7 @@ Public Sub BanCharacter(ByVal bannerUserIndex As Integer, _
                 
                 If (UserPriv And rank) > (.flags.Privilegios And rank) Then
                     Call WriteConsoleMsg(bannerUserIndex, "No puedes banear a al alguien de mayor jerarquia.", FontTypeNames.FONTTYPE_INFO)
+                
                 Else
 
                     If BANCheck(UserName) Then
@@ -648,7 +648,7 @@ Public Sub BanCharacter(ByVal bannerUserIndex As Integer, _
                         If (UserPriv And rank) = (.flags.Privilegios And rank) Then
                             .flags.Ban = 1
                             Call SendData(SendTarget.ToAdmins, 0, PrepareMessageConsoleMsg(.Name & " banned by the server por bannear un Administrador.", FontTypeNames.FONTTYPE_FIGHT))
-                            Call CloseSocket(bannerUserIndex)
+                            Call CloseUser(bannerUserIndex)
 
                         End If
                         
@@ -667,6 +667,7 @@ Public Sub BanCharacter(ByVal bannerUserIndex As Integer, _
 
             If (UserList(tUser).flags.Privilegios And rank) > (.flags.Privilegios And rank) Then
                 Call WriteConsoleMsg(bannerUserIndex, "No puedes banear a al alguien de mayor jerarquia.", FontTypeNames.FONTTYPE_INFO)
+            
             Else
             
                 Call LogBan(tUser, bannerUserIndex, Reason)
@@ -678,7 +679,7 @@ Public Sub BanCharacter(ByVal bannerUserIndex As Integer, _
                 If (UserList(tUser).flags.Privilegios And rank) = (.flags.Privilegios And rank) Then
                     .flags.Ban = 1
                     Call SendData(SendTarget.ToAdmins, 0, PrepareMessageConsoleMsg(.Name & " banned by the server por bannear un Administrador.", FontTypeNames.FONTTYPE_FIGHT))
-                    Call CloseSocket(bannerUserIndex)
+                    Call CloseUser(bannerUserIndex)
 
                 End If
                 
@@ -686,7 +687,7 @@ Public Sub BanCharacter(ByVal bannerUserIndex As Integer, _
                 
                 Call SaveBan(UserName, Reason, .Name)
                 
-                Call CloseSocket(tUser)
+                Call CloseUser(tUser)
 
             End If
 

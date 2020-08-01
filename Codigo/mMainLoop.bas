@@ -36,7 +36,7 @@ Public Sub PacketResend()
     'Last Modification: 04/01/07
     'Attempts to resend to the user all data that may be enqueued.
     '***************************************************
-    On Error GoTo ErrHandler:
+    On Error GoTo errHandler:
 
     Dim i As Long
     For i = 1 To LastUser
@@ -45,7 +45,7 @@ Public Sub PacketResend()
 
     Exit Sub
 
-ErrHandler:
+errHandler:
     Call LogError("Error en packetResend - Error: " & Err.Number & " - Desc: " & Err.description)
 
     Resume Next
@@ -294,7 +294,7 @@ Public Sub GameTimer()
 
                     If .Counters.IdleCount > IntervaloParaConexion Then
                         .Counters.IdleCount = 0
-                        Call CloseSocket(iUserIndex)
+                        Call CloseUser(iUserIndex)
 
                     End If
 
@@ -323,7 +323,7 @@ Public Sub PasarSegundo()
     '
     '***************************************************
 
-    On Error GoTo ErrHandler
+    On Error GoTo errHandler
 
     Dim i As Long
     
@@ -379,7 +379,7 @@ Public Sub PasarSegundo()
                         Call WriteConsoleMsg(i, "Gracias por jugar Argentum Online", FontTypeNames.FONTTYPE_INFO)
                         Call WriteDisconnect(i)
                         Call FlushBuffer(i)
-                        Call CloseSocket(i)
+                        Call CloseUser(i)
                     End If
 
                 End If
@@ -462,7 +462,7 @@ Public Sub PasarSegundo()
 
     Exit Sub
 
-ErrHandler:
+errHandler:
     Call LogError("Error en PasarSegundo. Err: " & Err.description & " - " & Err.Number & " - UserIndex: " & i)
 
     Resume Next
