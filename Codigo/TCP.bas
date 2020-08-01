@@ -830,8 +830,8 @@ Sub ConnectAccount(ByVal Userindex As Integer, _
         
     End If
     
-    If NumCuentas Then NumCuentas = NumCuentas + 1
-
+    NumCuentas = NumCuentas + 1
+    
 End Sub
 
 Sub CloseSocket(ByVal Userindex As Integer)
