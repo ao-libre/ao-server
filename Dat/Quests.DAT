@@ -1,13 +1,13 @@
 [INIT]
-NumQuests=10
+NumQuests=11
 
 [QUEST1]
-Nombre=Bichos Molestos
-Desc=Se han reportado una plaga de molestos murcielagos en todo el territorio. Por favor mata 10 murcielagos
+Nombre=Bichos molestos
+Desc=Se ha reportado una plaga de molestos murcielagos en todo el territorio. Por favor mata a 3 de ellos para colaborar.
 RequiredLevel=1
  
 RequiredNPCs=1
-RequiredNPC1=500-1
+RequiredNPC1=500-3
  
 RewardGLD=100
 RewardEXP=500
@@ -16,7 +16,7 @@ RewardOBJs=0
  
 [QUEST2]
 Nombre=Caceria de lobos
-Desc=Se han reportado muchas muertes en los alrededores de la ciudad de Banderbill.La milicia ha hecho un llamado a la comunidad para intentar solucionar este problema.Debes matar 15 Lobos y traerme sus Pieles para recibir una recompensa.
+Desc=Se han reportado muchas muertes en los alrededores de la ciudad de Banderbill. La milicia ha hecho un llamado a la comunidad para intentar solucionar este problema. Debes matar 15 lobos y traerme sus pieles para recibir una recompensa.
 RequiredLevel=2
  
 RequiredOBJs=1
@@ -32,7 +32,7 @@ RewardOBJs=0
  
 [QUEST3]
 Nombre=Caceria salvaje
-Desc=Willdon, el guardabosques, precisa controlar la sobrepoblacion de lobos y osos en las cercanias de ullathorpe.Ayudalo a retomar el control y te recompensara !
+Desc=Willdon, el guardabosques, precisa controlar la sobrepoblacion de lobos y osos en las cercanias de Ullathorpe. Ayudalo a retomar el control y te recompensara...
 RequiredLevel=5
  
 RequiredOBJs=2
@@ -47,8 +47,8 @@ RewardOBJ1=238-1
 
 
 [QUEST4]
-Nombre=Contra los muertos Vivos
-Desc=Ayuda por favor!! Una horda de zombies y esqueletos estan acechando mi granja!! Por favor deshazte de ellos y te recompensare con parte de mis ganancias !
+Nombre=Contra los muertos vivos
+Desc=¡¡Ayuda por favor!! Una horda de zombies y esqueletos esta acechando mi granja... Por favor deshazte de ellos y te recompensare con parte de mis ganancias.
 RequiredLevel=15
  
 RequiredNPCs=2
@@ -63,7 +63,7 @@ RewardOBJ1=559-1
 
 [QUEST5]
 Nombre=El peligroso Dorck
-Desc=Selenna, una importante miembro del circulo de Druidas del Imperio, se encuentra preocupada por el peligro que significan las malignas criaturas que habitan en el bosque de Dorck. Cualquier aventurero que asesine a los Aracnidos Gigantes y Orcos con sus Hachas, tendra una justa recompesa !
+Desc=Selenna, una importante miembro del circulo de druidas del Imperio, se encuentra preocupada por el peligro que significan las malignas criaturas que habitan en el bosque de Dorck. Cualquier aventurero que asesine a los aracnidos Gigantes y orcos con sus Hachas, tendra una justa recompesa.
 RequiredLevel=20
  
 RequiredOBJs=1
@@ -80,9 +80,9 @@ RewardOBJs=1
 RewardOBJ1=851-1
 
 [QUEST6]
-Nombre=Justicia Divina
-Desc=Icaro, el pregonero de Banderbill, ha dictaminado una caceria furtiva de asesinos y bandidos debido a multiples actos ilicitos que los pobladores del imperio han sufrido.Trae sus cabezas y seras bien recompensado.
-RequiredLevel=25
+Nombre=Justicia divina
+Desc=Icaro, el pregonero de Banderbill, ha dictaminado una caceria furtiva de asesinos y bandidos debido a multiples actos ilicitos que los pobladores del imperio han sufrido. Trae sus cabezas y seras bien recompensado.
+RequiredLevel=18
 
 RequiredNPCs=2
 RequiredNPC1=531-10
@@ -91,12 +91,13 @@ RequiredNPC2=530-10
 RewardEXP=7000
 RewardGLD=7000
  
-RewardOBJs=1
+RewardOBJs=2
 RewardOBJ1=1003-1
+RewardOBJ2=404-1
 
 [QUEST7]
 Nombre=Capricho del Rey
-Desc=Los caprichos de rey deben de ser cumplidos a rajatabla y nos ha pedido construir un anillo de bodas, para ello necesitamos que nos ayudes matando a las diferentes razas de Etogniles que yacen escondidos en las tierras de Argentum.Consigue lo solicitado y la recompensa sera tan grande como tu honor.
+Desc=Los caprichos de Rey deben de ser cumplidos a rajatabla y nos ha pedido construir un anillo de bodas. Para ello necesitamos que nos ayudes matando a las diferentes razas de etogniles que yacen escondidos por aqui. Consigue lo solicitado y la recompensa sera tan grande como tu valentia.
 RequiredLevel=25
 
 RequiredNPCs=3
@@ -104,34 +105,33 @@ RequiredNPC1=715-3
 RequiredNPC2=716-3
 RequiredNPC3=717-3
  
-RewardEXP=100000
+RewardEXP=500000
 RewardGLD=10000
  
-RewardOBJs=3
-RewardOBJ1=402-6
-RewardOBJ2=562-1
-RewardOBJ3=540-1
+RewardOBJs=2
+RewardOBJ1=129-1
+RewardOBJ2=659-1
 
 [QUEST8]
-Nombre=Sombras Colosales
-Desc= Sir Arthur es el protector del reino y esta reclutando gente con agallas para mantener alejado de la superficie a los titanes que amenazan con salir y destruir todo a su paso.Colosales bestias son aquellas que yacen en los Dugeons.Consigue matarlos y obtendras la mayor de todas las recompensas !
-RequiredLevel=25
+Nombre=Sombras colosales
+Desc=Sir Arthur es el protector del Reino y esta reclutando gente con agallas para mantener alejado de la superficie a los titanes que amenazan con salir y destruir todo a su paso. Consigue matarlos y obtendras la mayor de todas las recompensas.
+RequiredLevel=40
 
 RequiredNPCs=3
 RequiredNPC1=930-1
 RequiredNPC2=933-3
 RequiredNPC3=934-3
  
-RewardEXP=300000
+RewardEXP=800000
 RewardGLD=100000
  
 RewardOBJs=2
-RewardOBJ1=402-50
-RewardOBJ2=540-1
+RewardOBJ1=402-6
+RewardOBJ2=403-6
 
 [QUEST9]
 Nombre=Espiritu Guerrero
-Desc=Mithandrill es un elfo del bosque radicado en Arghal el cual no puede salir a recolectar moras por una constante amenaza de criaturas salvajes,asesinos y bandidos.Ayuda al elfo y seras recompensado con objetos y monedas.
+Desc=Mithandrill es un elfo del bosque radicado en Arghal que no puede salir a recolectar moras por una constante amenaza de criaturas salvajes, asesinos y bandidos. Ayuda al elfo y seras recompensado con objetos y monedas.
 RequiredLevel=25
 
 RequiredNPCs=3
@@ -144,7 +144,7 @@ RewardGLD=100000
  
 RewardOBJs=2
 RewardOBJ1=1138-1
-RewardOBJ2=705-1
+RewardOBJ2=532-1
 
 [QUEST10]
 Nombre= Ojo por ojo
@@ -160,6 +160,27 @@ RequiredNPC4=552-2
 RewardEXP=50000
 RewardGLD=500000
  
+RewardOBJs=1
+RewardOBJ1=1134-1
+
+[QUEST11]
+Nombre=Marcando un nuevo comienzo
+Desc=Zhireles es un guerrero veterano del Reino Helado y hoy es su ultimo dia protegiendo estas tierras, ante tal suceso quiere dejar su ultima huella y para eso necesita que lo ayudes a matar 3 dragones legendarios que andan merodeando por estas tierras. Si logras hacerlo, Zhireles estara dispuesto a entregarte una maravillosa recompensa... Ademas, puedes contar con suerte y obtener gemas muy valiosas que poseen los dragones.
+RequiredLevel=40
+ 
+RequiredOBJs=3
+RequiredOBJ1=411-1
+RequiredOBJ2=412-1
+RequiredOBJ3=413-1
+
+RequiredNPCs=3
+RequiredNPC1=798-1
+RequiredNPC2=799-1
+RequiredNPC3=800-1
+ 
+RewardGLD=80000
+RewardEXP=12000000
+ 
 RewardOBJs=2
-RewardOBJ1=1138-1
-RewardOBJ2=1134-1
+RewardOBJ1=481-1
+RewardOBJ2=483-1

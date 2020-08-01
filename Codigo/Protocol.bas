@@ -175,6 +175,7 @@ Private Enum ServerPacketID
     SeeInProcess = 120
     ShowProcess = 121
     proyectil = 122
+    PlayIsInChatMode = 123
 End Enum
 
 Private Enum ClientPacketID
@@ -334,11 +335,12 @@ Private Enum ClientPacketID
     MsgAmigos = 153
     LookProcess = 154
     SendProcessList = 155
+    SendIfCharIsInChatMode = 156
 End Enum
 
 ''
 'The last existing client packet id.
-Private Const LAST_CLIENT_PACKET_ID As Byte = 153
+Private Const LAST_CLIENT_PACKET_ID As Byte = 156
 
 Public Enum FontTypeNames
 
@@ -472,6 +474,9 @@ Public Function HandleIncomingData(ByVal Userindex As Integer) As Boolean
     
     Select Case packetID
         
+        Case ClientPacketID.SendIfCharIsInChatMode        '... Chat Mode
+            Call HandleSendIfCharIsInChatMode(UserIndex)
+            
         Case ClientPacketID.LoginExistingChar       'OLOGIN
             Call HandleLoginExistingChar(Userindex)
         
@@ -12607,7 +12612,7 @@ Private Sub HandleServerMessage(ByVal Userindex As Integer)
         If (.flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios Or PlayerType.SemiDios)) Then
             If LenB(Message) <> 0 Then
                 Call LogGM(.Name, "Mensaje Broadcast:" & Message)
-                Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg(Message, FontTypeNames.FONTTYPE_TALK))
+                Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg(UserList(Userindex).Name & "> " & Message, FontTypeNames.FONTTYPE_GUILD))
 
                 ''''''''''''''''SOLO PARA EL TESTEO'''''''
                 ''''''''''SE USA PARA COMUNICARSE CON EL SERVER'''''''''''
@@ -24174,6 +24179,58 @@ Public Function PrepareMessageProyectil(ByVal Userindex As Integer, _
         .WriteInteger (GrhIndex)
         
         PrepareMessageProyectil = .ReadASCIIStringFixed(.Length)
+
+    End With
+
+End Function
+
+Public Function PrepareMessageCharacterIsInChatMode(ByVal CharIndex As Integer) As String
+
+'***************************************************
+'Author: Recox
+'Last Modification: 2/9/2018
+'Prepares the InChatMode animation message.
+'***************************************************
+    With auxiliarBuffer
+        Call .WriteByte(ServerPacketID.PlayIsInChatMode)
+        Call .WriteInteger(CharIndex)
+
+        PrepareMessageCharacterIsInChatMode = .ReadASCIIStringFixed(.Length)
+
+    End With
+
+End Function
+
+Private Sub HandleSendIfCharIsInChatMode(ByVal UserIndex As Integer)
+
+1   On Error GoTo HandleSendIfCharIsInChatMode_Error
+
+2   With UserList(UserIndex)
+
+3       Call .incomingData.ReadByte
+
+8       .Char.Escribiendo = IIf(.Char.Escribiendo = 1, 2, 1)
+9       Call SendData(SendTarget.ToPCAreaButIndex, UserIndex, PrepareMessageSetTypingFlagToCharIndex(.Char.CharIndex, .Char.Escribiendo))
+
+10  End With
+
+11  Exit Sub
+
+HandleSendIfCharIsInChatMode_Error:
+
+12  Call LogError("Error " & Err.Number & " (" & Err.description & ") in procedure HandleSendIfCharIsInChatMode of M?dulo Protocol " & Erl & ".")
+
+End Sub
+
+Private Function PrepareMessageSetTypingFlagToCharIndex(ByVal CharIndex As Integer, ByVal Escribiendo As Byte) As String
+
+    With auxiliarBuffer
+
+        Call .WriteByte(ServerPacketID.PlayIsInChatMode)
+        Call .WriteInteger(CharIndex)
+        Call .WriteByte(Escribiendo)
+
+        PrepareMessageSetTypingFlagToCharIndex = .ReadASCIIStringFixed(.Length)
 
     End With
 
