@@ -1621,7 +1621,8 @@ Sub ResetCharInfo(ByVal Userindex As Integer)
     'Resetea todos los valores generales y las stats
     '03/15/2006 Maraxus - Uso de With para mayor performance y claridad.
     '*************************************************
-    With UserList(Userindex).Char
+    With UserList(UserIndex).Char
+        .Escribiendo = 0
         .body = 0
         .CascoAnim = 0
         .CharIndex = 0
