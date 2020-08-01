@@ -44,7 +44,8 @@ Public Sub Database_Connect()
     Debug.Print Database_Connection.ConnectionString
     
     Database_Connection.CursorLocation = adUseClient
-    Database_Connection.Open
+    
+    Call Database_Connection.Open
 
     Exit Sub
     
@@ -61,7 +62,8 @@ Public Sub Database_Close()
     '***************************************************
     On Error GoTo ErrorHandler
      
-    Database_Connection.Close
+    Call Database_Connection.Close
+    
     Set Database_Connection = Nothing
      
     Exit Sub
@@ -83,7 +85,7 @@ Sub SaveUserToDatabase(ByVal Userindex As Integer, _
 
     With UserList(Userindex)
     
-        If GetCountUserAccount(.Account.Hash) >= 10 Then
+        If GetCountUserAccount(.Account.ID) >= 10 Then
             Call WriteErrorMsg(Userindex, "No puedes crear mas de 10 personajes.")
             Call CloseUser(Userindex)
             Exit Sub
@@ -104,7 +106,7 @@ ErrorHandler:
 
 End Sub
 
-Public Function GetCountUserAccount(ByVal HashAccount As String) As Byte
+Public Function GetCountUserAccount(ByVal AccountID As Integer) As Byte
 
     '***************************************************
     'Author: Lorwik
@@ -113,13 +115,13 @@ Public Function GetCountUserAccount(ByVal HashAccount As String) As Byte
     On Error GoTo ErrorHandler
 
     Dim query As String
-    Dim result As String
+    Dim result As Byte
     
     'Nos conectamos a la DB.
     Call Database_Connect
     
     'Hacemos la query.
-    query = "SELECT COUNT(*) FROM user WHERE deleted = 0 AND account_id = (SELECT id FROM account WHERE hash = '" & HashAccount & "');"
+    query = "SELECT COUNT(*) FROM user WHERE deleted = 0 AND account_id = " & AccountID & ";"
     
     'La ejecutamos y la guardamos en un objeto.
     Set Database_RecordSet = Database_Connection.Execute(query)
@@ -145,7 +147,7 @@ Public Function GetCountUserAccount(ByVal HashAccount As String) As Byte
     Exit Function
     
 ErrorHandler:
-    Call LogDatabaseError("Error in GetCountUserAccount: " & HashAccount & ". " & Err.Number & " - " & Err.description)
+    Call LogDatabaseError("Error in GetCountUserAccount: AccountID: " & AccountID & ". " & Err.Number & " - " & Err.description)
 
 End Function
 
@@ -171,7 +173,7 @@ Sub InsertUserToDatabase(ByVal Userindex As Integer, _
 
         query = "INSERT INTO user SET "
         query = query & "name = '" & .Name & "', "
-        query = query & "account_id = (SELECT id FROM account WHERE hash = '" & .Account.Hash & "'), "
+        query = query & "account_id = " & .Account.ID & ", "
         query = query & "level = " & .Stats.ELV & ", "
         query = query & "exp = " & .Stats.Exp & ", "
         query = query & "elu = " & .Stats.ELU & ", "
@@ -2669,71 +2671,95 @@ Public Sub LoginAccountDatabase(ByVal Userindex As Integer, ByVal UserName As St
     On Error GoTo ErrorHandler
 
     Dim query              As String
-    Dim AccountId          As Integer
-    Dim AccountHash        As String
     Dim NumberOfCharacters As Byte
-    Dim Characters()       As AccountCharacter
 
+    ' Establecemos una conexion con la DB
     Call Database_Connect
-
-    query = "SELECT id, username, hash FROM account "
-    query = query & "WHERE UPPER(username) = '" & UCase$(UserName) & "';"
-
+    
+    ' Formamos la query para obtener los datos de la cuenta.
+    query = "SELECT `id`, `hash` " & _
+            "FROM `account` " & _
+            "WHERE username = '" & UCase$(UserName) & "'"
+    
+    ' Ejecuto la query.
     Set Database_RecordSet = Database_Connection.Execute(query)
-
+    
+    ' Si no hay resultados...
     If Database_RecordSet.BOF Or Database_RecordSet.EOF Then
         Call WriteErrorMsg(Userindex, "Error al cargar la cuenta.")
         Call CloseSocket(Userindex)
         Exit Sub
-
     End If
+    
+    With UserList(Userindex).Account
+        
+        ' Guardamos los datos de la cuenta en el slot.
+        .ID = CInt(Database_RecordSet!ID)
+        .UserName = UCase$(UserName)
+        .Hash = Database_RecordSet!Hash
+        
+        ' Ya no necesitamos mas los datos del resultado de la query, los limpiamos.
+        Set Database_RecordSet = Nothing
 
-    AccountId = CInt(Database_RecordSet!ID)
-    UserName = Database_RecordSet!UserName
-    AccountHash = Database_RecordSet!Hash
+        ' Ahora obtenemos la info. de los datos de los personajes de la cuenta.
+        query = "SELECT name, level, gold, body_id, head_id, weapon_id, shield_id, helmet_id, race_id, class_id, pos_map, rep_average, is_dead " & _
+                "FROM user " & _
+                "WHERE account_id = " & .ID & " AND deleted = FALSE;"
+        
+        ' Ejecutamos la query.
+        Set Database_RecordSet = Database_Connection.Execute(query)
+        
+        ' En un principio, no hay personajes.
+        NumberOfCharacters = 0
+        
+        ' PEEERO si la base de datos dice lo contrario...
+        If Database_RecordSet.RecordCount > 0 Then
+            
+            ' Cargamos sus datos...
+            Database_RecordSet.MoveFirst
 
-    Set Database_RecordSet = Nothing
+            While Not Database_RecordSet.EOF
 
-    'Now the characters
-    query = "SELECT name, level, gold, body_id, head_id, weapon_id, shield_id, helmet_id, race_id, class_id, pos_map, rep_average, is_dead FROM user "
-    query = query & "WHERE account_id = " & AccountId & " AND deleted = FALSE;"
+                NumberOfCharacters = NumberOfCharacters + 1
+                
+                With .Personajes(NumberOfCharacters)
+                    
+                    .Name = Database_RecordSet!Name
+                    .body = Database_RecordSet!body_id
+                    .Head = Database_RecordSet!head_id
+                    .weapon = Database_RecordSet!weapon_id
+                    .shield = Database_RecordSet!shield_id
+                    .helmet = Database_RecordSet!helmet_id
+                    .Class = Database_RecordSet!class_id
+                    .race = Database_RecordSet!race_id
+                    .Map = Database_RecordSet!pos_map
+                    .level = Database_RecordSet!level
+                    .Gold = Database_RecordSet!Gold
+                    .criminal = (Database_RecordSet!rep_average < 0)
+                    .dead = Database_RecordSet!is_dead
+                    .gameMaster = EsGmChar(Database_RecordSet!Name)
+                
+                End With
 
-    Set Database_RecordSet = Database_Connection.Execute(query)
+                Database_RecordSet.MoveNext
+                
+            Wend
 
-    NumberOfCharacters = 0
-
-    If Not Database_RecordSet.RecordCount = 0 Then
-        ReDim Characters(1 To Database_RecordSet.RecordCount) As AccountCharacter
-        Database_RecordSet.MoveFirst
-
-        While Not Database_RecordSet.EOF
-
-            NumberOfCharacters = NumberOfCharacters + 1
-            Characters(NumberOfCharacters).Name = Database_RecordSet!Name
-            Characters(NumberOfCharacters).body = Database_RecordSet!body_id
-            Characters(NumberOfCharacters).Head = Database_RecordSet!head_id
-            Characters(NumberOfCharacters).weapon = Database_RecordSet!weapon_id
-            Characters(NumberOfCharacters).shield = Database_RecordSet!shield_id
-            Characters(NumberOfCharacters).helmet = Database_RecordSet!helmet_id
-            Characters(NumberOfCharacters).Class = Database_RecordSet!class_id
-            Characters(NumberOfCharacters).race = Database_RecordSet!race_id
-            Characters(NumberOfCharacters).Map = Database_RecordSet!pos_map
-            Characters(NumberOfCharacters).level = Database_RecordSet!level
-            Characters(NumberOfCharacters).Gold = Database_RecordSet!Gold
-            Characters(NumberOfCharacters).criminal = (Database_RecordSet!rep_average < 0)
-            Characters(NumberOfCharacters).dead = Database_RecordSet!is_dead
-            Characters(NumberOfCharacters).gameMaster = EsGmChar(Database_RecordSet!Name)
-            Database_RecordSet.MoveNext
-        Wend
-
-    End If
-
-    Set Database_RecordSet = Nothing
-    Call Database_Close
-
-    Call WriteUserAccountLogged(Userindex, UserName, AccountHash, NumberOfCharacters, Characters)
+        End If
+        
+        ' Limpiamos la info. del resultado de la query.
+        Set Database_RecordSet = Nothing
+        
+        ' Cerramos la conexion con la DB.
+        Call Database_Close
+        
+        ' Le paso la info. que necesita el usuario.
+        Call WriteUserAccountLogged(Userindex, UserName, .Hash, NumberOfCharacters, .Personajes)
+    
+    End With
 
     Exit Sub
+    
 ErrorHandler:
     Call LogDatabaseError("Error in LoginAccountDatabase: " & UserName & ". " & Err.Number & " - " & Err.description)
 

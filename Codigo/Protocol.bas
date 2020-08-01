@@ -22899,7 +22899,6 @@ Private Sub HandleLoginExistingAccount(ByVal Userindex As Integer)
     'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
     Dim buffer As clsByteQueue
     Set buffer = New clsByteQueue
-
     Call buffer.CopyBuffer(UserList(Userindex).incomingData)
     
     'Remove packet ID

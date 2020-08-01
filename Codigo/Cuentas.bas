@@ -3,7 +3,8 @@ Option Explicit
 
 'CHOTS | Accounts
 Public Type AccountCharacter
-
+    
+    ID As Integer
     Name As String
     body As Integer
     Head As Integer
@@ -24,9 +25,13 @@ End Type
 Public Const MAX_ACCOUNT_CHARACTERS As Byte = 10
 
 Public Type Account
-        Personajes(1 To MAX_ACCOUNT_CHARACTERS) As AccountCharacter
-        LoggedIn As Boolean
-        Hash As String 'CHOTS | Account ID
+    
+    ID As Integer
+    UserName As String
+    Personajes(1 To MAX_ACCOUNT_CHARACTERS) As AccountCharacter
+    LoggedIn As Boolean
+    Hash As String 'CHOTS | Account ID
+    
 End Type
 
 Sub LoadUserFromCharfile(ByVal Userindex As Integer)
