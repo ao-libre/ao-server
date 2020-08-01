@@ -387,6 +387,7 @@ Private Sub cmdLoadWorldBackup_Click()
     
     LastUser = 0
     NumUsers = 0
+    NumCuentas = 0
     
     Call FreeNPCs
     Call FreeCharIndexes

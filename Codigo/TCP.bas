@@ -781,13 +781,13 @@ Sub ConnectAccount(ByVal Userindex As Integer, _
 'Last modified: 12/10/2018
 'Se conecta a una cuenta existente
 '*************************************************
-'SHA256
+    
+    'SHA256
     Dim oSHA256 As CSHA256
-
-    Dim Salt    As String
-
     Set oSHA256 = New CSHA256
-
+    
+    Dim Salt    As String
+    
     If Not CheckMailString(UserName) Or LenB(UserName) = 0 Then
         Call WriteErrorMsg(Userindex, "Nombre invalido.")
         Exit Sub
@@ -823,10 +823,14 @@ Sub ConnectAccount(ByVal Userindex As Integer, _
 
     If Not Database_Enabled Then
         Call LoginAccountCharfile(Userindex, UserName)
+        
     Else
         Call SaveAccountLastLoginDatabase(UserName, UserList(Userindex).IP)
         Call LoginAccountDatabase(Userindex, UserName)
+        
     End If
+    
+    If NumCuentas Then NumCuentas = NumCuentas + 1
 
 End Sub
 
@@ -884,7 +888,9 @@ Sub CloseSocket(ByVal Userindex As Integer)
         Call .incomingData.ReadASCIIStringFixed(.incomingData.Length)
 
         If .flags.UserLogged Then
+            
             If NumUsers > 0 Then NumUsers = NumUsers - 1
+            
             Call CloseUser(Userindex)
             
         Else
@@ -892,7 +898,7 @@ Sub CloseSocket(ByVal Userindex As Integer)
 
         End If
         
-        .Account.LoggedIn = False
+        If NumCuentas > 0 Then NumCuentas = NumCuentas - 1
         
         Call LiberarSlot(Userindex)
             
@@ -1506,6 +1512,8 @@ Sub ConnectUser(ByVal Userindex As Integer, _
     
         Call MostrarNumUsers
         
+        Call MostrarNumCuentas
+        
         Call modGuilds.SendGuildNews(Userindex)
         
         'Aqui solo vamos a hacer un request a los endpoints de la aplicacion en Node.js
@@ -2061,10 +2069,12 @@ Sub CloseUser(ByVal Userindex As Integer)
         Call ResetUserSlot(Userindex)
     
         Call MostrarNumUsers
+        
+        Call MostrarNumCuentas
     
         n = FreeFile(1)
         Open App.Path & "\logs\Connect.log" For Append Shared As #n
-        Print #n, Name & " ha dejado el juego. " & "User Index:" & Userindex & " " & time & " " & Date
+            Print #n, Name & " ha dejado el juego. " & "User Index:" & Userindex & " " & time & " " & Date
         Close #n
 
     End With

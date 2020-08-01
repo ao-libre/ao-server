@@ -703,6 +703,18 @@ Sub MostrarNumUsers()
 
 End Sub
 
+Sub MostrarNumCuentas()
+    '***************************************************
+    'Author: Unknown
+    'Last Modification: -
+    '
+    '***************************************************
+
+    frmMain.txtNumCuentas.Text = NumCuentas
+
+End Sub
+
+
 Function ValidInputNP(ByVal cad As String) As Boolean
     '***************************************************
     'Author: Unknown

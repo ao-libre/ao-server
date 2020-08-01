@@ -1924,6 +1924,8 @@ Public MaxYBorder                         As Byte
 'Numero de usuarios actual
 Public NumUsers                           As Integer
 
+Public NumCuentas                         As Integer
+
 Public LastUser                           As Integer
 
 Public LastChar                           As Integer

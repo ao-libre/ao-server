@@ -29,6 +29,17 @@ Begin VB.Form frmMain
    ScaleWidth      =   10425
    StartUpPosition =   2  'CenterScreen
    WindowState     =   1  'Minimized
+   Begin VB.TextBox txtNumCuentas 
+      Alignment       =   2  'Center
+      BackColor       =   &H00C0FFFF&
+      Height          =   270
+      Left            =   2760
+      Locked          =   -1  'True
+      TabIndex        =   26
+      Text            =   "0"
+      Top             =   410
+      Width           =   735
+   End
    Begin VB.TextBox txtRecordOnline 
       Alignment       =   2  'Center
       BackColor       =   &H00C0FFFF&
@@ -89,13 +100,13 @@ Begin VB.Form frmMain
    Begin VB.TextBox txtNumUsers 
       Alignment       =   2  'Center
       BackColor       =   &H00C0FFFF&
-      Height          =   315
-      Left            =   2640
+      Height          =   255
+      Left            =   2760
       Locked          =   -1  'True
       TabIndex        =   11
       Text            =   "0"
-      Top             =   240
-      Width           =   975
+      Top             =   120
+      Width           =   735
    End
    Begin VB.CommandButton cmdSystray 
       BackColor       =   &H00FFC0C0&
@@ -228,6 +239,28 @@ Begin VB.Form frmMain
          Top             =   240
          Width           =   4695
       End
+   End
+   Begin VB.Label lblCuentasOn 
+      Appearance      =   0  'Flat
+      AutoSize        =   -1  'True
+      BackColor       =   &H00C0C0C0&
+      BackStyle       =   0  'Transparent
+      Caption         =   "Numero de Cuentas en linea: "
+      BeginProperty Font 
+         Name            =   "Tahoma"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H00000000&
+      Height          =   195
+      Left            =   240
+      TabIndex        =   25
+      Top             =   410
+      Width           =   2445
    End
    Begin VB.Label lblLloviendoInfo 
       Appearance      =   0  'Flat
@@ -395,7 +428,7 @@ Begin VB.Form frmMain
       EndProperty
       ForeColor       =   &H000040C0&
       Height          =   375
-      Left            =   4320
+      Left            =   4680
       TabIndex        =   5
       Top             =   240
       Visible         =   0   'False
@@ -418,9 +451,9 @@ Begin VB.Form frmMain
       EndProperty
       ForeColor       =   &H00000000&
       Height          =   195
-      Left            =   120
+      Left            =   240
       TabIndex        =   0
-      Top             =   360
+      Top             =   120
       Width           =   2460
    End
    Begin VB.Menu mnuPopUp 
