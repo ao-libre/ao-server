@@ -904,40 +904,6 @@ ErrorHandler:
 
 End Function
 
-Public Function PersonajePerteneceCuentaDatabase(ByVal UserName As String, _
-                                                 ByVal AccountHash As String) As Boolean
-
-    '***************************************************
-    'Author: Juan Andres Dalmasso (CHOTS)
-    'Last Modification: 12/10/2018
-    '***************************************************
-    On Error GoTo ErrorHandler
-
-    Dim query As String
-
-    Call Database_Connect
-
-    query = "SELECT u.id FROM user u JOIN account a ON u.account_id = a.id WHERE UPPER(u.name) = '" & UCase$(UserName) & "' AND a.hash= '" & AccountHash & "';"
-
-    Set Database_RecordSet = Database_Connection.Execute(query)
-
-    If Database_RecordSet.BOF Or Database_RecordSet.EOF Then
-        PersonajePerteneceCuentaDatabase = False
-        Exit Function
-
-    End If
-
-    PersonajePerteneceCuentaDatabase = (Database_RecordSet.RecordCount > 0)
-    Set Database_RecordSet = Nothing
-    Call Database_Close
-
-    Exit Function
-
-ErrorHandler:
-    Call LogDatabaseError("Error in PersonajePerteneceCuentaDatabase: " & UserName & ". " & Err.Number & " - " & Err.description)
-
-End Function
-
 Public Function BANCheckDatabase(ByVal UserName As String) As Boolean
 
     '***************************************************

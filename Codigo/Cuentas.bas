@@ -804,21 +804,6 @@ Public Function CuentaExisteCharfile(ByVal UserName As String) As Boolean
 
 End Function
 
-Public Function PersonajePerteneceCuentaCharfile(ByVal UserName As String, _
-                                                 ByVal AccountHash As String) As Boolean
-
-    '***************************************************
-    'Author: Juan Andres Dalmasso (CHOTS)
-    'Last Modification: 18/10/2018
-    '***************************************************
-    Dim CharfileHash As String
-
-    CharfileHash = GetVar(CharPath & UserName & ".chr", "INIT", "AccountHash")
-
-    PersonajePerteneceCuentaCharfile = (AccountHash = CharfileHash)
-
-End Function
-
 Public Sub SaveUserToAccountCharfile(ByVal UserName As String, _
                                      ByVal AccountHash As String)
 
