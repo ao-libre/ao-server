@@ -1636,7 +1636,7 @@ Private Sub HandleDeleteChar(ByVal Userindex As Integer)
     'If we got here then packet is complete, copy data back to original queue
     Call UserList(Userindex).incomingData.CopyBuffer(buffer)
     
-    Call BorrarUsuario(Userindex, UserName, AccountHash)
+    Call BorrarUsuario(UserIndex, UserName)
 
     'Enviamos paquete para mostrar mensaje satisfactorio en el cliente
     Call UserList(Userindex).outgoingData.WriteByte(ServerPacketID.DeletedChar)

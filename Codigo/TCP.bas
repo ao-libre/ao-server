@@ -1092,9 +1092,9 @@ Sub ConnectUser(ByVal Userindex As Integer, _
         End If
     
         'Es el passwd valido?
-        If Not PersonajePerteneceCuenta(Name, AccountHash) Then
-            Call WriteErrorMsg(Userindex, "Ha ocurrido un error, por favor inicie sesion nuevamente.")
-            Call CloseUser(Userindex)
+        If Not PersonajePerteneceCuenta(Name, UserIndex) Then
+            Call WriteErrorMsg(UserIndex, "Ha ocurrido un error, por favor inicie sesion nuevamente.")
+            Call CloseUser(UserIndex)
             Exit Sub
 
         End If

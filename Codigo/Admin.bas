@@ -290,7 +290,7 @@ Public Sub Encarcelar(ByVal Userindex As Integer, _
 
 End Sub
 
-Public Sub BorrarUsuario(ByVal Userindex As Integer, ByVal UserName As String, ByVal AccountHash As String)
+Public Sub BorrarUsuario(ByVal UserIndex As Integer, ByVal UserName As String)
 
     '********************************************************************************
     'Author: Recox
@@ -308,9 +308,9 @@ Public Sub BorrarUsuario(ByVal Userindex As Integer, ByVal UserName As String, B
     End If
 
     'IMPORTANTE! - El personaje pertenece a esta cuenta?
-    If Not PersonajePerteneceCuenta(UserName, AccountHash) Then
-        Call WriteErrorMsg(Userindex, "Ha ocurrido un error, por favor inicie sesion nuevamente.")
-        Call CloseSocket(Userindex)
+    If Not PersonajePerteneceCuenta(UserName, UserIndex) Then
+        Call WriteErrorMsg(UserIndex, "Ha ocurrido un error, por favor inicie sesion nuevamente.")
+        Call CloseSocket(UserIndex)
         
         Exit Sub
     End If
@@ -372,19 +372,28 @@ Public Function CuentaExiste(ByVal UserName As String) As Boolean
 
 End Function
 
-Public Function PersonajePerteneceCuenta(ByVal UserName As String, _
-                                         ByVal AccountHash As String) As Boolean
+Public Function PersonajePerteneceCuenta(ByVal UserName As String, ByVal UserIndex As Integer) As Boolean
 
     '***************************************************
     'Author: Juan Andres Dalmasso (CHOTS)
     'Last Modification: 18/10/2018
     '***************************************************
-    If Not Database_Enabled Then
-        PersonajePerteneceCuenta = PersonajePerteneceCuentaCharfile(UserName, AccountHash)
-    Else
-        PersonajePerteneceCuenta = PersonajePerteneceCuentaDatabase(UserName, AccountHash)
-
-    End If
+    
+    With UserList(UserIndex).Account
+    
+        Dim i As Long
+        For i = LBound(.Personajes) To UBound(.Personajes)
+            
+            If .Personajes(i).Name = UserName Then
+                PersonajePerteneceCuenta = True
+                Exit Function
+            End If
+            
+        Next
+    
+    End With
+    
+    PersonajePerteneceCuenta = False
 
 End Function
 
