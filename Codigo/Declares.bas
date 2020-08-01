@@ -2425,6 +2425,8 @@ Public EstadisticasInicialesUsarConfiguracionPersonalizada As Boolean
 
 Public UsarMundoPropio As Boolean
 
+Public OroDirectoABille As Boolean
+
 Public ConexionAPI As Boolean
 
 Public ApiUrlServer As String

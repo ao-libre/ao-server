@@ -1910,7 +1910,9 @@ Sub LoadSini()
 
     'Usar Mundo personalizado / Use custom world
     UsarMundoPropio = CBool(Lector.GetValue("MUNDO", "UsarMundoPropio"))
-
+    
+    OroDirectoABille = val(Lector.GetValue("INIT", "OroDirectoABille"))
+    
     'Inventario Inicial
     InventarioUsarConfiguracionPersonalizada = CBool(val(Lector.GetValue("INVENTARIO", "InventarioUsarConfiguracionPersonalizada")))
 
