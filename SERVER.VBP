@@ -68,7 +68,7 @@ Module=mLimpieza; Codigo\mLimpieza.bas
 Module=mMainLoop; Codigo\mMainLoop.bas
 Class=CSHA256; Codigo\CSHA256.cls
 Module=JSON; Codigo\JSON.bas
-Object={48E59290-9880-11CF-9754-00AA00C00908}#1.0#0; MSINET.ocx
+Object={48E59290-9880-11CF-9754-00AA00C00908}#1.0#0; MSINET.OCX
 Class=cStringBuilder; Codigo\cStringBuilder.cls
 Module=modDatabase; Codigo\modDatabase.bas
 Module=modCentinela; Codigo\modCentinela.bas
@@ -101,7 +101,7 @@ VersionComments="http://www.ArgentumOnline.org"
 VersionCompanyName="http://www.ArgentumOnline.org"
 VersionLegalCopyright="Argentum Online is copyright of Pablo Ignacio Marquez"
 VersionProductName="Argentum Server"
-CondComp="ConUpTime = 1 : AntiExternos = 1"
+CondComp="ConUpTime = 1 : AntiExternos = 1 : DBConexionUnica = 1"
 CompilationType=0
 OptimizationType=0
 FavorPentiumPro(tm)=0

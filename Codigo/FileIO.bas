@@ -362,7 +362,7 @@ Public Sub CargarHechizos()
     '
     '###################################################
 
-    On Error GoTo ErrHandler
+    On Error GoTo errHandler
 
     If frmMain.Visible Then frmMain.txtStatus.Text = "Cargando Hechizos."
     
@@ -484,7 +484,7 @@ Public Sub CargarHechizos()
     
     Exit Sub
 
-ErrHandler:
+errHandler:
     MsgBox "Error cargando hechizos.dat " & Err.Number & ": " & Err.description
  
 End Sub
@@ -727,7 +727,7 @@ Public Sub GrabarMapa(ByVal Map As Long, ByRef MAPFILE As String)
         Call IniManager.ChangeValue("Mapa" & Map, "Terreno", TerrainByteToString(.Terreno))
         Call IniManager.ChangeValue("Mapa" & Map, "Zona", .Zona)
         Call IniManager.ChangeValue("Mapa" & Map, "Restringir", RestrictByteToString(.Restringir))
-        Call IniManager.ChangeValue("Mapa" & Map, "BackUp", str(.BackUp))
+        Call IniManager.ChangeValue("Mapa" & Map, "BackUp", Str(.BackUp))
     
         If .Pk Then
             Call IniManager.ChangeValue("Mapa" & Map, "Pk", "0")
@@ -936,7 +936,7 @@ Sub LoadOBJData()
 
     'Call LogTarea("Sub LoadOBJData")
 
-    On Error GoTo ErrHandler
+    On Error GoTo errHandler
 
     If frmMain.Visible Then frmMain.txtStatus.Text = "Cargando base de datos de los objetos."
     
@@ -1235,7 +1235,7 @@ Sub LoadOBJData()
     If frmMain.Visible Then frmMain.txtStatus.Text = Date & " " & time & " - Se cargo base de datos de los objetos. Operacion Realizada con exito."
     
     Exit Sub
-ErrHandler:
+errHandler:
     MsgBox "error cargando objetos " & Err.Number & ": " & Err.description
 
 End Sub
@@ -1401,7 +1401,7 @@ Sub LoadUserInit(ByVal Userindex As Integer, ByRef UserFile As clsIniManager)
                 
                 .Amigos(i).Nombre = vbNullString
                 .Amigos(i).Ignorado = 0
-                .Amigos(i).index = 0
+                .Amigos(i).Index = 0
 
             Next i
 
@@ -1996,10 +1996,6 @@ Sub LoadSini()
     Database_Name = Lector.GetValue("DATABASE", "Name")
     Database_Username = Lector.GetValue("DATABASE", "Username")
     Database_Password = Lector.GetValue("DATABASE", "Password")
-    
-    If Database_Enabled Then
-        Call modDatabase.Database_Connect
-    End If
     
     'Max users
     Temporal = val(Lector.GetValue("INIT", "MaxUsers"))
@@ -3062,35 +3058,35 @@ End Sub
 
 Public Sub ReloadNPCByIndex(ByVal NpcIndex As Integer)
 
-    On Error GoTo ErrHandler
+    On Error GoTo errHandler
 
-    Dim npcNumber As Integer
+    Dim NpcNumber As Integer
     Dim LoopC As Long
     Dim ln As String
 
     With Npclist(NpcIndex)
-        npcNumber = .Numero
-        .Name = LeerNPCs.GetValue("NPC" & npcNumber, "Name")
-        .Desc = LeerNPCs.GetValue("NPC" & npcNumber, "Desc")
+        NpcNumber = .Numero
+        .Name = LeerNPCs.GetValue("NPC" & NpcNumber, "Name")
+        .Desc = LeerNPCs.GetValue("NPC" & NpcNumber, "Desc")
 
-        .Movement = val(LeerNPCs.GetValue("NPC" & npcNumber, "Movement"))
+        .Movement = val(LeerNPCs.GetValue("NPC" & NpcNumber, "Movement"))
         .flags.OldMovement = .Movement
 
-        .flags.AguaValida = val(LeerNPCs.GetValue("NPC" & npcNumber, "AguaValida"))
-        .flags.TierraInvalida = val(LeerNPCs.GetValue("NPC" & npcNumber, "TierraInValida"))
-        .flags.Faccion = val(LeerNPCs.GetValue("NPC" & npcNumber, "Faccion"))
-        .flags.AtacaDoble = val(LeerNPCs.GetValue("NPC" & npcNumber, "AtacaDoble"))
+        .flags.AguaValida = val(LeerNPCs.GetValue("NPC" & NpcNumber, "AguaValida"))
+        .flags.TierraInvalida = val(LeerNPCs.GetValue("NPC" & NpcNumber, "TierraInValida"))
+        .flags.Faccion = val(LeerNPCs.GetValue("NPC" & NpcNumber, "Faccion"))
+        .flags.AtacaDoble = val(LeerNPCs.GetValue("NPC" & NpcNumber, "AtacaDoble"))
 
-        .NPCtype = val(LeerNPCs.GetValue("NPC" & npcNumber, "NpcType"))
+        .NPCtype = val(LeerNPCs.GetValue("NPC" & NpcNumber, "NpcType"))
 
-        .Char.body = val(LeerNPCs.GetValue("NPC" & npcNumber, "Body"))
-        .Char.Head = val(LeerNPCs.GetValue("NPC" & npcNumber, "Head"))
+        .Char.body = val(LeerNPCs.GetValue("NPC" & NpcNumber, "Body"))
+        .Char.Head = val(LeerNPCs.GetValue("NPC" & NpcNumber, "Head"))
 
-        .Attackable = val(LeerNPCs.GetValue("NPC" & npcNumber, "Attackable"))
-        .Comercia = val(LeerNPCs.GetValue("NPC" & npcNumber, "Comercia"))
-        .Hostile = val(LeerNPCs.GetValue("NPC" & npcNumber, "Hostile"))
+        .Attackable = val(LeerNPCs.GetValue("NPC" & NpcNumber, "Attackable"))
+        .Comercia = val(LeerNPCs.GetValue("NPC" & NpcNumber, "Comercia"))
+        .Hostile = val(LeerNPCs.GetValue("NPC" & NpcNumber, "Hostile"))
 
-        .GiveEXP = val(LeerNPCs.GetValue("NPC" & npcNumber, "GiveEXP")) * ExpMultiplier
+        .GiveEXP = val(LeerNPCs.GetValue("NPC" & NpcNumber, "GiveEXP")) * ExpMultiplier
 
         If HappyHourActivated And (HappyHour <> 0) Then
             .GiveEXP = .GiveEXP * HappyHour
@@ -3098,40 +3094,40 @@ Public Sub ReloadNPCByIndex(ByVal NpcIndex As Integer)
 
         .flags.ExpCount = .GiveEXP
 
-        .Veneno = val(LeerNPCs.GetValue("NPC" & npcNumber, "Veneno"))
+        .Veneno = val(LeerNPCs.GetValue("NPC" & NpcNumber, "Veneno"))
 
-        .flags.Domable = val(LeerNPCs.GetValue("NPC" & npcNumber, "Domable"))
+        .flags.Domable = val(LeerNPCs.GetValue("NPC" & NpcNumber, "Domable"))
 
-        .GiveGLD = val(LeerNPCs.GetValue("NPC" & npcNumber, "GiveGLD"))
+        .GiveGLD = val(LeerNPCs.GetValue("NPC" & NpcNumber, "GiveGLD"))
 
-        .QuestNumber = val(LeerNPCs.GetValue("NPC" & npcNumber, "QuestNumber"))
+        .QuestNumber = val(LeerNPCs.GetValue("NPC" & NpcNumber, "QuestNumber"))
 
-        .PoderAtaque = val(LeerNPCs.GetValue("NPC" & npcNumber, "PoderAtaque"))
-        .PoderEvasion = val(LeerNPCs.GetValue("NPC" & npcNumber, "PoderEvasion"))
+        .PoderAtaque = val(LeerNPCs.GetValue("NPC" & NpcNumber, "PoderAtaque"))
+        .PoderEvasion = val(LeerNPCs.GetValue("NPC" & NpcNumber, "PoderEvasion"))
 
-        .InvReSpawn = val(LeerNPCs.GetValue("NPC" & npcNumber, "InvReSpawn"))
+        .InvReSpawn = val(LeerNPCs.GetValue("NPC" & NpcNumber, "InvReSpawn"))
 
         With .Stats
-            .MaxHp = val(LeerNPCs.GetValue("NPC" & npcNumber, "MaxHP"))
+            .MaxHp = val(LeerNPCs.GetValue("NPC" & NpcNumber, "MaxHP"))
             '.MinHp = val(LeerNPCs.GetValue("NPC" & npcNumber, "MinHP"))
-            .MaxHIT = val(LeerNPCs.GetValue("NPC" & npcNumber, "MaxHIT"))
-            .MinHIT = val(LeerNPCs.GetValue("NPC" & npcNumber, "MinHIT"))
-            .def = val(LeerNPCs.GetValue("NPC" & npcNumber, "DEF"))
-            .defM = val(LeerNPCs.GetValue("NPC" & npcNumber, "DEFm"))
-            .Alineacion = val(LeerNPCs.GetValue("NPC" & npcNumber, "Alineacion"))
+            .MaxHIT = val(LeerNPCs.GetValue("NPC" & NpcNumber, "MaxHIT"))
+            .MinHIT = val(LeerNPCs.GetValue("NPC" & NpcNumber, "MinHIT"))
+            .def = val(LeerNPCs.GetValue("NPC" & NpcNumber, "DEF"))
+            .defM = val(LeerNPCs.GetValue("NPC" & NpcNumber, "DEFm"))
+            .Alineacion = val(LeerNPCs.GetValue("NPC" & NpcNumber, "Alineacion"))
 
         End With
 
-        .Invent.NroItems = val(LeerNPCs.GetValue("NPC" & npcNumber, "NROITEMS"))
+        .Invent.NroItems = val(LeerNPCs.GetValue("NPC" & NpcNumber, "NROITEMS"))
 
         For LoopC = 1 To .Invent.NroItems
-            ln = LeerNPCs.GetValue("NPC" & npcNumber, "Obj" & LoopC)
+            ln = LeerNPCs.GetValue("NPC" & NpcNumber, "Obj" & LoopC)
             .Invent.Object(LoopC).ObjIndex = val(ReadField(1, ln, 45))
             .Invent.Object(LoopC).Amount = val(ReadField(2, ln, 45))
         Next LoopC
 
         For LoopC = 1 To MAX_NPC_DROPS
-            ln = LeerNPCs.GetValue("NPC" & npcNumber, "Drop" & LoopC)
+            ln = LeerNPCs.GetValue("NPC" & NpcNumber, "Drop" & LoopC)
             .Drop(LoopC).ObjIndex = val(ReadField(1, ln, 45))
 
             If .Drop(LoopC).ObjIndex = iORO Then
@@ -3143,21 +3139,21 @@ Public Sub ReloadNPCByIndex(ByVal NpcIndex As Integer)
 
         Next LoopC
 
-        .flags.LanzaSpells = val(LeerNPCs.GetValue("NPC" & npcNumber, "LanzaSpells"))
+        .flags.LanzaSpells = val(LeerNPCs.GetValue("NPC" & NpcNumber, "LanzaSpells"))
 
         If .flags.LanzaSpells > 0 Then ReDim .Spells(1 To .flags.LanzaSpells)
 
         For LoopC = 1 To .flags.LanzaSpells
-            .Spells(LoopC) = val(LeerNPCs.GetValue("NPC" & npcNumber, "Sp" & LoopC))
+            .Spells(LoopC) = val(LeerNPCs.GetValue("NPC" & NpcNumber, "Sp" & LoopC))
         Next LoopC
 
         If .NPCtype = eNPCType.Entrenador Then
-            .NroCriaturas = val(LeerNPCs.GetValue("NPC" & npcNumber, "NroCriaturas"))
+            .NroCriaturas = val(LeerNPCs.GetValue("NPC" & NpcNumber, "NroCriaturas"))
             ReDim .Criaturas(1 To .NroCriaturas) As tCriaturasEntrenador
 
             For LoopC = 1 To .NroCriaturas
-                .Criaturas(LoopC).NpcIndex = LeerNPCs.GetValue("NPC" & npcNumber, "CI" & LoopC)
-                .Criaturas(LoopC).NpcName = LeerNPCs.GetValue("NPC" & npcNumber, "CN" & LoopC)
+                .Criaturas(LoopC).NpcIndex = LeerNPCs.GetValue("NPC" & NpcNumber, "CI" & LoopC)
+                .Criaturas(LoopC).NpcName = LeerNPCs.GetValue("NPC" & NpcNumber, "CN" & LoopC)
             Next LoopC
 
         End If
@@ -3170,38 +3166,38 @@ Public Sub ReloadNPCByIndex(ByVal NpcIndex As Integer)
             '    .Respawn = 1
             'End If
 
-            .BackUp = val(LeerNPCs.GetValue("NPC" & npcNumber, "BackUp"))
-            .RespawnOrigPos = val(LeerNPCs.GetValue("NPC" & npcNumber, "OrigPos"))
-            .AfectaParalisis = val(LeerNPCs.GetValue("NPC" & npcNumber, "AfectaParalisis"))
+            .BackUp = val(LeerNPCs.GetValue("NPC" & NpcNumber, "BackUp"))
+            .RespawnOrigPos = val(LeerNPCs.GetValue("NPC" & NpcNumber, "OrigPos"))
+            .AfectaParalisis = val(LeerNPCs.GetValue("NPC" & NpcNumber, "AfectaParalisis"))
 
-            .Snd1 = val(LeerNPCs.GetValue("NPC" & npcNumber, "Snd1"))
-            .Snd2 = val(LeerNPCs.GetValue("NPC" & npcNumber, "Snd2"))
-            .Snd3 = val(LeerNPCs.GetValue("NPC" & npcNumber, "Snd3"))
+            .Snd1 = val(LeerNPCs.GetValue("NPC" & NpcNumber, "Snd1"))
+            .Snd2 = val(LeerNPCs.GetValue("NPC" & NpcNumber, "Snd2"))
+            .Snd3 = val(LeerNPCs.GetValue("NPC" & NpcNumber, "Snd3"))
 
         End With
 
         '<<<<<<<<<<<<<< Expresiones >>>>>>>>>>>>>>>>
-        .NroExpresiones = val(LeerNPCs.GetValue("NPC" & npcNumber, "NROEXP"))
+        .NroExpresiones = val(LeerNPCs.GetValue("NPC" & NpcNumber, "NROEXP"))
 
         If .NroExpresiones > 0 Then
             ReDim .Expresiones(1 To .NroExpresiones) As String
         End If
 
         For LoopC = 1 To .NroExpresiones
-            .Expresiones(LoopC) = LeerNPCs.GetValue("NPC" & npcNumber, "Exp" & LoopC)
+            .Expresiones(LoopC) = LeerNPCs.GetValue("NPC" & NpcNumber, "Exp" & LoopC)
         Next LoopC
         '<<<<<<<<<<<<<< Expresiones >>>>>>>>>>>>>>>>
 
         'Tipo de items con los que comercia
-        .TipoItems = val(LeerNPCs.GetValue("NPC" & npcNumber, "TipoItems"))
+        .TipoItems = val(LeerNPCs.GetValue("NPC" & NpcNumber, "TipoItems"))
 
-        .Ciudad = val(LeerNPCs.GetValue("NPC" & npcNumber, "Ciudad"))
+        .Ciudad = val(LeerNPCs.GetValue("NPC" & NpcNumber, "Ciudad"))
 
     End With
 
     Exit Sub
 
-ErrHandler:
+errHandler:
     Call LogError("Error en ReloadNPCIndexByFile - Err: " & Err.Number & " " & Err.description)
 
 End Sub

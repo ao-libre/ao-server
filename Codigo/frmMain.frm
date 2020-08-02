@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{48E59290-9880-11CF-9754-00AA00C00908}#1.0#0"; "MSINET.ocx"
+Object = "{48E59290-9880-11CF-9754-00AA00C00908}#1.0#0"; "MSINET.OCX"
 Begin VB.Form frmMain 
    BackColor       =   &H00FFC0C0&
    BorderStyle     =   3  'Fixed Dialog
@@ -7,7 +7,7 @@ Begin VB.Form frmMain
    ClientHeight    =   6975
    ClientLeft      =   1950
    ClientTop       =   1515
-   ClientWidth     =   10425
+   ClientWidth     =   11010
    ControlBox      =   0   'False
    FillColor       =   &H00C0C0C0&
    BeginProperty Font 
@@ -26,9 +26,42 @@ Begin VB.Form frmMain
    MinButton       =   0   'False
    PaletteMode     =   1  'UseZOrder
    ScaleHeight     =   6975
-   ScaleWidth      =   10425
+   ScaleWidth      =   11010
    StartUpPosition =   2  'CenterScreen
    WindowState     =   1  'Minimized
+   Begin VB.CommandButton cmdDB 
+      BackColor       =   &H00E0E0E0&
+      Caption         =   "Conectar a la DB"
+      Height          =   375
+      Index           =   0
+      Left            =   5280
+      Style           =   1  'Graphical
+      TabIndex        =   29
+      Top             =   5880
+      Width           =   1575
+   End
+   Begin VB.CommandButton cmdDB 
+      BackColor       =   &H00E0E0E0&
+      Caption         =   "Desconectar de la DB"
+      Height          =   375
+      Index           =   1
+      Left            =   6960
+      Style           =   1  'Graphical
+      TabIndex        =   28
+      Top             =   5880
+      Width           =   1935
+   End
+   Begin VB.CommandButton cmdDB 
+      BackColor       =   &H00E0E0E0&
+      Caption         =   "Estado de la conexión"
+      Height          =   375
+      Index           =   2
+      Left            =   9000
+      Style           =   1  'Graphical
+      TabIndex        =   27
+      Top             =   5880
+      Width           =   1935
+   End
    Begin VB.TextBox txtNumCuentas 
       Alignment       =   2  'Center
       BackColor       =   &H00C0FFFF&
@@ -68,12 +101,12 @@ Begin VB.Form frmMain
       MultiLine       =   -1  'True
       TabIndex        =   15
       Text            =   "frmMain.frx":1042
-      Top             =   4800
-      Width           =   4935
+      Top             =   4200
+      Width           =   5655
    End
    Begin InetCtlsObjects.Inet Inet1 
       Left            =   9600
-      Top             =   2640
+      Top             =   1800
       _ExtentX        =   1005
       _ExtentY        =   1005
       _Version        =   393216
@@ -270,8 +303,8 @@ Begin VB.Form frmMain
       Height          =   255
       Left            =   5400
       TabIndex        =   24
-      Top             =   4440
-      Width           =   4455
+      Top             =   3840
+      Width           =   5535
    End
    Begin VB.Label lblRespawnNpcs 
       Appearance      =   0  'Flat
@@ -281,8 +314,8 @@ Begin VB.Form frmMain
       Height          =   255
       Left            =   5400
       TabIndex        =   23
-      Top             =   3720
-      Width           =   4455
+      Top             =   3120
+      Width           =   5535
    End
    Begin VB.Label lblCharSave 
       Appearance      =   0  'Flat
@@ -292,8 +325,8 @@ Begin VB.Form frmMain
       Height          =   255
       Left            =   5400
       TabIndex        =   22
-      Top             =   3360
-      Width           =   4455
+      Top             =   2760
+      Width           =   5535
    End
    Begin VB.Label lblWorldSave 
       Appearance      =   0  'Flat
@@ -303,8 +336,8 @@ Begin VB.Form frmMain
       Height          =   255
       Left            =   5400
       TabIndex        =   21
-      Top             =   4080
-      Width           =   4455
+      Top             =   3480
+      Width           =   5535
    End
    Begin VB.Label lblFooter 
       Alignment       =   2  'Center
@@ -321,7 +354,7 @@ Begin VB.Form frmMain
       EndProperty
       ForeColor       =   &H00E0E0E0&
       Height          =   375
-      Left            =   6360
+      Left            =   5280
       TabIndex        =   20
       Top             =   6480
       Width           =   3975
@@ -346,7 +379,7 @@ Begin VB.Form frmMain
       Height          =   225
       Left            =   5400
       TabIndex        =   19
-      Top             =   2880
+      Top             =   2520
       Width           =   2970
    End
    Begin VB.Label lblRecordOnline 
@@ -373,21 +406,23 @@ Begin VB.Form frmMain
    End
    Begin VB.Label lblIpTitle 
       Alignment       =   2  'Center
+      Appearance      =   0  'Flat
+      BackColor       =   &H80000005&
       BackStyle       =   0  'Transparent
       BorderStyle     =   1  'Fixed Single
       Caption         =   "IP:PUERTO - Comparti esta informacion a quien quieras que se conecte a tu servidor."
       BeginProperty Font 
-         Name            =   "Comic Sans MS"
-         Size            =   14.25
+         Name            =   "Tahoma"
+         Size            =   11.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      ForeColor       =   &H00000080&
-      Height          =   1215
-      Left            =   5280
+      ForeColor       =   &H000000FF&
+      Height          =   975
+      Left            =   5400
       TabIndex        =   16
       Top             =   840
       Width           =   4695
@@ -410,8 +445,8 @@ Begin VB.Form frmMain
       Left            =   5400
       MousePointer    =   3  'I-Beam
       TabIndex        =   14
-      Top             =   2160
-      Width           =   4335
+      Top             =   1800
+      Width           =   4215
    End
    Begin VB.Label Escuch 
       BackColor       =   &H80000017&
@@ -699,7 +734,7 @@ End Sub
 
 Private Sub AutoSave_Timer()
 
-    On Error GoTo ErrHandler
+    On Error GoTo errHandler
 
     'fired every minute
     Static Minutos          As Long
@@ -765,7 +800,7 @@ Private Sub AutoSave_Timer()
     '<<<<<-------- Log the number of users online ------>>>
 
     Exit Sub
-ErrHandler:
+errHandler:
     Call LogError("Error en TimerAutoSave " & Err.Number & ": " & Err.description)
 
     Resume Next
@@ -804,6 +839,39 @@ End Sub
 Private Sub cmdConfiguracion_Click()
     frmServidor.Visible = True
 
+End Sub
+
+Private Sub cmdDB_Click(Index As Integer)
+'***********************************
+'Autor: Lorwik
+'Fecha: 02/08/2020
+'Descripción: Botones para el control de la conexion a la BBDD
+'***********************************
+
+#If DBConexionUnica = 0 Then
+    MsgBox ("El server esta configurado para conexion/desconexion por cada query, no es posible conectar ni desconectar en este modo. Cambie la configuracion desde los argunmentos en el codigo.")
+    Exit Sub
+#End If
+
+    Select Case Index
+    
+        Case 0 'Conectar
+            If MsgBox("Desea CONECTAR a la base de datos MYSQL? ¡Si ya esta conectada podria provocar errores!!!", vbYesNo, "¡CONEXION A LA MYSQL!") = vbNo Then Exit Sub
+            Call Database_Connect
+            
+        Case 1 'Desconectar
+            If MsgBox("Desea DESCONECTAR de la base de datos MYSQL? ¡Si ya esta desconectada podria provocar errores!!!", vbYesNo, "¡DESCONEXION DE LA MYSQL!") = vbNo Then Exit Sub
+            Call Database_Close
+            
+        Case 2 'Estado de la conexion
+        
+            If CheckSQLStatus Then
+                MsgBox "Base de datos CONECTADA"
+            Else
+                MsgBox "No hay conexión con la Base de datos"
+            End If
+            
+    End Select
 End Sub
 
 Private Sub CMDDUMP_Click()

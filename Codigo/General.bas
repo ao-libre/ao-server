@@ -31,7 +31,7 @@ Option Explicit
 
 #If False Then
 
-    Dim X, Y, Map, K, ErrHandler, obj, index, n, Email As Variant
+    Dim X, Y, Map, K, errHandler, obj, Index, n, Email As Variant
 
 #End If
 
@@ -279,6 +279,14 @@ Sub Main()
     Call LoadSini
     Call CargarCiudades
     Call CargaApuestas
+    
+    'Base de datos MySQL
+#If DBConexionUnica = 1 Then
+    If Database_Enabled Then
+        frmCargando.Label1(2).Caption = "Cargando Base de datos"
+        Call Database_Connect
+    End If
+#End If
     
     ' Npcs.dat
     frmCargando.Label1(2).Caption = "Cargando NPCs.Dat"
@@ -850,7 +858,7 @@ Public Sub EfectoLluvia(ByVal Userindex As Integer)
     '
     '***************************************************
 
-    On Error GoTo ErrHandler
+    On Error GoTo errHandler
 
     If UserList(Userindex).flags.UserLogged Then
         If Intemperie(Userindex) Then
@@ -866,7 +874,7 @@ Public Sub EfectoLluvia(ByVal Userindex As Integer)
     End If
     
     Exit Sub
-ErrHandler:
+errHandler:
     LogError ("Error en EfectoLluvia")
 
 End Sub
@@ -1465,7 +1473,7 @@ Public Sub Sanar(ByVal Userindex As Integer, _
 
 End Sub
 
-Public Sub CargaNpcsDat(Optional ByVal ForzarActualizacionNpcsExistentes As Boolean = False) 
+Public Sub CargaNpcsDat(Optional ByVal ForzarActualizacionNpcsExistentes As Boolean = False)
     '***************************************************
     'Author: Unknown
     'Last Modification: 06/07/2020 (Cuicui)
@@ -1749,9 +1757,9 @@ Public Sub FreeCharIndexes()
 End Sub
 
 Public Sub ReproducirSonido(ByVal Destino As SendTarget, _
-                            ByVal index As Integer, _
+                            ByVal Index As Integer, _
                             ByVal SoundIndex As Integer)
-    Call SendData(Destino, index, PrepareMessagePlayWave(SoundIndex, UserList(index).Pos.X, UserList(index).Pos.Y))
+    Call SendData(Destino, Index, PrepareMessagePlayWave(SoundIndex, UserList(Index).Pos.X, UserList(Index).Pos.Y))
 
 End Sub
 
