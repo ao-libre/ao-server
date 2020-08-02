@@ -1996,7 +1996,11 @@ Sub LoadSini()
     Database_Name = Lector.GetValue("DATABASE", "Name")
     Database_Username = Lector.GetValue("DATABASE", "Username")
     Database_Password = Lector.GetValue("DATABASE", "Password")
-      
+    
+    If Database_Enabled Then
+        Call modDatabase.Database_Connect
+    End If
+    
     'Max users
     Temporal = val(Lector.GetValue("INIT", "MaxUsers"))
 

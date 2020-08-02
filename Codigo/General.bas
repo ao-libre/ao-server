@@ -1784,5 +1784,12 @@ Public Sub CloseServer()
         Shell ("taskkill /PID " & ApiNodeJsTaskId)
     End If
     
+    If Database_Enabled Then
+        Call modDatabase.Database_Close
+        
+        Debug.Print "Desconectandose de la Base de Datos..."
+    End If
+    
     End
+    
 End Sub

@@ -899,9 +899,7 @@ Public Sub LoginAccountCharfile(ByVal Userindex As Integer, ByVal UserName As St
             Next i
     
         End If
-        
-        .LoggedIn = True
-        
+
     End With
     
     Set Account = Nothing

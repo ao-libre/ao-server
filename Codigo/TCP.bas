@@ -830,7 +830,11 @@ Sub ConnectAccount(ByVal Userindex As Integer, _
         
     End If
     
+    UserList(Userindex).Account.LoggedIn = True
+    
+    ' Actualizo el contador de cuentas online en el frmMain
     NumCuentas = NumCuentas + 1
+    Call MostrarNumCuentas
     
 End Sub
 
@@ -898,7 +902,10 @@ Sub CloseSocket(ByVal Userindex As Integer)
 
         End If
         
-        If NumCuentas > 0 Then NumCuentas = NumCuentas - 1
+        If NumCuentas > 0 Then
+            NumCuentas = NumCuentas - 1
+            Call MostrarNumCuentas
+        End If
         
         Call LiberarSlot(Userindex)
             
