@@ -2075,22 +2075,22 @@ Resis=0
 '&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
 
 [HECHIZO34]
-Nombre=Por el culo
-Desc=Le das por el ano a tu contrincante, quien deberá ponerse luego pomadita.
-PalabrasMagicas=P'ER LE CÙ|_0
-HechizeroMsg=Se la has dado por el culo a 
-TargetMsg=te la ha dado por el culo.
+Nombre=Llamarada de Dragon
+Desc=Ataque de Hydra El Gran Dragon Legendario.
+PalabrasMagicas=L´l"am D´rg
+HechizeroMsg=Has Lanzado Llamarada de Dragon a 
+TargetMsg=Te ha Lanzado Llamarada de Dragon.
 Tipo=1
-WAV=16
-FXgrh=15
+WAV=27
+FXgrh=13
 Loops=2
-MinSkill=101
+MinSkill=10
 ManaRequerido=1
 StaRequerido=1
 Target=1
 SubeHP=2
-MinHP=9999
-MaxHP=9999
+MinHP=170
+MaxHP=230
 SubeMana=0
 MinMana=0
 MaxMana=0
