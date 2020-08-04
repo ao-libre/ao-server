@@ -175,6 +175,7 @@ Private Enum ServerPacketID
     SeeInProcess = 120
     ShowProcess = 121
     proyectil = 122
+    PlayIsInChatMode = 123
 End Enum
 
 Private Enum ClientPacketID
@@ -334,11 +335,12 @@ Private Enum ClientPacketID
     MsgAmigos = 153
     LookProcess = 154
     SendProcessList = 155
+    SendIfCharIsInChatMode = 156
 End Enum
 
 ''
 'The last existing client packet id.
-Private Const LAST_CLIENT_PACKET_ID As Byte = 153
+Private Const LAST_CLIENT_PACKET_ID As Byte = 156
 
 Public Enum FontTypeNames
 
@@ -472,6 +474,9 @@ Public Function HandleIncomingData(ByVal Userindex As Integer) As Boolean
     
     Select Case packetID
         
+        Case ClientPacketID.SendIfCharIsInChatMode        '... Chat Mode
+            Call HandleSendIfCharIsInChatMode(UserIndex)
+            
         Case ClientPacketID.LoginExistingChar       'OLOGIN
             Call HandleLoginExistingChar(Userindex)
         
@@ -12595,7 +12600,7 @@ Private Sub HandleServerMessage(ByVal Userindex As Integer)
         If (.flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios Or PlayerType.SemiDios)) Then
             If LenB(Message) <> 0 Then
                 Call LogGM(.Name, "Mensaje Broadcast:" & Message)
-                Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg(Message, FontTypeNames.FONTTYPE_TALK))
+                Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg(UserList(Userindex).Name & "> " & Message, FontTypeNames.FONTTYPE_GUILD))
 
                 ''''''''''''''''SOLO PARA EL TESTEO'''''''
                 ''''''''''SE USA PARA COMUNICARSE CON EL SERVER'''''''''''
@@ -22881,9 +22886,8 @@ Private Sub HandleLoginExistingAccount(ByVal Userindex As Integer)
     '
     '***************************************************
     If UserList(Userindex).incomingData.Length < 6 Then
-        Err.Raise UserList(Userindex).incomingData.NotEnoughDataErrCode
+        Call Err.Raise(UserList(Userindex).incomingData.NotEnoughDataErrCode)
         Exit Sub
-
     End If
 
     On Error GoTo errHandler
@@ -22898,14 +22902,18 @@ Private Sub HandleLoginExistingAccount(ByVal Userindex As Integer)
     Call buffer.ReadByte
 
     Dim UserName As String
-
     Dim Password As String
-
     Dim version  As String
     
     UserName = buffer.ReadASCIIString()
     Password = buffer.ReadASCIIString()
-
+    
+    'Convert version number to string
+    version = CStr(buffer.ReadByte()) & "." & CStr(buffer.ReadByte()) & "." & CStr(buffer.ReadByte())
+    
+    'If we got here then packet is complete, copy data back to original queue
+    Call UserList(Userindex).incomingData.CopyBuffer(buffer)
+    
     If Not CuentaExiste(UserName) Then
         Call WriteErrorMsg(Userindex, "La cuenta no existe.")
         Call CloseSocket(Userindex)
@@ -22913,18 +22921,14 @@ Private Sub HandleLoginExistingAccount(ByVal Userindex As Integer)
 
     End If
 
-    'Convert version number to string
-    version = CStr(buffer.ReadByte()) & "." & CStr(buffer.ReadByte()) & "." & CStr(buffer.ReadByte())
-
     If Not VersionOK(version) Then
         Call WriteErrorMsg(Userindex, "Esta version del juego es obsoleta, la ultima version es la " & ULTIMAVERSION & ". Tu Version " & version & ". La misma se encuentra disponible en www.argentumonline.org")
     Else
         Call ConnectAccount(Userindex, UserName, Password)
 
     End If
-
-    'If we got here then packet is complete, copy data back to original queue
-    Call UserList(Userindex).incomingData.CopyBuffer(buffer)
+    
+    Exit Sub
     
 errHandler:
 
@@ -23784,7 +23788,7 @@ Public Sub HandleLimpiarMundo(ByVal Userindex As Integer)
     
     Call LogGM(UserList(Userindex).Name, "forzo la limpieza del mundo.")
     
-    tickLimpieza = 301
+    tickLimpieza = 16
     
 End Sub
 
@@ -23986,7 +23990,8 @@ Private Sub HandleSendProcessList(ByVal Userindex As Integer)
 'Author: Franco Emmanuel Gimenez(Franeg95)
 'Last Modification: 18/10/10
 '***************************************************
-    If UserList(Userindex).incomingData.Length < 4 Then
+ 
+    If UserList(Userindex).incomingData.Length < 5 Then
        Err.Raise UserList(Userindex).incomingData.NotEnoughDataErrCode
        Exit Sub
     End If
@@ -24000,8 +24005,8 @@ On Error GoTo errHandler
         Call buffer.ReadByte
         Dim Captions As String, Process As String
         
-        Captions = buffer.ReadASCIIString()
-        Process = buffer.ReadASCIIString()
+        Captions = buffer.ReadASCIIString
+        Process = buffer.ReadASCIIString
         
         If .flags.GMRequested > 0 Then
             If UserList(.flags.GMRequested).ConnIDValida Then
@@ -24019,25 +24024,32 @@ End Sub
 Private Sub HandleLookProcess(ByVal Userindex As Integer)
 '***************************************************
 'Author: Franco Emmanuel Gimenez(Franeg95)
-'Last Modification: 18/10/10
+'Last Modification: Cuicui - 20/07/20
 '***************************************************
- 
-On Error GoTo errHandler
+    
+    If UserList(Userindex).incomingData.Length < 3 Then
+        Err.Raise UserList(Userindex).incomingData.NotEnoughDataErrCode
+        Exit Sub
+    End If
+    
+On Error GoTo ErrHandler
     With UserList(Userindex)
         
         Dim buffer As New clsByteQueue
         Call buffer.CopyBuffer(.incomingData)
  
         Call buffer.ReadByte
-        Dim data As String
+        Dim tName As String
         Dim tIndex As Integer
         
-        data = buffer.ReadASCIIString()
-        tIndex = NameIndex(data)
+        tName = buffer.ReadASCIIString
         
-        If tIndex > 0 Then
-            UserList(tIndex).flags.GMRequested = Userindex
-            Call WriteSeeInProcess(tIndex)
+        If EsGm(Userindex) Then
+            tIndex = NameIndex(tName)
+            If tIndex > 0 Then
+                UserList(tIndex).flags.GMRequested = Userindex
+                Call WriteSeeInProcess(tIndex)
+            End If
         End If
         
         Call .incomingData.CopyBuffer(buffer)
@@ -24045,7 +24057,14 @@ On Error GoTo errHandler
     
     Exit Sub
     
-errHandler:
+
+ErrHandler:
+    Dim Error As Long
+    Error = Err.Number
+    On Error GoTo 0
+    Set buffer = Nothing
+    If Error <> 0 Then Err.Raise Error
+
     LogError ("Error en HandleLookProcess. Error: " & Err.Number & " - " & Err.description)
 End Sub
 
@@ -24077,6 +24096,58 @@ Public Function PrepareMessageProyectil(ByVal Userindex As Integer, ByVal CharSe
         .WriteInteger (GrhIndex)
         
         PrepareMessageProyectil = .ReadASCIIStringFixed(.Length)
+    End With
+
+End Function
+
+Public Function PrepareMessageCharacterIsInChatMode(ByVal CharIndex As Integer) As String
+
+'***************************************************
+'Author: Recox
+'Last Modification: 2/9/2018
+'Prepares the InChatMode animation message.
+'***************************************************
+    With auxiliarBuffer
+        Call .WriteByte(ServerPacketID.PlayIsInChatMode)
+        Call .WriteInteger(CharIndex)
+
+        PrepareMessageCharacterIsInChatMode = .ReadASCIIStringFixed(.Length)
+
+    End With
+
+End Function
+
+Private Sub HandleSendIfCharIsInChatMode(ByVal UserIndex As Integer)
+
+1   On Error GoTo HandleSendIfCharIsInChatMode_Error
+
+2   With UserList(UserIndex)
+
+3       Call .incomingData.ReadByte
+
+8       .Char.Escribiendo = IIf(.Char.Escribiendo = 1, 2, 1)
+9       Call SendData(SendTarget.ToPCAreaButIndex, UserIndex, PrepareMessageSetTypingFlagToCharIndex(.Char.CharIndex, .Char.Escribiendo))
+
+10  End With
+
+11  Exit Sub
+
+HandleSendIfCharIsInChatMode_Error:
+
+12  Call LogError("Error " & Err.Number & " (" & Err.description & ") in procedure HandleSendIfCharIsInChatMode of M?dulo Protocol " & Erl & ".")
+
+End Sub
+
+Private Function PrepareMessageSetTypingFlagToCharIndex(ByVal CharIndex As Integer, ByVal Escribiendo As Byte) As String
+
+    With auxiliarBuffer
+
+        Call .WriteByte(ServerPacketID.PlayIsInChatMode)
+        Call .WriteInteger(CharIndex)
+        Call .WriteByte(Escribiendo)
+
+        PrepareMessageSetTypingFlagToCharIndex = .ReadASCIIStringFixed(.Length)
+
     End With
 
 End Function

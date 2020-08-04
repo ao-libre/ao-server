@@ -26,6 +26,9 @@ Attribute VB_Name = "InvUsuario"
 'La Plata - Pcia, Buenos Aires - Republica Argentina
 'Codigo Postal 1900
 'Pablo Ignacio Marquez
+#If False Then
+    Dim ErrHandler, Userindex As Variant
+#End If
 
 Option Explicit
 
@@ -496,90 +499,95 @@ Sub DropObj(ByVal Userindex As Integer, _
     'Last Modification: 11/5/2010
     '11/5/2010 - ZaMa: Arreglo bug que permitia apilar mas de 10k de items.
     '***************************************************
-
+    On Error GoTo ErrHandler
+    
     Dim DropObj As obj
 
     Dim MapObj  As obj
 
-    With UserList(Userindex)
+1    With UserList(Userindex)
 
-        If Num > 0 Then
+2        If Num > 0 Then
             
             'Validacion para que no podamos tirar nuestra monturas mientras la usamos.
-            If .flags.Equitando = 1 And .Invent.MonturaEqpSlot = Slot Then
-                Call WriteConsoleMsg(Userindex, "No podes tirar tu montura mientras la estas usando.", FontTypeNames.FONTTYPE_INFO)
+3            If .flags.Equitando = 1 And .Invent.MonturaEqpSlot = Slot Then
+4                Call WriteConsoleMsg(Userindex, "No podes tirar tu montura mientras la estas usando.", FontTypeNames.FONTTYPE_INFO)
                 Exit Sub
             End If
 
             'Validacion para que no podamos tirar nuestra mochila mientras la usamos.
-            If .Invent.MochilaEqpSlot > 0 Then
-                If .Invent.MochilaEqpSlot = Slot Then
-                    Call WriteConsoleMsg(Userindex, "No puedes tirar tu alforja o mochila mientras la estes usando.", FontTypeNames.FONTTYPE_TALK)
+5            If .Invent.MochilaEqpSlot > 0 Then
+6                If .Invent.MochilaEqpSlot = Slot Then
+7                    Call WriteConsoleMsg(Userindex, "No puedes tirar tu alforja o mochila mientras la estes usando.", FontTypeNames.FONTTYPE_TALK)
                     Exit Sub
                 End If
             End If
         
-            DropObj.ObjIndex = .Invent.Object(Slot).ObjIndex
+8            DropObj.ObjIndex = .Invent.Object(Slot).ObjIndex
         
-            If (ItemNewbie(DropObj.ObjIndex) And (.flags.Privilegios And PlayerType.User)) Then
-                Call WriteConsoleMsg(Userindex, "No puedes tirar objetos newbie.", FontTypeNames.FONTTYPE_WARNING)
+9            If (ItemNewbie(DropObj.ObjIndex) And (.flags.Privilegios And PlayerType.User)) Then
+10                Call WriteConsoleMsg(Userindex, "No puedes tirar objetos newbie.", FontTypeNames.FONTTYPE_WARNING)
                 Exit Sub
 
             End If
         
-            DropObj.Amount = MinimoInt(Num, .Invent.Object(Slot).Amount)
+11            DropObj.Amount = MinimoInt(Num, .Invent.Object(Slot).Amount)
 
             'Check objeto en el suelo
-            MapObj.ObjIndex = MapData(.Pos.Map, X, Y).ObjInfo.ObjIndex
-            MapObj.Amount = MapData(.Pos.Map, X, Y).ObjInfo.Amount
+12            MapObj.ObjIndex = MapData(.Pos.Map, X, Y).ObjInfo.ObjIndex
+13            MapObj.Amount = MapData(.Pos.Map, X, Y).ObjInfo.Amount
         
-            If MapObj.ObjIndex = 0 Or MapObj.ObjIndex = DropObj.ObjIndex Then
+14            If MapObj.ObjIndex = 0 Or MapObj.ObjIndex = DropObj.ObjIndex Then
         
-                If MapObj.Amount = MAX_INVENTORY_OBJS Then
-                    Call WriteConsoleMsg(Userindex, "No hay espacio en el piso.", FontTypeNames.FONTTYPE_WARNING)
+15                If MapObj.Amount = MAX_INVENTORY_OBJS Then
+16                    Call WriteConsoleMsg(Userindex, "No hay espacio en el piso.", FontTypeNames.FONTTYPE_WARNING)
                     Exit Sub
 
                 End If
             
-                If DropObj.Amount + MapObj.Amount > MAX_INVENTORY_OBJS Then
-                    DropObj.Amount = MAX_INVENTORY_OBJS - MapObj.Amount
+17                If DropObj.Amount + MapObj.Amount > MAX_INVENTORY_OBJS Then
+18                    DropObj.Amount = MAX_INVENTORY_OBJS - MapObj.Amount
 
                 End If
             
-                Call MakeObj(DropObj, Map, X, Y)
-                Call QuitarUserInvItem(Userindex, Slot, DropObj.Amount)
-                Call UpdateUserInv(False, Userindex, Slot)
+19                Call QuitarUserInvItem(Userindex, Slot, DropObj.Amount)
+20                Call UpdateUserInv(False, Userindex, Slot)
+21                Call MakeObj(DropObj, Map, X, Y)
             
-                If ObjData(DropObj.ObjIndex).OBJType = eOBJType.otBarcos Then
-                    Call WriteConsoleMsg(Userindex, "ATENCION!! ACABAS DE TIRAR TU BARCA!", FontTypeNames.FONTTYPE_WARNING)
+22                If ObjData(DropObj.ObjIndex).OBJType = eOBJType.otBarcos Then
+23                    Call WriteConsoleMsg(Userindex, "ATENCION!! ACABAS DE TIRAR TU BARCA!", FontTypeNames.FONTTYPE_WARNING)
 
                 End If
             
-                If Not .flags.Privilegios And PlayerType.User Then Call LogGM(.Name, "Tiro cantidad:" & Num & " Objeto:" & ObjData(DropObj.ObjIndex).Name)
+24                If Not .flags.Privilegios And PlayerType.User Then Call LogGM(.Name, "Tiro cantidad:" & Num & " Objeto:" & ObjData(DropObj.ObjIndex).Name)
             
                 'Log de Objetos que se tiran al piso. Pablo (ToxicWaste) 07/09/07
                 'Es un Objeto que tenemos que loguear?
-                If ObjData(DropObj.ObjIndex).Log = 1 Then
-                    Call LogDesarrollo(.Name & " tiro al piso " & DropObj.Amount & " " & ObjData(DropObj.ObjIndex).Name & " Mapa: " & Map & " X: " & X & " Y: " & Y)
-                ElseIf DropObj.Amount > 5000 Then 'Es mucha cantidad? > Subi a 5000 el minimo porque si no se llenaba el log de cosas al pedo. (NicoNZ)
+25                If ObjData(DropObj.ObjIndex).Log = 1 Then
+26                    Call LogDesarrollo(.Name & " tiro al piso " & DropObj.Amount & " " & ObjData(DropObj.ObjIndex).Name & " Mapa: " & Map & " X: " & X & " Y: " & Y)
+27                ElseIf DropObj.Amount > 5000 Then 'Es mucha cantidad? > Subi a 5000 el minimo porque si no se llenaba el log de cosas al pedo. (NicoNZ)
 
                     'Si no es de los prohibidos de loguear, lo logueamos.
-                    If ObjData(DropObj.ObjIndex).NoLog <> 1 Then
-                        Call LogDesarrollo(.Name & " tiro al piso " & DropObj.Amount & " " & ObjData(DropObj.ObjIndex).Name & " Mapa: " & Map & " X: " & X & " Y: " & Y)
+28                    If ObjData(DropObj.ObjIndex).NoLog <> 1 Then
+29                        Call LogDesarrollo(.Name & " tiro al piso " & DropObj.Amount & " " & ObjData(DropObj.ObjIndex).Name & " Mapa: " & Map & " X: " & X & " Y: " & Y)
 
                     End If
 
                 End If
 
             Else
-                Call WriteConsoleMsg(Userindex, "No hay espacio en el piso.", FontTypeNames.FONTTYPE_INFO)
+30                Call WriteConsoleMsg(Userindex, "No hay espacio en el piso.", FontTypeNames.FONTTYPE_INFO)
 
             End If
 
         End If
 
     End With
-
+    
+    Exit Sub
+    
+ErrHandler:
+    Call LogError("Error en DropObj en " & Erl & " Nick: " & UserList(Userindex).Name & " (Map: " & UserList(Userindex).Pos.Map & "). Err: " & Err.Number & " " & Err.description)
 End Sub
 
 Sub EraseObj(ByVal Num As Integer, _
@@ -616,17 +624,18 @@ Sub MakeObj(ByRef obj As obj, _
     'Last Modification: -
     '
     '***************************************************
+    On Error GoTo ErrHandler
     
-    If obj.ObjIndex > 0 And obj.ObjIndex <= UBound(ObjData) Then
+1    If obj.ObjIndex > 0 And obj.ObjIndex <= UBound(ObjData) Then
     
-        With MapData(Map, X, Y)
+2        With MapData(Map, X, Y)
 
-            If .ObjInfo.ObjIndex = obj.ObjIndex Then
-                .ObjInfo.Amount = .ObjInfo.Amount + obj.Amount
-            Else
-                .ObjInfo = obj
+3            If .ObjInfo.ObjIndex = obj.ObjIndex Then
+4                .ObjInfo.Amount = .ObjInfo.Amount + obj.Amount
+5            Else
+6                .ObjInfo = obj
                 
-                Call modSendData.SendToAreaByPos(Map, X, Y, PrepareMessageObjectCreate(ObjData(obj.ObjIndex).GrhIndex, X, Y))
+7                Call modSendData.SendToAreaByPos(Map, X, Y, PrepareMessageObjectCreate(ObjData(obj.ObjIndex).GrhIndex, X, Y))
 
             End If
             
@@ -652,35 +661,35 @@ Sub MakeObj(ByRef obj As obj, _
             Dim IsNotMochilas As Boolean
             Dim IsValidObjectToClean As Boolean
 
-            IsNotObjFogata = ObjData(obj.ObjIndex).OBJType <> otFogata 
-            IsNotObjTeleport = ObjData(obj.ObjIndex).OBJType <> otTeleport 
-            IsNotFragua = ObjData(obj.ObjIndex).OBJType <> otFragua 
-            IsNotYacimientoPez = ObjData(obj.ObjIndex).OBJType <> otYacimientoPez 
-            IsNotYacimiento = ObjData(obj.ObjIndex).OBJType <> otYacimiento 
-            IsNotMueble = ObjData(obj.ObjIndex).OBJType <> otMuebles 
-            IsNotArbolElfico = ObjData(obj.ObjIndex).OBJType <> otArbolElfico 
-            IsNotArbol = ObjData(obj.ObjIndex).OBJType <> otArboles 
-            IsNotCartel = ObjData(obj.ObjIndex).OBJType <> otCarteles 
-            IsNotBarco = ObjData(obj.ObjIndex).OBJType <> otBarcos 
-            IsNotMontura = ObjData(obj.ObjIndex).OBJType <> otMonturas 
-            IsNotYunque = ObjData(obj.ObjIndex).OBJType <> otYunque 
-            IsNotManual = ObjData(obj.ObjIndex).OBJType <> otManuales 
-            IsNotForo = ObjData(obj.ObjIndex).OBJType <> otForos 
-            IsNotPuerta = ObjData(obj.ObjIndex).OBJType <> otPuertas 
-            IsNotInstrumentos = ObjData(obj.ObjIndex).OBJType <> otInstrumentos 
-            IsNotPergaminos = ObjData(obj.ObjIndex).OBJType <> otPergaminos 
-            IsNotGemas = ObjData(obj.ObjIndex).OBJType <> otGemas 
-            IsNotMochilas = ObjData(obj.ObjIndex).OBJType <> otMochilas 
+8            IsNotObjFogata = ObjData(obj.ObjIndex).OBJType <> otFogata
+9            IsNotObjTeleport = ObjData(obj.ObjIndex).OBJType <> otTeleport
+10            IsNotFragua = ObjData(obj.ObjIndex).OBJType <> otFragua
+11            IsNotYacimientoPez = ObjData(obj.ObjIndex).OBJType <> otYacimientoPez
+12            IsNotYacimiento = ObjData(obj.ObjIndex).OBJType <> otYacimiento
+13            IsNotMueble = ObjData(obj.ObjIndex).OBJType <> otMuebles
+14            IsNotArbolElfico = ObjData(obj.ObjIndex).OBJType <> otArbolElfico
+15            IsNotArbol = ObjData(obj.ObjIndex).OBJType <> otArboles
+16            IsNotCartel = ObjData(obj.ObjIndex).OBJType <> otCarteles
+17            IsNotBarco = ObjData(obj.ObjIndex).OBJType <> otBarcos
+18            IsNotMontura = ObjData(obj.ObjIndex).OBJType <> otMonturas
+19            IsNotYunque = ObjData(obj.ObjIndex).OBJType <> otYunque
+20            IsNotManual = ObjData(obj.ObjIndex).OBJType <> otManuales
+21            IsNotForo = ObjData(obj.ObjIndex).OBJType <> otForos
+22            IsNotPuerta = ObjData(obj.ObjIndex).OBJType <> otPuertas
+23            IsNotInstrumentos = ObjData(obj.ObjIndex).OBJType <> otInstrumentos
+24            IsNotPergaminos = ObjData(obj.ObjIndex).OBJType <> otPergaminos
+25            IsNotGemas = ObjData(obj.ObjIndex).OBJType <> otGemas
+26            IsNotMochilas = ObjData(obj.ObjIndex).OBJType <> otMochilas
             
 
-            If IsNotObjFogata And IsNotObjTeleport And IsNotFragua And IsNotYacimientoPez And IsNotYacimiento And IsNotMueble And IsNotArbolElfico And IsNotArbol And IsNotCartel And IsNotBarco And IsNotMontura And IsNotYunque And IsNotManual And IsNotForo And IsNotPuerta And IsNotInstrumentos And IsNotPergaminos And IsNotGemas And IsNotMochilas Then 
-                IsValidObjectToClean = True
-            Else
-                IsValidObjectToClean = False
+27            If IsNotObjFogata And IsNotObjTeleport And IsNotFragua And IsNotYacimientoPez And IsNotYacimiento And IsNotMueble And IsNotArbolElfico And IsNotArbol And IsNotCartel And IsNotBarco And IsNotMontura And IsNotYunque And IsNotManual And IsNotForo And IsNotPuerta And IsNotInstrumentos And IsNotPergaminos And IsNotGemas And IsNotMochilas Then
+28                IsValidObjectToClean = True
+29            Else
+30                IsValidObjectToClean = False
             End If
 
             '//Agregamos las pos de los objetos
-            If IsValidObjectToClean And ItemNoEsDeMapa(ObjData(obj.ObjIndex).OBJType) Then
+31            If IsValidObjectToClean And ItemNoEsDeMapa(obj.ObjIndex) Then
                 Dim xPos As WorldPos
 
                 xPos.Map = Map
@@ -691,18 +700,21 @@ Sub MakeObj(ByRef obj As obj, _
                 Dim IsNotTileBajoTecho As Boolean
                 Dim IsNotTileBlocked As Boolean
 
-                IsNotTileCasaTrigger = MapData(xPos.Map, xPos.X, xPos.Y).trigger <> eTrigger.CASA 
-                IsNotTileBajoTecho = MapData(xPos.Map, xPos.X, xPos.Y).trigger <> eTrigger.BAJOTECHO
-                IsNotTileBlocked = MapData(xPos.Map, xPos.X, xPos.Y).Blocked <> 1
+32                IsNotTileCasaTrigger = MapData(xPos.Map, xPos.X, xPos.Y).trigger <> eTrigger.CASA
+33                IsNotTileBajoTecho = MapData(xPos.Map, xPos.X, xPos.Y).trigger <> eTrigger.BAJOTECHO
+34                IsNotTileBlocked = MapData(xPos.Map, xPos.X, xPos.Y).Blocked <> 1
 
-                If (IsNotTileCasaTrigger Or IsNotTileBajoTecho) And IsNotTileBlocked Then AgregarObjetoLimpieza xPos
+35                If (IsNotTileCasaTrigger Or IsNotTileBajoTecho) And IsNotTileBlocked Then AgregarObjetoLimpieza xPos
 
-            End If
+36            End If
 
         End With
 
     End If
-
+    
+    Exit Sub
+ErrHandler:
+        Call LogError("Error en MakeObj en " & Erl & " Map: " & Map & "-" & X & "-" & Y & ". Err: " & Err.Number & " " & Err.description)
 End Sub
 
 Function MeterItemEnInventario(ByVal Userindex As Integer, ByRef MiObj As obj) As Boolean
@@ -2380,19 +2392,19 @@ Sub TirarTodosLosItems(ByVal Userindex As Integer)
 
     Dim DropAgua  As Boolean
     
-    With UserList(Userindex)
+1    With UserList(Userindex)
 
-        For i = 1 To .CurrentInventorySlots
-            ItemIndex = .Invent.Object(i).ObjIndex
+2        For i = 1 To .CurrentInventorySlots
+3            ItemIndex = .Invent.Object(i).ObjIndex
 
-            If ItemIndex > 0 Then
-                If ItemSeCae(ItemIndex) Then
-                    NuevaPos.X = 0
-                    NuevaPos.Y = 0
+4            If ItemIndex > 0 Then
+5                If ItemSeCae(ItemIndex) Then
+6                    NuevaPos.X = 0
+7                    NuevaPos.Y = 0
                     
                     'Creo el Obj
-                    MiObj.Amount = .Invent.Object(i).Amount
-                    MiObj.ObjIndex = ItemIndex
+8                    MiObj.Amount = .Invent.Object(i).Amount
+9                    MiObj.ObjIndex = ItemIndex
 
                     DropAgua = True
 
@@ -2400,10 +2412,11 @@ Sub TirarTodosLosItems(ByVal Userindex As Integer)
                     If .Clase = eClass.Pirat Then
 
                         ' Si tiene galeon equipado
-                        If .Invent.BarcoObjIndex = 476 Then
+                        ' TODO: USAR ESTA FUNCION ACA: EsGaleon(Barco)
+10                        If .Invent.BarcoObjIndex = 476 Then
 
                             ' Limitacion por nivel, despues dropea normalmente
-                            If .Stats.ELV = 20 Then
+11                            If .Stats.ELV = 20 Then
                                 ' No dropea en agua
                                 DropAgua = False
 
@@ -2413,16 +2426,16 @@ Sub TirarTodosLosItems(ByVal Userindex As Integer)
 
                     End If
                     
-                    Call Tilelibre(.Pos, NuevaPos, MiObj, DropAgua, True)
+12                    Call Tilelibre(.Pos, NuevaPos, MiObj, DropAgua, True)
                     
-                    If NuevaPos.X <> 0 And NuevaPos.Y <> 0 Then
-                        Call DropObj(Userindex, i, MAX_INVENTORY_OBJS, NuevaPos.Map, NuevaPos.X, NuevaPos.Y)
+13                    If NuevaPos.X <> 0 And NuevaPos.Y <> 0 Then
+14                        Call DropObj(Userindex, i, MAX_INVENTORY_OBJS, NuevaPos.Map, NuevaPos.X, NuevaPos.Y)
 
-                    End If
+15                    End If
 
-                End If
+16                End If
 
-            End If
+17           End If
 
         Next i
 
@@ -2431,7 +2444,7 @@ Sub TirarTodosLosItems(ByVal Userindex As Integer)
     Exit Sub
     
 ErrHandler:
-    Call LogError("Error en TirarTodosLosItems. Error: " & Err.Number & " - " & Err.description)
+    Call LogError("Error en TirarTodosLosItems en linea " & Erl & " - Nick:" & UserList(Userindex).Name & ". Error: " & Err.Number & " - " & Err.description)
 
 End Sub
 
@@ -2521,7 +2534,7 @@ Sub TirarTodosLosItemsEnMochila(ByVal Userindex As Integer)
 
             If ItemIndex > 0 Then
                 If Not ItemSeCae(ItemIndex) Then
-                    Call WriteConsoleMsg(UserIndex, "Acabas de tirar un objeto que no se cae normalmente ya que lo tenias en tu mochila u alforja y la desequipaste o tiraste", FontTypeNames.FONTTYPE_WARNING)
+                    Call WriteConsoleMsg(Userindex, "Acabas de tirar un objeto que no se cae normalmente ya que lo tenias en tu mochila u alforja y la desequipaste o tiraste", FontTypeNames.FONTTYPE_WARNING)
                 End If
 
                 NuevaPos.X = 0

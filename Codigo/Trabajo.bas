@@ -195,12 +195,13 @@ Public Sub DoNavega(ByVal Userindex As Integer, _
         If EsGalera(Barco) Then
             
             If .Clase <> eClass.Assasin And _
+                .Clase <> eClass.Pirat And _
                 .Clase <> eClass.Bandit And _
                 .Clase <> eClass.Cleric And _
                 .Clase <> eClass.Thief And _
                 .Clase <> eClass.Paladin Then
             
-                Call WriteConsoleMsg(Userindex, "Solo los Asesinos, Bandidos, Clerigos, Bandidos y Paladines pueden usar Galera!!", FontTypeNames.FONTTYPE_INFO)
+                Call WriteConsoleMsg(Userindex, "Solo los Piratas, Asesinos, Bandidos, Clerigos, Bandidos y Paladines pueden usar Galera!!", FontTypeNames.FONTTYPE_INFO)
                 Exit Sub
             
             End If
@@ -209,9 +210,9 @@ Public Sub DoNavega(ByVal Userindex As Integer, _
         
         If EsGaleon(Barco) Then
             
-            If .Clase <> eClass.Thief Then
+            If .Clase <> eClass.Thief And .Clase <> eClass.Pirat Then
             
-                Call WriteConsoleMsg(Userindex, "Solo los Ladrones pueden usar Galeon!!", FontTypeNames.FONTTYPE_INFO)
+                Call WriteConsoleMsg(Userindex, "Solo los Ladrones y Piratas pueden usar Galeon!!", FontTypeNames.FONTTYPE_INFO)
                 Exit Sub
             
             End If
@@ -220,7 +221,7 @@ Public Sub DoNavega(ByVal Userindex As Integer, _
         
         ' Acordate que el Trabajador solo necesita 60 de Navegacion para usar barca!
         Dim SkillNecesario As Byte
-            SkillNecesario = IIf(.Clase = eClass.Worker, 60, Barco.MinSkill)
+        SkillNecesario = IIf(.Clase = eClass.Worker, 60, Barco.MinSkill)
         
         ' Tiene el skill necesario?
         If .Stats.UserSkills(eSkill.Navegacion) < SkillNecesario Then
@@ -2443,7 +2444,7 @@ Public Sub DoApunalar(ByVal Userindex As Integer, _
                 .Stats.MinHp = .Stats.MinHp - Int(dano * 2)
                 
                 'Renderizo el dano en render
-                Call SendData(SendTarget.ToPCArea, VictimNpcIndex, PrepareMessageCreateDamage(.Pos.X, .Pos.Y, Int(dano * 2), DAMAGE_PUNAL))
+                Call SendData(SendTarget.ToNPCArea, VictimNpcIndex, PrepareMessageCreateDamage(.Pos.X, .Pos.Y, Int(dano * 2), DAMAGE_PUNAL))
                 
                 Call WriteConsoleMsg(Userindex, "Has apunalado la criatura por " & Int(dano * 2), FontTypeNames.FONTTYPE_FIGHT)
                 Call CalcularDarExp(Userindex, VictimNpcIndex, dano * 2)
@@ -2549,7 +2550,7 @@ Public Sub DoGolpeCritico(ByVal Userindex As Integer, _
                 .Stats.MinHp = .Stats.MinHp - dano
                 
                 'Renderizo el dano en render
-                Call SendData(SendTarget.ToPCArea, VictimNpcIndex, PrepareMessageCreateDamage(.Pos.X, .Pos.Y, Int(dano * 2), DAMAGE_PUNAL))
+                Call SendData(SendTarget.ToNPCArea, VictimNpcIndex, PrepareMessageCreateDamage(.Pos.X, .Pos.Y, Int(dano * 2), DAMAGE_PUNAL))
                 
                 Call WriteConsoleMsg(Userindex, "Has golpeado criticamente a la criatura por " & dano & ".", FontTypeNames.FONTTYPE_FIGHT)
                 

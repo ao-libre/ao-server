@@ -1080,3 +1080,98 @@ Mapa 31, Mapa 32, Mapa 34, Mapa 35, Mapa 45, Mapa 78, Mapa 79, Mapa 87, Mapa 292
 * 16/07/2020: Si es un cazador oculto no manda la animacion de flecha (waltersit0)
 * 16/07/2020: Arreglo el nro de jugadores online y ahora solo los cazadores con 100 en supervivencia pueden ver los trabajadores (RecoX)
 * 16/07/2020: Acomodo archivo de configuracion para el server de test.  (RecoX)
+
+-v0.13.46
+* 19/07/2020: Posible arreglo al floodeo del anticheat (Gexur)
+* 19/07/2020: Muevo el guild news mas abajo, para evitar error de guerra de clanes (Cucsifae)
+* 19/07/2020: Ahora el pirata puede usar Galeon y Galera (Recox)
+* 19/07/2020: El worldsave avisa antes de 15 segundos que se hace (como siempre estuvo), se saco los 5 minutos por que genera falla de seguridad al juego permitiendo llenar el buffer (MAX_ITEMS) en el tiempo restante, ahora ya
+no es tan simple hacerlo con objetos de valor. TODO: Cambiar a algo que funcione un poco mejor y que borre todo... (Recox)
+* 19/07/2020: Lo ultimo que se hace al tirar un objeto es crearlo en el piso lo primero es eliminarlo del inventario de usuario (Cucsifae)
+
+-v0.13.47
+* 21/07/2020: Actualizado Quests.DAT y NPCs.dat (Erik)
+* 21/07/2020: se modifica Bosque sur de Ullathorpe a inseguro (Lorelei)
+* 21/07/2020: Fix: Errores en el HandleLoginExistingAccount(jopiortiz)
+* 21/07/2020: Se modifica Mausoleo a Insegura (Lorelei)
+* 21/07/2020: se modifica Suburbios de Banderbill a segura (Lorelei)
+* 21/07/2020: Se modifica mapa 60 banderbill inseguro a seguro (Lorelei)
+* 21/07/2020: mapa 40 catas de ulla se modifica a insegura  (Lorelei)
+* 21/07/2020: saco bloques para pasar al costado del castillo pretoriano (ReyarB)
+* 21/07/2020: Se arreglo mensaje de intervalos por que repetia el nickname del usuario, aprolijo un poco el codigo usando `Call` (Recox)
+* 21/07/2020: Se arreglo problema que se puede atacar usuario con usuario usando montura, se arregla bug que se puede usar hechizos de curacion,etc sin bajar de la montura (Recox)
+* 21/07/2020: Se arregla problema del handleSendProcess (CuiCui)
+
+-v0.13.48
+* 27/07/2020: Se modifica vision grafica de las siguiente espada para enano igualando la vision grafica a todas las razas por igual que la usen (Lorelei)
+* 21/07/2020: Espadas de las Almas, Espada de fuego y Espada del Fuego eterno  (Lorelei)
+* 27/07/2020: Npc Nuevos: Lacayo Del Demonio y Hiena Del Inframundo (Lorelei)
+* 27/07/2020: Fix HappyHour: No daba experiencia extra (Wyr0x)
+* 27/07/2020: Argentun de Thorkis (ReyarB)
+* 27/07/2020: Sending item index to ItemNoEsDeMapa Function (Cucsifae)
+* 27/07/2020: Rebalanceo De titanes (Lorelei)
+* 27/07/2020: Raza ladron se agregan tal cual al manual
+- Arco compuesto reforzado
+- Arco de cazador
+- Daga+4
+- Escudo de hierro
+- Armadura de cazador bajo/ alto
+- Barragan de cazador e/g
+- Vestido de arquera h/e/eo/m
+Se Quita :
+- Armadura Elite (Lorelei)
+
+* 27/07/2020: Se agregan segun Manual y se arreglan algunos que ya estaban
+- Aracnido de los rincones
+- Aracnido gigante
+- cocodrilo
+- engendro de las profundidades
+- escarabajo gigante
+- fuego fatuo
+- gorila salvaje
+- gusano de arena
+- hormiga gigante
+- lobo
+- lutra
+- manta raya
+- mini elemental de fuego
+- tigre de bengala / tigre salvaje
+- tarantula
+- ucorno
+- unicornio
+- arbol de jungla (Lorelei)
+
+* 27/07/2020: quest 6,7,8 y 9 se modifican rewards, se aumenta el level y se baja para balancear la exp del server (Lorelei)
+* 27/07/2020: Rebalance de espadas legendarias  
+- Espada de las almas 8/20 
+- Espada de fuego 8/20 
+- Espada del fuego eterno 8/20 
+- modifico el reward de quest 10 x2 a x1 , se le saca espada AO (Lorelei)
+
+* 27/07/2020: Espada AO y Arco Ao Se quitan de herreria y carpinteria y se modifican su daños Drasticamente siendo solo 1 punto mejor que las mejores armas clasicas (Lorelei)
+* 27/07/2020: Se retira Amuleto Del Silencio Del mercader (Lorelei)
+* 27/07/2020: /RMSG Ahora muestra el nick del GM (Gexur)
+* 27/07/2020: Se modifica quest 1 informacion erronea (Lorelei)
+* 27/07/2020: Redateo de objetos Clase bandido tal cual manual. Se agrega :
+- Espada de plata
+- Hacha de Guerra de dos filos
+- Mazo del juicio
+- Anillo de resistencia magica
+- Anillo de disolucion magica
+- Anilo de defensa magica
+- Armadura de cazador alto/bajo
+- Manto del dragon
+- Suprema armadura dorada (Lorelei)
+
+* 27/07/2020: Se reduce Reward de quest 7 de 6 a 2 (Lorelei)
+* 27/07/2020: Vestimentas principales de cada faccion no caen al morir (Ropa comun) (Lorelei)
+* 27/07/2020: Escudos de faccion habilitadas para ladron y pirata inclusive (Lorelei)
+* 31/07/2020: Se agregan nuevos npcs:
+- Hydra (Dragon Legendario)
+- Ryu (Dragon Legendario)
+- Smaug (Dragon Legendario)
+- Aurgelmir (Gigante de la Escarcha)
+- Yeti (Lorelei)
+
+* 31/07/2020: Nueva Quest Zhireles [Quest 11 Reino Helado] (Lorelei)
+* 31/07/2020: Balanceo de npc 757 ave del inframundo (Lorelei)

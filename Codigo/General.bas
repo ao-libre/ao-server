@@ -261,9 +261,7 @@ Sub Main()
     ChDrive App.Path
     Call LoadMotd
     Call BanIpCargar
-    
-    UltimoSlotLimpieza = -1
-    
+        
     ' Start loading..
     frmCargando.Show
     

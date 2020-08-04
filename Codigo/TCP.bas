@@ -1469,8 +1469,6 @@ Sub ConnectUser(ByVal Userindex As Integer, _
     
         Call WriteLoggedMessage(Userindex)
     
-        Call modGuilds.SendGuildNews(Userindex)
-    
         ' Esta protegido del ataque de npcs por 5 segundos, si no realiza ninguna accion
         Call IntervaloPermiteSerAtacado(Userindex, True)
     
@@ -1490,6 +1488,8 @@ Sub ConnectUser(ByVal Userindex As Integer, _
         Call Statistics.UserConnected(Userindex)
     
         Call MostrarNumUsers
+        
+        Call modGuilds.SendGuildNews(Userindex)
         
         'Aqui solo vamos a hacer un request a los endpoints de la aplicacion en Node.js
         'el repositorio para hacer funcionar esto, es este: https://github.com/ao-libre/ao-api-server
@@ -1621,7 +1621,8 @@ Sub ResetCharInfo(ByVal Userindex As Integer)
     'Resetea todos los valores generales y las stats
     '03/15/2006 Maraxus - Uso de With para mayor performance y claridad.
     '*************************************************
-    With UserList(Userindex).Char
+    With UserList(UserIndex).Char
+        .Escribiendo = 0
         .body = 0
         .CascoAnim = 0
         .CharIndex = 0
