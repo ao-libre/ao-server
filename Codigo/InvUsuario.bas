@@ -1351,10 +1351,10 @@ Sub EquiparInvItem(ByVal Userindex As Integer, ByVal Slot As Byte)
             
             Case eOBJType.otArmadura
 
-                If .flags.Navegando = 1 Then
-                    Call WriteConsoleMsg(Userindex, "No podes equiparte o desequiparte vestimentas o armaduras mientras estas navegando.", FontTypeNames.FONTTYPE_INFO)
-                    Exit Sub
-                End If
+                'If .flags.Navegando = 1 Then
+                '    Call WriteConsoleMsg(Userindex, "No podes equiparte o desequiparte vestimentas o armaduras mientras estas navegando.", FontTypeNames.FONTTYPE_INFO)
+                '    Exit Sub
+                'End If
 
                 'Parchesin para que no se saquen una armadura mientras estan en montura y dsp les queda el cuerpo de la armadura y velocidad de montura (Recox)
                 If .flags.Equitando = 1 Then
