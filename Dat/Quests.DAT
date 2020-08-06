@@ -122,11 +122,11 @@ RequiredNPC1=930-1
 RequiredNPC2=933-3
 RequiredNPC3=934-3
  
-RewardEXP=800000
+RewardEXP=8000000
 RewardGLD=100000
  
 RewardOBJs=2
-RewardOBJ1=402-6
+RewardOBJ1=1146-1
 RewardOBJ2=403-6
 
 [QUEST9]
