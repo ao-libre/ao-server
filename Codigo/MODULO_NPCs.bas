@@ -247,7 +247,7 @@ Public Sub MuereNpc(ByVal NpcIndex As Integer, ByVal Userindex As Integer)
    
     If MiNPC.MaestroUser = 0 Then
         'Tiramos el inventario
-        Call NPC_TIRAR_ITEMS(MiNPC, MiNPC.NPCtype = eNPCType.Pretoriano)
+        Call NPC_TIRAR_ITEMS(MiNPC, MiNPC.NPCtype = eNPCType.Pretoriano, UserIndex)
         'ReSpawn o no
         Call ReSpawnNpc(MiNPC)
 

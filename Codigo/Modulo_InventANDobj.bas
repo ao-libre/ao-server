@@ -70,7 +70,7 @@ errHandler:
 
 End Function
 
-Public Sub NPC_TIRAR_ITEMS(ByRef npc As npc, ByVal IsPretoriano As Boolean)
+Public Sub NPC_TIRAR_ITEMS(ByRef npc As npc, ByVal IsPretoriano As Boolean, ByVal UserIndex As Integer)
 
     '***************************************************
     'Autor: Unknown (orginal version)
@@ -109,7 +109,7 @@ Public Sub NPC_TIRAR_ITEMS(ByRef npc As npc, ByVal IsPretoriano As Boolean)
             Next i
             
             ' Dropea oro?
-            If .GiveGLD > 0 Then Call TirarOroNpc(.GiveGLD, .Pos)
+            If .GiveGLD > 0 Then Call TirarOroNpc(.GiveGLD, .Pos, UserIndex)
                 
             Exit Sub
 
@@ -143,7 +143,7 @@ Public Sub NPC_TIRAR_ITEMS(ByRef npc As npc, ByVal IsPretoriano As Boolean)
             If ObjIndex > 0 Then
             
                 If ObjIndex = iORO Then
-                    Call TirarOroNpc(.Drop(NroDrop).Amount, npc.Pos)
+                    Call TirarOroNpc(.Drop(NroDrop).Amount, .Pos, UserIndex)
                 Else
                     MiObj.Amount = .Drop(NroDrop).Amount
                     MiObj.ObjIndex = ObjIndex
@@ -363,47 +363,33 @@ Sub CargarInvent(ByVal NpcIndex As Integer)
 
 End Sub
 
-Public Sub TirarOroNpc(ByVal Cantidad As Long, ByRef Pos As WorldPos)
-
-    '***************************************************
-    'Autor: ZaMa
-    'Last Modification: 13/02/2010
-    '***************************************************
+Public Sub TirarOroNpc(ByVal Cantidad As Long, ByRef Pos As WorldPos, ByVal UserIndex As Integer)
     On Error GoTo errHandler
-
     If Cantidad > 0 Then
-
-        Dim MiObj         As obj
-
-        Dim RemainingGold As Long
         
-        RemainingGold = Cantidad
-        
-        While (RemainingGold > 0)
-            
-            ' Tira pilon de 10k
-            If RemainingGold > MAX_INVENTORY_OBJS Then
-                MiObj.Amount = MAX_INVENTORY_OBJS
-                RemainingGold = RemainingGold - MAX_INVENTORY_OBJS
-                
-                ' Tira lo que quede
-            Else
-                MiObj.Amount = RemainingGold
-                RemainingGold = 0
-
-            End If
-
-            MiObj.ObjIndex = iORO
-            
-            Call TirarItemAlPiso(Pos, MiObj)
-        Wend
-
+        If OroDirectoABille Then
+            UserList(UserIndex).Stats.Gld = UserList(UserIndex).Stats.Gld + Cantidad
+            Call WriteUpdateGold(UserIndex)
+            Call WriteConsoleMsg(UserIndex, "La criatura te ha dejado " & Format$(Cantidad, "#,###") & " monedas de oro.", FontTypeNames.FONTTYPE_WARNING)
+        Else
+            Dim MiObj As obj
+            Dim RemainingGold As Long
+            RemainingGold = Cantidad
+            While (RemainingGold > 0)
+                If RemainingGold > MAX_INVENTORY_OBJS Then
+                    MiObj.Amount = MAX_INVENTORY_OBJS
+                    RemainingGold = RemainingGold - MAX_INVENTORY_OBJS
+                Else
+                    MiObj.Amount = RemainingGold
+                    RemainingGold = 0
+                End If
+                MiObj.ObjIndex = iORO
+                Call TirarItemAlPiso(Pos, MiObj)
+            Wend
+        End If
     End If
-
     Exit Sub
-
 errHandler:
-    Call LogError("Error en TirarOro. Error " & Err.Number & " : " & Err.description)
-
+    Call LogError("Error en TirarOroNpc en " & Erl & ". Error " & Err.Number & " : " & Err.description)
 End Sub
 
