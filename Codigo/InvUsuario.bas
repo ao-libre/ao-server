@@ -961,13 +961,15 @@ Public Sub Desequipar(ByVal Userindex As Integer, ByVal Slot As Byte)
                     .ArmourEqpSlot = 0
 
                 End With
+
+                If Not .flags.Mimetizado = 1 And Not .flags.Navegando = 1 Then
+                    Call DarCuerpoDesnudo(Userindex, .flags.Mimetizado = 1)
                 
-                Call DarCuerpoDesnudo(Userindex, .flags.Mimetizado = 1)
+                    With .Char
+                        Call ChangeUserChar(Userindex, .body, .Head, .heading, .WeaponAnim, .ShieldAnim, .CascoAnim)
 
-                With .Char
-                    Call ChangeUserChar(Userindex, .body, .Head, .heading, .WeaponAnim, .ShieldAnim, .CascoAnim)
-
-                End With
+                    End With
+                End If
                  
             Case eOBJType.otCasco
 
@@ -978,7 +980,7 @@ Public Sub Desequipar(ByVal Userindex As Integer, ByVal Slot As Byte)
 
                 End With
                 
-                If Not .flags.Mimetizado = 1 Then
+                If Not .flags.Mimetizado = 1 Or Not .flags.Navegando = 1 Then
 
                     With .Char
                         .CascoAnim = NingunCasco
@@ -1257,7 +1259,7 @@ Sub EquiparInvItem(ByVal Userindex As Integer, ByVal Slot As Byte)
                         Call Desequipar(Userindex, Slot)
 
                         'Animacion por defecto
-                        If .flags.Mimetizado = 1 Then
+                        If .flags.Mimetizado = 1 Or .flags.Navegando = 1 Then
                             .CharMimetizado.WeaponAnim = NingunArma
                         Else
                             .Char.WeaponAnim = NingunArma
@@ -1351,10 +1353,6 @@ Sub EquiparInvItem(ByVal Userindex As Integer, ByVal Slot As Byte)
             
             Case eOBJType.otArmadura
 
-                If .flags.Navegando = 1 Then
-                    Call WriteConsoleMsg(Userindex, "No podes equiparte o desequiparte vestimentas o armaduras mientras estas navegando.", FontTypeNames.FONTTYPE_INFO)
-                    Exit Sub
-                End If
 
                 'Parchesin para que no se saquen una armadura mientras estan en montura y dsp les queda el cuerpo de la armadura y velocidad de montura (Recox)
                 If .flags.Equitando = 1 Then
@@ -1368,9 +1366,9 @@ Sub EquiparInvItem(ByVal Userindex As Integer, ByVal Slot As Byte)
                     'Si esta equipado lo quita
                     If .Invent.Object(Slot).Equipped Then
                         Call Desequipar(Userindex, Slot)
-                        Call DarCuerpoDesnudo(Userindex, .flags.Mimetizado = 1)
 
-                        If Not .flags.Mimetizado = 1 Then
+                        'Si no esta mimetizado y no esta navegando le ponemos el grafico
+                        If .flags.Mimetizado = 0 And .flags.Navegando = 0 Then
                             Call ChangeUserChar(Userindex, .Char.body, .Char.Head, .Char.heading, .Char.WeaponAnim, .Char.ShieldAnim, .Char.CascoAnim)
 
                         End If
@@ -1390,7 +1388,7 @@ Sub EquiparInvItem(ByVal Userindex As Integer, ByVal Slot As Byte)
                     .Invent.ArmourEqpObjIndex = ObjIndex
                     .Invent.ArmourEqpSlot = Slot
                         
-                    If .flags.Mimetizado = 1 Then
+                    If .flags.Mimetizado = 1 Or .flags.Navegando = 1 Then
                         .CharMimetizado.body = obj.Ropaje
                     Else
                         .Char.body = obj.Ropaje
@@ -1406,14 +1404,13 @@ Sub EquiparInvItem(ByVal Userindex As Integer, ByVal Slot As Byte)
             
             Case eOBJType.otCasco
 
-                If .flags.Navegando = 1 Then Exit Sub
                 If ClasePuedeUsarItem(Userindex, ObjIndex, sMotivo) Then
 
                     'Si esta equipado lo quita
                     If .Invent.Object(Slot).Equipped Then
                         Call Desequipar(Userindex, Slot)
 
-                        If .flags.Mimetizado = 1 Then
+                        If .flags.Mimetizado = 1 Or .flags.Navegando = 1 Then
                             .CharMimetizado.CascoAnim = NingunCasco
                         Else
                             .Char.CascoAnim = NingunCasco
@@ -1437,7 +1434,7 @@ Sub EquiparInvItem(ByVal Userindex As Integer, ByVal Slot As Byte)
                     .Invent.CascoEqpObjIndex = ObjIndex
                     .Invent.CascoEqpSlot = Slot
 
-                    If .flags.Mimetizado = 1 Then
+                    If .flags.Mimetizado = 1 Or .flags.Navegando = 1 Then
                         .CharMimetizado.CascoAnim = obj.CascoAnim
                     Else
                         .Char.CascoAnim = obj.CascoAnim
@@ -1452,8 +1449,6 @@ Sub EquiparInvItem(ByVal Userindex As Integer, ByVal Slot As Byte)
             
             Case eOBJType.otEscudo
 
-                If .flags.Navegando = 1 Then Exit Sub
-                
                 If ClasePuedeUsarItem(Userindex, ObjIndex, sMotivo) And FaccionPuedeUsarItem(Userindex, ObjIndex, sMotivo) Then
 
                     'Si esta equipado lo quita
