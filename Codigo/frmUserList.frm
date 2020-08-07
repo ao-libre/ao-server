@@ -141,6 +141,7 @@ Private Sub Command1_Click()
     Text2.Text = "MaxUsers: " & MaxUsers & vbCrLf
     Text2.Text = Text2.Text & "LastUser: " & LastUser & vbCrLf
     Text2.Text = Text2.Text & "NumUsers: " & NumUsers & vbCrLf
+    Text2.Text = Text2.Text & "NumCuentas: " & NumCuentas & vbCrLf
     'Text2.Text = Text2.Text & "" & vbCrLf
 
     List1.Clear

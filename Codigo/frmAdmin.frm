@@ -152,7 +152,7 @@ Private Sub Command1_Click()
 
     If tIndex > 0 Then
         Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg("Servidor> " & UserList(tIndex).Name & " ha sido echado.", FontTypeNames.FONTTYPE_SERVER))
-        Call CloseSocket(tIndex)
+        Call CloseUser(tIndex)
 
     End If
 

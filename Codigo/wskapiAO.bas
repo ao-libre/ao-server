@@ -512,6 +512,7 @@ Public Sub WSApiReiniciarSockets()
     
     LastUser = 1
     NumUsers = 0
+    NumCuentas = 0
     
     Call LimpiaWsApi
     Call Sleep(100)

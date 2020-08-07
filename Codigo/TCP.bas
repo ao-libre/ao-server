@@ -394,7 +394,7 @@ Sub ConnectNewUser(ByVal Userindex As Integer, _
         .Hogar = Hogar
 
         'CHOTS | Accounts
-        .AccountHash = AccountHash
+        .Account.Hash = AccountHash
 
         'Primero agregamos los items, ya que en caso de que el nivel
         'Inicial sea mayor al de un newbie, los items se borran automaticamente.
@@ -781,13 +781,13 @@ Sub ConnectAccount(ByVal Userindex As Integer, _
 'Last modified: 12/10/2018
 'Se conecta a una cuenta existente
 '*************************************************
-'SHA256
+    
+    'SHA256
     Dim oSHA256 As CSHA256
-
-    Dim Salt    As String
-
     Set oSHA256 = New CSHA256
-
+    
+    Dim Salt    As String
+    
     If Not CheckMailString(UserName) Or LenB(UserName) = 0 Then
         Call WriteErrorMsg(Userindex, "Nombre invalido.")
         Exit Sub
@@ -823,11 +823,19 @@ Sub ConnectAccount(ByVal Userindex As Integer, _
 
     If Not Database_Enabled Then
         Call LoginAccountCharfile(Userindex, UserName)
+        
     Else
         Call SaveAccountLastLoginDatabase(UserName, UserList(Userindex).IP)
         Call LoginAccountDatabase(Userindex, UserName)
+        
     End If
-
+    
+    UserList(Userindex).Account.LoggedIn = True
+    
+    ' Actualizo el contador de cuentas online en el frmMain
+    NumCuentas = NumCuentas + 1
+    Call MostrarNumCuentas
+    
 End Sub
 
 Sub CloseSocket(ByVal Userindex As Integer)
@@ -884,14 +892,21 @@ Sub CloseSocket(ByVal Userindex As Integer)
         Call .incomingData.ReadASCIIStringFixed(.incomingData.Length)
 
         If .flags.UserLogged Then
+            
             If NumUsers > 0 Then NumUsers = NumUsers - 1
+            
             Call CloseUser(Userindex)
             
         Else
             Call ResetUserSlot(Userindex)
 
         End If
-            
+        
+        If NumCuentas > 0 Then
+            NumCuentas = NumCuentas - 1
+            Call MostrarNumCuentas
+        End If
+        
         Call LiberarSlot(Userindex)
             
     End With
@@ -1037,7 +1052,9 @@ Sub ConnectUser(ByVal Userindex As Integer, _
     With UserList(Userindex)
 
         If .flags.UserLogged Then
+            
             Call LogCheating("El usuario " & .Name & " ha intentado loguear a " & Name & " desde la IP " & .IP)
+            
             'Kick player ( and leave character inside :D )!
             Call CloseSocketSL(Userindex)
             Call Cerrar_Usuario(Userindex)
@@ -1056,16 +1073,17 @@ Sub ConnectUser(ByVal Userindex As Integer, _
         'Controlamos no pasar el maximo de usuarios
         If NumUsers >= MaxUsers Then
             Call WriteErrorMsg(Userindex, "El servidor ha alcanzado el maximo de usuarios soportado, por favor vuelva a intertarlo mas tarde.")
-            Call CloseSocket(Userindex)
+            Call CloseUser(Userindex)
             Exit Sub
 
         End If
     
         'Este IP ya esta conectado?
         If AllowMultiLogins = False Then
+            
             If CheckForSameIP(Userindex, .IP) = True Then
                 Call WriteErrorMsg(Userindex, "No es posible usar mas de un personaje al mismo tiempo.")
-                Call CloseSocket(Userindex)
+                Call CloseUser(Userindex)
                 Exit Sub
 
             End If
@@ -1075,27 +1093,29 @@ Sub ConnectUser(ByVal Userindex As Integer, _
         'Existe el personaje?
         If Not PersonajeExiste(Name) Then
             Call WriteErrorMsg(Userindex, "El personaje no existe.")
-            Call CloseSocket(Userindex)
+            Call CloseUser(Userindex)
             Exit Sub
 
         End If
     
         'Es el passwd valido?
-        If Not PersonajePerteneceCuenta(Name, AccountHash) Then
-            Call WriteErrorMsg(Userindex, "Ha ocurrido un error, por favor inicie sesion nuevamente.")
-            Call CloseSocket(Userindex)
+        If Not PersonajePerteneceCuenta(Name, UserIndex) Then
+            Call WriteErrorMsg(UserIndex, "Ha ocurrido un error, por favor inicie sesion nuevamente.")
+            Call CloseUser(UserIndex)
             Exit Sub
 
         End If
     
         'Ya esta conectado el personaje?
         If CheckForSameName(Name) Then
+            
             If UserList(NameIndex(Name)).Counters.Saliendo Then
                 Call WriteErrorMsg(Userindex, "El usuario esta saliendo.")
             Else
                 Call WriteErrorMsg(Userindex, "Un usuario con el mismo nombre esta conectado.")
                 Call Cerrar_Usuario(NameIndex(Name))
             End If
+            
             Exit Sub
 
         End If
@@ -1107,18 +1127,22 @@ Sub ConnectUser(ByVal Userindex As Integer, _
         If EsAdmin(Name) Then
             .flags.Privilegios = .flags.Privilegios Or PlayerType.Admin
             Call LogGM(Name, "Se conecto con ip:" & .IP)
+        
         ElseIf EsDios(Name) Then
             .flags.Privilegios = .flags.Privilegios Or PlayerType.Dios
             Call LogGM(Name, "Se conecto con ip:" & .IP)
+        
         ElseIf EsSemiDios(Name) Then
             .flags.Privilegios = .flags.Privilegios Or PlayerType.SemiDios
         
             .flags.PrivEspecial = EsGmEspecial(Name)
         
             Call LogGM(Name, "Se conecto con ip:" & .IP)
+        
         ElseIf EsConsejero(Name) Then
             .flags.Privilegios = .flags.Privilegios Or PlayerType.Consejero
             Call LogGM(Name, "Se conecto con ip:" & .IP)
+        
         Else
             .flags.Privilegios = .flags.Privilegios Or PlayerType.User
             .flags.AdminPerseguible = True
@@ -1128,13 +1152,14 @@ Sub ConnectUser(ByVal Userindex As Integer, _
         'Add RM flag if needed
         If EsRolesMaster(Name) Then
             .flags.Privilegios = .flags.Privilegios Or PlayerType.RoleMaster
-
         End If
     
         If ServerSoloGMs > 0 Then
+            
             If (.flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios Or PlayerType.SemiDios Or PlayerType.Consejero)) = 0 Then
                 Call WriteErrorMsg(Userindex, "Servidor restringido a administradores. Por favor reintente en unos momentos.")
-                Call CloseSocket(Userindex)
+                Call CloseUser(Userindex)
+                
                 Exit Sub
 
             End If
@@ -1149,7 +1174,7 @@ Sub ConnectUser(ByVal Userindex As Integer, _
 
         If Not ValidateChr(Userindex) Then
             Call WriteErrorMsg(Userindex, "Error en el personaje.")
-            Call CloseSocket(Userindex)
+            Call CloseUser(Userindex)
             Exit Sub
 
         End If
@@ -1232,11 +1257,8 @@ Sub ConnectUser(ByVal Userindex As Integer, _
         If MapData(Mapa, .Pos.X, .Pos.Y).Userindex <> 0 Or MapData(Mapa, .Pos.X, .Pos.Y).NpcIndex <> 0 Then
 
             Dim FoundPlace As Boolean
-
             Dim esAgua     As Boolean
-
             Dim tX         As Long
-
             Dim tY         As Long
         
             FoundPlace = False
@@ -1273,6 +1295,7 @@ Sub ConnectUser(ByVal Userindex As Integer, _
             If FoundPlace Then 'Si encontramos un lugar, listo, nos quedamos ahi
                 .Pos.X = tX
                 .Pos.Y = tY
+            
             Else
 
                 'Si no encontramos un lugar, sacamos al usuario que tenemos abajo, y si es un NPC, lo pisamos.
@@ -1337,12 +1360,19 @@ Sub ConnectUser(ByVal Userindex As Integer, _
         
         If .flags.Privilegios = PlayerType.Dios Then
             .flags.ChatColor = RGB(250, 250, 150)
-        ElseIf .flags.Privilegios <> PlayerType.User And .flags.Privilegios <> (PlayerType.User Or PlayerType.ChaosCouncil) And .flags.Privilegios <> (PlayerType.User Or PlayerType.RoyalCouncil) Then
+        
+        ElseIf .flags.Privilegios <> PlayerType.User And _
+                .flags.Privilegios <> (PlayerType.User Or PlayerType.ChaosCouncil) And _
+                .flags.Privilegios <> (PlayerType.User Or PlayerType.RoyalCouncil) Then
+            
             .flags.ChatColor = RGB(0, 255, 0)
+        
         ElseIf .flags.Privilegios = (PlayerType.User Or PlayerType.RoyalCouncil) Then
             .flags.ChatColor = RGB(0, 255, 255)
+        
         ElseIf .flags.Privilegios = (PlayerType.User Or PlayerType.ChaosCouncil) Then
             .flags.ChatColor = RGB(255, 128, 64)
+        
         Else
             .flags.ChatColor = vbWhite
 
@@ -1387,7 +1417,7 @@ Sub ConnectUser(ByVal Userindex As Integer, _
     
         If EnTesting And .Stats.ELV >= 18 Then
             Call WriteErrorMsg(Userindex, "Servidor en Testing por unos minutos, conectese con PJs de nivel menor a 18. No se conecte con Pjs que puedan resultar importantes por ahora pues pueden arruinarse.")
-            Call CloseSocket(Userindex)
+            Call CloseUser(Userindex)
             Exit Sub
 
         End If
@@ -1488,6 +1518,8 @@ Sub ConnectUser(ByVal Userindex As Integer, _
         Call Statistics.UserConnected(Userindex)
     
         Call MostrarNumUsers
+        
+        Call MostrarNumCuentas
         
         Call modGuilds.SendGuildNews(Userindex)
         
@@ -1621,7 +1653,7 @@ Sub ResetCharInfo(ByVal Userindex As Integer)
     'Resetea todos los valores generales y las stats
     '03/15/2006 Maraxus - Uso de With para mayor performance y claridad.
     '*************************************************
-    With UserList(UserIndex).Char
+    With UserList(Userindex).Char
         .Escribiendo = 0
         .body = 0
         .CascoAnim = 0
@@ -1649,7 +1681,7 @@ Sub ResetBasicUserInfo(ByVal Userindex As Integer)
     With UserList(Userindex)
         .Name = vbNullString
         .ID = 0
-        .AccountHash = vbNullString
+        .Account.Hash = vbNullString
         .Desc = vbNullString
         .DescRM = vbNullString
         .Pos.Map = 0
@@ -2007,16 +2039,25 @@ Sub CloseUser(ByVal Userindex As Integer)
         'If MapInfo(Map).NumUsers > 0 Then
         '    Call SendToUserArea(UserIndex, "QDL" & .Char.charindex)
         'End If
-    
-        If MapInfo(Map).NumUsers > 0 Then
-            Call SendData(SendTarget.ToPCAreaButIndex, Userindex, PrepareMessageRemoveCharDialog(.Char.CharIndex))
-
+        
+        If Map > 0 Then
+        
+            If MapInfo(Map).NumUsers > 0 Then
+                Call SendData(SendTarget.ToPCAreaButIndex, Userindex, PrepareMessageRemoveCharDialog(.Char.CharIndex))
+            End If
+            
+            'Update Map Users
+            MapInfo(Map).NumUsers = MapInfo(Map).NumUsers - 1
+        
+            If MapInfo(Map).NumUsers < 0 Then
+                MapInfo(Map).NumUsers = 0
+            End If
+            
         End If
-    
+        
         'Borrar el personaje
         If .Char.CharIndex > 0 Then
             Call EraseUserChar(Userindex, .flags.AdminInvisible = 1)
-
         End If
     
         'Borrar mascotas
@@ -2028,25 +2069,19 @@ Sub CloseUser(ByVal Userindex As Integer)
             End If
 
         Next i
-    
-        'Update Map Users
-        MapInfo(Map).NumUsers = MapInfo(Map).NumUsers - 1
-    
-        If MapInfo(Map).NumUsers < 0 Then
-            MapInfo(Map).NumUsers = 0
 
-        End If
-    
         ' Si el usuario habia dejado un msg en la gm's queue lo borramos
         If Ayuda.Existe(.Name) Then Call Ayuda.Quitar(.Name)
     
         Call ResetUserSlot(Userindex)
     
         Call MostrarNumUsers
+        
+        Call MostrarNumCuentas
     
         n = FreeFile(1)
         Open App.Path & "\logs\Connect.log" For Append Shared As #n
-        Print #n, Name & " ha dejado el juego. " & "User Index:" & Userindex & " " & time & " " & Date
+            Print #n, Name & " ha dejado el juego. " & "User Index:" & Userindex & " " & time & " " & Date
         Close #n
 
     End With
@@ -2108,7 +2143,7 @@ Public Sub EcharPjsNoPrivilegiados()
 
         If UserList(LoopC).flags.UserLogged And UserList(LoopC).ConnID >= 0 And UserList(LoopC).ConnIDValida Then
             If UserList(LoopC).flags.Privilegios And PlayerType.User Then
-                Call CloseSocket(LoopC)
+                Call CloseUser(LoopC)
 
             End If
 
