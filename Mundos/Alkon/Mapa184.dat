@@ -1,8 +1,8 @@
 [MAPA184]
-Name=Dungeon Inferno.
+Name=Dungeon Inferno
 MagiaSinefecto=0
-InviSinEfecto=1
-ResuSinEfecto=0
+InviSinEfecto=0
+ResuSinEfecto=1
 NoEncriptarMP=0
 Terreno=NIEVE
 Zona=DUNGEON
