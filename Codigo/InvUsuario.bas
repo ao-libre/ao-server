@@ -1455,7 +1455,7 @@ Sub EquiparInvItem(ByVal Userindex As Integer, ByVal Slot As Byte)
                     If .Invent.Object(Slot).Equipped Then
                         Call Desequipar(Userindex, Slot)
 
-                        If .flags.Mimetizado = 1 Then
+                        If .flags.Mimetizado = 1 Or .flags.Navegando = 1 Then
                             .CharMimetizado.ShieldAnim = NingunEscudo
                         Else
                             .Char.ShieldAnim = NingunEscudo
@@ -1479,7 +1479,7 @@ Sub EquiparInvItem(ByVal Userindex As Integer, ByVal Slot As Byte)
                     .Invent.EscudoEqpObjIndex = ObjIndex
                     .Invent.EscudoEqpSlot = Slot
                      
-                    If .flags.Mimetizado = 1 Then
+                    If .flags.Mimetizado = 1 Or .flags.Navegando = 1 Then
                         .CharMimetizado.ShieldAnim = obj.ShieldAnim
                     Else
                         .Char.ShieldAnim = obj.ShieldAnim
