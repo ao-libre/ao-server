@@ -1,12 +1,12 @@
-[MAPA300]
+[MAPA303]
 MagiaSinefecto=1
 InviSinEfecto=1
 ResuSinEfecto=1
 NoEncriptarMP=0
-BackUp= 1
+BackUp= 0
 Pk=0
-Name=Caverna Helada
-MusicNumMp3=85
+Name=Nido de Hydra
+MusicNumMp3=18
 Terreno=NIEVE
 Zona=DUNGEON
-Restringir=No
+Restringir=NO

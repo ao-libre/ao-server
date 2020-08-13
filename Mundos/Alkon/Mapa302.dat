@@ -1,12 +1,12 @@
-[MAPA300]
+[MAPA302]
 MagiaSinefecto=1
 InviSinEfecto=1
 ResuSinEfecto=1
 NoEncriptarMP=0
-BackUp= 1
+BackUp= 0
 Pk=0
-Name=Caverna Helada
+Name=Averno Ancestral
 MusicNumMp3=85
 Terreno=NIEVE
 Zona=DUNGEON
-Restringir=No
+Restringir=NO
