@@ -7339,8 +7339,8 @@ NROITEMS=5
 Drop1=12-5000 'Oro
 Drop2=37-200 'Pociones Azules
 Drop3=361-1 'Tormentas de Fuego
-Drop4=530-2 'Inmovilizar
-Drop5=699-3 'Anillo de Disolucion Magica
+Drop4=530-1 'Inmovilizar
+Drop5=699-1 'Anillo de Disolucion Magica
 
 ############################################
 
@@ -9556,7 +9556,7 @@ Drop5=495-2 'Armaduras Escarlata
 Drop6=126-3 'Hacha Larga de Guerra 
  
 [NPC710]
-Name=Demonio infernal
+Name=Errante de la Mazmorra
 NpcType=0
 Head=0
 Heading=3
@@ -9569,22 +9569,26 @@ Hostile=1
 Domable=0
 Alineacion=2
 Comercia=0
-GiveEXP=10000
-MinHP=15000
-MaxHP=15000
-MaxHIT=350
-MinHIT=75
-DEF=0
-PoderAtaque=230
-PoderEvasion=220
-Snd3=100
+GiveEXP=15000
+MinHP=25000
+MaxHP=25000
+MaxHIT=220
+MinHIT=190
+DEF=40
+AfectaParalisis=1
+PoderAtaque=1500
+PoderEvasion=170
+LanzaSpells=2
+Sp1=24
+Sp2=48
+AtacaDoble=1
 BackUp=0
 NROITEMS=5
-Drop1=12-8000 'Oro
-Drop2=12-16000 'Oro
-Drop3=126-3 'Hacha Larga de Guerra
-Drop4=129-5 'Hachas Doble Filo
-Drop5=495-2 'Armaduras Escarlata
+Drop1=12-5000 'Oro
+Drop2=12-7500 'Oro
+Drop3=126-1 'Hacha Larga de Guerra
+Drop4=129-2 'Hachas Doble Filo
+Drop5=495-1 'Armaduras Escarlata
 
 [NPC711]
 Name=Etognil Helado
@@ -10091,20 +10095,20 @@ Hostile=1
 Domable=0
 Alineacion=2
 Comercia=0
-GiveEXP=27000
+GiveEXP=12500
 GiveGLD=0
-MinHP=22000
-MaxHP=22000
+MinHP=8500
+MaxHP=8500
 MaxHIT=180
 MinHIT=140
 DEF=30
 AfectaParalisis=0
-PoderAtaque=300
-PoderEvasion=200
+PoderAtaque=280
+PoderEvasion=210
 Snd3=109
 BackUp=0
 NROITEMS=2
-Drop1=12-4000 'Oro
+Drop1=12-3000 'Oro
 Drop2=36-70 ' Pocion Amarilla
 
 [NPC759]
@@ -10205,7 +10209,7 @@ Hostile=1
 Domable=0
 Alineacion=2
 Comercia=0
-GiveEXP=70000
+GiveEXP=30000
 MinHP=18000
 MaxHP=18000
 MaxHIT=140
@@ -10213,10 +10217,10 @@ MinHIT=110
 DEF=30
 PoderAtaque=200
 PoderEvasion=250
-LanzaSpells=3
-Sp1=9
-Sp2=25
-Sp3=23
+LanzaSpells=1
+Sp1=49
+AtacaDoble=1
+AfectaParalisis=1
 BackUp=0
 NROITEMS=2
 Drop1=12-6000 Oro
@@ -11138,7 +11142,7 @@ Drop4=37-100 'Pociones Azules
 Drop5=12-7500 'Oro
 
 [NPC792]
-Name=Sin Nombre
+Name=Guardian de la Mastaba
 NpcType=0
 Head=0
 Heading=3
@@ -11151,24 +11155,24 @@ Hostile=1
 Domable=0
 Alineacion=2
 Comercia=0
-GiveEXP=2000
-GiveGLD=0
-MinHP=80000
-MaxHP=80000
-MaxHIT=280
-MinHIT=120
+GiveEXP=70000
+GiveGLD=75000
+MinHP=100000
+MaxHP=100000
+MaxHIT=220
+MinHIT=160
 DEF=30
-AfectaParalisis=0
+AfectaParalisis=1
 PoderAtaque=230
 PoderEvasion=220
-Snd3=100
+LanzaSpells=1
+Sp1=49
+AtacaDoble=1
 BackUp=0
 NROITEMS=5
-Drop1=388-500 'Lingote de Oro
-Drop2=194-10000 'Minerales de Oro
-Drop3=38-100 'Pociones Rojas
-Drop4=37-100 'Pociones Azules
-Drop5=12-7500 'Oro
+Drop1=194-10000 'Minerales de Oro
+Drop2=388-500 'Lingote de Oro
+Drop3=699-1 'Anillo de Disolucion Magica
 
 [NPC793]
 Name=Sin Nombre
@@ -11197,8 +11201,8 @@ PoderEvasion=220
 Snd3=100
 BackUp=0
 NROITEMS=5
-Drop1=388-500 'Lingote de Oro
-Drop2=194-10000 'Minerales de Oro
+Drop1=194-10000 'Minerales de Oro
+Drop2=388-500 'Lingote de Oro
 Drop3=38-100 'Pociones Rojas
 Drop4=37-100 'Pociones Azules
 Drop5=12-7500 'Oro
@@ -11632,7 +11636,7 @@ Drop4=37-100 'Pociones Azules
 Drop5=12-7500 'Oro
 
 [NPC807]
-Name=Sin Nombre
+Name=Gorgona
 NpcType=0
 Head=0
 Heading=3
@@ -11640,29 +11644,29 @@ Body=674
 Movement=3
 AguaValida=0
 Attackable=1
-ReSpawn=1
+ReSpawn=0
 Hostile=1
 Domable=0
 Alineacion=2
 Comercia=0
-GiveEXP=2000
-GiveGLD=0
-MinHP=80000
-MaxHP=80000
-MaxHIT=280
-MinHIT=120
-DEF=30
-AfectaParalisis=0
-PoderAtaque=230
-PoderEvasion=220
-Snd3=100
+GiveEXP=17250
+MinHP=11500
+MaxHP=11500
+MaxHIT=230
+MinHIT=180
+DEF=20
+PoderAtaque=220
+PoderEvasion=160
+Snd3=1
+LanzaSpells=1
+Sp1=50
 BackUp=0
 NROITEMS=5
-Drop1=388-500 'Lingote de Oro
-Drop2=194-10000 'Minerales de Oro
-Drop3=38-100 'Pociones Rojas
-Drop4=37-100 'Pociones Azules
-Drop5=12-7500 'Oro
+Drop1=12-1200 'Oro
+Drop2=38-100 'Pociones Rojas
+Drop3=12-7500 'Oro
+Drop4=206-1 'Paralizar
+Drop5=531-1 'Descarga Electrica
 
 [NPC808]
 Name=Sin Nombre
@@ -11764,37 +11768,33 @@ Drop4=37-100 'Pociones Azules
 Drop5=12-7500 'Oro
 
 [NPC811]
-Name=Sin Nombre
+Name=Abominacion
 NpcType=0
 Head=0
 Heading=3
-Body=678
+Body=182
 Movement=3
 AguaValida=0
 Attackable=1
-ReSpawn=1
+ReSpawn=0
 Hostile=1
 Domable=0
 Alineacion=2
 Comercia=0
-GiveEXP=2000
-GiveGLD=0
-MinHP=80000
-MaxHP=80000
-MaxHIT=280
-MinHIT=120
+GiveEXP=54000
+GiveGLD=15000
+MinHP=32000
+MaxHP=32000
+MaxHIT=320
+MinHIT=240
 DEF=30
-AfectaParalisis=0
-PoderAtaque=230
-PoderEvasion=220
-Snd3=100
+AfectaParalisis=1
+PoderAtaque=180
+PoderEvasion=150
 BackUp=0
-NROITEMS=5
-Drop1=388-500 'Lingote de Oro
-Drop2=194-10000 'Minerales de Oro
-Drop3=38-100 'Pociones Rojas
-Drop4=37-100 'Pociones Azules
-Drop5=12-7500 'Oro
+NROITEMS=2
+Drop1=12-5000 'Oro
+Drop2=405-1 'Casco de Plata
 
 [NPC812]
 Name=Cria de Kraken
@@ -12237,7 +12237,7 @@ Hostile=1
 Domable=0
 Alineacion=2
 Comercia=0
-GiveEXP=14000
+GiveEXP=18000
 MinHP=10500
 MaxHP=10500
 MaxHIT=250
@@ -12254,6 +12254,43 @@ Drop2=12-5500 'Oro
 Drop3=12-10000 'Oro
 Drop4=403-1 'Espadas de Plata
 Drop5=485-1 'Armadura Legendaria
+
+[NPC946]
+Name=Elemental de Tierra Anciano
+NpcType=0
+Head=0
+Heading=3
+Body=544
+Movement=3
+AguaValida=0
+Attackable=1
+ReSpawn=0
+Hostile=1
+Domable=0
+Alineacion=2
+Comercia=0
+GiveEXP=3000
+MinHP=7000
+MaxHP=7000
+MaxHIT=180
+MinHIT=118
+DEF=30
+DEFm=35
+PoderAtaque=250
+PoderEvasion=250
+LanzaSpells=1
+Sp1=24
+AtacaDoble=1
+AfectaParalisis=1
+BackUp=0
+NROITEMS=5
+Drop1=12-10000 'Oro
+Drop2=12-19050 'Oro
+Drop3=657-1 'Quitar la Turbacion
+Drop4=542-1 'Turbacion
+Drop5=538-1 'Invocar Elemental de Tierra
+
+
 
 ############################################
 
@@ -13135,7 +13172,7 @@ BackUp=0
 ##############################################################
 ###############no cambiar los indices asignados###############
 
-[NPC924]
+[[NPC924]
 Name=Mark [Quest 1]
 NpcType=0
 Desc=Bienvenido a estas Tierras.. Escribe /QUEST.
@@ -13311,17 +13348,18 @@ Hostile=1
 Domable=0
 Alineacion=2
 Comercia=0
-GiveEXP=14500
+GiveEXP=20500
 MinHP=13000
 MaxHP=13000
 MaxHIT=270
 MinHIT=200
 DEF=20
 PoderAtaque=300
-PoderEvasion=150
+PoderEvasion=200
 BackUp=0
 NROITEMS=1
-Drop1=12-2500 'Oro
+Drop1=12-4500 'Oro
+Drop2=131-1   ' Casco de Hierro Completo
 
 [NPC933]
 Name=Titan de Tierra
@@ -13502,12 +13540,12 @@ Alineacion=0
 Comercia=0
 
 [NPC939]
-Name=Lhaeron [Quest 4 Bosque]
+Name=Lhaeron [Quest 4]
 NpcType=0
 Desc= Ayuda por favor!! Una horda de zombies y esqueletos estan acechando mi granja!! Por favor mata 10 zombies y 10 esqueletos!! Tendras una gran recompensa, escribe /QUEST.
 Head=101
 Heading=3
-Body=345
+Body=240
 Movement=1
 Attackable=0
 ReSpawn=0
@@ -13534,6 +13572,7 @@ Alineacion=0
 Comercia=0
 BackUp=0
 QuestNumber=2
+
 
 [NPC941]
 Name=Icaro [Quest 6]
@@ -13619,6 +13658,235 @@ Alineacion=0
 Comercia=0
 BackUp=0
 QuestNumber=10
+
+[NPC947]
+Name=Arkerolo [Quest 12]
+NpcType=0
+Desc=Oye viajero, si te atreves Escribe /QUEST.
+Head=301
+Heading=3
+Body=155
+Movement=1
+Attackable=0
+ReSpawn=0
+Hostile=0
+Domable=0
+Alineacion=0
+Comercia=0
+BackUp=0
+QuestNumber=12
+
+[NPC948]
+Name=Miha [Quest 13]
+NpcType=0
+Desc=Si quieres ayudarme Escribe /QUEST.
+Head=77
+Heading=3
+Body=46
+Movement=1
+Attackable=0
+ReSpawn=0
+Hostile=0
+Domable=0
+Alineacion=0
+Comercia=0
+BackUp=0
+QuestNumber=13
+
+
+[NPC949]
+Name=Memnon [Quest 14]
+NpcType=0
+Desc= Hey! Ayudame y escribe /QUEST.
+Head=32
+Heading=3
+Body=127
+Movement=1
+Attackable=0
+ReSpawn=0
+Hostile=0
+Domable=0
+Alineacion=0
+Comercia=0
+BackUp=0
+QuestNumber=14
+
+[NPC950]
+Name=Malekit [Quest 15]
+NpcType=0
+Desc=Si quieres enchastrarte escribe /QUEST.
+Head=172
+Heading=3
+Body=339
+Movement=1
+Attackable=0
+ReSpawn=0
+Hostile=0
+Domable=0
+Alineacion=0
+Comercia=0
+BackUp=0
+QuestNumber=15
+
+[NPC951]
+Name=Morgana [Quest 16]
+NpcType=0
+Desc=Si crees en el equilibrio de la isla Escribe /QUEST.
+Head=473
+Heading=3
+Body=288
+Movement=1
+Attackable=0
+ReSpawn=0
+Hostile=0
+Domable=0
+Alineacion=0
+Comercia=0
+BackUp=0
+QuestNumber=16
+
+[NPC952]
+Name=Sortilego [Quest 17]
+NpcType=0
+Desc=Si deseas restaurar el balance Escribe /QUEST.
+Head=7
+Heading=3
+Body=45
+Movement=1
+Attackable=0
+ReSpawn=0
+Hostile=0
+Domable=0
+Alineacion=0
+Comercia=0
+BackUp=0
+QuestNumber=17
+
+[NPC953]
+Name=Seifer [Quest 18]
+NpcType=0
+Desc= Hola si crees que eres un buen navegante. Escribe /QUEST.
+Head=110
+Heading=3
+Body=342
+Movement=1
+Attackable=0
+ReSpawn=0
+Hostile=0
+Domable=0
+Alineacion=0
+Comercia=0
+BackUp=0
+QuestNumber=18
+
+[NPC954]
+Name=Wolfito [Quest 19]
+NpcType=0
+Desc=Ayuda por favor! Escribe /QUEST.
+Head=304
+Heading=3
+Body=373
+Movement=1
+Attackable=0
+ReSpawn=0
+Hostile=0
+Domable=0
+Alineacion=0
+Comercia=0
+BackUp=0
+QuestNumber=19
+
+[NPC955]
+Name=Walki [Quest 20]
+NpcType=0
+Desc=Si crees poder ayudarme a vencer al pasado Escribe /QUEST.
+Head=3
+Heading=3
+Body=264
+Movement=1
+Attackable=0
+ReSpawn=0
+Hostile=0
+Domable=0
+Alineacion=0
+Comercia=0
+BackUp=0
+QuestNumber=20
+
+[NPC956]
+Name=Oromes [Quest 21]
+NpcType=0
+Desc=Oye cobarde, Escribe /QUEST.
+Head=32
+Heading=3
+Body=341
+Movement=1
+Attackable=0
+ReSpawn=0
+Hostile=0
+Domable=0
+Alineacion=0
+Comercia=0
+BackUp=0
+QuestNumber=21
+
+[NPC957]
+Name=Meef [Quest 22]
+NpcType=0
+Desc= Si vas a estar andando por aqui haz algo util, Escribe /QUEST.
+Head=101
+Heading=3
+Body=234
+Movement=1
+Attackable=0
+ReSpawn=0
+Hostile=0
+Domable=0
+Alineacion=0
+Comercia=0
+BackUp=0
+QuestNumber=22
+
+[NPC958]
+Name=Lyso [Quest 23]
+NpcType=0
+Desc=No creo que tengas las agallas... Escribe /QUEST.
+Head=2
+Heading=3
+Body=93
+Movement=1
+Attackable=0
+ReSpawn=0
+Hostile=0
+Domable=0
+Alineacion=0
+Comercia=0
+BackUp=0
+QuestNumber=23
+
+[NPC959]
+Name=Yiyo [Quest 24]
+NpcType=0
+Desc=Si no le temes a la muerte Escribe /QUEST.
+Head=110
+Heading=3
+Body=265
+Movement=1
+Attackable=0
+ReSpawn=0
+Hostile=0
+Domable=0
+Alineacion=0
+Comercia=0
+BackUp=0
+QuestNumber=24
+
+
+
+
+
+
+
 
 
 
