@@ -81,6 +81,7 @@ Module=Logs; Codigo\Logs.bas
 Module=Amigos; Codigo\Amigos.bas
 Module=modAntiCheat; Codigo\modAntiCheat.bas
 Class=clsSecurity; Codigo\clsSecurity.cls
+Module=Evento_Pesca; Codigo\Evento_Pesca.bas
 Class=cWorldPos; Codigo\cWorldPos.cls
 IconForm="frmMain"
 Startup="Sub Main"

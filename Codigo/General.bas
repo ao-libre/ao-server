@@ -31,7 +31,7 @@ Option Explicit
 
 #If False Then
 
-    Dim X, Y, Map, K, ErrHandler, obj, index, n, Email As Variant
+    Dim X, Y, Map, K, errHandler, obj, index, n, Email As Variant
 
 #End If
 
@@ -273,7 +273,7 @@ Sub Main()
     ' Arrays
     frmCargando.Label1(2).Caption = "Iniciando Arrays..."
     Call LoadArrays
-    
+    Call LoadPesca
     ' Server.ini & Apuestas.dat & Ciudades.dat
     frmCargando.Label1(2).Caption = "Cargando Server.ini"
     Call LoadSini
@@ -361,6 +361,7 @@ Sub Main()
 
     'Aca ponemos la ip y puerto en el label del frmMain
     Dim IpPublicaServidor As String
+
     IpPublicaServidor = frmMain.Inet1.OpenURL("http://ip1.dynupdate.no-ip.com:8245/")
     frmMain.lblIp.Caption = IpPublicaServidor & ":" & Puerto
 
@@ -838,7 +839,7 @@ Public Sub EfectoLluvia(ByVal Userindex As Integer)
     '
     '***************************************************
 
-    On Error GoTo ErrHandler
+    On Error GoTo errHandler
 
     If UserList(Userindex).flags.UserLogged Then
         If Intemperie(Userindex) Then
@@ -854,7 +855,7 @@ Public Sub EfectoLluvia(ByVal Userindex As Integer)
     End If
     
     Exit Sub
-ErrHandler:
+errHandler:
     LogError ("Error en EfectoLluvia")
 
 End Sub
@@ -1453,7 +1454,7 @@ Public Sub Sanar(ByVal Userindex As Integer, _
 
 End Sub
 
-Public Sub CargaNpcsDat(Optional ByVal ForzarActualizacionNpcsExistentes As Boolean = False) 
+Public Sub CargaNpcsDat(Optional ByVal ForzarActualizacionNpcsExistentes As Boolean = False)
     '***************************************************
     'Author: Unknown
     'Last Modification: 06/07/2020 (Cuicui)

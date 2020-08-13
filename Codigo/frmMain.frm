@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{48E59290-9880-11CF-9754-00AA00C00908}#1.0#0"; "MSINET.ocx"
+Object = "{48E59290-9880-11CF-9754-00AA00C00908}#1.0#0"; "MSINET.OCX"
 Begin VB.Form frmMain 
    BackColor       =   &H00FFC0C0&
    BorderStyle     =   3  'Fixed Dialog
@@ -666,7 +666,7 @@ End Sub
 
 Private Sub AutoSave_Timer()
 
-    On Error GoTo ErrHandler
+    On Error GoTo errHandler
 
     'fired every minute
     Static Minutos          As Long
@@ -675,6 +675,9 @@ Private Sub AutoSave_Timer()
 
     Static MinsPjesSave     As Long
 
+    Static MinsEventoPesca  As Long
+
+    MinsEventoPesca = MinsEventoPesca + 1
     Minutos = Minutos + 1
     MinsPjesSave = MinsPjesSave + 1
 
@@ -716,6 +719,8 @@ Private Sub AutoSave_Timer()
 
     End If
 
+    Call estadoDelMar(MinsEventoPesca)
+
     Call CheckIdleUser
 
     frmMain.lblWorldSave.Caption = "Proximo WorldSave: " & MinutosWs - Minutos & " Minutos"
@@ -732,7 +737,8 @@ Private Sub AutoSave_Timer()
     '<<<<<-------- Log the number of users online ------>>>
 
     Exit Sub
-ErrHandler:
+
+errHandler:
     Call LogError("Error en TimerAutoSave " & Err.Number & ": " & Err.description)
 
     Resume Next
