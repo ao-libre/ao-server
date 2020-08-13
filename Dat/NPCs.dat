@@ -13172,7 +13172,7 @@ BackUp=0
 ##############################################################
 ###############no cambiar los indices asignados###############
 
-[[NPC924]
+[NPC924]
 Name=Mark [Quest 1]
 NpcType=0
 Desc=Bienvenido a estas Tierras.. Escribe /QUEST.
