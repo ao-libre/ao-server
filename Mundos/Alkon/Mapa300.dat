@@ -1,14 +1,12 @@
-[MAPA163]
-BackUp= 1
-InviSinEfecto=0
-MagiaSinefecto=0
-MusicNum=20
-MusicNumMp3=
-Name=Fuerte Pretoriano.
+[MAPA300]
+MagiaSinefecto=1
+InviSinEfecto=1
+ResuSinEfecto=1
 NoEncriptarMP=0
+BackUp= 1
 Pk=0
+Name=Caverna Helada
+MusicNumMp3=85
+Terreno=NIEVE
+Zona=DUNGEON
 Restringir=No
-ResuSinEfecto=0
-Terreno=BOSQUE
-Zona=CIUDAD
-

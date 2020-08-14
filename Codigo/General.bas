@@ -31,22 +31,21 @@ Option Explicit
 
 #If False Then
 
-    Dim X, Y, Map, K, ErrHandler, obj, index, n, Email As Variant
+    Dim X, Y, Map, K, errHandler, obj, index, n, Email As Variant
 
 #End If
 
 Global LeerNPCs As clsIniManager
 
-Sub DarCuerpoDesnudo(ByVal Userindex As Integer, _
-                     Optional ByVal Mimetizado As Boolean = False)
+Function DarCuerpoDesnudo(ByVal Userindex As Integer, _
+                     Optional ByVal Mimetizado As Boolean = False) As Integer
     '***************************************************
     'Autor: Nacho (Integer)
-    'Last Modification: 03/14/07
+    'Last Modification: 06/07/2020
     'Da cuerpo desnudo a un usuario
     '23/11/2009: ZaMa - Optimizacion de codigo.
+    '06/07/2020: Cuicui - Ahora devuelve el numero del body aplicado
     '***************************************************
-
-    Dim CuerpoDesnudo As Integer
 
     With UserList(Userindex)
 
@@ -57,19 +56,19 @@ Sub DarCuerpoDesnudo(ByVal Userindex As Integer, _
                 Select Case .raza
 
                     Case eRaza.Humano
-                        CuerpoDesnudo = 21
+                        DarCuerpoDesnudo = 21
 
                     Case eRaza.Drow
-                        CuerpoDesnudo = 32
+                        DarCuerpoDesnudo = 32
 
                     Case eRaza.Elfo
-                        CuerpoDesnudo = 210
+                        DarCuerpoDesnudo = 210
 
                     Case eRaza.Gnomo
-                        CuerpoDesnudo = 222
+                        DarCuerpoDesnudo = 222
 
                     Case eRaza.Enano
-                        CuerpoDesnudo = 53
+                        DarCuerpoDesnudo = 53
 
                 End Select
 
@@ -78,28 +77,28 @@ Sub DarCuerpoDesnudo(ByVal Userindex As Integer, _
                 Select Case .raza
 
                     Case eRaza.Humano
-                        CuerpoDesnudo = 39
+                        DarCuerpoDesnudo = 39
 
                     Case eRaza.Drow
-                        CuerpoDesnudo = 40
+                        DarCuerpoDesnudo = 40
 
                     Case eRaza.Elfo
-                        CuerpoDesnudo = 259
+                        DarCuerpoDesnudo = 259
 
                     Case eRaza.Gnomo
-                        CuerpoDesnudo = 260
+                        DarCuerpoDesnudo = 260
 
                     Case eRaza.Enano
-                        CuerpoDesnudo = 60
+                        DarCuerpoDesnudo = 60
 
                 End Select
 
         End Select
     
         If Mimetizado Then
-            .CharMimetizado.body = CuerpoDesnudo
+            .CharMimetizado.body = DarCuerpoDesnudo
         Else
-            .Char.body = CuerpoDesnudo
+            .Char.body = DarCuerpoDesnudo
 
         End If
     
@@ -107,7 +106,7 @@ Sub DarCuerpoDesnudo(ByVal Userindex As Integer, _
 
     End With
 
-End Sub
+End Function
 
 Sub Bloquear(ByVal toMap As Boolean, _
              ByVal sndIndex As Integer, _
@@ -262,9 +261,7 @@ Sub Main()
     ChDrive App.Path
     Call LoadMotd
     Call BanIpCargar
-    
-    UltimoSlotLimpieza = -1
-    
+        
     ' Start loading..
     frmCargando.Show
     
@@ -276,7 +273,7 @@ Sub Main()
     ' Arrays
     frmCargando.Label1(2).Caption = "Iniciando Arrays..."
     Call LoadArrays
-    
+    Call LoadPesca
     ' Server.ini & Apuestas.dat & Ciudades.dat
     frmCargando.Label1(2).Caption = "Cargando Server.ini"
     Call LoadSini
@@ -364,6 +361,7 @@ Sub Main()
 
     'Aca ponemos la ip y puerto en el label del frmMain
     Dim IpPublicaServidor As String
+
     IpPublicaServidor = frmMain.Inet1.OpenURL("http://ip1.dynupdate.no-ip.com:8245/")
     frmMain.lblIp.Caption = IpPublicaServidor & ":" & Puerto
 
@@ -841,7 +839,7 @@ Public Sub EfectoLluvia(ByVal Userindex As Integer)
     '
     '***************************************************
 
-    On Error GoTo ErrHandler
+    On Error GoTo errHandler
 
     If UserList(Userindex).flags.UserLogged Then
         If Intemperie(Userindex) Then
@@ -857,7 +855,7 @@ Public Sub EfectoLluvia(ByVal Userindex As Integer)
     End If
     
     Exit Sub
-ErrHandler:
+errHandler:
     LogError ("Error en EfectoLluvia")
 
 End Sub
@@ -1095,7 +1093,7 @@ Public Sub EfectoInvisibilidad(ByVal Userindex As Integer)
         If .Counters.Invisibilidad < IntervaloInvisible Then
             .Counters.Invisibilidad = .Counters.Invisibilidad + 1
         Else
-            .Counters.Invisibilidad = RandomNumber(-100, 100) ' Invi variable :D
+            .Counters.Invisibilidad = 0 'RandomNumber(-100, 100) ' Invi variable :D
             .flags.invisible = 0
 
             If .flags.Oculto = 0 Then
@@ -1456,11 +1454,11 @@ Public Sub Sanar(ByVal Userindex As Integer, _
 
 End Sub
 
-Public Sub CargaNpcsDat()
+Public Sub CargaNpcsDat(Optional ByVal ForzarActualizacionNpcsExistentes As Boolean = False)
     '***************************************************
     'Author: Unknown
-    'Last Modification: -
-    '
+    'Last Modification: 06/07/2020 (Cuicui)
+    ' 06/07/2020 (Cuicui) - Actualizamos la informacion de los NPC's ya spawneados.
     '***************************************************
     If frmMain.Visible Then frmMain.txtStatus.Text = "Cargando NPCs.dat."
     
@@ -1470,6 +1468,23 @@ Public Sub CargaNpcsDat()
     
     ' Cargamos la lista de NPC's hostiles disponibles para spawnear.
     Call CargarSpawnList
+
+    ' Actualizamos la informacion de los NPC's ya spawneados.
+    If ForzarActualizacionNpcsExistentes Then
+
+        Dim i As Long
+
+        For i = 1 To MAXNPCS
+
+            If Npclist(i).flags.NPCActive Then
+                Call ReloadNPCByIndex(i)
+            End If
+
+            DoEvents
+
+        Next i
+
+    End If
 
     If frmMain.Visible Then frmMain.txtStatus.Text = Date & " " & time & " - Se cargo el archivo NPCs.dat."
 

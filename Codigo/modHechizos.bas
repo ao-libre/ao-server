@@ -844,6 +844,15 @@ Sub HandleHechizoUsuario(ByVal Userindex As Integer, ByVal SpellIndex As Integer
     Dim HechizoCasteado As Boolean
 
     Dim ManaRequerida   As Integer
+
+    With UserList(Userindex)
+        '<<<< Equitando >>>
+        If .flags.Equitando = 1 Then
+            Call UnmountMontura(Userindex)
+            Call WriteEquitandoToggle(Userindex)
+            
+        End If
+    End With
     
     Select Case Hechizos(SpellIndex).Tipo
 
@@ -919,6 +928,12 @@ Sub HandleHechizoNPC(ByVal Userindex As Integer, ByVal HechizoIndex As Integer)
     Dim ManaRequerida   As Long
     
     With UserList(Userindex)
+        '<<<< Equitando >>>
+        If .flags.Equitando = 1 Then
+            Call UnmountMontura(Userindex)
+            Call WriteEquitandoToggle(Userindex)
+            
+        End If
         
         Select Case Hechizos(HechizoIndex).Tipo
 
@@ -1681,15 +1696,6 @@ Sub HechizoEstadoNPC(ByVal NpcIndex As Integer, _
 
                 End If
 
-                With UserList(Userindex)
-                    '<<<< Equitando >>>
-                    If .flags.Equitando = 1 Then
-                        Call UnmountMontura(Userindex)
-                        Call WriteEquitandoToggle(Userindex)
-                        
-                    End If
-                End With
-
                 Call NPCAtacado(NpcIndex, Userindex)
                 Call InfoHechizo(Userindex)
                 .flags.Paralizado = 1
@@ -1820,9 +1826,18 @@ Sub HechizoEstadoNPC(ByVal NpcIndex As Integer, _
             
             If .Clase = eClass.Druid Then
                 'copio el char original al mimetizado
-            
-                .CharMimetizado.body = .Char.body
-                .CharMimetizado.Head = .Char.Head
+                If .Invent.ArmourEqpObjIndex <> 0 Then
+                    .CharMimetizado.body = ObjData(.Invent.ArmourEqpObjIndex).Ropaje
+                Else
+                    .CharMimetizado.body = DarCuerpoDesnudo(Userindex, True) '.Char.body
+                End If
+                
+                If .flags.Navegando <> 0 Then
+                    .CharMimetizado.Head = .OrigChar.Head
+                Else
+                    .CharMimetizado.Head = .Char.Head
+                    .CharMimetizado.body = .Char.body
+                End If
                 .CharMimetizado.CascoAnim = .Char.CascoAnim
                 .CharMimetizado.ShieldAnim = .Char.ShieldAnim
                 .CharMimetizado.WeaponAnim = .Char.WeaponAnim

@@ -147,14 +147,18 @@ Public Sub MuereNpc(ByVal NpcIndex As Integer, ByVal Userindex As Integer)
             
             '[KEVIN]
             If MiNPC.flags.ExpCount > 0 Then
+                
                 If .PartyIndex > 0 Then
                     Call mdParty.ObtenerExito(Userindex, MiNPC.flags.ExpCount, MiNPC.Pos.Map, MiNPC.Pos.X, MiNPC.Pos.Y)
+                
                 Else
                     .Stats.Exp = .Stats.Exp + MiNPC.flags.ExpCount
 
                     If .Stats.Exp > MAXEXP Then .Stats.Exp = MAXEXP
-                    Call WriteConsoleMsg(Userindex, "Has ganado " & MiNPC.flags.ExpCount & " puntos de experiencia.", FontTypeNames.FONTTYPE_FIGHT)
-
+                    
+                    'Call WriteConsoleMsg(Userindex, "Has ganado " & MiNPC.flags.ExpCount & " puntos de experiencia.", FontTypeNames.FONTTYPE_FIGHT)
+                    Call WriteMultiMessage(Userindex, eMessages.EarnExp, MiNPC.flags.ExpCount)
+                    
                 End If
 
                 MiNPC.flags.ExpCount = 0
@@ -162,7 +166,8 @@ Public Sub MuereNpc(ByVal NpcIndex As Integer, ByVal Userindex As Integer)
             End If
             
             '[/KEVIN]
-            Call WriteConsoleMsg(Userindex, "Has matado a la criatura!", FontTypeNames.FONTTYPE_FIGHT)
+            'Call WriteConsoleMsg(Userindex, "Has matado a la criatura!", FontTypeNames.FONTTYPE_FIGHT)
+            Call WriteMultiMessage(Userindex, eMessages.NPCKill)
 
             If .Stats.NPCsMuertos < 32000 Then .Stats.NPCsMuertos = .Stats.NPCsMuertos + 1
             
@@ -242,7 +247,7 @@ Public Sub MuereNpc(ByVal NpcIndex As Integer, ByVal Userindex As Integer)
    
     If MiNPC.MaestroUser = 0 Then
         'Tiramos el inventario
-        Call NPC_TIRAR_ITEMS(MiNPC, MiNPC.NPCtype = eNPCType.Pretoriano)
+        Call NPC_TIRAR_ITEMS(MiNPC, MiNPC.NPCtype = eNPCType.Pretoriano, UserIndex)
         'ReSpawn o no
         Call ReSpawnNpc(MiNPC)
 
@@ -316,6 +321,7 @@ Private Sub ResetNpcFlags(ByVal NpcIndex As Integer)
         .LanzaSpells = 0
         .invisible = 0
         .Maldicion = 0
+        .SiguiendoGM = false
         .OldHostil = 0
         .OldMovement = 0
         .Paralizado = 0
@@ -326,6 +332,7 @@ Private Sub ResetNpcFlags(ByVal NpcIndex As Integer)
         .Snd2 = 0
         .Snd3 = 0
         .TierraInvalida = 0
+        
 
     End With
 
@@ -835,7 +842,7 @@ Public Function MoveNPCChar(ByVal NpcIndex As Integer, ByVal nHeading As Byte) A
             
             Userindex = MapData(.Pos.Map, nPos.X, nPos.Y).Userindex
 
-            ' Si hay un usuario a donde se mueve el npc, entonces esta muerto
+            ' Si hay un usuario a donde se mueve el npc, entonces esta muerto o es un gm invisible
             If Userindex > 0 Then
                 
                 ' No se traslada caspers de agua a tierra
@@ -844,6 +851,9 @@ Public Function MoveNPCChar(ByVal NpcIndex As Integer, ByVal nHeading As Byte) A
                 ' No se traslada caspers de tierra a agua
                 If Not HayAgua(.Pos.Map, nPos.X, nPos.Y) And HayAgua(.Pos.Map, .Pos.X, .Pos.Y) Then Exit Function
                 
+                'Se choca con los gm invisible si es que esta siguiendo a uno por el comando /seguir
+                If .flags.SiguiendoGM = True And UserList(Userindex).flags.AdminInvisible = 1 Then Exit Function
+
                 With UserList(Userindex)
                     ' Actualizamos posicion y mapa
                     MapData(.Pos.Map, .Pos.X, .Pos.Y).Userindex = 0
@@ -1272,11 +1282,13 @@ Public Sub DoFollow(ByVal NpcIndex As Integer, ByVal UserName As String)
         If .flags.Follow Then
             .flags.AttackedBy = vbNullString
             .flags.Follow = False
+            .flags.SiguiendoGm = false
             .Movement = .flags.OldMovement
             .Hostile = .flags.OldHostil
         Else
             .flags.AttackedBy = UserName
             .flags.Follow = True
+            .flags.SiguiendoGm = true
             .Movement = TipoAI.NPCDEFENSA
             .Hostile = 0
 

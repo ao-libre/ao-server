@@ -1,35 +1,21 @@
 Attribute VB_Name = "mLimpieza"
-'Creado por shak
-
 Option Explicit
 
-Const MAXITEMS                  As Integer = 1000
+Const MAXITEMS  As Integer = 1500
 
-Private ArrayLimpieza(MAXITEMS) As WorldPos
-
-'//Desde aca establecemos el ultimo slot que se uso
-Public UltimoSlotLimpieza       As Integer
+Dim ItemsLimpieza   As New Collection
 
 Public Sub AgregarObjetoLimpieza(Pos As WorldPos)
-
-    '//Primera pos almacenada
-    If UltimoSlotLimpieza = -1 Then
-        ArrayLimpieza(0) = Pos
-        UltimoSlotLimpieza = 0
-        Exit Sub
-
-    End If
+    Dim newPos As New cWorldPos
     
-    '//En caso de no ser cero, significa que ya hay objetos, seguimos sumando +1
-    UltimoSlotLimpieza = UltimoSlotLimpieza + 1
+    newPos.Map = Pos.Map
+    newPos.X = Pos.X
+    newPos.Y = Pos.Y
     
-    ArrayLimpieza(UltimoSlotLimpieza) = Pos
+    Call ItemsLimpieza.Add(newPos)
     
-    'Alcanzamos los slots que permite almacenar?
-    '//Reservamos 100 slots por si cuando empieza a limpiar el mundo, siguen tirando objetos.
-    If UltimoSlotLimpieza = MAXITEMS - 100 Then
-        counterSV.Limpieza = 30
-
+    If ItemsLimpieza.Count = MAXITEMS Then
+        tickLimpieza = 16
     End If
 
 End Sub
@@ -37,17 +23,24 @@ End Sub
 Public Sub BorrarObjetosLimpieza()
 
     Dim i As Long
+    
+    If ItemsLimpieza.Count = 0 Then Exit Sub
+    
+    For i = 1 To ItemsLimpieza.Count
 
-    For i = 0 To MAXITEMS
+        With ItemsLimpieza.Item(i)
 
-        With ArrayLimpieza(i)
-
-            If (MapData(.Map, .X, .Y).trigger <> eTrigger.CASA Or MapData(.Map, .X, .Y).trigger <> eTrigger.BAJOTECHO) And MapData(.Map, .X, .Y).Blocked <> 1 Then
-                Call EraseObj(10000, .Map, .X, .Y)
+            If (MapData(.Map, .X, .Y).trigger <> eTrigger.CASA Or _
+                MapData(.Map, .X, .Y).trigger <> eTrigger.BAJOTECHO) And _
+                MapData(.Map, .X, .Y).Blocked <> 1 Then
+                
+                Call EraseObj(MapData(.Map, .X, .Y).ObjInfo.Amount, .Map, .X, .Y)
             End If
 
         End With
 
     Next i
+
+    Set ItemsLimpieza = New Collection
 
 End Sub

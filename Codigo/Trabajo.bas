@@ -1,3 +1,4 @@
+Attribute VB_Name = "Trabajo"
 'Argentum Online 0.12.2
 'Copyright (C) 2002 Marquez Pablo Ignacio
 '
@@ -42,7 +43,7 @@ Public Sub DoPermanecerOculto(ByVal Userindex As Integer)
     '13/01/2010: ZaMa - Now hidden on boat pirats recover the proper boat body.
     '13/01/2010: ZaMa - Arreglo condicional para que el bandido camine oculto.
     '********************************************************
-    On Error GoTo ErrHandler
+    On Error GoTo errHandler
 
     With UserList(Userindex)
         .Counters.TiempoOculto = .Counters.TiempoOculto - 1
@@ -85,7 +86,7 @@ Public Sub DoPermanecerOculto(ByVal Userindex As Integer)
     
     Exit Sub
 
-ErrHandler:
+errHandler:
     Call LogError("Error en Sub DoPermanecerOculto")
 
 End Sub
@@ -99,7 +100,7 @@ Public Sub DoOcultarse(ByVal Userindex As Integer)
     '13/01/2010: ZaMa - El pirata se transforma en galeon fantasmal cuando se oculta en agua.
     '***************************************************
 
-    On Error GoTo ErrHandler
+    On Error GoTo errHandler
 
     Dim Suerte As Double
 
@@ -166,7 +167,7 @@ Public Sub DoOcultarse(ByVal Userindex As Integer)
     
     Exit Sub
 
-ErrHandler:
+errHandler:
     Call LogError("Error en Sub DoOcultarse")
 
 End Sub
@@ -176,28 +177,56 @@ Public Sub DoNavega(ByVal Userindex As Integer, _
                     ByVal Slot As Integer)
 '***************************************************
 'Author: Unknown
-'Last Modification: 12/01/2020 (Recox)
+'Last Modification: 09/07/2020: Jopi
 '13/01/2010: ZaMa - El pirata pierde el ocultar si desequipa barca.
 '16/09/2010: ZaMa - Ahora siempre se va el invi para los clientes al equipar la barca (Evita cortes de cabeza).
 '10/12/2010: Pato - Limpio las variables del inventario que hacen referencia a la barca, sino el pirata que la ultima barca que equipo era el galeon no explotaba(Y capaz no la tenia equipada :P).
-'12/01/2020: Recox - Se refactorizo un poco para reutilizar con monturas .
+'12/01/2020: Recox - Se refactorizo un poco para reutilizar con monturas.
+'09/07/2020: Jopi - Dejamos de usar los modificadores de barca por clase y refactorizo los chequeos por clase.
 '***************************************************
 
-    Dim ModNave As Single
-    
     With UserList(Userindex)
+    
         If .flags.Equitando = 1 Then
             Call WriteConsoleMsg(Userindex, "No puedes navegar mientras estas en tu montura!!", FontTypeNames.FONTTYPE_INFO)
             Exit Sub
         End If
-
-        ModNave = ModNavegacion(.Clase, Userindex)
         
-        If .Stats.UserSkills(eSkill.Navegacion) / ModNave < Barco.MinSkill Then
+        If EsGalera(Barco) Then
+            
+            If .Clase <> eClass.Assasin And _
+                .Clase <> eClass.Pirat And _
+                .Clase <> eClass.Bandit And _
+                .Clase <> eClass.Cleric And _
+                .Clase <> eClass.Thief And _
+                .Clase <> eClass.Paladin Then
+            
+                Call WriteConsoleMsg(Userindex, "Solo los Piratas, Asesinos, Bandidos, Clerigos, Bandidos y Paladines pueden usar Galera!!", FontTypeNames.FONTTYPE_INFO)
+                Exit Sub
+            
+            End If
+            
+        End If
+        
+        If EsGaleon(Barco) Then
+            
+            If .Clase <> eClass.Thief And .Clase <> eClass.Pirat Then
+            
+                Call WriteConsoleMsg(Userindex, "Solo los Ladrones y Piratas pueden usar Galeon!!", FontTypeNames.FONTTYPE_INFO)
+                Exit Sub
+            
+            End If
+            
+        End If
+        
+        ' Acordate que el Trabajador solo necesita 60 de Navegacion para usar barca!
+        Dim SkillNecesario As Byte
+        SkillNecesario = IIf(.Clase = eClass.Worker, 60, Barco.MinSkill)
+        
+        ' Tiene el skill necesario?
+        If .Stats.UserSkills(eSkill.Navegacion) < SkillNecesario Then
             Call WriteConsoleMsg(Userindex, "No tienes suficientes conocimientos para usar este barco.", FontTypeNames.FONTTYPE_INFO)
-            Call WriteConsoleMsg(Userindex, "Para usar este barco necesitas " & Barco.MinSkill * ModNave & " puntos en navegacion.", FontTypeNames.FONTTYPE_INFO)
             Exit Sub
-
         End If
         
         ' No estaba navegando
@@ -231,7 +260,9 @@ Public Sub DoNavega(ByVal Userindex As Integer, _
         
             ' No esta muerto
             If .flags.Muerto = 0 Then
-                .Char.Head = .OrigChar.Head
+                If .flags.Mimetizado = 0 Then
+                    .Char.Head = .OrigChar.Head
+                End If
                 
                 Call SetEquipmentOnCharAfterNavigateOrEquitate(Userindex)
                 
@@ -271,7 +302,7 @@ Public Sub FundirMineral(ByVal Userindex As Integer)
     '
     '***************************************************
 
-    On Error GoTo ErrHandler
+    On Error GoTo errHandler
 
     With UserList(Userindex)
 
@@ -290,7 +321,7 @@ Public Sub FundirMineral(ByVal Userindex As Integer)
 
     Exit Sub
 
-ErrHandler:
+errHandler:
     Call LogError("Error en FundirMineral. Error " & Err.Number & " : " & Err.description)
 
 End Sub
@@ -302,7 +333,7 @@ Public Sub FundirArmas(ByVal Userindex As Integer)
     '
     '***************************************************
 
-    On Error GoTo ErrHandler
+    On Error GoTo errHandler
 
     With UserList(Userindex)
 
@@ -322,7 +353,7 @@ Public Sub FundirArmas(ByVal Userindex As Integer)
     End With
     
     Exit Sub
-ErrHandler:
+errHandler:
     Call LogError("Error en FundirArmas. Error " & Err.Number & " : " & Err.description)
 
 End Sub
@@ -839,7 +870,7 @@ Public Sub CarpinteroConstruirItem(ByVal Userindex As Integer, ByVal ItemIndex A
     '22/05/2010: ZaMa - Los caos ya no suben plebe al trabajar.
     '28/05/2010: ZaMa - Los pks no suben plebe al trabajar.
     '***************************************************
-    On Error GoTo ErrHandler
+    On Error GoTo errHandler
 
     Dim CantidadItems   As Integer
 
@@ -971,7 +1002,7 @@ Public Sub CarpinteroConstruirItem(ByVal Userindex As Integer, ByVal ItemIndex A
     End With
     
     Exit Sub
-ErrHandler:
+errHandler:
     Call LogError("Error en CarpinteroConstruirItem. Error " & Err.Number & " : " & Err.description & ". UserIndex:" & Userindex & ". ItemIndex:" & ItemIndex)
 
 End Sub
@@ -1375,35 +1406,6 @@ Public Sub DoUpgrade(ByVal Userindex As Integer, ByVal ItemIndex As Integer)
 
 End Sub
 
-Function ModNavegacion(ByVal Clase As eClass, ByVal Userindex As Integer) As Single
-
-    '***************************************************
-    'Autor: Unknown (orginal version)
-    'Last Modification: 27/11/2009
-    '27/11/2009: ZaMa - A worker can navigate before only if it's an expert fisher
-    '12/04/2010: ZaMa - Arreglo modificador de pescador, para que navegue con 60 skills.
-    '***************************************************
-    Select Case Clase
-
-        Case eClass.Pirat
-            ModNavegacion = 1
-
-        Case eClass.Worker
-
-            If UserList(Userindex).Stats.UserSkills(eSkill.pesca) = 100 Then
-                ModNavegacion = 1.71
-            Else
-                ModNavegacion = 2
-
-            End If
-
-        Case Else
-            ModNavegacion = 2
-
-    End Select
-
-End Function
-
 Function ModFundicion(ByVal Clase As eClass) As Single
     '***************************************************
     'Author: Unknown
@@ -1516,7 +1518,7 @@ Sub DoDomar(ByVal Userindex As Integer, ByVal NpcIndex As Integer)
     '01/05/2010: ZaMa - Agrego bonificacion 11% para domar con flauta magica.
     '***************************************************
 
-    On Error GoTo ErrHandler
+    On Error GoTo errHandler
 
     Dim puntosDomar      As Integer
 
@@ -1620,7 +1622,7 @@ Sub DoDomar(ByVal Userindex As Integer, ByVal NpcIndex As Integer)
     
     Exit Sub
 
-ErrHandler:
+errHandler:
     Call LogError("Error en DoDomar. Error " & Err.Number & " : " & Err.description)
 
 End Sub
@@ -1826,7 +1828,7 @@ Public Sub DoPescar(ByVal Userindex As Integer)
     '28/05/2010: ZaMa - Los pks no suben plebe al trabajar.
     '26/10/2018: CHOTS - Multiplicador de oficios
     '***************************************************
-    On Error GoTo ErrHandler
+    On Error GoTo errHandler
 
     Dim Suerte        As Integer
 
@@ -1866,11 +1868,35 @@ Public Sub DoPescar(ByVal Userindex As Integer)
             End If
 
             CantidadItems = CantidadItems * OficioMultiplier
-            
+
+            Dim i As Long
+
             With MiObj
-                .Amount = CantidadItems
-                .ObjIndex = Pescado
+    
+                If PescaEvent.Activado = 1 Then
+
+                    For i = 1 To PescaEvent.CantidadDeZonas
+
+                        If UserList(Userindex).Pos.Map = Zona(i).Mapa Then
+                            MiObj.ObjIndex = Evento_Pesca.DamePez(i)
+                        Else
+                            .Amount = CantidadItems
+                            MiObj.ObjIndex = Pescado
+                        End If
+
+                    Next i
+
+                Else
+                    .Amount = CantidadItems
+                    MiObj.ObjIndex = Pescado
+                End If
+
             End With
+
+            'With MiObj
+            '    .Amount = CantidadItems
+            '    .ObjIndex = Pescado
+            'End With
             
             If Not MeterItemEnInventario(Userindex, MiObj) Then
                 Call TirarItemAlPiso(.Pos, MiObj)
@@ -1911,7 +1937,7 @@ Public Sub DoPescar(ByVal Userindex As Integer)
 
     Exit Sub
 
-ErrHandler:
+errHandler:
     Call LogError("Error en DoPescar. Error " & Err.Number & " : " & Err.description)
 
 End Sub
@@ -1924,7 +1950,7 @@ Public Sub DoPescarRed(ByVal Userindex As Integer)
     '26/10/2018: CHOTS - Multiplicador de oficios
     '26/05/2020: Fakkerz - Agregado render de dano faltante
     '***************************************************
-    On Error GoTo ErrHandler
+    On Error GoTo errHandler
 
     Dim iSkill        As Integer
 
@@ -1984,7 +2010,7 @@ Public Sub DoPescarRed(ByVal Userindex As Integer)
                 Call WriteConsoleMsg(Userindex, "Has pescado algunos peces!", FontTypeNames.FONTTYPE_INFO)
                 
                 'Renderizo el dano en render.
-                Call SendData(SendTarget.ToPCArea, Userindex, PrepareMessageCreateDamage(.Pos.X, .Pos.Y, MiObj.Amount, DAMAGE_TRABAJO))                                                                                 
+                Call SendData(SendTarget.ToPCArea, Userindex, PrepareMessageCreateDamage(.Pos.X, .Pos.Y, MiObj.Amount, DAMAGE_TRABAJO))
                 
                 Call SubirSkill(Userindex, eSkill.pesca, True)
             Else
@@ -2009,7 +2035,7 @@ Public Sub DoPescarRed(ByVal Userindex As Integer)
     
     Exit Sub
 
-ErrHandler:
+errHandler:
     Call LogError("Error en DoPescarRed")
 
 End Sub
@@ -2034,7 +2060,7 @@ Public Sub DoRobar(ByVal LadrOnIndex As Integer, ByVal VictimaIndex As Integer)
     '23/04/2010: ZaMa - El alcance de robo pasa a ser de 1 tile.
     '*************************************************
 
-    On Error GoTo ErrHandler
+    On Error GoTo errHandler
 
     Dim OtroUserIndex As Integer
 
@@ -2226,7 +2252,7 @@ Public Sub DoRobar(ByVal LadrOnIndex As Integer, ByVal VictimaIndex As Integer)
 
     Exit Sub
 
-ErrHandler:
+errHandler:
     Call LogError("Error en DoRobar. Error " & Err.Number & " : " & Err.description)
 
 End Sub
@@ -2418,7 +2444,7 @@ Public Sub DoApunalar(ByVal Userindex As Integer, _
                 .Stats.MinHp = .Stats.MinHp - Int(dano * 2)
                 
                 'Renderizo el dano en render
-                Call SendData(SendTarget.ToPCArea, VictimNpcIndex, PrepareMessageCreateDamage(.Pos.X, .Pos.Y, Int(dano * 2), DAMAGE_PUNAL))
+                Call SendData(SendTarget.ToNPCArea, VictimNpcIndex, PrepareMessageCreateDamage(.Pos.X, .Pos.Y, Int(dano * 2), DAMAGE_PUNAL))
                 
                 Call WriteConsoleMsg(Userindex, "Has apunalado la criatura por " & Int(dano * 2), FontTypeNames.FONTTYPE_FIGHT)
                 Call CalcularDarExp(Userindex, VictimNpcIndex, dano * 2)
@@ -2524,7 +2550,7 @@ Public Sub DoGolpeCritico(ByVal Userindex As Integer, _
                 .Stats.MinHp = .Stats.MinHp - dano
                 
                 'Renderizo el dano en render
-                Call SendData(SendTarget.ToPCArea, VictimNpcIndex, PrepareMessageCreateDamage(.Pos.X, .Pos.Y, Int(dano * 2), DAMAGE_PUNAL))
+                Call SendData(SendTarget.ToNPCArea, VictimNpcIndex, PrepareMessageCreateDamage(.Pos.X, .Pos.Y, Int(dano * 2), DAMAGE_PUNAL))
                 
                 Call WriteConsoleMsg(Userindex, "Has golpeado criticamente a la criatura por " & dano & ".", FontTypeNames.FONTTYPE_FIGHT)
                 
@@ -2546,7 +2572,7 @@ Public Sub QuitarSta(ByVal Userindex As Integer, ByVal Cantidad As Integer)
     '
     '***************************************************
 
-    On Error GoTo ErrHandler
+    On Error GoTo errHandler
 
     UserList(Userindex).Stats.MinSta = UserList(Userindex).Stats.MinSta - Cantidad
 
@@ -2555,7 +2581,7 @@ Public Sub QuitarSta(ByVal Userindex As Integer, ByVal Cantidad As Integer)
     
     Exit Sub
 
-ErrHandler:
+errHandler:
     Call LogError("Error en QuitarSta. Error " & Err.Number & " : " & Err.description)
     
 End Sub
@@ -2574,7 +2600,7 @@ Public Sub DoTalar(ByVal Userindex As Integer, _
     '28/05/2010: ZaMa - Los pks no suben plebe al trabajar.
     '26/10/2018: CHOTS - Multiplicador de oficios
     '***************************************************
-    On Error GoTo ErrHandler
+    On Error GoTo errHandler
 
     Dim Suerte        As Integer
 
@@ -2659,7 +2685,7 @@ Public Sub DoTalar(ByVal Userindex As Integer, _
 
     Exit Sub
 
-ErrHandler:
+errHandler:
     Call LogError("Error en DoTalar")
 
 End Sub
@@ -2676,7 +2702,7 @@ Public Sub DoMineria(ByVal Userindex As Integer)
     '28/05/2010: ZaMa - Los pks no suben plebe al trabajar.
     '26/10/2018: CHOTS - Multiplicador de oficios
     '***************************************************
-    On Error GoTo ErrHandler
+    On Error GoTo errHandler
 
     Dim Suerte        As Integer
 
@@ -2758,7 +2784,7 @@ Public Sub DoMineria(ByVal Userindex As Integer)
 
     Exit Sub
 
-ErrHandler:
+errHandler:
     Call LogError("Error en Sub DoMineria")
 
 End Sub
@@ -3219,7 +3245,7 @@ Public Sub DoEquita(ByVal Userindex As Integer, _
                 Call WriteEquitandoToggle(Userindex)
 
                 'Mostramos solo el casco de los items equipados por que los demas items quedan mal en el render, solo es un tema visual (Recox)
-                Call ChangeUserChar(Userindex, .Char.body, .Char.Head, .Char.heading, NingunArma, NingunEscudo, .Char.CascoAnim) 
+                Call ChangeUserChar(Userindex, .Char.body, .Char.Head, .Char.heading, NingunArma, NingunEscudo, .Char.CascoAnim)
             Else
                 Call WriteConsoleMsg(Userindex, "Debe esperar " & .Counters.MonturaCounter & " segundos para volver a usar tu montura", FontTypeNames.FONTTYPE_INFO)
             End If
@@ -3289,12 +3315,13 @@ End Sub
 Private Sub SetEquipmentOnCharAfterNavigateOrEquitate(ByVal Userindex As Integer)
 
     With UserList(Userindex)
-
-        If .Invent.ArmourEqpObjIndex > 0 Then
-            .Char.body = ObjData(.Invent.ArmourEqpObjIndex).Ropaje
-        Else
-            Call DarCuerpoDesnudo(Userindex)
-
+        
+        If .flags.Mimetizado = 0 Then
+            If .Invent.ArmourEqpObjIndex > 0 Then
+                .Char.body = ObjData(.Invent.ArmourEqpObjIndex).Ropaje
+            Else
+                Call DarCuerpoDesnudo(Userindex)
+            End If
         End If
         
         If .Invent.EscudoEqpObjIndex > 0 Then .Char.ShieldAnim = ObjData(.Invent.EscudoEqpObjIndex).ShieldAnim

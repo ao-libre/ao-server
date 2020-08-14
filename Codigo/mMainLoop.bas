@@ -327,19 +327,41 @@ Public Sub PasarSegundo()
     Dim i As Long
     
     'Limpieza del mundo
-    If counterSV.Limpieza > 0 Then
-        counterSV.Limpieza = counterSV.Limpieza - 1
-        
-        If counterSV.Limpieza < 6 Then
-            Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg("Limpieza del mundo en " & counterSV.Limpieza & " segundos. Atentos!!", FontTypeNames.FONTTYPE_SERVER))
-        End If
-        
-        If counterSV.Limpieza = 0 Then
-            Call BorrarObjetosLimpieza
-            Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg("Limpieza del mundo finalizada.", FontTypeNames.FONTTYPE_SERVER))
-            UltimoSlotLimpieza = -1
-        End If
+    If tickLimpieza > 0 Then
+        tickLimpieza = tickLimpieza - 1
+                
+        Select Case tickLimpieza
+                                                        
+            Case 300
+                Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg("Servidor> Limpieza del mundo en 5 Minuto. Atentos!!", FontTypeNames.FONTTYPE_SERVER))
 
+            Case 240
+                Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg("Servidor> Limpieza del mundo en 4 Minutos. Atentos!!", FontTypeNames.FONTTYPE_SERVER))
+
+            Case 180
+                Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg("Servidor> Limpieza del mundo en 3 Minutos. Atentos!!", FontTypeNames.FONTTYPE_SERVER))
+            
+            Case 120
+                Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg("Servidor> Limpieza del mundo en 2 Minutos. Atentos!!", FontTypeNames.FONTTYPE_SERVER))
+
+            Case 60
+                Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg("Servidor> Limpieza del mundo en 1 Minuto. Atentos!!", FontTypeNames.FONTTYPE_SERVER))
+   
+            Case 15
+                Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg("Servidor> Limpieza del mundo en 15 segundos. Atentos!!", FontTypeNames.FONTTYPE_SERVER))
+            
+            Case 10
+                Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg("Servidor> Limpieza del mundo en 10 segundos. Atentos!!", FontTypeNames.FONTTYPE_SERVER))
+                
+            Case 5 To 1
+                Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg("Servidor> Limpieza del mundo en " & tickLimpieza & " segundos. Atentos!!", FontTypeNames.FONTTYPE_SERVER))
+            
+            Case 0
+                Call BorrarObjetosLimpieza
+                Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg("Servidor> Limpieza del mundo finalizada.", FontTypeNames.FONTTYPE_SERVER))
+                
+        End Select
+        
     End If
     
     For i = 1 To LastUser

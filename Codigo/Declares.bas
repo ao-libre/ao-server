@@ -55,13 +55,7 @@ Type CentinelaUser
 
 End Type
 
-Private Type tCountersServidor
-
-    Limpieza As Integer
-
-End Type
-
-Public counterSV      As tCountersServidor
+Public tickLimpieza      As Integer
 
 ''
 ' Modulo de declaraciones. Aca hay de todo.
@@ -125,7 +119,7 @@ Public Const iGaleraReal = 565
 
 Public Const iGaleraRealAtacable = 568
 
-Public Const iGaleonReal = 572 
+Public Const iGaleonReal = 572
 
 Public Const iGaleonRealAtacable = 564
 
@@ -141,7 +135,7 @@ Public Const iBarcaCaos = 561
 
 Public Const iGaleraCaos = 566
 
-Public Const iGaleonCaos = 573 
+Public Const iGaleonCaos = 573
 
 Public Enum iMinerales
 
@@ -963,7 +957,7 @@ End Type
 
 'Datos de user o npc
 Public Type Char
-
+    Escribiendo As Byte
     CharIndex As Integer
     Head As Integer
     body As Integer
@@ -1339,6 +1333,7 @@ End Type
 
 'Flags
 Public Type UserFlags
+    GMRequested As Integer
     ' Retos
     SlotReto As Byte
     SlotRetoUser As Byte
@@ -1499,7 +1494,7 @@ Public Type UserCounters
     
     Trabajando As Long  ' Para el centinela
     Ocultando As Long   ' Unico trabajo no revisado por el centinela
-    
+    Cheat As TimeIntervalos
     failedUsageAttempts As Long
     
     goHome As Long
@@ -1631,7 +1626,7 @@ Public Type User
         UpTime As Long
     #End If
 
-    ip As String
+    IP As String
     
     ComUsu As tCOmercioUsuario
     
@@ -1657,6 +1652,8 @@ Public Type User
     cvcUser As cvc_User
     
     QuestStats As tQuestStats
+    
+    Redundance As Byte
 
 End Type
 
@@ -1721,6 +1718,7 @@ Public Type NPCFlags
     invisible As Byte
     Maldicion As Byte
     Bendicion As Byte
+    SiguiendoGm As Boolean
     
     Snd1 As Integer
     Snd2 As Integer
@@ -2128,6 +2126,7 @@ Public Enum eMessages
     WorkRequestTarget
     HaveKilledUser
     UserKill
+    NPCKill
     EarnExp
     Home
     CancelHome
@@ -2415,6 +2414,8 @@ Public EstadisticasInicialesUsarConfiguracionPersonalizada As Boolean
 
 Public UsarMundoPropio As Boolean
 
+Public OroDirectoABille As Boolean
+
 Public ConexionAPI As Boolean
 
 Public ApiUrlServer As String
@@ -2430,4 +2431,6 @@ Public DescripcionServidor As String
 
 Public NombreServidor As String
 
-
+#If AntiExternos Then
+Public Security As New clsSecurity
+#End If
