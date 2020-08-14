@@ -48,7 +48,7 @@ RewardOBJ1=238-1
 
 [QUEST4]
 Nombre=Contra los muertos vivos
-Desc=¡¡Ayuda por favor!! Una horda de zombies y esqueletos esta acechando mi granja... Por favor deshazte de ellos y te recompensare con parte de mis ganancias.
+Desc=Ayuda por favor!! Una horda de zombies y esqueletos esta acechando mi granja... Por favor deshazte de ellos y te recompensare con parte de mis ganancias.
 RequiredLevel=15
  
 RequiredNPCs=2
