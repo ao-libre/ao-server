@@ -3117,30 +3117,30 @@ Private Sub HandleWork(ByVal Userindex As Integer)
         Exit Sub
 
     End If
-    
+    On Error GoTo errhandler
     With UserList(Userindex)
         'Remove packet ID
         Call .incomingData.ReadByte
         
         Dim Skill As eSkill
         
-        Skill = .incomingData.ReadByte()
+1        Skill = .incomingData.ReadByte()
         
-        If UserList(Userindex).flags.Muerto = 1 Then Exit Sub
+2        If UserList(Userindex).flags.Muerto = 1 Then Exit Sub
         
         'If exiting, cancel
-        Call CancelExit(Userindex)
+3        Call CancelExit(Userindex)
         
         Select Case Skill
         
             Case Robar, Magia, Domar
-                Call WriteMultiMessage(Userindex, eMessages.WorkRequestTarget, Skill)
+4                Call WriteMultiMessage(Userindex, eMessages.WorkRequestTarget, Skill)
                 
             Case Ocultarse
                 
                 ' Verifico si se peude ocultar en este mapa
-                If (MapInfo(.Pos.Map).OcultarSinEfecto = 1) Or (MapInfo(.Pos.Map).InviSinEfecto = 1) Then
-                    Call WriteConsoleMsg(Userindex, "Ocultarse no funciona aqui!", FontTypeNames.FONTTYPE_INFO)
+5                If (MapInfo(.Pos.Map).OcultarSinEfecto = 1) Or (MapInfo(.Pos.Map).InviSinEfecto = 1) Then
+6                    Call WriteConsoleMsg(Userindex, "Ocultarse no funciona aqui!", FontTypeNames.FONTTYPE_INFO)
                     Exit Sub
 
                 End If
@@ -3182,12 +3182,14 @@ Private Sub HandleWork(ByVal Userindex As Integer)
 
                 End If
                 
-                Call DoOcultarse(Userindex)
+7                Call DoOcultarse(Userindex)
                 
         End Select
         
     End With
-
+    Exit Sub
+errhandler:
+    Call LogError("Error en HandleWork en " & Erl & " - Skill: " & Skill & ". Err: " & Err.Number & " " & Err.description)
 End Sub
 
 ''
@@ -3345,24 +3347,26 @@ Private Sub HandleCraftCarpenter(ByVal Userindex As Integer)
         Exit Sub
 
     End If
-    
+    On Error GoTo errhandler
     With UserList(Userindex).incomingData
         'Remove packet ID
         Call .ReadByte
         
         Dim Item As Integer
         
-        Item = .ReadInteger()
+1        Item = .ReadInteger()
         
-        If Item < 1 Then Exit Sub
+2        If Item < 1 Then Exit Sub
         
-        If ObjData(Item).SkCarpinteria = 0 Then Exit Sub
+3        If ObjData(Item).SkCarpinteria = 0 Then Exit Sub
         
-        If Not IntervaloPermiteTrabajar(Userindex) Then Exit Sub
-        Call CarpinteroConstruirItem(Userindex, Item)
+4        If Not IntervaloPermiteTrabajar(Userindex) Then Exit Sub
+5        Call CarpinteroConstruirItem(Userindex, Item)
 
     End With
-
+    Exit Sub
+errhandler:
+    Call LogError("Error en HandleCraftcarpenter en " & Erl & " - Item: " & Item & ". Err " & Err.Number & " " & Err.description)
 End Sub
 
 ''
