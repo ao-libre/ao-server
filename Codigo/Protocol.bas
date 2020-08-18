@@ -2948,11 +2948,18 @@ Private Sub HandleDrop(ByVal Userindex As Integer)
         Amount = .incomingData.ReadInteger()
 
         'low rank admins can't drop item. Neither can the dead nor those sailing.
-        If .flags.Navegando = 1 Or .flags.Muerto = 1 Or ((.flags.Privilegios And PlayerType.Consejero) <> 0 And (Not .flags.Privilegios And PlayerType.RoleMaster) <> 0) Then Exit Sub
+        If .flags.Muerto = 1 Or ((.flags.Privilegios And PlayerType.Consejero) <> 0 And (Not .flags.Privilegios And PlayerType.RoleMaster) <> 0) Then Exit Sub
 
         'If the user is trading, he can't drop items => He's cheating, we kick him.
         If .flags.Comerciando Then Exit Sub
 
+        'Si esta navegando y no es pirata, no dejamos tirar items al agua.
+        If .flags.Navegando = 1 And Not .Clase = eClass.Pirat Then 
+            Call WriteConsoleMsg(Userindex, "Solo los Piratas pueden tirar items en altamar", FontTypeNames.FONTTYPE_INFO)
+        
+            Exit Sub
+        End If
+        
         'Are we dropping gold or other items??
         If Slot = FLAGORO Then
             If Amount > 10000 Then Exit Sub 'Don't drop too much gold
