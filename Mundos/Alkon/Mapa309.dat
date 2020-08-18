@@ -7,3 +7,5 @@ BackUp= 0
 Pk=0
 Name=Guarida de Smaug
 Zona=DUNGEON
+Terreno=BOSQUE
+Restringir=NO
