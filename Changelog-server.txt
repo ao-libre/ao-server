@@ -1273,3 +1273,4 @@ se agregaron magos malvados,belholders y leviatanes.se agrego y corrigio la cost
 * 14/08/2020: mapa309:DUGEON INFIERNO.Mapa nuevo donde esta smaug uno de los 3 dragones legendarios.(mapa sin invi) (Ronin)
 * 14/08/2020: mapa310:PASO DE LAS VALKIRIAS(mapa terminado pero le falta agregar los npcs y los dugeons que va a tener el mapa. (Ronin)
 * 15/08/2020: Agrego carpeta de Foros al proyecto para poder guardar foros correctamente (Recox)
+* 15/08/2020: Arreglo el chat mode con ... ahora van y vienen cuando debe ser. (Recox)
