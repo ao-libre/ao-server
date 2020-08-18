@@ -1766,6 +1766,12 @@ Public Sub UserDie(ByVal Userindex As Integer, Optional ByVal AttackerIndex As I
                 
                 ' Si estas en zona segura no se caen los items.
                 If MapInfo(.Pos.Map).Pk Then
+
+                    'desequipar mochila u alforja
+                    If .Invent.MochilaEqpObjIndex > 0 Then
+                        Call Desequipar(Userindex, .Invent.MochilaEqpSlot)
+
+                    End If
                 
                     ' << Si es newbie no pierde el inventario >>
                     If Not EsNewbie(Userindex) Then
