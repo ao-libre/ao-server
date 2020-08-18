@@ -888,7 +888,7 @@ Sub GetObj(ByVal Userindex As Integer)
 
 End Sub
 
-Public Sub Desequipar(ByVal Userindex As Integer, ByVal Slot As Integer)
+Public Sub Desequipar(ByVal Userindex As Integer, ByVal Slot As Byte)
     '***************************************************
     'Author: Unknown
     'Last Modification: -
