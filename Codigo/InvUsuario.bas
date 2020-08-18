@@ -2521,9 +2521,6 @@ Sub TirarTodosLosItemsEnMochila(ByVal Userindex As Integer)
     Dim ItemIndex As Integer
     
     With UserList(Userindex)
-
-        If MapData(.Pos.Map, .Pos.X, .Pos.Y).trigger = eTrigger.ZONAPELEA Then Exit Sub
-        
         For i = MAX_NORMAL_INVENTORY_SLOTS + 1 To .CurrentInventorySlots
             ItemIndex = .Invent.Object(i).ObjIndex
 
