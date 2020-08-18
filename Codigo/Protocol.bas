@@ -24129,7 +24129,7 @@ Private Sub HandleSendIfCharIsInChatMode(ByVal UserIndex As Integer)
 
 3       Call .incomingData.ReadByte
 
-8       .Char.Escribiendo = IIf(.Char.Escribiendo = 1, 2, 1)
+8       .Char.Escribiendo = IIf(.Char.Escribiendo = 1, 0, 1)
 9       Call SendData(SendTarget.ToPCAreaButIndex, UserIndex, PrepareMessageSetTypingFlagToCharIndex(.Char.CharIndex, .Char.Escribiendo))
 
 10  End With
@@ -24138,7 +24138,7 @@ Private Sub HandleSendIfCharIsInChatMode(ByVal UserIndex As Integer)
 
 HandleSendIfCharIsInChatMode_Error:
 
-12  Call LogError("Error " & Err.Number & " (" & Err.description & ") in procedure HandleSendIfCharIsInChatMode of M?dulo Protocol " & Erl & ".")
+12  Call LogError("Error " & Err.Number & " (" & Err.description & ") in procedure HandleSendIfCharIsInChatMode of Modulo Protocol " & Erl & ".")
 
 End Sub
 
