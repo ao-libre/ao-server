@@ -1279,5 +1279,6 @@ se agregaron magos malvados,belholders y leviatanes.se agrego y corrigio la cost
 * 18/08/2020: Elimino carga rapida de configuracion de teclas con CTRL + [1-9] ya que no esta registrado en ningun lado y la gente tiende a confundirse. (Recox)
 * 18/08/2020: Arreglo funcion EsNpc y EsGm (Recox)
 * 18/08/2020: Cuando tenemos la barra de chat abierta se valida si el personaje es GM, si es gm no lo movemos, si no lo es permitimos que se mueva para no entorpecer la jugabilidad. (Recox)
-* 18/08/2020: Fix Borrar Cartel Escribiendo mientras Camino (Recox)
+* 18/08/2020: Animacion Raza Enana espada argentum (Lorelei)
 * 18/08/2020: Fix ... para mostrar si estamos en modo chat o no (Recox)
+* 18/08/2020: Fix bug de duplicacion de items en zona segura o ring con mochila (Recox)
