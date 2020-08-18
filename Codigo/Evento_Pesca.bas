@@ -86,12 +86,34 @@ Public Sub estadoDelMar(ByVal MinsEventoPesca As Byte)
         If MinsEventoPesca > .Tiempo Then
             If .Tiempo > 0 Then
                 If .Activado = 0 Then
+                    Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg("El oceano se agita y comienza la temporada de pesca.", FontTypeNames.FONTTYPE_INFOBOLD))
+                    
                     .Activado = 1
-                    Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg("El océano se agita y comienza la temporada de pesca.", FontTypeNames.FONTTYPE_INFOBOLD))
+
+                    With PescaEvent
+                        Dim i As Long
+
+                        For i = 1 To .CantidadDeZonas
+                            Dim EventoPescaMapasMensaje As String
+                            With Zona(i)
+
+                                If i = PescaEvent.CantidadDeZonas Then
+                                    EventoPescaMapasMensaje = EventoPescaMapasMensaje & .Mapa
+                                Else
+                                    EventoPescaMapasMensaje = EventoPescaMapasMensaje & .Mapa & ", " 
+                                End If
+
+                            End With
+
+                        Next i
+
+                    End With
+
+                    Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg("Mapas donde hay marea alta y es recomendable pescar ahora: " & EventoPescaMapasMensaje, FontTypeNames.FONTTYPE_INFOBOLD))
                     MinsEventoPesca = 0
                 Else
                     .Activado = 0
-                    Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg("Las sombras aterrorizan a las especies y estas deciden volver al profundo océano, la temporada de pesca termina.", FontTypeNames.FONTTYPE_INFOBOLD))
+                    Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg("Las sombras aterrorizan a las especies y estas deciden volver al profundo oceano, la temporada de pesca termina.", FontTypeNames.FONTTYPE_INFOBOLD))
                     MinsEventoPesca = 0
                 End If
             End If
