@@ -257,7 +257,7 @@ Sub UserDepositaItem(ByVal Userindex As Integer, _
     With UserList(Userindex)
         If .flags.Equitando = 1 Then
             If .Invent.MonturaEqpSlot = InvSlot Then
-                Call WriteConsoleMsg(Userindex, "No podes depositar tu montura mientras lo estes usando.", FontTypeNames.FONTTYPE_TALK)
+                Call WriteConsoleMsg(Userindex, "No podes depositar tu montura mientras la estes usando.", FontTypeNames.FONTTYPE_TALK)
                 Exit Sub
             End If
         End If
