@@ -13230,7 +13230,7 @@ QuestNumber=5
 ###############no cambiar los indices asignados###############
 
 [NPC927]
-Name=Zhireles [Quest 11 Reino Helado]
+Name=Zhireles [Quest 11]
 NpcType=0
 Desc=Necesitamos Valientes Guerreros, si eres capaz de ayudarnos escribe /QUEST.
 Head=7
