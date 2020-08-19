@@ -139,6 +139,15 @@ Public Sub ApiEndpointSendCreateNewCharacterMessageDiscord(ByVal Name As String)
     Call SendPOSTRequest(Endpoint, Parameters)
 End Sub
 
+Public Sub ApiEndpointSendServerDataToApiToShowOnlineUsers()
+    'Este endpoint envia estadisticas de cuantos online hay a la API para que se puedan ver en el bot de discord entre otros...
+    'Este endpoint tiene hardcodeada la url de la api por que no es la interna, se usa para estadisticas y mostrar cuantos ons hay que cada server (Recox)
+    Endpoint = "https://api.argentumonline.org/api/v1/servers/sendUsersOnline"
+    Parameters = "serverName=" & NombreServidor & "&quantity=" & LastUser
+
+    Call SendPOSTRequest(Endpoint, Parameters)
+End Sub
+
 
 Private Sub SendPOSTRequest(ByVal Endpoint As String, ByVal Parameters As String)
 
@@ -151,8 +160,8 @@ On Error GoTo ErrorHandler
         
     'Por alguna razon tengo que castearlo a string, sino no funciona, la verdad no tengo idea por que ya que la variable es String
     XmlHttp.send CStr(Parameters)
-	
-	Set XmlHttp = Nothing
+    
+    Set XmlHttp = Nothing
 
 ErrorHandler:
 
@@ -170,8 +179,8 @@ On Error GoTo ErrorHandler
     XmlHttp.Open "GET", Endpoint, True
     XmlHttp.setRequestHeader "Content-Type", "application/x-www-form-urlencoded"
     XmlHttp.send
-	
-	Set XmlHttp = Nothing
+
+    Set XmlHttp = Nothing
 
 ErrorHandler:
 

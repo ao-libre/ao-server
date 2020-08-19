@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{48E59290-9880-11CF-9754-00AA00C00908}#1.0#0"; "MSINET.OCX"
+Object = "{48E59290-9880-11CF-9754-00AA00C00908}#1.0#0"; "MSINET.ocx"
 Begin VB.Form frmMain 
    BackColor       =   &H00FFC0C0&
    BorderStyle     =   3  'Fixed Dialog
@@ -29,6 +29,11 @@ Begin VB.Form frmMain
    ScaleWidth      =   10425
    StartUpPosition =   2  'CenterScreen
    WindowState     =   1  'Minimized
+   Begin VB.Timer TimerEnviarDatosServer 
+      Interval        =   900000
+      Left            =   2760
+      Top             =   2160
+   End
    Begin VB.TextBox txtRecordOnline 
       Alignment       =   2  'Center
       BackColor       =   &H00C0FFFF&
@@ -1010,4 +1015,8 @@ End Sub
 
 Private Sub TIMER_AI_Timer()
     Call mMainLoop.TIMER_AI
+End Sub
+
+Private Sub TimerEnviarDatosServer_Timer()
+    Call mMainLoop.TimerEnviarDatosServer
 End Sub
