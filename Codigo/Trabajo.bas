@@ -3201,7 +3201,7 @@ Public Sub DoEquita(ByVal Userindex As Integer, _
 
     ' Comento esto por que aun no implementamos en el frmSkills la posibilidad de agregar skills de equitacion
     'If UserList(UserIndex).Stats.UserSkills(Equitacion) / ModEqui < Montura.MinSkill Then
-    '    Call WriteConsoleMsg(UserIndex, "Para usar esta montura necesitas " & Montura.MinSkill * ModEqui & " puntos en equitaci�n.", FontTypeNames.FONTTYPE_INFO)
+    '    Call WriteConsoleMsg(UserIndex, "Para usar esta montura necesitas " & Montura.MinSkill * ModEqui & " puntos en equitacion.", FontTypeNames.FONTTYPE_INFO)
     '    Exit Sub
     'End If
 
