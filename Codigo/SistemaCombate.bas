@@ -207,12 +207,23 @@ Public Function UserImpactoNpc(ByVal UserIndex As Integer, _
             MunicionObjIndex = UserList(UserIndex).Invent.MunicionEqpObjIndex
             
             'Tiene munición?
-            If MunicionObjIndex <> 0 Then
-                'si es un caza oculto no manda la animacion de flecha
-                If Not (UserList(Userindex).Clase = eClass.Hunter And UserList(Userindex).flags.Oculto = 1) Then
-                    Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageProyectil(UserIndex, UserList(UserIndex).Char.CharIndex, Npclist(NpcIndex).Char.CharIndex, ObjData(UserList(UserIndex).Invent.MunicionEqpObjIndex).GrhIndex))
+            'si es un caza oculto no manda la animacion de flecha o cuchillas
+            If Not (UserList(Userindex).Clase = eClass.Hunter And UserList(Userindex).flags.Oculto = 1) Then
+                If MunicionObjIndex <> 0  Then
+                    Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageProyectil(UserIndex, _ 
+                                                                                            UserList(UserIndex).Char.CharIndex, _ 
+                                                                                            Npclist(NpcIndex).Char.CharIndex, _ 
+                                                                                            ObjData(UserList(UserIndex).Invent.MunicionEqpObjIndex).GrhIndex))
+                End If
+
+                If ObjData(UserList(Userindex).Invent.WeaponEqpObjIndex).Acuchilla = 1 Then
+                    Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageProyectil(UserIndex, _ 
+                                                                            UserList(UserIndex).Char.CharIndex, _ 
+                                                                            Npclist(NpcIndex).Char.CharIndex, _ 
+                                                                            ObjData(UserList(UserIndex).Invent.WeaponEqpObjIndex).GrhIndex))
                 End If
             End If
+
         Else
             PoderAtaque = PoderAtaqueArma(UserIndex)
             Skill = eSkill.Armas
