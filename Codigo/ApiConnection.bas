@@ -143,7 +143,7 @@ Public Sub ApiEndpointSendServerDataToApiToShowOnlineUsers()
     'Este endpoint envia estadisticas de cuantos online hay a la API para que se puedan ver en el bot de discord entre otros...
     'Este endpoint tiene hardcodeada la url de la api por que no es la interna, se usa para estadisticas y mostrar cuantos ons hay que cada server (Recox)
     Endpoint = "https://api.argentumonline.org/api/v1/servers/sendUsersOnline"
-    Parameters = "serverName=" & NombreServidor & "&quantity=" & LastUser
+    Parameters = "serverName=" & NombreServidor & "&quantityUsers=" & LastUser & "&ip=" & IpPublicaServidor & "&port=" & Puerto 
 
     Call SendPOSTRequest(Endpoint, Parameters)
 End Sub

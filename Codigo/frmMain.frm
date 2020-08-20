@@ -29,11 +29,6 @@ Begin VB.Form frmMain
    ScaleWidth      =   10425
    StartUpPosition =   2  'CenterScreen
    WindowState     =   1  'Minimized
-   Begin VB.Timer TimerEnviarDatosServer 
-      Interval        =   900000
-      Left            =   2760
-      Top             =   2160
-   End
    Begin VB.TextBox txtRecordOnline 
       Alignment       =   2  'Center
       BackColor       =   &H00C0FFFF&
@@ -177,6 +172,11 @@ Begin VB.Form frmMain
          Interval        =   1000
          Left            =   720
          Top             =   1440
+      End
+      Begin VB.Timer TimerEnviarDatosServer 
+         Interval        =   5000
+         Left            =   2760
+         Top             =   2160
       End
       Begin VB.TextBox txtChat 
          BackColor       =   &H00C0FFFF&

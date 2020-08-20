@@ -2442,6 +2442,9 @@ Public DescripcionServidor As String
 
 Public NombreServidor As String
 
+'Aca ponemos la ip y puerto en el label del frmMain
+Public IpPublicaServidor As String
+
 #If AntiExternos Then
-Public Security As New clsSecurity
+    Public Security As New clsSecurity
 #End If
