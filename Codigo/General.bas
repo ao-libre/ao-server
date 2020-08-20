@@ -608,6 +608,7 @@ Private Sub InitMainTimers()
         .PacketResend.Enabled = True
         .TIMER_AI.Enabled = True
         .Auditoria.Enabled = True
+        .TimerEnviarDatosServer.Enabled = True
     End With
     
 End Sub
