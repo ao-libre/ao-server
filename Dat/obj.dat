@@ -14028,7 +14028,7 @@ MinDef=50
 LingH=5000
 LingP=3000
 LingO=1250
-SkHerreria=100
+SkHerreria=110
 CP1=CAZADOR
 CP2=PALADIN
 CP3=CLERIGO
@@ -14051,7 +14051,7 @@ Crucial=0
 LingH=5000
 LingP=5000
 LingO=0
-SkHerreria=100
+SkHerreria=110
 CP1=PIRATA
 CP2=CAZADOR
 CP3=PALADIN
@@ -14115,7 +14115,7 @@ Crucial=0
 LingH=5500
 LingP=5000
 LingO=1250
-SkHerreria=100
+SkHerreria=110
 
 [OBJ1137]
 Name=Armadura Omnineo (E/G)
@@ -14131,7 +14131,7 @@ Crucial=0
 LingH=5500
 LingP=5000
 LingO=1250
-SkHerreria=100
+SkHerreria=150
 
 [OBJ1138]
 Name=Espada Argentum
@@ -14212,7 +14212,7 @@ CP5=PIRATA
 LingH=5000
 LingP=2500
 LingO=0
-SkHerreria=90
+SkHerreria=110
 
 [OBJ1142]
 Name=Tunica del Mago sangriento
@@ -14286,7 +14286,7 @@ Crucial=0
 LingH=4000
 LingP=5000
 LingO=0
-SkHerreria=45
+SkHerreria=110
 
 [OBJ1147]
 Name=Espada de fuego
@@ -14338,7 +14338,7 @@ CP11=TRABAJADOR
 LingH=4000
 LingP=1000
 LingO=2000
-SkHerreria=90
+SkHerreria=120
 
 [OBJ1149]
 Name=Bendicion Espiritual
@@ -14371,7 +14371,7 @@ CP5=PIRATA
 LingH=1500
 LingP=1300
 LingO=0
-SkHerreria=85
+SkHerreria=110
 
 [OBJ1151]
 Name=Sombrero espectral magico
@@ -14433,7 +14433,7 @@ Crucial=0
 LingH=10000
 LingP=10000
 LingO=10000
-SkHerreria=100
+SkHerreria=110
 CP1=PIRATA
 CP2=CAZADOR
 CP3=CLERIGO
@@ -14522,7 +14522,7 @@ CP10=DRUIDA
 LingH=5000
 LingP=5000
 LingO=5000
-SkHerreria=100
+SkHerreria=110
 
 [OBJ1159]
 Name=Montura de Elefante
