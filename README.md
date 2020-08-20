@@ -40,6 +40,9 @@ AO es un juego open-source y por ello abrimos nuestros logs del server al public
 C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Startup
 ```
 
+- Desactivar Algoritmo de Nagle
+https://www.mantenimientobios.com/como-activar-y-desactivar-el-algoritmo-de-nagle-en-windows-10/
+
 - Utilizar la API `ao-api-server` para hacer uso de envio de emails, backup de charfiles, accounts, logs en base de datos mysql, utilizar diferentes endpoints para consumir desde su sitio web:
 https://github.com/ao-libre/ao-api-server
 
