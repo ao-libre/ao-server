@@ -152,7 +152,7 @@ Begin VB.Form frmMain
       Top             =   720
       Width           =   4935
       Begin VB.Timer TimerEnviarDatosServer 
-         Interval        =   7000
+         Interval        =   65535
          Left            =   2760
          Top             =   1440
       End
