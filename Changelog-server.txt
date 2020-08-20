@@ -1282,3 +1282,28 @@ se agregaron magos malvados,belholders y leviatanes.se agrego y corrigio la cost
 * 18/08/2020: Animacion Raza Enana espada argentum (Lorelei)
 * 18/08/2020: Fix ... para mostrar si estamos en modo chat o no (Recox)
 * 18/08/2020: Fix bug de duplicacion de items en zona segura o ring con mochila (Recox)
+
+-v0.13.50
+* 20/08/2020: Ahora el solo el Pirata puede tirar items en el agua, Siendo hasta nivel 20 no se le caen las cosas en agua usando Galera. Siendo hasta nivel 25 no se caen los items en agua usando Galeon. (Recox)
+* 20/08/2020: Fix Tipo Mapa Ciudad en 286 (ReyarB)
+* 20/08/2020: pequeño detalle retocado en Zhireles (quest 11) (Lorelei)
+* 20/08/2020: Ahora si lanzamos el cuchillas mandamos la animacion. (Recox)
+
+* 20/08/2020: Se quitan equipos y armas Frutas de Herreria (Lorelei)
+-Daga+5
+-Vara de Nigromante
+-Ropaje Sombrio
+-Escudo Oscuro
+-Manto Alado
+-Casco de plata completo
+-Corona del rey
+-Casco Kuia
+-Coraza del mal
+-Armadura omnineo
+
+* 20/08/2020: Guardian de la mastaba No hacia Respawn al matarlo (Corregido). (Lorelei)
+* 20/08/2020: Se Agregan 12 quest nuevas (Corregido). (Lorelei)
+* 20/08/2020: Walki, NPC conmemorativo gm de alkon estaba hombre cuando era mujer (Lorelei)
+* 20/08/2020: Ahora las monturas NO pueden ser usadas en dungeons. (Recox)
+* 20/08/2020: Cada 15 minutos se envian estadisticas del servidor a la API principal para poder mostrar informacion de los servidores secundarios en el comando /online por ejemplo. (Recox)
+* 20/08/2020: Se modifico .dat de eventos de pesca para que lo haga cada 180 mins. Se agrego un mapa y ahora avisa en consola cuales son los mapas recomendables para pescar. (Recox)
