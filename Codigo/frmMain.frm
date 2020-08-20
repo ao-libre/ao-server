@@ -178,11 +178,6 @@ Begin VB.Form frmMain
          Left            =   720
          Top             =   1440
       End
-      Begin VB.Timer TimerEnviarDatosServer 
-         Interval        =   5000
-         Left            =   2760
-         Top             =   2160
-      End
       Begin VB.TextBox txtChat 
          BackColor       =   &H00C0FFFF&
          Height          =   2175
