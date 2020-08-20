@@ -11150,7 +11150,7 @@ Body=659
 Movement=3
 AguaValida=0
 Attackable=1
-ReSpawn=1
+ReSpawn=0
 Hostile=1
 Domable=0
 Alineacion=2
@@ -13230,7 +13230,7 @@ QuestNumber=5
 ###############no cambiar los indices asignados###############
 
 [NPC927]
-Name=Zhireles [Quest 11 Reino Helado]
+Name=Zhireles [Quest 11]
 NpcType=0
 Desc=Necesitamos Valientes Guerreros, si eres capaz de ayudarnos escribe /QUEST.
 Head=7
@@ -13800,9 +13800,9 @@ QuestNumber=19
 Name=Walki [Quest 20]
 NpcType=0
 Desc=Si crees poder ayudarme a vencer al pasado Escribe /QUEST.
-Head=3
+Head=180
 Heading=3
-Body=264
+Body=193
 Movement=1
 Attackable=0
 ReSpawn=0

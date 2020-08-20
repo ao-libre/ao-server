@@ -347,22 +347,22 @@ Sub TirarOro(ByVal Cantidad As Long, ByVal Userindex As Integer)
                 If EsGm(Userindex) Then Call LogGM(.Name, "Tiro cantidad:" & MiObj.Amount & " Objeto:" & ObjData(MiObj.ObjIndex).Name)
 
                 Dim AuxPos As WorldPos
+
+                Dim EsGaleraOGaleon As Boolean
+                If EsGalera(ObjData(.Invent.BarcoObjIndex)) Or EsGalera(ObjData(.Invent.BarcoObjIndex)) Then
+                    EsGaleraOGaleon = True
+                Else
+                    EsGaleraOGaleon = False
+                End If
                 
-                If .Clase = eClass.Pirat And .Invent.BarcoObjIndex = 476 Then
+                If .Clase = eClass.Pirat And EsGaleraOGaleon Then
                     AuxPos = TirarItemAlPiso(.Pos, MiObj, False)
-
-                    If AuxPos.X <> 0 And AuxPos.Y <> 0 Then
-                        .Stats.Gld = .Stats.Gld - MiObj.Amount
-
-                    End If
-
                 Else
                     AuxPos = TirarItemAlPiso(.Pos, MiObj, True)
+                End If
 
-                    If AuxPos.X <> 0 And AuxPos.Y <> 0 Then
-                        .Stats.Gld = .Stats.Gld - MiObj.Amount
-
-                    End If
+                If AuxPos.X <> 0 And AuxPos.Y <> 0 Then
+                    .Stats.Gld = .Stats.Gld - MiObj.Amount
 
                 End If
                 
@@ -2404,33 +2404,46 @@ Sub TirarTodosLosItems(ByVal Userindex As Integer)
                     DropAgua = True
 
                     ' Es pirata?
-                    If .Clase = eClass.Pirat Then
+10                  If .Clase = eClass.Pirat Then
 
-                        ' Si tiene galeon equipado
-                        ' TODO: USAR ESTA FUNCION ACA: EsGaleon(Barco)
-10                        If .Invent.BarcoObjIndex = 476 Then
+                        ' Si tiene galera equipado
+11                      If EsGalera(ObjData(.Invent.BarcoObjIndex)) Then
 
-                            ' Limitacion por nivel, despues dropea normalmente
-11                            If .Stats.ELV = 20 Then
+                          ' Limitacion por nivel, despues dropea normalmente
+12                         If .Stats.ELV <= 20 Then
                                 ' No dropea en agua
                                 DropAgua = False
+                                Call WriteConsoleMsg(Userindex, "Por que sos Pirata y nivel menor o igual a 20 no se te caen las cosas con la Galera. Cuando llegues a nivel 21 perderas esta condicion.", FontTypeNames.FONTTYPE_WARNING)
 
-                            End If
+                           End If
+
+                        End If
+
+                        ' Si tiene galeon equipado
+13                      If EsGaleon(ObjData(.Invent.BarcoObjIndex)) Then
+
+                          ' Limitacion por nivel, despues dropea normalmente
+14                         If .Stats.ELV <= 25 Then
+                                ' No dropea en agua
+                                DropAgua = False
+                                Call WriteConsoleMsg(Userindex, "Por que sos Pirata y nivel menor o igual a 25 no se te caen las cosas con el Galeon. Cuando llegues a nivel 26 perderas esta condicion.", FontTypeNames.FONTTYPE_WARNING)
+
+                           End If
 
                         End If
 
                     End If
                     
-12                    Call Tilelibre(.Pos, NuevaPos, MiObj, DropAgua, True)
+15                  Call Tilelibre(.Pos, NuevaPos, MiObj, DropAgua, True)
                     
-13                    If NuevaPos.X <> 0 And NuevaPos.Y <> 0 Then
-14                        Call DropObj(Userindex, i, MAX_INVENTORY_OBJS, NuevaPos.Map, NuevaPos.X, NuevaPos.Y)
+16                  If NuevaPos.X <> 0 And NuevaPos.Y <> 0 Then
+17                      Call DropObj(Userindex, i, MAX_INVENTORY_OBJS, NuevaPos.Map, NuevaPos.X, NuevaPos.Y)
 
-15                    End If
+18                  End If
 
-16                End If
+19                End If
 
-17           End If
+20           End If
 
         Next i
 
@@ -2489,7 +2502,7 @@ Sub TirarTodosLosItemsNoNewbies(ByVal Userindex As Integer)
                     MiObj.ObjIndex = ItemIndex
                     'Pablo (ToxicWaste) 24/01/2007
                     'Tira los Items no newbies en todos lados.
-                    Tilelibre .Pos, NuevaPos, MiObj, True, True
+                    Call Tilelibre(.Pos, NuevaPos, MiObj, True, True)
 
                     If NuevaPos.X <> 0 And NuevaPos.Y <> 0 Then
                         Call DropObj(Userindex, i, MAX_INVENTORY_OBJS, NuevaPos.Map, NuevaPos.X, NuevaPos.Y)
@@ -2535,7 +2548,7 @@ Sub TirarTodosLosItemsEnMochila(ByVal Userindex As Integer)
                 'Creo MiObj
                 MiObj.Amount = .Invent.Object(i).Amount
                 MiObj.ObjIndex = ItemIndex
-                Tilelibre .Pos, NuevaPos, MiObj, True, True
+                Call Tilelibre(.Pos, NuevaPos, MiObj, True, True)
 
                 If NuevaPos.X <> 0 And NuevaPos.Y <> 0 Then
                     Call DropObj(Userindex, i, MAX_INVENTORY_OBJS, NuevaPos.Map, NuevaPos.X, NuevaPos.Y)

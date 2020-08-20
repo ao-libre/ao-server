@@ -1,5 +1,5 @@
 [INIT]
-NumQuests=11
+NumQuests=24
 
 [QUEST1]
 Nombre=Bichos molestos
@@ -184,3 +184,247 @@ RewardEXP=12000000
 RewardOBJs=2
 RewardOBJ1=481-1
 RewardOBJ2=483-1
+
+[QUEST12]
+Nombre=Un cazador en apuros.
+Desc=Ayudame a controlar las plagas del bosque y te recompenzare!
+RequiredLevel=15
+ 
+RequiredNPCs=4
+RequiredNPC1=515-15
+RequiredNPC2=510-15
+RequiredNPC3=523-25
+RequiredNPC4=506-150
+
+RewardGLD=15000
+RewardEXP=15000
+ 
+RewardOBJs=1
+RewardOBJ1=664-15
+
+[QUEST13]
+Nombre=Un mago en apuros.
+Desc=Ayudame a controlar las plagas del bosque y te recompenzare!
+RequiredLevel=15
+ 
+RequiredNPCs=4
+RequiredNPC1=515-15
+RequiredNPC2=510-15
+RequiredNPC3=523-25
+RequiredNPC4=506-100
+
+RewardGLD=15000
+RewardEXP=15000
+ 
+RewardOBJs=2
+RewardOBJ1=37-5000
+RewardOBJ2=394-1
+
+[QUEST14]
+Nombre=Bestias de las profundidades.
+Desc=Temibles bestias estan aterrorizando a mi grupo de exploradores! Ayudame con ellas vere que seas recompenzado.
+RequiredLevel=25
+ 
+RequiredNPCs=2
+RequiredNPC1=706-5
+RequiredNPC2=707-5
+
+RewardGLD=25000
+RewardEXP=50000
+ 
+RewardOBJs=4
+RewardOBJ1=500-1
+RewardOBJ2=131-1
+RewardOBJ3=128-1
+RewardOBJ4=36-500
+
+[QUEST15]
+Nombre=Un elfo embarrado.
+Desc=Esta mancha de lodo que no se quita! Por favor ayudame con estas criaturas y vere que estes bien vestido.
+RequiredLevel=30
+ 
+RequiredNPCs=5
+RequiredNPC1=505-250
+RequiredNPC2=611-100
+RequiredNPC3=539-100
+RequiredNPC4=534-50
+RequiredNPC5=707-5
+
+RewardGLD=50000
+RewardEXP=100000
+ 
+RewardOBJs=1
+RewardOBJ1=496-1
+
+[QUEST16]
+Nombre=La energia de las islas.
+Desc=La vida en esperanza esta sucumbiendo frente a terribles hechizos del mal. Por favor ayudame a recomponer el balance de las islas.
+RequiredLevel=30
+ 
+RequiredNPCs=5
+RequiredNPC1=551-50
+RequiredNPC2=549-50
+RequiredNPC3=513-50
+RequiredNPC4=550-25
+RequiredNPC5=706-5
+
+RewardGLD=50000
+RewardEXP=100000
+ 
+RewardOBJs=1
+RewardOBJ1=536-1
+
+[QUEST17]
+Nombre=Protector de las islas.
+Desc=Una horda de deformidades malignas hace peligrar el balance natural de estas islas, por favor ayudame a restaurarlo.
+RequiredLevel=30
+ 
+RequiredNPCs=5
+RequiredNPC1=554-50
+RequiredNPC2=511-25
+RequiredNPC3=513-25
+RequiredNPC4=537-10
+RequiredNPC5=517-10
+
+RewardGLD=50000
+RewardEXP=100000
+ 
+RewardOBJs=2
+RewardOBJ1=536-3000
+RewardOBJ2=536-1
+
+[QUEST18]
+Nombre=Peligros del mar abierto.
+Desc=Cientos de navegantes estan siendo atacados por los mas peligrosos monstruos marinos. Sube a tu barca y ayudame con ellos. Prometo una paella y grandes recompensas al terminar.
+RequiredLevel=30
+ 
+RequiredNPCs=5
+RequiredNPC1=603-50
+RequiredNPC2=621-50
+RequiredNPC3=518-50
+RequiredNPC4=606-25
+RequiredNPC5=604-25
+
+RewardGLD=50000
+RewardEXP=100000
+ 
+RewardOBJs=1
+RewardOBJ1=537-1
+
+[QUEST19]
+Nombre=Huye cobarde!.
+Desc=Por favor ayudame a salir de aqui! Esta oscuro y lleno de bichos feos, juro recompensarte!
+RequiredLevel=25
+ 
+RequiredNPCs=4
+RequiredNPC1=511-50
+RequiredNPC2=554-50
+RequiredNPC3=507-50
+RequiredNPC4=543-5
+
+RewardGLD=50000
+RewardEXP=150000
+ 
+RewardOBJs=2
+RewardOBJ1=37-1500
+RewardOBJ2=38-1500
+
+[QUEST20]
+Nombre=Terrores de otros tiempos.
+Desc=Espiritus de tiempos pasados acechan nuestro presente. Si aceptas esta mision deberas viajar y derrotarlos pero te aseguro que la recompensa valdra la pena.
+RequiredLevel=38
+ 
+RequiredNPCs=4
+RequiredNPC1=589-5
+RequiredNPC2=609-5
+RequiredNPC3=946-5
+RequiredNPC4=796-5
+
+RewardGLD=250000
+RewardEXP=250000
+ 
+RewardOBJs=3
+RewardOBJ1=1138-1
+RewardOBJ2=1134-1
+RewardOBJ3=1148-1
+
+[QUEST21]
+Nombre=El coleccionista de huesos.
+Desc=Este es un calabozo lleno de oscuras criaturas. Traeme sus sangres y asi podre hacerte algunas pocimas que te ayudaran en el camino.
+RequiredLevel=35
+ 
+RequiredNPCs=4
+RequiredNPC1=553-200
+RequiredNPC2=550-100
+RequiredNPC3=551-50
+RequiredNPC4=517-25
+
+RewardGLD=250000
+RewardEXP=250000
+ 
+RewardOBJs=4
+RewardOBJ1=37-10000
+RewardOBJ2=38-10000
+RewardOBJ3=36-2000
+RewardOBJ4=39-2000
+
+[QUEST22]
+Nombre=En busca de las jaurias.
+Desc=Jaurias de lobos atacan mis mineros por todo el mundo y pronto dejaremos de poder pagarle la cuota al rey. Necesitamos un viajero audaz que termine con estos lobos!
+RequiredLevel=25
+ 
+RequiredNPCs=6
+RequiredNPC1=501-100
+RequiredNPC2=765-15
+RequiredNPC3=703-15
+RequiredNPC4=702-15
+RequiredNPC5=766-15
+RequiredNPC6=701-5
+
+RewardGLD=75000
+RewardEXP=125000
+ 
+RewardOBJs=4
+RewardOBJ1=37-7000
+RewardOBJ2=38-5000
+RewardOBJ3=36-3000
+RewardOBJ4=39-2000
+
+[QUEST23]
+Nombre=Todos a estribor!
+Desc=El mundo entero cree que por que somos pocos somos un pueblo debil. ja! Traeme escamas de Leviatan y armare fuertes armaduras.
+RequiredLevel=26
+ 
+RequiredNPCs=1
+RequiredNPC1=548-200
+
+RewardGLD=125000
+RewardEXP=250000
+ 
+RewardOBJs=1
+RewardOBJ1=403-1
+
+[QUEST24]
+Nombre=Cava tu propia tumba.
+Desc=Llevo mucho tiempo en el mercado negro de la muerte pero nunca antes me habian hecho un pedido de huesos tan grande. Ayudame a completar mi pedido y te pagare.
+RequiredLevel=16
+ 
+RequiredNPCs=6
+RequiredNPC1=598-20
+RequiredNPC2=596-20
+RequiredNPC3=599-20
+RequiredNPC4=601-20
+RequiredNPC5=600-10
+RequiredNPC6=757-2
+
+RewardGLD=40000
+RewardEXP=40000
+ 
+RewardOBJs=3
+RewardOBJ1=37-1500
+RewardOBJ2=38-1500
+RewardOBJ3=380-1
+
+
+
+

@@ -56,7 +56,7 @@ Public Function TirarItemAlPiso(Pos As WorldPos, _
     NuevaPos.x = 0
     NuevaPos.Y = 0
     
-    Tilelibre Pos, NuevaPos, obj, NotPirata, True
+    Call Tilelibre(Pos, NuevaPos, obj, NotPirata, True)
 
     If NuevaPos.x <> 0 And NuevaPos.Y <> 0 Then
         Call MakeObj(obj, Pos.Map, NuevaPos.x, NuevaPos.Y)

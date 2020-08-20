@@ -151,6 +151,11 @@ Begin VB.Form frmMain
       TabIndex        =   1
       Top             =   720
       Width           =   4935
+      Begin VB.Timer TimerEnviarDatosServer 
+         Interval        =   65535
+         Left            =   2760
+         Top             =   1440
+      End
       Begin VB.Timer GameTimer 
          Interval        =   40
          Left            =   2160
