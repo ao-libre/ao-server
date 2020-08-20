@@ -1305,5 +1305,5 @@ se agregaron magos malvados,belholders y leviatanes.se agrego y corrigio la cost
 * 20/08/2020: Se Agregan 12 quest nuevas (Corregido). (Lorelei)
 * 20/08/2020: Walki, NPC conmemorativo gm de alkon estaba hombre cuando era mujer (Lorelei)
 * 20/08/2020: Ahora las monturas NO pueden ser usadas en dungeons. (Recox)
-* 20/08/2020: Cada 15 minutos se envian estadisticas del servidor a la API principal para poder mostrar informacion de los servidores secundarios en el comando /online por ejemplo. (Recox)
+* 20/08/2020: Cada 65 segundos se envian estadisticas del servidor a la API principal para poder mostrar informacion de los servidores secundarios en el comando /online por ejemplo. (Recox)
 * 20/08/2020: Se modifico .dat de eventos de pesca para que lo haga cada 180 mins. Se agrego un mapa y ahora avisa en consola cuales son los mapas recomendables para pescar. (Recox)
