@@ -273,7 +273,6 @@ Sub Main()
     ' Arrays
     frmCargando.Label1(2).Caption = "Iniciando Arrays..."
     Call LoadArrays
-    Call LoadPesca
 
     ' Server.ini & Apuestas.dat & Ciudades.dat
     frmCargando.Label1(2).Caption = "Cargando Server.ini"
@@ -776,8 +775,6 @@ Sub Restart()
     
     Call LoadSini
 
-    Call LoadPesca
-    
     Call ResetForums
     Call LoadOBJData
     
