@@ -3201,7 +3201,7 @@ Public Sub DoEquita(ByVal Userindex As Integer, _
 
     ' Comento esto por que aun no implementamos en el frmSkills la posibilidad de agregar skills de equitacion
     'If UserList(UserIndex).Stats.UserSkills(Equitacion) / ModEqui < Montura.MinSkill Then
-    '    Call WriteConsoleMsg(UserIndex, "Para usar esta montura necesitas " & Montura.MinSkill * ModEqui & " puntos en equitaci�n.", FontTypeNames.FONTTYPE_INFO)
+    '    Call WriteConsoleMsg(UserIndex, "Para usar esta montura necesitas " & Montura.MinSkill * ModEqui & " puntos en equitacion.", FontTypeNames.FONTTYPE_INFO)
     '    Exit Sub
     'End If
 
@@ -3217,11 +3217,15 @@ Public Sub DoEquita(ByVal Userindex As Integer, _
             Exit Sub
         End If
 
-        If MapData(.Pos.Map, .Pos.X, .Pos.Y).trigger = eTrigger.BAJOTECHO Or MapData(.Pos.Map, .Pos.X, .Pos.Y).trigger = eTrigger.CASA Then
-            'TODO: SACAR ESTA VALIDACION DE ACA, Y HACER UN legalpos HAY TECHO en el cliente
-            If .flags.Equitando = 0 Then Exit Sub
-
-            Call WriteConsoleMsg(Userindex, "No puedes utilizar la montura bajo techo!", FontTypeNames.FONTTYPE_INFO)
+        If MapInfo(.Pos.Map).Zona = Dungeon Or _
+           MapData(.Pos.Map, .Pos.X, .Pos.Y).trigger = eTrigger.BAJOTECHO Or _
+           MapData(.Pos.Map, .Pos.X, .Pos.Y).trigger = eTrigger.CASA Then
+           
+            If .flags.Equitando = 0 Then
+                Call WriteConsoleMsg(Userindex, "No puedes utilizar la montura bajo techo o dungeons!", FontTypeNames.FONTTYPE_INFO)
+                Exit Sub
+            End If
+            
         End If
 
         ' If .flags.Metamorfosis = 1 Then 'Metamorfosis
