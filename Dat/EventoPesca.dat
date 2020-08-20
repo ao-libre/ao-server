@@ -1,8 +1,3 @@
-[INIT]
-Activado=1
-Tiempo=180
-CantidadDeZonas=3
-
 [ZONA1]
 Mapa=34
 Cantidad=3
@@ -12,15 +7,14 @@ Pez3=546
 
 [ZONA2]
 Mapa=35
-Cantidad=5
+Cantidad=3
 Pez1=544
 Pez2=545
 Pez3=546
 
 [ZONA3]
 Mapa=61
-Cantidad=6
+Cantidad=3
 Pez1=544
 Pez2=545
 Pez3=546
-

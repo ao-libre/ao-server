@@ -22,24 +22,7 @@ Public PescaEvent As tPescaEvent
 
 Public Zona()     As tZona
 
-Public Sub LoadPesca()
-
-    Dim Leer As clsIniManager
-
-    Set Leer = New clsIniManager
- 
-    Call Leer.Initialize(App.Path & "\Dat\EventoPesca.dat")
- 
-    PescaEvent.Activado = Leer.GetValue("INIT", "Activado")
-    PescaEvent.Tiempo = Leer.GetValue("INIT", "Tiempo")
-    PescaEvent.CantidadDeZonas = Leer.GetValue("INIT", "CantidadDeZonas")
- 
-    Call LoadPeces
-
-    Set Leer = Nothing
-End Sub
-
-Private Sub LoadPeces()
+Public Sub LoadPeces()
 
     Dim Leer As clsIniManager
 
@@ -79,7 +62,7 @@ Public Function DamePez(ByVal ZonaUser As Byte) As Long
     DamePez = Zona(ZonaUser).Peces(RandomNumber(LBound(Zona(ZonaUser).Peces()), UBound(Zona(ZonaUser).Peces())))
 End Function
 
-Public Sub estadoDelMar(ByVal MinsEventoPesca As Integer)
+Public Sub estadoDelMar(ByVal MinsEventoPesca As Long)
 
     With PescaEvent
 

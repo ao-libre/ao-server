@@ -1307,3 +1307,7 @@ se agregaron magos malvados,belholders y leviatanes.se agrego y corrigio la cost
 * 20/08/2020: Ahora las monturas NO pueden ser usadas en dungeons. (Recox)
 * 20/08/2020: Cada 65 segundos se envian estadisticas del servidor a la API principal para poder mostrar informacion de los servidores secundarios en el comando /online por ejemplo. (Recox)
 * 20/08/2020: Se modifico .dat de eventos de pesca para que lo haga cada 180 mins. Se agrego un mapa y ahora avisa en consola cuales son los mapas recomendables para pescar. (Recox)
+
+-v0.13.51
+* 20/08/2020: Ahora los parametros del evento pesca se ponen en server.ini, se cargan desde funcion loadsini para que se puedan modificar sin reinciar el server, se arregla el tema del tiempo en el mismo. (Recox)
+

@@ -1964,6 +1964,13 @@ Sub LoadSini()
     DificultadMinar = val(Lector.GetValue("DIFICULTAD", "DificultadMinar"))
     '&&&&&&&&&&&&&&&&&&&&& FIN TIMERS &&&&&&&&&&&&&&&&&&&&&&&
       
+    '&&&&&&&&&&&&&&&&&&&&& Evento Pesca &&&&&&&&&&&&&&&&&&&&&&&
+    PescaEvent.Activado = val(Lector.GetValue("EVENTOPESCA", "Activado"))
+    PescaEvent.Tiempo = val(Lector.GetValue("EVENTOPESCA", "Tiempo"))
+    PescaEvent.CantidadDeZonas = val(Lector.GetValue("EVENTOPESCA", "CantidadDeZonas"))
+    Call LoadPeces
+    '&&&&&&&&&&&&&&&&&&&&& Fin Evento Pesca &&&&&&&&&&&&&&&&&&&&&&&
+
     RecordUsuariosOnline = val(Lector.GetValue("INIT", "Record"))
 
     ' HappyHour
