@@ -349,9 +349,13 @@ Sub TirarOro(ByVal Cantidad As Long, ByVal Userindex As Integer)
                 Dim AuxPos As WorldPos
 
                 Dim EsGaleraOGaleon As Boolean
-                EsGaleraOGaleon = EsGalera(ObjData(.Invent.BarcoObjIndex) Or EsGalera(ObjData(.Invent.BarcoObjIndex)
+                If EsGalera(ObjData(.Invent.BarcoObjIndex)) Or EsGalera(ObjData(.Invent.BarcoObjIndex)) Then
+                    EsGaleraOGaleon = True
+                Else
+                    EsGaleraOGaleon = False
+                End If
                 
-                If .Clase = eClass.Pirat And EsGaleraOGaleon) Then
+                If .Clase = eClass.Pirat And EsGaleraOGaleon Then
                     AuxPos = TirarItemAlPiso(.Pos, MiObj, False)
                 Else
                     AuxPos = TirarItemAlPiso(.Pos, MiObj, True)
@@ -2400,13 +2404,13 @@ Sub TirarTodosLosItems(ByVal Userindex As Integer)
                     DropAgua = True
 
                     ' Es pirata?
-                    If .Clase = eClass.Pirat Then
+10                  If .Clase = eClass.Pirat Then
 
                         ' Si tiene galera equipado
-10                      If EsGalera(ObjData(.Invent.BarcoObjIndex)) Then
+11                      If EsGalera(ObjData(.Invent.BarcoObjIndex)) Then
 
                           ' Limitacion por nivel, despues dropea normalmente
-11                         If .Stats.ELV <= 20 Then
+12                         If .Stats.ELV <= 20 Then
                                 ' No dropea en agua
                                 DropAgua = False
                                 Call WriteConsoleMsg(Userindex, "Por que sos Pirata y nivel menor o igual a 20 no se te caen las cosas con la Galera. Cuando llegues a nivel 21 perderas esta condicion.", FontTypeNames.FONTTYPE_WARNING)
@@ -2416,10 +2420,10 @@ Sub TirarTodosLosItems(ByVal Userindex As Integer)
                         End If
 
                         ' Si tiene galeon equipado
-10                      If EsGaleon(ObjData(.Invent.BarcoObjIndex)) Then
+13                      If EsGaleon(ObjData(.Invent.BarcoObjIndex)) Then
 
                           ' Limitacion por nivel, despues dropea normalmente
-11                         If .Stats.ELV <= 25 Then
+14                         If .Stats.ELV <= 25 Then
                                 ' No dropea en agua
                                 DropAgua = False
                                 Call WriteConsoleMsg(Userindex, "Por que sos Pirata y nivel menor o igual a 25 no se te caen las cosas con el Galeon. Cuando llegues a nivel 26 perderas esta condicion.", FontTypeNames.FONTTYPE_WARNING)
@@ -2430,16 +2434,16 @@ Sub TirarTodosLosItems(ByVal Userindex As Integer)
 
                     End If
                     
-12                  Call Tilelibre(.Pos, NuevaPos, MiObj, DropAgua, True)
+15                  Call Tilelibre(.Pos, NuevaPos, MiObj, DropAgua, True)
                     
-13                  If NuevaPos.X <> 0 And NuevaPos.Y <> 0 Then
-14                      Call DropObj(Userindex, i, MAX_INVENTORY_OBJS, NuevaPos.Map, NuevaPos.X, NuevaPos.Y)
+16                  If NuevaPos.X <> 0 And NuevaPos.Y <> 0 Then
+17                      Call DropObj(Userindex, i, MAX_INVENTORY_OBJS, NuevaPos.Map, NuevaPos.X, NuevaPos.Y)
 
-15                  End If
+18                  End If
 
-16                End If
+19                End If
 
-17           End If
+20           End If
 
         Next i
 
