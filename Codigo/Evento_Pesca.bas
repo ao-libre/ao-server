@@ -62,7 +62,7 @@ Public Function DamePez(ByVal ZonaUser As Byte) As Long
     DamePez = Zona(ZonaUser).Peces(RandomNumber(LBound(Zona(ZonaUser).Peces()), UBound(Zona(ZonaUser).Peces())))
 End Function
 
-Public Sub estadoDelMar(ByVal MinsEventoPesca As Long)
+Public Sub CheckEstadoDelMar(ByRef MinsEventoPesca As Long)
 
     With PescaEvent
 
@@ -103,5 +103,4 @@ Public Sub estadoDelMar(ByVal MinsEventoPesca As Long)
         End If
 
     End With
-      
 End Sub

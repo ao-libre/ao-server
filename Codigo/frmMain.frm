@@ -724,7 +724,7 @@ Private Sub AutoSave_Timer()
 
     End If
 
-    Call estadoDelMar(MinsEventoPesca)
+    Call CheckEstadoDelMar(MinsEventoPesca)
 
     Call CheckIdleUser
 
