@@ -1313,3 +1313,6 @@ se agregaron magos malvados,belholders y leviatanes.se agrego y corrigio la cost
 
 -v0.13.52
 * 20/08/2020: Ahora los parametros del evento pesca se ponen en server.ini, se cargan desde funcion loadsini para que se puedan modificar sin reinciar el server, se arregla el tema del tiempo en el mismo. (Recox)
+
+-v0.13.52
+* 22/08/2020: Se arreglo funcion CheckEstadoDelMar ahora reinicia correctamente el contador de minutos. (Recox)
