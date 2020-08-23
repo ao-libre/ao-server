@@ -1,8 +1,8 @@
 [MAPA199]
-Name=Dungeon de Tierra
-MusicNumMp3=14
+Name=Cueva de la Ladera
+MusicNumMp3=34
 MagiaSinefecto=0
-InviSinEfecto=0
+InviSinEfecto=1
 ResuSinEfecto=0
 NoEncriptarMP=0
 Terreno=BOSQUE
