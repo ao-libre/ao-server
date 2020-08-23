@@ -7,3 +7,6 @@ BackUp= 0
 Pk=0
 Name=Paso del Titan
 Zona=DUNGEON
+MusicNumMp3=32
+Terreno=NIEVE
+Restringir=NO

@@ -1,10 +1,11 @@
 [MAPA305]
 MagiaSinefecto=0
-InviSinEfecto=0
+InviSinEfecto=1
 ResuSinEfecto=0
 NoEncriptarMP=0
 BackUp= 0
 Pk=0
 Name=Piramide
-Terreno=DESIERTO
+Terreno=BOSQUE
 Zona=DUNGEON
+MusicNumMp3=29
