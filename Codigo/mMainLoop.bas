@@ -59,7 +59,9 @@ Public Sub TimerEnviarDatosServer()
     Call ApiEndpointSendServerDataToApiToShowOnlineUsers()
 
 ErrorHandler:
-    Call LogError("Error en TimerEnviarDatosServer - Error: " & Err.Number & " - Desc: " & Err.description)
+    If Err.Number <> 0 Then
+        Call LogError("Error en TimerEnviarDatosServer - Error: " & Err.Number & " - Desc: " & Err.description)
+    End If
 
 End Sub
 
