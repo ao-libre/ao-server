@@ -1,12 +1,12 @@
-[MAPA306]
+[MAPA314]
+Name=Limbo de los Justos
+MusicNumMp3=27
 MagiaSinefecto=0
-InviSinEfecto=0
+InviSinEfecto=1
 ResuSinEfecto=0
 NoEncriptarMP=0
-BackUp= 0
-Pk=0
-Name=Profundidades de Piramide
 Terreno=BOSQUE
 Zona=DUNGEON
 Restringir=NO
-MusicNumMp3=29
+BackUp= 0
+Pk=0
