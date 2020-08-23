@@ -349,11 +349,12 @@ Sub TirarOro(ByVal Cantidad As Long, ByVal Userindex As Integer)
                 Dim AuxPos As WorldPos
 
                 Dim EsGaleraOGaleon As Boolean
-                If EsGalera(ObjData(.Invent.BarcoObjIndex)) Or EsGalera(ObjData(.Invent.BarcoObjIndex)) Then
-                    EsGaleraOGaleon = True
-                Else
-                    EsGaleraOGaleon = False
-                End If
+                EsGaleraOGaleon = False
+                If .Invent.BarcoObjIndex <> 0 Then 
+                    If EsGalera(ObjData(.Invent.BarcoObjIndex)) Or EsGalera(ObjData(.Invent.BarcoObjIndex)) Then
+                        EsGaleraOGaleon = True
+                    End If
+                End If        
                 
                 If .Clase = eClass.Pirat And EsGaleraOGaleon Then
                     AuxPos = TirarItemAlPiso(.Pos, MiObj, False)
