@@ -1,8 +1,8 @@
 [MAPA292]
-Name=Catas Interciudades
-MusicNumMp3=81
+Name=Catacumbas Interciudades
+MusicNumMp3=9
 MagiaSinefecto=0
-InviSinEfecto=0
+InviSinEfecto=1
 ResuSinEfecto=0
 NoEncriptarMP=0
 Terreno=DESIERTO
