@@ -1,12 +1,12 @@
-[MAPA44]
-Name=Catacumbas Ullathorpe-Nix.
-MusicNumMp3=9
+[MAPA36]
+Name=Bosque de Dorck.
+MusicNumMp3=3
 MagiaSinefecto=0
 InviSinEfecto=0
 ResuSinEfecto=0
 NoEncriptarMP=0
 Terreno=BOSQUE
-Zona=DUNGEON
+Zona=CAMPO
 Restringir=No
-BackUp= 0
+BackUp= 1
 Pk=0
