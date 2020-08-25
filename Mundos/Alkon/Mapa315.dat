@@ -2,7 +2,7 @@
 Name=Guarida de Ryu
 MusicNumMp3=27
 MagiaSinefecto=0
-InviSinEfecto=1
+InviSinEfecto=0
 ResuSinEfecto=1
 NoEncriptarMP=0
 Terreno=BOSQUE
