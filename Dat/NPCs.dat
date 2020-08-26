@@ -9248,7 +9248,7 @@ Drop5=400-1 'Vara de mago
 ############################################
 
 [NPC700]
-Name=Chupavida
+Name=Huargo 
 NpcType=0
 Head=0
 Heading=3
@@ -10877,37 +10877,36 @@ Drop4=37-100 'Pociones Azules
 Drop5=12-7500 'Oro
 
 [NPC784]
-Name=Sin Nombre
+Name=Orco de las Mazmorras
 NpcType=0
 Head=0
 Heading=3
-Body=651
+Body=148
 Movement=3
 AguaValida=0
 Attackable=1
-ReSpawn=1
+ReSpawn=0
 Hostile=1
 Domable=0
 Alineacion=2
 Comercia=0
-GiveEXP=2000
+GiveEXP=5600
 GiveGLD=0
-MinHP=80000
-MaxHP=80000
-MaxHIT=280
-MinHIT=120
-DEF=30
+MinHP=3500
+MaxHP=3500
+MaxHIT=183
+MinHIT=144
+DEF=10
 AfectaParalisis=0
 PoderAtaque=230
-PoderEvasion=220
-Snd3=100
+PoderEvasion=150
 BackUp=0
 NROITEMS=5
-Drop1=388-500 'Lingote de Oro
-Drop2=194-10000 'Minerales de Oro
-Drop3=38-100 'Pociones Rojas
-Drop4=37-100 'Pociones Azules
-Drop5=12-7500 'Oro
+Drop1=12-600 'Oro
+Drop2=39-20 'Pociones Verdes
+Drop3=38-50 'Pociones Rojas
+Drop4=37-50 'Pociones Azules
+Drop5=126-1 'Hacha Larga de Guerra
 
 [NPC785]
 Name=Sin Nombre
