@@ -74,7 +74,7 @@ Actual Npc con Nro mas alto: 938
 [INIT]
 'aca va el numero de NPC mas alto, NO la cantidad de NPCs.
 'esto sirve para que los GMS puedan ver la lista completa de npcs a invocar en una ventanita.
-NumNPCs=945
+NumNPCs=959
 
 
 
