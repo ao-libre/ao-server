@@ -1322,5 +1322,32 @@ se agregaron magos malvados,belholders y leviatanes.se agrego y corrigio la cost
 * 22/08/2020: Arreglo funcion TirarOro para que tire oro correctamente, fallo en chequeo para saber si EsGaleon o EsGalera (Recox)
 * 22/08/2020: actualizacion npcs (Ronin)
 
+-v0.13.55
+* 27/08/2020: Cambios en mapas (ReyarB - Ronin)
+* 27/08/2020: corrección musica mapa 199 (ReyarB - Ronin)
+* 27/08/2020: corrección musica mapa 199 (Ronin)
+* 27/08/2020: Modifico mapa para que sea sin invi 316 (Ronin)
+* 27/08/2020: Se agrega Orco de la Mazmorra(Ronin)
+* 27/08/2020: Se agrega npc = Spriggans (Ent Magico)(Lorelei)
+* 27/08/2020: Jinete del apocalipsis :Apoca (legendaria)(Ronin)
+* 27/08/2020: Se modifica name :Chupavidas a Huargo(Ronin)
+* 27/08/2020: Archimago de agua = (Acomodo Body ) (Rebalanceo)(Ronin)
+* 27/08/2020: Dark Morgolok = Descarga (Legendaria)(Ronin)
+* 27/08/2020: Archimago de Fuego= (Rebalanceo)(Ronin)
+* 27/08/2020: Guerrero Protector = (Rebalanceado)(Ronin)
+* 27/08/2020: Se modifica [INIT] de npc para que aparescan en panel/buscar los nuevos npc de quest(Lorelei)
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
