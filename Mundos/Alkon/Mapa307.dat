@@ -1,12 +1,12 @@
 [MAPA307]
+Name=Mastaba del Faraon
 MagiaSinefecto=0
 InviSinEfecto=1
 ResuSinEfecto=1
 NoEncriptarMP=0
-BackUp= 0
-Pk=0
-Name=Mastaba del Faraon
 Terreno=BOSQUE
 Zona=DUNGEON
 Restringir=NO
+BackUp= 0
+Pk=0
 MusicNumMp3=29
