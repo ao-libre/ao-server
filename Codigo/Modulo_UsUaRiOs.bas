@@ -3124,19 +3124,6 @@ Public Sub HomeArrival(ByVal Userindex As Integer)
 
             'Le sacamos el navegando, pero no le mostramos a los demas porque va a ser sumoneado hasta ulla.
         End If
-
-        'Como vi que se lo hacian a barcos se lo hago a las monturas
-        If .flags.Equitando = 1 Then
-            .Char.body = iCuerpoMuerto
-            .Char.Head = iCabezaMuerto
-            .Char.ShieldAnim = NingunEscudo
-            .Char.WeaponAnim = NingunArma
-            .Char.CascoAnim = NingunCasco
-            
-            .flags.Equitando = 0
-            
-            Call WriteEquitandoToggle(Userindex)
-        End If
         
         tX = Ciudades(.Hogar).X
         tY = Ciudades(.Hogar).Y
