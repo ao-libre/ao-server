@@ -813,10 +813,10 @@ Public Function Intemperie(ByVal Userindex As Integer) As Boolean
 
     With UserList(Userindex)
 
-        If MapInfo(.Pos.Map).Zona <> "DUNGEON" Then
+        If MapInfo(.Pos.Map).Zona <> Dungeon Then
             If MapData(.Pos.Map, .Pos.X, .Pos.Y).trigger <> eTrigger.BAJOTECHO And _
-             MapData(.Pos.Map, .Pos.X, .Pos.Y).trigger <> eTrigger.CASA And _
-            MapData(.Pos.Map, .Pos.X, .Pos.Y).trigger <> eTrigger.ZONASEGURA Then _
+               MapData(.Pos.Map, .Pos.X, .Pos.Y).trigger <> eTrigger.CASA And _
+               MapData(.Pos.Map, .Pos.X, .Pos.Y).trigger <> eTrigger.ZONASEGURA Then _
                 Intemperie = True
         Else
             Intemperie = False
@@ -894,6 +894,7 @@ Public Sub EfectoFrio(ByVal Userindex As Integer)
     'Last Modification: 23/11/2009
     'If user is naked and it's in a cold map, take health points from him
     '23/11/2009: ZaMa - Optimizacion de codigo.
+    '23/08/2020: Recox - Hago que funcione esto de la Nieve.
     '***************************************************
     Dim modifi As Integer
     
@@ -903,7 +904,7 @@ Public Sub EfectoFrio(ByVal Userindex As Integer)
             .Counters.Frio = .Counters.Frio + 1
         Else
 
-            If MapInfo(.Pos.Map).Terreno = eTerrain.terrain_nieve Then
+            If MapInfo(.Pos.Map).Terreno = Nieve Then
                 Call WriteConsoleMsg(Userindex, "Estas muriendo de frio, abrigate o moriras!!", FontTypeNames.FONTTYPE_INFO)
                 modifi = Porcentaje(.Stats.MaxHp, 5)
                 .Stats.MinHp = .Stats.MinHp - modifi

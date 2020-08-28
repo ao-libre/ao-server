@@ -1005,7 +1005,16 @@ Sub MoveUserChar(ByVal Userindex As Integer, ByVal nHeading As eHeading)
     isAdminInvi = (UserList(Userindex).flags.AdminInvisible = 1)
     
     If MoveToLegalPos(UserList(Userindex).Pos.Map, nPos.X, nPos.Y, sailing, Not sailing) Then
-        If UserList(Userindex).flags.Equitando And (MapData(UserList(Userindex).Pos.Map, nPos.X, nPos.Y).trigger = eTrigger.CASA Or MapData(UserList(Userindex).Pos.Map, nPos.X, nPos.Y).trigger = eTrigger.BAJOTECHO) Then Exit Sub
+
+        'No se puede caminar con monturas en casas, bajo techo o dungeons
+        If UserList(Userindex).flags.Equitando And _ 
+           (MapData(UserList(Userindex).Pos.Map, nPos.X, nPos.Y).trigger = eTrigger.CASA Or _ 
+           MapData(UserList(Userindex).Pos.Map, nPos.X, nPos.Y).trigger = eTrigger.BAJOTECHO Or _
+           MapInfo(UserList(Userindex).Pos.Map).Zona = Dungeon ) Then _
+
+            Exit Sub
+        End If
+
         'si no estoy solo en el mapa...
         If MapInfo(UserList(Userindex).Pos.Map).NumUsers > 1 Then
                
@@ -3114,6 +3123,19 @@ Public Sub HomeArrival(ByVal Userindex As Integer)
             Call WriteNavigateToggle(Userindex)
 
             'Le sacamos el navegando, pero no le mostramos a los demas porque va a ser sumoneado hasta ulla.
+        End If
+
+        'Como vi que se lo hacian a barcos se lo hago a las monturas
+        If .flags.Equitando = 1 Then
+            .Char.body = iCuerpoMuerto
+            .Char.Head = iCabezaMuerto
+            .Char.ShieldAnim = NingunEscudo
+            .Char.WeaponAnim = NingunArma
+            .Char.CascoAnim = NingunCasco
+            
+            .flags.Equitando = 0
+            
+            Call WriteEquitandoToggle(Userindex)
         End If
         
         tX = Ciudades(.Hogar).X
