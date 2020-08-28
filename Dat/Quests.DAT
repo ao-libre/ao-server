@@ -165,7 +165,7 @@ RewardOBJ1=1134-1
 
 [QUEST11]
 Nombre=Marcando un nuevo comienzo
-Desc=Zhireles es un guerrero veterano del Reino Helado y hoy es su ultimo dia protegiendo estas tierras, ante tal suceso quiere dejar su ultima huella y para eso necesita que lo ayudes a matar 3 dragones legendarios que andan merodeando por estas tierras. Si logras hacerlo, Zhireles estara dispuesto a entregarte una maravillosa recompensa... Ademas, puedes contar con suerte y obtener gemas muy valiosas que poseen los dragones.
+Desc=Zhireles es un guerrero veterano de Gotland y hoy es su ultimo dia protegiendo estas tierras, ante tal suceso quiere dejar su ultima huella y para eso necesita que lo ayudes a matar 3 dragones legendarios que andan merodeando por estas tierras. Si logras hacerlo, Zhireles estara dispuesto a entregarte una maravillosa recompensa... Ademas, puedes contar con suerte y obtener gemas muy valiosas que poseen los dragones.
 RequiredLevel=40
  
 RequiredOBJs=3
