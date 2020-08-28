@@ -999,6 +999,70 @@ Drop3=12-7500 'Oro
 Drop4=551-50 'flecha +1
 Drop5=664-1 'arco compuesto reforzado
 
+#############################################
+
+[NPC167] 'npc gobernador de totem
+Name=Gobernador de Aldea Totem
+NpcType=11
+Desc=Hola, soy el gobernador de Aldea Totem Bienvenido a nuestra aldea! Escribe /Hogar para obtener la ciudadania.
+Head=0
+Ciudad=9
+Heading=3
+Body=4
+Movement=1
+Attackable=0
+ReSpawn=0
+Hostile=0
+Domable=0
+Alineacion=0
+Comercia=0
+BackUp=0
+
+#############################################
+
+#############################################
+
+[NPC168] 'npc gobernador de ciudad perdida
+Name=Gobernador de Ciudad Perdida
+NpcType=11
+Desc=Hola, soy el gobernador de Ciudad Perdida Bienvenido a nuestra ciudad! Escribe /Hogar para obtener la ciudadania.
+Head=0
+Ciudad=8
+Heading=3
+Body=4
+Movement=1
+Attackable=0
+ReSpawn=0
+Hostile=0
+Domable=0
+Alineacion=0
+Comercia=0
+BackUp=0
+
+#############################################
+
+
+#############################################
+
+[NPC169] 'npc gobernador de ciudad perdida
+Name=Gobernador de Ciudad Gotland
+NpcType=11
+Desc=Hola, soy el gobernador de Ciudad Gotland Bienvenido a nuestra ciudad! Escribe /Hogar para obtener la ciudadania.
+Head=0
+Ciudad=7
+Heading=3
+Body=4
+Movement=1
+Attackable=0
+ReSpawn=0
+Hostile=0
+Domable=0
+Alineacion=0
+Comercia=0
+BackUp=0
+
+#############################################
+
 [NPC120] 'Sastre Razas (humanos mujer)
 Name=Ireth
 Desc=Bienvenido amigo, vendo ropajes para MUJERES HUMANAS.

@@ -192,12 +192,15 @@ End Enum
 Public Enum eCiudad
 
     cUllathorpe = 1
-    cNix
-    cBanderbill
-    cLindos
-    cArghal
-    cArkhein
-    cLastCity
+    cNix = 2
+    cBanderbill = 3
+    cLindos = 4
+    cArghal = 5
+    cArkhein = 6
+    cGotland = 7
+    cPerdida = 8
+    cTotem = 9
+    cLastCity = 10
 
 End Enum
 
@@ -2076,6 +2079,12 @@ Public Nemahuak        As WorldPos
 Public Prision         As WorldPos
 
 Public Libertad        As WorldPos
+
+Public Gotland        As WorldPos
+
+Public Perdida        As WorldPos
+
+Public Totem        As WorldPos
 
 Public CustomSpawnMap  As WorldPos
 

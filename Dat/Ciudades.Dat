@@ -33,6 +33,21 @@ X=40
 Y=48
 MAPA=151
 
+[Perdida]
+X=37
+Y=65
+MAPA=171
+
+[Gotland]
+X=50
+Y=56
+MAPA=296
+
+[Totem]
+X=78
+Y=30
+MAPA=279
+
 [Prision]
 X=75
 Y=47
