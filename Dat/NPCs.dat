@@ -5544,37 +5544,33 @@ Drop3=544-5 'Pez Dorado
 
 ############################################
 
-[NPC526] 'NO RESPAWN (tira llave dungeon malaheing)
-Name=Aracnido Malaheing
+[NPC526] 
+Name=Dorckidean
 NpcType=0
 Head=0
 Heading=3
-Body=42
+Body=649
 Movement=3
 AguaValida=0
 Attackable=1
-ReSpawn=1
+ReSpawn=0
 Hostile=1
 Domable=0
 Alineacion=2
 Comercia=0
-GiveEXP=1450
-MinHP=3000
-MaxHP=3000
+GiveEXP=550
+MinHP=1000
+MaxHP=1000
 MaxHIT=100
 MinHIT=75
 DEF=10
 PoderAtaque=200
 PoderEvasion=150
-Nroitems=1
+AfectaParalisis=1
 Veneno=1
 BackUp=0
-NROITEMS=5
-Drop1=174-1 'Llave Catacumbas de Ulla
-Drop2=174-1 'Llave Catacumbas de Ulla
-Drop3=174-1 'Llave Catacumbas de Ulla
-Drop4=174-1 'Llave Catacumbas de Ulla
-Drop5=174-1 'Llave Catacumbas de Ulla
+NROITEMS=1
+Drop1=12-20 'Oro
 
 ############################################
 
