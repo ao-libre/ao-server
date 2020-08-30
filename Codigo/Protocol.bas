@@ -16256,7 +16256,8 @@ Public Sub HandleChangeMapInfoZone(ByVal Userindex As Integer)
                 Call WriteConsoleMsg(Userindex, "Mapa " & .Pos.Map & " Zona: " & MapInfo(.Pos.Map).Zona, FontTypeNames.FONTTYPE_INFO)
             Else
                 Call WriteConsoleMsg(Userindex, "Opciones para terreno: 'BOSQUE', 'NIEVE', 'DESIERTO', 'CIUDAD', 'CAMPO', 'DUNGEON'", FontTypeNames.FONTTYPE_INFO)
-                Call WriteConsoleMsg(Userindex, "Igualmente, el Unico Util es 'DUNGEON' ya que al ingresarlo, NO se sentira el efecto de la lluvia en este mapa.", FontTypeNames.FONTTYPE_INFO)
+                Call WriteConsoleMsg(Userindex, " 'DUNGEON', NO se sentira el efecto de la lluvia en este mapa.", FontTypeNames.FONTTYPE_INFO)
+                Call WriteConsoleMsg(Userindex, " 'NIEVE', Les agarra frio y saca salud hasta morir sin ropa.", FontTypeNames.FONTTYPE_INFO)
 
             End If
 
@@ -18448,6 +18449,7 @@ Public Sub WriteChangeMap(ByVal Userindex As Integer, _
         Call .WriteByte(ServerPacketID.ChangeMap)
         Call .WriteInteger(Map)
         Call .WriteASCIIString(MapInfo(Map).Name)
+        Call .WriteASCIIString(MapInfo(Map).Zona)
         Call .WriteInteger(version)
 
     End With

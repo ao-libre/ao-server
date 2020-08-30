@@ -323,7 +323,6 @@ Public Enum eTrigger6
 
 End Enum
 
-'TODO : Reemplazar por un enum
 Public Const Bosque   As String = "BOSQUE"
 
 Public Const Nieve    As String = "NIEVE"
@@ -335,17 +334,6 @@ Public Const Ciudad   As String = "CIUDAD"
 Public Const Campo    As String = "CAMPO"
 
 Public Const Dungeon  As String = "DUNGEON"
-
-Public Enum eTerrain
-
-    terrain_bosque = 0
-    terrain_nieve = 1
-    terrain_desierto = 2
-    terrain_ciudad = 3
-    terrain_campo = 4
-    terrain_dungeon = 5
-
-End Enum
 
 Public Enum eRestrict
 
