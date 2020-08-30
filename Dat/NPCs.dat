@@ -940,7 +940,7 @@ BackUp=1
 
 ##############################################
 [NPC165]
-Name=Oso Blanco
+Name=Oso Polar
 NpcType=0
 Head=0
 Heading=3
@@ -953,7 +953,7 @@ Hostile=1
 Domable=2010
 Alineacion=2
 Comercia=0
-GiveEXP=8500
+GiveEXP=3700
 MinHP=2600
 MaxHP=2600
 MaxHIT=100
@@ -3141,7 +3141,7 @@ Domable=0
 Alineacion=0
 Comercia=1
 TipoItems=2
-NROITEMS=15
+NROITEMS=18
 Obj1=389-1000 	'Martillo de Herrero
 Obj2=1009-10000 'Cuchillas
 Obj3=15-1000 	'Daga
@@ -3156,9 +3156,10 @@ Obj11=123-1000 	'Vikinga
 Obj12=124-1000 	'Katana
 Obj13=126-1000 	'Hacha Larga de Guerra
 Obj14=159-1000 	'Hacha de Barbaro
-Obj15=990-1000 	'Mazo del Juicio
-obj16=873-1000 'Guantes de Hurto
-obj17=1036-1000 'Guantes de Lucha
+Obj15=990-1000 	'Mazo del Juicio 
+obj16=753-1000 'Mayal Triple
+obj17=873-1000 'Guantes de Hurto
+obj18=1036-1000 'Guantes de Lucha
 BackUp=1
 
 #############################################
@@ -3210,7 +3211,7 @@ BackUp=1
 [NPC109] 'Sastre Ciudad Perdida (hombres)
 Name=Sastre
 NpcType=0
-Desc=Bienvenidos a la Gran Sastreria de la Ciudad Perdida! Aqui encontraran las ropas mas exoticas del mundo...
+Desc=Bienvenidos a la Gran Sastreria de la Ciudad ! Aqui encontraran las ropas mas exoticas del mundo...
 Head=406
 Heading=3
 Body=130
@@ -3222,7 +3223,7 @@ Domable=0
 Alineacion=0
 Comercia=1
 TipoItems=3
-NROITEMS=14
+NROITEMS=11
 Obj1=515-1000 'Ropa Legendaria
 Obj2=490-1000 'Ropa de Minero
 Obj3=381-1000 'Tunica de Monje
@@ -3234,7 +3235,6 @@ Obj8=1010-1000 'Sombrero de Pirata
 Obj9=383-1000 'Sombrero Magico
 Obj10=661-1000 'Sombrero de Aprendiz
 Obj11=662-1000 'Sombrero de Mago
-Obj12=1057-1000 'Sombrero Invernal
 BackUp=1
 
 #############################################
@@ -3268,7 +3268,7 @@ BackUp=1
 [NPC117] 'Sastre Ciudad Perdida (enanos)
 Name=Sastre
 NpcType=0
-Desc=Aqui en la Ciudad Perdida encontraran las mejores ropas de todo el mundo!
+Desc=Aqui en esta Ciudad encontraras las mejores ropas de todo el mundo!
 Head=402
 Heading=3
 Body=136
@@ -6077,9 +6077,8 @@ MinHIT=1000
 DEF=0
 PoderAtaque=400
 PoderEvasion=320
-LanzaSpells=2
-Sp1=15
-Sp2=25
+LanzaSpells=1
+Sp1=49
 SND1=30
 SND2=31
 SND3=32
@@ -7672,7 +7671,7 @@ Hostile=1
 Domable=0
 Alineacion=2
 Comercia=0
-GiveEXP=5300
+GiveEXP=4700
 MinHP=3000
 MaxHP=3000
 MaxHIT=126
@@ -7691,7 +7690,6 @@ Drop1=12-2000 'Oro
 Drop2=978-1 'Harapos de la Cueva
 Drop4=697-1 'Anillos Magicos
 Drop5=513-1 'Vestido de Bruja
-
 
 ############################################
 
@@ -8107,9 +8105,9 @@ Hostile=1
 Domable=0
 Alineacion=2
 Comercia=0
-GiveEXP=1700
-MinHP=1500
-MaxHP=1500
+GiveEXP=7100
+MinHP=6000
+MaxHP=6000
 MaxHIT=60
 MinHIT=40
 DEF=0
@@ -8117,11 +8115,8 @@ PoderAtaque=200
 PoderEvasion=70
 BackUp=0
 NROITEMS=5
-Drop1=12-100 'Oro
-Drop2=38-18 'Pociones Rojas
-Drop3=37-30 'Pociones Azules
-Drop4=36-10 'Pociones Amarillas
-Drop5=39-10 'Pociones Verdes
+Drop1=12-1000 'Oro
+Drop2=38-2000 'Pociones Rojas
 
 
 ############################################
@@ -9443,9 +9438,9 @@ Hostile=1
 Domable=0
 Alineacion=2
 Comercia=0
-GiveEXP=10000
-MinHP=15000
-MaxHP=15000
+GiveEXP=10500
+MinHP=8000
+MaxHP=8000
 MaxHIT=240
 MinHIT=150
 DEF=0
@@ -9453,13 +9448,12 @@ PoderAtaque=230
 PoderEvasion=220
 Snd3=100
 BackUp=0
-NROITEMS=6
+NROITEMS=5
 Drop1=12-3500 'Oro
 Drop2=12-7000 'Oro
 Drop3=126-1 'Hacha Larga de Guerra
-Drop4=1202-1 'Llave casa pretoriano 3
-Drop5=129-1 'Hachas Doble Filo
-Drop6=495-1 'Armaduras Escarlata
+Drop4=129-1 'Hachas Doble Filo
+Drop5=495-1 'Armaduras Escarlata
 
 [NPC707]
 Name=Monstruo verde
@@ -9488,7 +9482,6 @@ BackUp=0
 NROITEMS=5
 Drop1=12-2500 'Oro
 Drop2=12-5000 'Oro
-
 
 [NPC708]
 Name=Bicharraco mutante
@@ -9522,7 +9515,7 @@ Drop4=129-5 'Hachas Doble Filo
 Drop5=495-2 'Armaduras Escarlata
 
 [NPC709]
-Name=Hombre lobo [Llave Pretoriano]
+Name=Hombre lobo
 NpcType=0
 Head=0
 Heading=3
@@ -9535,23 +9528,19 @@ Hostile=1
 Domable=0
 Alineacion=2
 Comercia=0
-GiveEXP=10000
-MinHP=15000
-MaxHP=15000
+GiveEXP=8500
+MinHP=5500
+MaxHP=5500
 MaxHIT=350
-MinHIT=75
+MinHIT=120
 DEF=0
 PoderAtaque=230
 PoderEvasion=220
-Snd3=100
+Snd3=81
 BackUp=0
 NROITEMS=6
-Drop1=12-2500 'Oro
-Drop2=12-5000 'Oro
-Drop3=69-1 'LLave a Mapa Pretoriano
-Drop4=129-5 'Hachas Doble Filo
-Drop5=495-2 'Armaduras Escarlata
-Drop6=126-3 'Hacha Larga de Guerra 
+Drop1=12-1500 'Oro
+Drop2=12-2700 'Oro
  
 [NPC710]
 Name=Errante de la Mazmorra
@@ -9610,12 +9599,12 @@ MinHIT=180
 DEF=0
 PoderAtaque=220
 PoderEvasion=180
-Snd3=100
+SND2=141
+SND3=140
 BackUp=0
 NROITEMS=5
 Drop1=12-1500 'Oro
 Drop2=12-3000 'Oro
-
 
 [NPC712]
 Name=Golem de oro
@@ -9639,7 +9628,8 @@ MinHIT=75
 DEF=0
 PoderAtaque=230
 PoderEvasion=220
-Snd3=100
+SND2=141
+SND3=140
 BackUp=0
 NROITEMS=5
 Drop1=12-1500 'Oro
@@ -9670,7 +9660,8 @@ MinHIT=75
 DEF=0
 PoderAtaque=230
 PoderEvasion=220
-Snd3=100
+SND2=141
+SND3=140
 BackUp=0
 NROITEMS=5
 Drop1=12-5000 'Oro
@@ -9708,9 +9699,8 @@ Drop1=12-3500 'Oro
 Drop2=12-6000 'Oro
 Drop3=126-3 'Hacha Larga de Guerra
 
-
 [NPC715]
-Name=Etognil Bronce
+Name=Etognil de Hierro
 NpcType=0
 Head=0
 Heading=3
@@ -9733,14 +9723,12 @@ DEF=30
 AfectaParalisis=0
 PoderAtaque=230
 PoderEvasion=220
-Snd3=100
+SND2=141
+SND3=140
 BackUp=0
 NROITEMS=5
-Drop1=386-1000 'Lingote de Hierro
-Drop2=192-10000 'Minerales de Bronce
-Drop3=38-100 'Pociones Rojas
-Drop4=37-100 'Pociones Azules`
-Drop5=12-10000 'Oro
+Drop1=192-6000 'Minerales de hierro
+Drop2=386-600 'Lingote de Hierro
 
 [NPC716]
 Name=Etognil Plata
@@ -9766,14 +9754,12 @@ DEF=30
 AfectaParalisis=0
 PoderAtaque=280
 PoderEvasion=250
-Snd3=100
+SND2=141
+SND3=140
 BackUp=0
 NROITEMS=5
-Drop1=387-700 'Lingote de Plata 
-Drop2=193-7000 'Minerales de Plata
-Drop3=38-100 'Pociones Rojas
-Drop4=37-100 'Pociones Azules
-Drop5=12-7500 'Oro
+Drop1=193-6000 'Minerales de Plata 
+Drop2=387-420 'Lingote de Plata
 
 [NPC717]
 Name=Etognil Oro
@@ -9799,14 +9785,12 @@ DEF=30
 AfectaParalisis=0
 PoderAtaque=230
 PoderEvasion=220
-Snd3=100
+SND2=141
+SND3=140
 BackUp=0
 NROITEMS=5
-Drop1=388-500 'Lingote de Oro
-Drop2=194-10000 'Minerales de Oro
-Drop3=38-100 'Pociones Rojas
-Drop4=37-100 'Pociones Azules
-Drop5=12-7500 'Oro
+Drop1=194-6000 'Minerales de Oro
+Drop2=388-300 'Lingote de Oro
 
 ############################################
 
@@ -10080,7 +10064,7 @@ Drop1=12-2500 'Oro
 Drop2=619-1 'Daga Envenenada
 
 [NPC758]
-Name=Momia Del Averno
+Name=Momia Oscura
 NpcType=0
 Head=0
 Heading=3
@@ -10179,7 +10163,7 @@ Hostile=1
 Domable=0
 Alineacion=2
 Comercia=0
-GiveEXP=35000
+GiveEXP=15000
 GiveGLD=0
 MinHP=9500
 MaxHP=9500
@@ -10188,10 +10172,10 @@ MinHIT=170
 DEF=30
 AfectaParalisis=0
 PoderAtaque=230
-PoderEvasion=40
+PoderEvasion=190
 BackUp=0
 NROITEMS=5
-Drop1=12-5000 'Oro
+Drop1=12-2000 'Oro
 
 [NPC762]
 Name=Archimago De Fuego
@@ -10221,8 +10205,8 @@ AtacaDoble=1
 AfectaParalisis=1
 BackUp=0
 NROITEMS=2
-Drop1=12-6000 Oro
-Drop2=662-1 'Sombrero De Mago
+Drop1=12-12000 'Oro
+Drop2=1057-1 'Sombrero Magico +1
 
 [NPC763]
 Name=Archimago de Agua
@@ -10378,17 +10362,17 @@ Hostile=1
 Domable=0
 Alineacion=2
 Comercia=0
-GiveEXP=40000
-MinHP=30000
-MaxHP=30000
+GiveEXP=25000
+MinHP=16000
+MaxHP=16000
 MaxHIT=300
 MinHIT=250
 DEF=30
-AfectaParalisis=0
+AfectaParalisis=1
 PoderAtaque=250
 PoderEvasion=170
 LanzaSpells=1
-Sp1=24
+Sp1=25
 AtacaDoble=1
 BackUp=0
 NROITEMS=1
@@ -10556,23 +10540,23 @@ Hostile=1
 Domable=0
 Alineacion=2
 Comercia=0
-GiveEXP=200000
+GiveEXP=70000
 GiveGLD=0
-MinHP=150000
-MaxHP=150000
+MinHP=47000
+MaxHP=47000
 MaxHIT=330
 MinHIT=300
 DEF=30
 AfectaParalisis=0
-PoderAtaque=600
-PoderEvasion=150
+PoderAtaque=250
+PoderEvasion=230
 Snd3=119
 LanzaSpells=1
 Sp1=24-
 AtacaDoble=1
 BackUp=0
 NROITEMS=5
-Drop1=157-2 'Copa de Plata
+Drop1=157-1 'Copa de Plata
 Drop2=710-1 'Copa de Oro
 Drop3=710-300 'Pociones Rojas
 Drop4=37-300 'Pociones Azules
@@ -10965,7 +10949,7 @@ LanzaSpells=1
 Sp1=6
 BackUp=0
 NROITEMS=2
-Drop1=12-1200 'Oro
+Drop1=12-100 'Oro
 Drop2=38-10 'Pociones Rojas
 
 
@@ -11280,13 +11264,13 @@ Hostile=1
 Domable=0
 Alineacion=2
 Comercia=0
-GiveEXP=15500
+GiveEXP=16500
 MinHP=9000
 MaxHP=9000
 MaxHIT=240
 MinHIT=210
 DEF=50
-PoderAtaque=150
+PoderAtaque=250
 PoderEvasion=200
 Snd2=159
 Snd3=160
@@ -11332,7 +11316,7 @@ Drop4=37-100 'Pociones Azules
 Drop5=12-7500 'Oro
 
 [NPC798]
-Name=Ryu (Dragon Legendario)
+Name=Ryu
 NpcType=0
 Head=0
 Heading=3
@@ -11350,7 +11334,7 @@ MinHP=600000
 MaxHP=600000
 MaxHIT=320
 MinHIT=230
-DEF=80
+DEF=50
 PoderAtaque=800
 PoderEvasion=170
 SND1=30
@@ -11365,7 +11349,7 @@ NROITEMS=1
 Drop1=412-1 'Gema Verde
 
 [NPC799]
-Name=Smaug (Dragon Legendario)
+Name=Smaug
 NpcType=0
 Head=0
 Heading=3
@@ -11383,7 +11367,7 @@ MinHP=600000
 MaxHP=600000
 MaxHIT=320
 MinHIT=230
-DEF=15
+DEF=50
 PoderAtaque=800
 PoderEvasion=200
 SND1=30
@@ -11398,7 +11382,7 @@ NROITEMS=1
 Drop1=411-1 'Gema Roja
 
 [NPC800]
-Name=Hydra (Dragon Legendario)
+Name=Hydra
 NpcType=0
 Head=0
 Heading=3
@@ -11416,7 +11400,7 @@ MinHP=600000
 MaxHP=600000
 MaxHIT=340
 MinHIT=260
-DEF=15
+DEF=80
 PoderAtaque=800
 PoderEvasion=170
 SND1=30
@@ -11781,7 +11765,7 @@ MaxHP=32000
 MaxHIT=320
 MinHIT=240
 DEF=30
-AfectaParalisis=1
+AfectaParalisis=0
 PoderAtaque=180
 PoderEvasion=150
 BackUp=0
@@ -11856,7 +11840,7 @@ Drop4=37-100 'Pociones Azules
 Drop5=12-7500 'Oro
 
 [NPC814]
-Name=Sin Nombre
+Name=Ogro Joven
 NpcType=0
 Head=0
 Heading=3
@@ -11864,29 +11848,23 @@ Body=681
 Movement=3
 AguaValida=0
 Attackable=1
-ReSpawn=1
+ReSpawn=0
 Hostile=1
 Domable=0
 Alineacion=2
 Comercia=0
-GiveEXP=2000
-GiveGLD=0
-MinHP=80000
-MaxHP=80000
-MaxHIT=280
-MinHIT=120
-DEF=30
-AfectaParalisis=0
-PoderAtaque=230
-PoderEvasion=220
-Snd3=100
+GiveEXP=4000
+MinHP=6800
+MaxHP=6800
+MaxHIT=170
+MinHIT=150
+DEF=40
+PoderAtaque=170
+PoderEvasion=250
 BackUp=0
-NROITEMS=5
-Drop1=388-500 'Lingote de Oro
-Drop2=194-10000 'Minerales de Oro
-Drop3=38-100 'Pociones Rojas
-Drop4=37-100 'Pociones Azules
-Drop5=12-7500 'Oro
+NROITEMS=2
+Drop1=12-200 'Oro
+Drop2=38-100 'Pociones Rojas
 
 [NPC815]
 Name=Sin Nombre
@@ -12153,7 +12131,7 @@ Drop4=37-100 'Pociones Azules
 Drop5=12-7500 'Oro
 
 [NPC823]
-Name=Sin Nombre
+Name=Esclavo Errante
 NpcType=0
 Head=0
 Heading=3
@@ -12161,29 +12139,24 @@ Body=690
 Movement=3
 AguaValida=0
 Attackable=1
-ReSpawn=1
+ReSpawn=0
 Hostile=1
 Domable=0
 Alineacion=2
 Comercia=0
-GiveEXP=2000
-GiveGLD=0
-MinHP=80000
-MaxHP=80000
-MaxHIT=280
-MinHIT=120
-DEF=30
-AfectaParalisis=0
-PoderAtaque=230
-PoderEvasion=220
-Snd3=100
+GiveEXP=1100
+MinHP=1750
+MaxHP=1750
+MaxHIT=130
+MinHIT=80
+DEF=19
+PoderAtaque=60
+PoderEvasion=50
 BackUp=0
 NROITEMS=5
-Drop1=388-500 'Lingote de Oro
-Drop2=194-10000 'Minerales de Oro
-Drop3=38-100 'Pociones Rojas
-Drop4=37-100 'Pociones Azules
-Drop5=12-7500 'Oro
+Drop1=12-100 'Oro
+Drop3=132-1 'Casco de Hierro
+Drop4=126-1 'Hacha Larga de Guerra
 
 [NPC824]
 Name=Conejo Blanco
