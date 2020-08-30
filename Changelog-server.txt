@@ -1337,17 +1337,3 @@ se agregaron magos malvados,belholders y leviatanes.se agrego y corrigio la cost
 * 27/08/2020: Guerrero Protector = (Rebalanceado)(Ronin)
 * 27/08/2020: Se modifica [INIT] de npc para que aparescan en panel/buscar los nuevos npc de quest(Lorelei)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
