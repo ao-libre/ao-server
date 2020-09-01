@@ -2108,6 +2108,24 @@ Sub CargarCiudades()
             .Y = Lector.GetValue("Prision-Afuera", "Y")
         End With
 
+        With Gotland
+            .Map = Lector.GetValue("Gotland", "Mapa")
+            .X = Lector.GetValue("Gotland", "X")
+            .Y = Lector.GetValue("Gotland", "Y")
+        End With
+
+        With Perdida
+            .Map = Lector.GetValue("Perdida", "Mapa")
+            .X = Lector.GetValue("Perdida", "X")
+            .Y = Lector.GetValue("Perdida", "Y")
+        End With
+
+        With Totem
+            .Map = Lector.GetValue("Totem", "Mapa")
+            .X = Lector.GetValue("Totem", "X")
+            .Y = Lector.GetValue("Totem", "Y")
+        End With
+
     Set Lector = Nothing
     
     Ciudades(eCiudad.cUllathorpe) = Ullathorpe
@@ -2116,6 +2134,9 @@ Sub CargarCiudades()
     Ciudades(eCiudad.cLindos) = Lindos
     Ciudades(eCiudad.cArghal) = Arghal
     Ciudades(eCiudad.cArkhein) = Arkhein
+    Ciudades(eCiudad.cGotland) = Gotland
+    Ciudades(eCiudad.cPerdida) = Perdida
+    Ciudades(eCiudad.cTotem) = Totem
 
     If frmMain.Visible Then frmMain.txtStatus.Text = Date & " " & time & " - Se cargaron las ciudades.dat"
 
