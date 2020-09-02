@@ -1,7 +1,7 @@
 [MAPA179]
-Name=Minas de Oro.
+Name=Minas de Oro
 MagiaSinefecto=0
-InviSinEfecto=0
+InviSinEfecto=1
 ResuSinEfecto=0
 NoEncriptarMP=0
 Terreno=BOSQUE
@@ -9,3 +9,4 @@ Zona=DUNGEON
 Restringir=No
 BackUp= 1
 Pk=0
+MusicNumMp3=9
