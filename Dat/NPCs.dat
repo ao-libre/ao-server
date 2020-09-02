@@ -9324,12 +9324,10 @@ MinHIT=110
 DEF=0
 PoderAtaque=230
 PoderEvasion=220
-Snd3=100
 BackUp=0
-NROITEMS=5
-Drop1=12-2500 'Oro
-Drop2=12-5000 'Oro
-
+NROITEMS=2
+Drop1=12-1000 'Oro
+Drop2=12-1500 'Oro
 
 ############################################
 
@@ -9418,11 +9416,10 @@ MinHIT=100
 DEF=0
 PoderAtaque=230
 PoderEvasion=200
-Snd3=100
 BackUp=0
-NROITEMS=5
-Drop1=12-1000 'Oro
-Drop2=12-3500 'Oro
+NROITEMS=2
+Drop1=12-700 'Oro
+Drop2=12-1000 'Oro
 ############################################
 
 [NPC704]
@@ -9479,14 +9476,11 @@ MinHIT=150
 DEF=0
 PoderAtaque=230
 PoderEvasion=200
-Snd3=100
 BackUp=0
-NROITEMS=5
-Drop1=12-2000 'Oro
-Drop2=12-3000 'Oro
+NROITEMS=3
+Drop1=12-1000 'Oro
+Drop2=12-1100 'Oro
 Drop3=126-1 'Hacha Larga de Guerra
-Drop4=129-1 'Hachas Doble Filo
-Drop5=495-1 'Armaduras Escarlata
 
 [NPC706]
 Name=Viuda negra
@@ -9510,7 +9504,6 @@ MinHIT=150
 DEF=0
 PoderAtaque=230
 PoderEvasion=220
-Snd3=100
 BackUp=0
 NROITEMS=5
 Drop1=12-3500 'Oro
@@ -11393,7 +11386,7 @@ Hostile=1
 Domable=0
 Alineacion=2
 Comercia=0
-GiveEXP=400000
+GiveEXP=700000
 MinHP=600000
 MaxHP=600000
 MaxHIT=320
@@ -11426,7 +11419,7 @@ Hostile=1
 Domable=0
 Alineacion=2
 Comercia=0
-GiveEXP=4000000
+GiveEXP=900000
 MinHP=600000
 MaxHP=600000
 MaxHIT=320
@@ -11459,7 +11452,7 @@ Hostile=1
 Domable=0
 Alineacion=2
 Comercia=0
-GiveEXP=400000
+GiveEXP=800000
 MinHP=600000
 MaxHP=600000
 MaxHIT=340
