@@ -1,12 +1,12 @@
 [MAPA309]
-Name=Guarida de Smaug
 MagiaSinefecto=0
 InviSinEfecto=1
 ResuSinEfecto=1
 NoEncriptarMP=0
-Terreno=NIEVE
-Zona=DUNGEON
-Restringir=NO
 BackUp= 0
 Pk=0
+Name=Guarida de Smaug
+Zona=DUNGEON
+Terreno=NIEVE
+Restringir=NO
 MusicNumMp3=32
