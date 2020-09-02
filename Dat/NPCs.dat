@@ -10691,6 +10691,7 @@ BackUp=0
 NROITEMS=1
 Drop1=12-2500 'Oro
 
+[NPC773]
 Name=Hechizero Ancestral
 NpcType=0
 Head=0
