@@ -1811,7 +1811,7 @@ Domable=0
 Alineacion=0
 Comercia=1
 TipoItems=2
-NROITEMS=15
+NROITEMS=18
 Obj1=389-1000 	'Martillo de Herrero
 Obj2=1009-10000 'Cuchillas
 Obj3=15-1000 	'Daga
@@ -1826,8 +1826,10 @@ Obj11=123-1000 	'Vikinga
 Obj12=124-1000 	'Katana
 Obj13=126-1000 	'Hacha Larga de Guerra
 Obj14=159-1000 	'Hacha de Barbaro
-Obj15=990-1000 	'Mazo del Juicio
-obj16=1036-1000 'Guantes de lucha
+Obj15=990-1000 	'Mazo del Juicio 
+obj16=753-1000 'Mayal Triple
+obj17=873-1000 'Guantes de Hurto
+obj18=1036-1000 'Guantes de Lucha
 BackUp=1
 
 #############################################
@@ -1935,13 +1937,20 @@ Domable=0
 Alineacion=0
 Comercia=1
 TipoItems=3
-NROITEMS=6
+NROITEMS=13
 Obj1=240-1000 'Ropa de Enano (E/G)
 Obj2=527-1000 'Ropa de Enana (E/G-M)
 Obj3=486-1000 'Ropa de Estilo (E/G)
 Obj4=507-1000 'Ropa Violeta (E/G)
 Obj5=502-1000 'Ropa de Campesino (E/G)
 Obj6=707-1000 'Vestimenta de Noble (E/G)
+Obj7=526-1000 'Tunica Combinada de Mujer (E/G-M)
+Obj8=512-1000 'Vestido Calipso (E/G-M)
+Obj9=671-1000 'Tunica de Monje (E/G)
+Obj10=670-1000 'Tunica de Mago (E/G)
+Obj11=524-1000 'Tunica Roja Especial (E/G)
+Obj12=525-1000 'Tunica Combinada (E/G)
+Obj13=908-1000 'Vestimentas de Pescador (E/G)
 BackUp=1
 
 #############################################
@@ -1959,16 +1968,21 @@ Hostile=0
 Domable=0
 Alineacion=0
 Comercia=1
-TipoItems=3
-NROITEMS=5
+NROITEMS=13
 Obj1=30-1000 'Armadura de Cuero
 Obj2=529-1000 'Armadura de Cuero (H/E/EO-M)
 Obj3=668-1000 'Armadura de Cuero (E/G)
 Obj4=1001-1000 'Casco de Aguila
 Obj5=1002-1000 'Casco de Lobo
+Obj6=132-1000 'Casco de Hierro
+Obj7=370-1000 'Capucha de Cazador
+Obj8=903-1000 'Armadura de Campeon (H/E/EO)
+Obj9=889-1000 'Anillas Con Manto Verde (H/E/EO)
+Obj10=359-1000 'Cota de Mallas
+Obj11=499-1000 'Cota de Mallas (H/E/EO-M)
+Obj12=667-1000 'Cota de Mallas (E/G)
+Obj13=404-1000 'Escudo de Tortuga
 BackUp=1
-
-
 
 
 ##############################################################
@@ -2029,7 +2043,7 @@ Domable=0
 Alineacion=0
 Comercia=1
 TipoItems=2
-NROITEMS=15
+NROITEMS=18
 Obj1=389-1000 	'Martillo de Herrero
 Obj2=1009-10000 'Cuchillas
 Obj3=15-1000 	'Daga
@@ -2044,8 +2058,10 @@ Obj11=123-1000 	'Vikinga
 Obj12=124-1000 	'Katana
 Obj13=126-1000 	'Hacha Larga de Guerra
 Obj14=159-1000 	'Hacha de Barbaro
-Obj15=990-1000 	'Mazo del Juicio
-obj16=1036-1000 'Guantes de lucha
+Obj15=990-1000 	'Mazo del Juicio 
+obj16=753-1000 'Mayal Triple
+obj17=873-1000 'Guantes de Hurto
+obj18=1036-1000 'Guantes de Lucha
 BackUp=1
 
 #############################################
@@ -2130,13 +2146,22 @@ Domable=0
 Alineacion=0
 Comercia=1
 TipoItems=3
-NROITEMS=5
-Obj1=170-1000 'Vestimenta de Mujer (H/E/EO-M)
-Obj2=504-1000 'Atuendo Combinado (H/E/EO-M)
-Obj3=505-1000 'Atuendo Azul (H/E/EO-M)
-Obj4=506-1000 'Atuendo Rosa (H/E/EO-M)
-Obj5=382-1000 'Vestido Azul (H/E/EO-M)
-BackUp=1
+NROITEMS=15
+Obj1=504-1000 'Atuendo Combinado (H/E/EO-M)
+Obj2=505-1000 'Atuendo Azul (H/E/EO-M)
+Obj3=506-1000 'Atuendo Rosa (H/E/EO-M)
+Obj4=382-1000 'Vestido Azul (H/E/EO-M)
+Obj5=511-1000 'Vestido de Novia Sensual (H/E/EO-M)
+Obj6=170-1000 'Vestimenta de Mujer (H/E/EO-M)
+Obj7=488-1000 'White Lady (H/E/EO-M)
+Obj8=508-1000 'Ropa Estuaria (H/E/EO-M)
+Obj9=510-1000 'Vestido Indulgente (H/E/EO-M)
+Obj10=513-1000 'Vestido de Bruja (H/E/EO-M)
+Obj11=514-1000 'Vestido de Bruja Especial (H/E/EO-M)
+Obj12=879-1000 'Vestido Bordado de Gala (H/E/EO-M)
+Obj13=880-1000 'Tunica del Oraculo (H/E/EO-M)
+Obj14=950-1000 'Sirica Elfica Rojiza (H/E/EO-M)
+Obj15=943-1000 'Sobrevesta Elfica (H/E/EO)
 
 #############################################
 
@@ -2155,13 +2180,20 @@ Domable=0
 Alineacion=0
 Comercia=1
 TipoItems=3
-NROITEMS=6
+NROITEMS=13
 Obj1=240-1000 'Ropa de Enano (E/G)
 Obj2=527-1000 'Ropa de Enana (E/G-M)
 Obj3=486-1000 'Ropa de Estilo (E/G)
 Obj4=507-1000 'Ropa Violeta (E/G)
 Obj5=502-1000 'Ropa de Campesino (E/G)
 Obj6=707-1000 'Vestimenta de Noble (E/G)
+Obj7=526-1000 'Tunica Combinada de Mujer (E/G-M)
+Obj8=512-1000 'Vestido Calipso (E/G-M)
+Obj9=671-1000 'Tunica de Monje (E/G)
+Obj10=670-1000 'Tunica de Mago (E/G)
+Obj11=524-1000 'Tunica Roja Especial (E/G)
+Obj12=525-1000 'Tunica Combinada (E/G)
+Obj13=908-1000 'Vestimentas de Pescador (E/G)
 BackUp=1
 
 #############################################
@@ -2180,18 +2212,21 @@ Domable=0
 Alineacion=0
 Comercia=1
 TipoItems=3
-NROITEMS=8
+NROITEMS=13
 Obj1=30-1000 'Armadura de Cuero
 Obj2=529-1000 'Armadura de Cuero (H/E/EO-M)
 Obj3=668-1000 'Armadura de Cuero (E/G)
-Obj4=359-1000 'Cota de Mallas
-Obj5=499-1000 'Cota de Mallas (H/E/EO-M)
-Obj6=667-1000 'Cota de Mallas (E/G)
-Obj7=1001-1000 'Casco de Aguila
-Obj8=1002-1000 'Casco de Lobo
+Obj4=1001-1000 'Casco de Aguila
+Obj5=1002-1000 'Casco de Lobo
+Obj6=132-1000 'Casco de Hierro
+Obj7=370-1000 'Capucha de Cazador
+Obj8=903-1000 'Armadura de Campeon (H/E/EO)
+Obj9=889-1000 'Anillas Con Manto Verde (H/E/EO)
+Obj10=359-1000 'Cota de Mallas
+Obj11=499-1000 'Cota de Mallas (H/E/EO-M)
+Obj12=667-1000 'Cota de Mallas (E/G)
+Obj13=404-1000 'Escudo de Tortuga
 BackUp=1
-
-
 
 
 ##############################################################
@@ -2252,7 +2287,7 @@ Domable=0
 Alineacion=0
 Comercia=1
 TipoItems=2
-NROITEMS=15
+NROITEMS=18
 Obj1=389-1000 	'Martillo de Herrero
 Obj2=1009-10000 'Cuchillas
 Obj3=15-1000 	'Daga
@@ -2267,8 +2302,10 @@ Obj11=123-1000 	'Vikinga
 Obj12=124-1000 	'Katana
 Obj13=126-1000 	'Hacha Larga de Guerra
 Obj14=159-1000 	'Hacha de Barbaro
-Obj15=990-1000 	'Mazo del Juicio
-obj16=1036-1000 'Guantes de lucha
+Obj15=990-1000 	'Mazo del Juicio 
+obj16=753-1000 'Mayal Triple
+obj17=873-1000 'Guantes de Hurto
+obj18=1036-1000 'Guantes de Lucha
 BackUp=1
 
 #############################################
@@ -2310,6 +2347,7 @@ Obj18=696-1000 'Laud Magico
 Obj19=208-1000 'Flauta Magica
 Obj20=532-1000 'Apocalipsis
 Obj21=531-1000 'Descarga Electrica
+Obj22=1050-1000  ' Flauta Elfica
 BackUp=1
 
 #############################################
@@ -2363,12 +2401,22 @@ Domable=0
 Alineacion=0
 Comercia=1
 TipoItems=3
-NROITEMS=5
+NROITEMS=15
 Obj1=504-1000 'Atuendo Combinado (H/E/EO-M)
 Obj2=505-1000 'Atuendo Azul (H/E/EO-M)
 Obj3=506-1000 'Atuendo Rosa (H/E/EO-M)
 Obj4=382-1000 'Vestido Azul (H/E/EO-M)
 Obj5=511-1000 'Vestido de Novia Sensual (H/E/EO-M)
+Obj6=170-1000 'Vestimenta de Mujer (H/E/EO-M)
+Obj7=488-1000 'White Lady (H/E/EO-M)
+Obj8=508-1000 'Ropa Estuaria (H/E/EO-M)
+Obj9=510-1000 'Vestido Indulgente (H/E/EO-M)
+Obj10=513-1000 'Vestido de Bruja (H/E/EO-M)
+Obj11=514-1000 'Vestido de Bruja Especial (H/E/EO-M)
+Obj12=879-1000 'Vestido Bordado de Gala (H/E/EO-M)
+Obj13=880-1000 'Tunica del Oraculo (H/E/EO-M)
+Obj14=950-1000 'Sirica Elfica Rojiza (H/E/EO-M)
+Obj15=943-1000 'Sobrevesta Elfica (H/E/EO)
 BackUp=1
 
 #############################################
@@ -2388,13 +2436,20 @@ Domable=0
 Alineacion=0
 Comercia=1
 TipoItems=3
-NROITEMS=6
-Obj1=486-1000 'Ropa de Estilo (E/G)
-Obj2=507-1000 'Ropa Violeta (E/G)
-Obj3=502-1000 'Ropa de Campesino (E/G)
-Obj4=707-1000 'Vestimenta de Noble (E/G)
-Obj5=671-1000 'Tunica de Monje (E/G)
-Obj6=670-1000 'Tunica de Mago (E/G)
+NROITEMS=13
+Obj1=240-1000 'Ropa de Enano (E/G)
+Obj2=527-1000 'Ropa de Enana (E/G-M)
+Obj3=486-1000 'Ropa de Estilo (E/G)
+Obj4=507-1000 'Ropa Violeta (E/G)
+Obj5=502-1000 'Ropa de Campesino (E/G)
+Obj6=707-1000 'Vestimenta de Noble (E/G)
+Obj7=526-1000 'Tunica Combinada de Mujer (E/G-M)
+Obj8=512-1000 'Vestido Calipso (E/G-M)
+Obj9=671-1000 'Tunica de Monje (E/G)
+Obj10=670-1000 'Tunica de Mago (E/G)
+Obj11=524-1000 'Tunica Roja Especial (E/G)
+Obj12=525-1000 'Tunica Combinada (E/G)
+Obj13=908-1000 'Vestimentas de Pescador (E/G)
 BackUp=1
 
 #############################################
@@ -2413,16 +2468,21 @@ Domable=0
 Alineacion=0
 Comercia=1
 TipoItems=3
-NROITEMS=6
-Obj1=359-1000 'Cota de Mallas
-Obj2=499-1000 'Cota de Mallas (H/E/EO-M)
-Obj3=667-1000 'Cota de Mallas (E/G)
-Obj4=360-1000 'Armadura de Cazador
-Obj5=648-1000 'Armadura de Cazador (E/G)
-Obj6=1003-1000 'Casco de Oso
+NROITEMS=13
+Obj1=30-1000 'Armadura de Cuero
+Obj2=529-1000 'Armadura de Cuero (H/E/EO-M)
+Obj3=668-1000 'Armadura de Cuero (E/G)
+Obj4=1001-1000 'Casco de Aguila
+Obj5=1002-1000 'Casco de Lobo
+Obj6=132-1000 'Casco de Hierro
+Obj7=370-1000 'Capucha de Cazador
+Obj8=903-1000 'Armadura de Campeon (H/E/EO)
+Obj9=889-1000 'Anillas Con Manto Verde (H/E/EO)
+Obj10=359-1000 'Cota de Mallas
+Obj11=499-1000 'Cota de Mallas (H/E/EO-M)
+Obj12=667-1000 'Cota de Mallas (E/G)
+Obj13=404-1000 'Escudo de Tortuga
 BackUp=1
-
-
 
 
 ##############################################################
@@ -2483,7 +2543,7 @@ Domable=0
 Alineacion=0
 Comercia=1
 TipoItems=2
-NROITEMS=15
+NROITEMS=18
 Obj1=389-1000 	'Martillo de Herrero
 Obj2=1009-10000 'Cuchillas
 Obj3=15-1000 	'Daga
@@ -2498,8 +2558,10 @@ Obj11=123-1000 	'Vikinga
 Obj12=124-1000 	'Katana
 Obj13=126-1000 	'Hacha Larga de Guerra
 Obj14=159-1000 	'Hacha de Barbaro
-Obj15=990-1000 	'Mazo del Juicio
-obj16=1036-1000 'Guantes de lucha
+Obj15=990-1000 	'Mazo del Juicio 
+obj16=753-1000 'Mayal Triple
+obj17=873-1000 'Guantes de Hurto
+obj18=1036-1000 'Guantes de Lucha
 BackUp=1
 
 #############################################
@@ -2590,13 +2652,22 @@ Domable=0
 Alineacion=0
 Comercia=1
 TipoItems=3
-NROITEMS=5
-Obj1=170-1000 'Vestimenta de Mujer (H/E/EO-M)
-Obj2=382-1000 'Vestido Azul (H/E/EO-M)
-Obj3=511-1000 'Vestido de Novia Sensual (H/E/EO-M)
-Obj4=488-1000 'White Lady (H/E/EO-M)
-Obj5=508-1000 'Ropa Estuaria (H/E/EO-M)
-BackUp=1
+NROITEMS=15
+Obj1=504-1000 'Atuendo Combinado (H/E/EO-M)
+Obj2=505-1000 'Atuendo Azul (H/E/EO-M)
+Obj3=506-1000 'Atuendo Rosa (H/E/EO-M)
+Obj4=382-1000 'Vestido Azul (H/E/EO-M)
+Obj5=511-1000 'Vestido de Novia Sensual (H/E/EO-M)
+Obj6=170-1000 'Vestimenta de Mujer (H/E/EO-M)
+Obj7=488-1000 'White Lady (H/E/EO-M)
+Obj8=508-1000 'Ropa Estuaria (H/E/EO-M)
+Obj9=510-1000 'Vestido Indulgente (H/E/EO-M)
+Obj10=513-1000 'Vestido de Bruja (H/E/EO-M)
+Obj11=514-1000 'Vestido de Bruja Especial (H/E/EO-M)
+Obj12=879-1000 'Vestido Bordado de Gala (H/E/EO-M)
+Obj13=880-1000 'Tunica del Oraculo (H/E/EO-M)
+Obj14=950-1000 'Sirica Elfica Rojiza (H/E/EO-M)
+Obj15=943-1000 'Sobrevesta Elfica (H/E/EO)
 
 #############################################
 
@@ -2615,14 +2686,20 @@ Domable=0
 Alineacion=0
 Comercia=1
 TipoItems=3
-NROITEMS=7
-Obj1=507-1000 'Ropa Violeta (E/G)
-Obj2=502-1000 'Ropa de Campesino (E/G)
-Obj3=707-1000 'Vestimenta de Noble (E/G)
-Obj4=671-1000 'Tunica de Monje (E/G)
-Obj5=670-1000 'Tunica de Mago (E/G)
-Obj6=524-1000 'Tunica Roja Especial (E/G)
-Obj7=370-1000 'Capucha de Cazador
+NROITEMS=13
+Obj1=240-1000 'Ropa de Enano (E/G)
+Obj2=527-1000 'Ropa de Enana (E/G-M)
+Obj3=486-1000 'Ropa de Estilo (E/G)
+Obj4=507-1000 'Ropa Violeta (E/G)
+Obj5=502-1000 'Ropa de Campesino (E/G)
+Obj6=707-1000 'Vestimenta de Noble (E/G)
+Obj7=526-1000 'Tunica Combinada de Mujer (E/G-M)
+Obj8=512-1000 'Vestido Calipso (E/G-M)
+Obj9=671-1000 'Tunica de Monje (E/G)
+Obj10=670-1000 'Tunica de Mago (E/G)
+Obj11=524-1000 'Tunica Roja Especial (E/G)
+Obj12=525-1000 'Tunica Combinada (E/G)
+Obj13=908-1000 'Vestimentas de Pescador (E/G)
 BackUp=1
 
 #############################################
@@ -2641,16 +2718,21 @@ Domable=0
 Alineacion=0
 Comercia=1
 TipoItems=3
-NROITEMS=7
-Obj1=359-1000 'Cota de Mallas
-Obj2=499-1000 'Cota de Mallas (H/E/EO-M)
-Obj3=667-1000 'Cota de Mallas (E/G)
-Obj4=360-1000 'Armadura de Cazador
-Obj5=648-1000 'Armadura de Cazador (E/G)
-Obj6=484-1000 'Manto de Noble 
-Obj7=1004-1000 'Casco de Tigre
+NROITEMS=13
+Obj1=30-1000 'Armadura de Cuero
+Obj2=529-1000 'Armadura de Cuero (H/E/EO-M)
+Obj3=668-1000 'Armadura de Cuero (E/G)
+Obj4=1001-1000 'Casco de Aguila
+Obj5=1002-1000 'Casco de Lobo
+Obj6=132-1000 'Casco de Hierro
+Obj7=370-1000 'Capucha de Cazador
+Obj8=903-1000 'Armadura de Campeon (H/E/EO)
+Obj9=889-1000 'Anillas Con Manto Verde (H/E/EO)
+Obj10=359-1000 'Cota de Mallas
+Obj11=499-1000 'Cota de Mallas (H/E/EO-M)
+Obj12=667-1000 'Cota de Mallas (E/G)
+Obj13=404-1000 'Escudo de Tortuga
 BackUp=1
-
 
 
 
@@ -2751,7 +2833,7 @@ Domable=0
 Alineacion=0
 Comercia=1
 TipoItems=2
-NROITEMS=15
+NROITEMS=18
 Obj1=389-1000 	'Martillo de Herrero
 Obj2=1009-10000 'Cuchillas
 Obj3=15-1000 	'Daga
@@ -2766,11 +2848,12 @@ Obj11=123-1000 	'Vikinga
 Obj12=124-1000 	'Katana
 Obj13=126-1000 	'Hacha Larga de Guerra
 Obj14=159-1000 	'Hacha de Barbaro
-Obj15=990-1000 	'Mazo del Juicio
-obj16=1036-1000 'Guantes de lucha
+Obj15=990-1000 	'Mazo del Juicio 
+obj16=753-1000 'Mayal Triple
 obj17=873-1000 'Guantes de Hurto
-
+obj18=1036-1000 'Guantes de Lucha
 BackUp=1
+
 
 #############################################
 
@@ -2857,13 +2940,22 @@ Domable=0
 Alineacion=0
 Comercia=1
 TipoItems=3
-NROITEMS=5
-Obj1=170-1000 'Vestimenta de Mujer (H/E/EO-M)
-Obj2=504-1000 'Atuendo Combinado (H/E/EO-M)
-Obj3=505-1000 'Atuendo Azul (H/E/EO-M)
-Obj4=506-1000 'Atuendo Rosa (H/E/EO-M)
-Obj5=382-1000 'Vestido Azul (H/E/EO-M)
-BackUp=1
+NROITEMS=15
+Obj1=504-1000 'Atuendo Combinado (H/E/EO-M)
+Obj2=505-1000 'Atuendo Azul (H/E/EO-M)
+Obj3=506-1000 'Atuendo Rosa (H/E/EO-M)
+Obj4=382-1000 'Vestido Azul (H/E/EO-M)
+Obj5=511-1000 'Vestido de Novia Sensual (H/E/EO-M)
+Obj6=170-1000 'Vestimenta de Mujer (H/E/EO-M)
+Obj7=488-1000 'White Lady (H/E/EO-M)
+Obj8=508-1000 'Ropa Estuaria (H/E/EO-M)
+Obj9=510-1000 'Vestido Indulgente (H/E/EO-M)
+Obj10=513-1000 'Vestido de Bruja (H/E/EO-M)
+Obj11=514-1000 'Vestido de Bruja Especial (H/E/EO-M)
+Obj12=879-1000 'Vestido Bordado de Gala (H/E/EO-M)
+Obj13=880-1000 'Tunica del Oraculo (H/E/EO-M)
+Obj14=950-1000 'Sirica Elfica Rojiza (H/E/EO-M)
+Obj15=943-1000 'Sobrevesta Elfica (H/E/EO)
 
 #############################################
 
@@ -2882,14 +2974,20 @@ Domable=0
 Alineacion=0
 Comercia=1
 TipoItems=3
-NROITEMS=7
+NROITEMS=13
 Obj1=240-1000 'Ropa de Enano (E/G)
 Obj2=527-1000 'Ropa de Enana (E/G-M)
 Obj3=486-1000 'Ropa de Estilo (E/G)
 Obj4=507-1000 'Ropa Violeta (E/G)
 Obj5=502-1000 'Ropa de Campesino (E/G)
 Obj6=707-1000 'Vestimenta de Noble (E/G)
-Obj7=867-1000 'Tunica de Gnomo (E/G)
+Obj7=526-1000 'Tunica Combinada de Mujer (E/G-M)
+Obj8=512-1000 'Vestido Calipso (E/G-M)
+Obj9=671-1000 'Tunica de Monje (E/G)
+Obj10=670-1000 'Tunica de Mago (E/G)
+Obj11=524-1000 'Tunica Roja Especial (E/G)
+Obj12=525-1000 'Tunica Combinada (E/G)
+Obj13=908-1000 'Vestimentas de Pescador (E/G)
 BackUp=1
 
 [NPC73] 'Armaduras Arghal
@@ -2906,10 +3004,20 @@ Domable=0
 Alineacion=0
 Comercia=1
 TipoItems=3
-NROITEMS=3
+NROITEMS=13
 Obj1=30-1000 'Armadura de Cuero
 Obj2=529-1000 'Armadura de Cuero (H/E/EO-M)
 Obj3=668-1000 'Armadura de Cuero (E/G)
+Obj4=1001-1000 'Casco de Aguila
+Obj5=1002-1000 'Casco de Lobo
+Obj6=132-1000 'Casco de Hierro
+Obj7=370-1000 'Capucha de Cazador
+Obj8=903-1000 'Armadura de Campeon (H/E/EO)
+Obj9=889-1000 'Anillas Con Manto Verde (H/E/EO)
+Obj10=359-1000 'Cota de Mallas
+Obj11=499-1000 'Cota de Mallas (H/E/EO-M)
+Obj12=667-1000 'Cota de Mallas (E/G)
+Obj13=404-1000 'Escudo de Tortuga
 BackUp=1
 
 
@@ -2972,7 +3080,7 @@ Domable=0
 Alineacion=0
 Comercia=1
 TipoItems=2
-NROITEMS=15
+NROITEMS=18
 Obj1=389-1000 	'Martillo de Herrero
 Obj2=1009-10000 'Cuchillas
 Obj3=15-1000 	'Daga
@@ -2987,9 +3095,10 @@ Obj11=123-1000 	'Vikinga
 Obj12=124-1000 	'Katana
 Obj13=126-1000 	'Hacha Larga de Guerra
 Obj14=159-1000 	'Hacha de Barbaro
-Obj15=990-1000 	'Mazo del Juicio
-obj16=873-1000 'Guantes de Hurto
-obj17=1036-1000 'Guantes de Lucha
+Obj15=990-1000 	'Mazo del Juicio 
+obj16=753-1000 'Mayal Triple
+obj17=873-1000 'Guantes de Hurto
+obj18=1036-1000 'Guantes de Lucha
 BackUp=1
 
 #############################################
@@ -3081,12 +3190,22 @@ Domable=0
 Alineacion=0
 Comercia=1
 TipoItems=3
-NROITEMS=4
+NROITEMS=15
 Obj1=504-1000 'Atuendo Combinado (H/E/EO-M)
 Obj2=505-1000 'Atuendo Azul (H/E/EO-M)
 Obj3=506-1000 'Atuendo Rosa (H/E/EO-M)
 Obj4=382-1000 'Vestido Azul (H/E/EO-M)
-BackUp=1
+Obj5=511-1000 'Vestido de Novia Sensual (H/E/EO-M)
+Obj6=170-1000 'Vestimenta de Mujer (H/E/EO-M)
+Obj7=488-1000 'White Lady (H/E/EO-M)
+Obj8=508-1000 'Ropa Estuaria (H/E/EO-M)
+Obj9=510-1000 'Vestido Indulgente (H/E/EO-M)
+Obj10=513-1000 'Vestido de Bruja (H/E/EO-M)
+Obj11=514-1000 'Vestido de Bruja Especial (H/E/EO-M)
+Obj12=879-1000 'Vestido Bordado de Gala (H/E/EO-M)
+Obj13=880-1000 'Tunica del Oraculo (H/E/EO-M)
+Obj14=950-1000 'Sirica Elfica Rojiza (H/E/EO-M)
+Obj15=943-1000 'Sobrevesta Elfica (H/E/EO)
 
 #############################################
 
@@ -3105,13 +3224,20 @@ Domable=0
 Alineacion=0
 Comercia=1
 TipoItems=3
-NROITEMS=6
-Obj1=486-1000 'Ropa de Estilo (E/G)
-Obj2=507-1000 'Ropa Violeta (E/G)
-Obj3=502-1000 'Ropa de Campesino (E/G)
-Obj4=707-1000 'Vestimenta de Noble (E/G)
-Obj5=671-1000 'Tunica de Monje (E/G)
-Obj6=670-1000 'Tunica de Mago (E/G)
+NROITEMS=13
+Obj1=240-1000 'Ropa de Enano (E/G)
+Obj2=527-1000 'Ropa de Enana (E/G-M)
+Obj3=486-1000 'Ropa de Estilo (E/G)
+Obj4=507-1000 'Ropa Violeta (E/G)
+Obj5=502-1000 'Ropa de Campesino (E/G)
+Obj6=707-1000 'Vestimenta de Noble (E/G)
+Obj7=526-1000 'Tunica Combinada de Mujer (E/G-M)
+Obj8=512-1000 'Vestido Calipso (E/G-M)
+Obj9=671-1000 'Tunica de Monje (E/G)
+Obj10=670-1000 'Tunica de Mago (E/G)
+Obj11=524-1000 'Tunica Roja Especial (E/G)
+Obj12=525-1000 'Tunica Combinada (E/G)
+Obj13=908-1000 'Vestimentas de Pescador (E/G)
 BackUp=1
 
 #############################################
@@ -3130,13 +3256,20 @@ Domable=0
 Alineacion=0
 Comercia=1
 TipoItems=3
-NROITEMS=6
-Obj1=359-1000 'Cota de Mallas
-Obj2=499-1000 'Cota de Mallas (H/E/EO-M)
-Obj3=667-1000 'Cota de Mallas (E/G)
-Obj4=360-1000 'Armadura de Cazador
-Obj5=648-1000 'Armadura de Cazador (E/G)
-Obj6=1003-1000 'Casco de Oso
+NROITEMS=13
+Obj1=30-1000 'Armadura de Cuero
+Obj2=529-1000 'Armadura de Cuero (H/E/EO-M)
+Obj3=668-1000 'Armadura de Cuero (E/G)
+Obj4=1001-1000 'Casco de Aguila
+Obj5=1002-1000 'Casco de Lobo
+Obj6=132-1000 'Casco de Hierro
+Obj7=370-1000 'Capucha de Cazador
+Obj8=903-1000 'Armadura de Campeon (H/E/EO)
+Obj9=889-1000 'Anillas Con Manto Verde (H/E/EO)
+Obj10=359-1000 'Cota de Mallas
+Obj11=499-1000 'Cota de Mallas (H/E/EO-M)
+Obj12=667-1000 'Cota de Mallas (E/G)
+Obj13=404-1000 'Escudo de Tortuga
 BackUp=1
 
 
@@ -3287,7 +3420,7 @@ Domable=0
 Alineacion=0
 Comercia=1
 TipoItems=3
-NROITEMS=11
+NROITEMS=10
 Obj1=515-1000 'Ropa Legendaria
 Obj2=490-1000 'Ropa de Minero
 Obj3=381-1000 'Tunica de Monje
@@ -3296,9 +3429,8 @@ Obj5=357-1000 'Tunica de Monje
 Obj6=519-1000 'Tunica Legendaria
 Obj7=986-1000 'Tunica de Druida
 Obj8=1010-1000 'Sombrero de Pirata
-Obj9=383-1000 'Sombrero Magico
-Obj10=661-1000 'Sombrero de Aprendiz
-Obj11=662-1000 'Sombrero de Mago
+Obj9=661-1000 'Sombrero de Aprendiz
+Obj10=662-1000 'Sombrero de Mago
 BackUp=1
 
 #############################################
@@ -3344,13 +3476,20 @@ Domable=0
 Alineacion=0
 Comercia=1
 TipoItems=3
-NROITEMS=6
-Obj1=671-1000 'Tunica de Monje (E/G)
-Obj2=670-1000 'Tunica de Mago (E/G)
-Obj3=512-1000 'Vestido Calipso (E/G-M)
-Obj4=672-1000 'Armadura de Elite (E/G)
-Obj5=525-1000 'Tunica Combinada (E/G)
-Obj6=526-1000 'Tunica Combinada de Mujer (E/G-M)
+NROITEMS=13
+Obj1=240-1000 'Ropa de Enano (E/G)
+Obj2=527-1000 'Ropa de Enana (E/G-M)
+Obj3=486-1000 'Ropa de Estilo (E/G)
+Obj4=507-1000 'Ropa Violeta (E/G)
+Obj5=502-1000 'Ropa de Campesino (E/G)
+Obj6=707-1000 'Vestimenta de Noble (E/G)
+Obj7=526-1000 'Tunica Combinada de Mujer (E/G-M)
+Obj8=512-1000 'Vestido Calipso (E/G-M)
+Obj9=671-1000 'Tunica de Monje (E/G)
+Obj10=670-1000 'Tunica de Mago (E/G)
+Obj11=524-1000 'Tunica Roja Especial (E/G)
+Obj12=525-1000 'Tunica Combinada (E/G)
+Obj13=908-1000 'Vestimentas de Pescador (E/G)
 BackUp=1
 
 #############################################
@@ -3369,18 +3508,20 @@ Domable=0
 Alineacion=0
 Comercia=1
 TipoItems=3
-NROITEMS=11
-Obj1=672-1000 'Armadura de Elite (E/G)
-Obj2=359-1000 'Cota de Mallas
-Obj3=499-1000 'Cota de Mallas (H/E/EO-M)
-Obj4=667-1000 'Cota de Mallas (E/G)
-Obj5=360-1000 'Armadura de Cazador
-Obj6=648-1000 'Armadura de Cazador (E/G)
-Obj7=356-1000 'Armadura de las Sombras
-Obj8=854-1000 'Armadura de las Sombras (E/G)
-Obj9=195-1000 'Armadura de Placas Completa
-Obj10=243-1000 'Armadura de Placas Completa (E/G)
-Obj11=1004-1000 'Casco de Tigre
+NROITEMS=13
+Obj1=30-1000 'Armadura de Cuero
+Obj2=529-1000 'Armadura de Cuero (H/E/EO-M)
+Obj3=668-1000 'Armadura de Cuero (E/G)
+Obj4=1001-1000 'Casco de Aguila
+Obj5=1002-1000 'Casco de Lobo
+Obj6=132-1000 'Casco de Hierro
+Obj7=370-1000 'Capucha de Cazador
+Obj8=903-1000 'Armadura de Campeon (H/E/EO)
+Obj9=889-1000 'Anillas Con Manto Verde (H/E/EO)
+Obj10=359-1000 'Cota de Mallas
+Obj11=499-1000 'Cota de Mallas (H/E/EO-M)
+Obj12=667-1000 'Cota de Mallas (E/G)
+Obj13=404-1000 'Escudo de Tortuga
 BackUp=1
 
 
@@ -5609,7 +5750,7 @@ Drop3=544-5 'Pez Dorado
 ############################################
 
 [NPC526] 
-Name=Dorckidean
+Name=Aracnido
 NpcType=0
 Head=0
 Heading=3
