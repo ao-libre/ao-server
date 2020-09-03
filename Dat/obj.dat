@@ -1551,7 +1551,7 @@ Agarrable=0
 Anim=1
 MaxDef=8
 MinDef=3
-Valor=700
+Valor=4500
 Crucial=0
 CP1=MAGO
 CP2=DRUIDA
@@ -1561,7 +1561,7 @@ LingH=10
 LingP=0
 LingO=0
 Upgrade=131
-SkHerreria=45
+SkHerreria=101
 
 [OBJ133]
 Name=Escudo Imperial
@@ -13989,21 +13989,21 @@ Name=Manual de Liderazgo
 GrhIndex=538
 ObjType=35
 Agarrable=0
-Valor=100000
+Valor=2000000
 
 [OBJ1128]
 Name=Manual de Supervivencia
 GrhIndex=538
 ObjType=35
 Agarrable=0
-Valor=20000
+Valor=350000
 
 [OBJ1129]
 Name=Manual de Navegacion
 GrhIndex=538
 ObjType=35
 Agarrable=0
-Valor=90000
+Valor=250000
 
 [OBJ1130]
 Name=Pez saltando
