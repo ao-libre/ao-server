@@ -1351,3 +1351,4 @@ se agregaron magos malvados,belholders y leviatanes.se agrego y corrigio la cost
 * 02/09/2020: Casco de hierro como se pone en venta y se modifica precio ya no se creara en herreria para no crear conflictos con el oro Lorelei)
 * 02/09/2020: Arreglo Hechizero Ancestral (Lorelei)
 * 02/09/2020: La creacion de la misma sufre una baja en algunos de sus parametros para su fabricacion (Motivo por rebalanceo Gran Dragon) (Lorelei)
+* 02/09/2020: Cambio en mapas (Ronin)
