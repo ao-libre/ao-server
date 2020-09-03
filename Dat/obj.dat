@@ -4606,9 +4606,9 @@ MinHit=100
 MaxHit=100
 Valor=188000
 Crucial=0
-LingH=600
+LingH=500
 LingP=500
-LingO=700
+LingO=500
 SkHerreria=100
 Log=1
 
