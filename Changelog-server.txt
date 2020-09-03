@@ -1337,3 +1337,17 @@ se agregaron magos malvados,belholders y leviatanes.se agrego y corrigio la cost
 * 27/08/2020: Guerrero Protector = (Rebalanceado)(Ronin)
 * 27/08/2020: Se modifica [INIT] de npc para que aparescan en panel/buscar los nuevos npc de quest(Lorelei)
 
+-v0.13.56
+* 02/09/2020: Se agregan gobernadores de todas las ciudades nuevas (Recox)
+* 02/09/2020: Ahora no se puede montar mas dentro de dungeons (Recox)
+* 02/09/2020: se arreglo funcion HayNieve para poder morir congelados (Recox)
+* 02/09/2020: Corregidos ZONA y TERRENO de varios mapas (Recox)
+* 02/09/2020: Rebalanceo y Agregados (LORELEI-RONIN) 
+* 02/09/2020: pulimos ultimos retoques npc (LORELEI-RONIN) 
+* 02/09/2020: rebalanceo que va acuerdo al balance del servidor para no sufrir picos de subidas en poco tiempo (Lorelei)
+* 02/09/2020: Upadate Npc en genral de ventas mas completos en todas las ciudades /SASTRE ,ARMADURAS Y HERRERO) (Lorelei)
+* 02/09/2020: se agrega Flauta elfica mayal triple y casco de hierro /se quita sombrero magico+1 (solo drop) (Lorelei)
+* 02/09/2020: se agregan y quitan armaduras para el balance -lo mejor se hace o pretoriano - (Lorelei)
+* 02/09/2020: Casco de hierro como se pone en venta y se modifica precio ya no se creara en herreria para no crear conflictos con el oro Lorelei)
+* 02/09/2020: Arreglo Hechizero Ancestral (Lorelei)
+* 02/09/2020: La creacion de la misma sufre una baja en algunos de sus parametros para su fabricacion (Motivo por rebalanceo Gran Dragon) (Lorelei)
