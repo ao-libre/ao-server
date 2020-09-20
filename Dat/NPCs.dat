@@ -7992,7 +7992,7 @@ Drop5=1002-5 'Cascos de Lobo
 ############################################
 
 [NPC602]
-Name=Piranha
+Name=Piranha de Oceano
 NpcType=0
 Head=0
 Heading=3
