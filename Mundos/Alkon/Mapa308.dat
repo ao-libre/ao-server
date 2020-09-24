@@ -1,12 +1,12 @@
 [MAPA308]
+Name=Paso del Titan
 MagiaSinefecto=0
 InviSinEfecto=1
 ResuSinEfecto=1
 NoEncriptarMP=0
+Zona=DUNGEON
 BackUp= 0
 Pk=0
-Name=Paso del Titan
-Zona=DUNGEON
 MusicNumMp3=32
 Terreno=NIEVE
 Restringir=NO
