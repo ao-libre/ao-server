@@ -13907,7 +13907,7 @@ QuestNumber=23
 [NPC959]
 Name=YIYO [Quest 24]
 NpcType=0
-Desc=Si no le temes a la muerte Escribe /QUEST.
+Desc=Si no le temes a la muerte.. Escribe /QUEST.
 Head=11
 Heading=3
 Body=47
