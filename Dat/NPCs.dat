@@ -9585,7 +9585,7 @@ Drop2=12-1100 'Oro
 Drop3=126-1 'Hacha Larga de Guerra
 
 [NPC706]
-Name=Viuda negra
+Name=Araña Latrodectus
 NpcType=0
 Head=0
 Heading=3
@@ -9599,10 +9599,10 @@ Domable=0
 Alineacion=2
 Comercia=0
 GiveEXP=10500
-MinHP=8000
-MaxHP=8000
-MaxHIT=240
-MinHIT=150
+MinHP=5000
+MaxHP=5000
+MaxHIT=60
+MinHIT=120
 DEF=0
 PoderAtaque=230
 PoderEvasion=220
@@ -13402,7 +13402,7 @@ Drop1=12-4500 'Oro
 Drop2=131-1   ' Casco de Hierro Completo
 
 [NPC933]
-Name=Titan de Tierra
+Name=Araña Phoneutria
 NpcType=0
 Head=0
 Heading=3
@@ -13415,15 +13415,16 @@ Hostile=1
 Domable=0
 Alineacion=2
 Comercia=0
-GiveEXP=150000
-MinHP=300000
-MaxHP=300000
-MaxHIT=600
-MinHIT=300
+GiveEXP=15000
+MinHP=32000
+MaxHP=32000
+MaxHIT=90
+MinHIT=150
 DEF=8
 AfectaParalisis=1
 PoderAtaque=300
 PoderEvasion=100
+Veneno=1
 SND1=30
 SND2=31
 SND3=32
@@ -13534,8 +13535,8 @@ Drop2=402-1 'Espada Mata Dragones
 Drop3=532-1 'Apocalipsis
 Drop4=1156-1 'Montura de Gran Dragon Dorado
 
-[NPC937] 'Rick
-Name=Pickle Rick
+[NPC937] 'Argiope
+Name=Araña Argiope
 NpcType=0
 Head=0
 Heading=3
@@ -13548,11 +13549,11 @@ Hostile=1
 Domable=0
 Alineacion=2
 Comercia=0
-GiveEXP=1000000
-MinHP=15000
-MaxHP=15000
-MaxHIT=600
-MinHIT=140
+GiveEXP=12000
+MinHP=2800
+MaxHP=1500
+MaxHIT=60
+MinHIT=95
 DEF=8
 AfectaParalisis=1
 PoderAtaque=300
@@ -13562,7 +13563,7 @@ SND2=31
 SND3=32
 BackUp=0
 NROITEMS=1
-Drop1=12-1000000 'Oro
+Drop1=12-10000 'Oro
 
 [NPC938]
 Name=Artesano
