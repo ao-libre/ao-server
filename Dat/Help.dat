@@ -1,9 +1,8 @@
 [INIT]
-NumLines=5
+NumLines=4
 
 [Help]
-Line1=* Recuerden que en la pagina de AO Libre encontraran toda la informacion que necesiten para jugar. (http://www.ArgentumOnline.org)
-Line2=* Manual del juego: https://wiki.argentumonline.org
-Line3=* Si estas muerto, dirigete a una ciudad y busca un Sacerdote, el te resucitara.
-Line4=* Para realizar una consulta a un GAME MASTER, debes utilizar el comando /GM y ellos acudiran a ti.
-Line5=* Para denunciar un acto ilegal de otro usuario utiliza el comando /DENUNCIAR, indicando -luego de la palabra denunciar- el nombre del personaje denunciado y que acto iegal esta cometiendo.
+Line1=* Recuerden que en la pagina de AO 20 encontraran toda la informacion que necesiten para jugar. (http://www.Argentum20.com)
+Line2=* Si estas muerto, dirigete a una ciudad y busca un Sacerdote, el te resucitara.
+Line3=* Para realizar una consulta a un GAME MASTER, debes utilizar el comando /GM y ellos acudiran a ti.
+Line4=* Para denunciar un acto ilegal de otro usuario utiliza el comando /DENUNCIAR, indicando -luego de la palabra denunciar- el nombre del personaje denunciado y que acto iegal esta cometiendo.
