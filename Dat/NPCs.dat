@@ -205,7 +205,7 @@ BackUp=1
 
 [NPC101] ' Propiedades Arkhein
 Name=Vendedor de propiedades.
-Desc=En estas tierras demoniacas estan las residencias para las Fuerzas del Caos... Si no eres miembro tambien puedes vivir aca, pero os recomiendo..
+Desc=En estas tierras demoniacas estan las residencias para la Legion Oscura... Si no eres miembro tambien puedes vivir aca, pero os recomiendo..
 Head=34
 Body=170
 Heading=3
@@ -1505,7 +1505,7 @@ Comercia=0
 
 ##############################################
 
-[NPC135] 'Ciudadano comun
+[NPC135] 'Criminal de servicio comunitario
 Name=Ciudadano comun
 NpcType=0
 Desc=Shh no digas nada,pero corren rumores acerca de un teleport en el bosque dork!
@@ -6567,9 +6567,9 @@ Hostile=1
 Domable=0
 Alineacion=2
 Comercia=0
-GiveEXP=12500
-MinHP=6800
-MaxHP=6800
+GiveEXP=12000
+MinHP=6500
+MaxHP=6500
 MaxHIT=170
 MinHIT=125
 DEF=20
@@ -9785,8 +9785,8 @@ SND2=141
 SND3=140
 BackUp=0
 NROITEMS=5
-Drop1=192-6000 'Minerales de hierro
-Drop2=386-600 'Lingote de Hierro
+Drop1=192-5000 'Minerales de hierro
+Drop2=386-500 'Lingote de Hierro
 
 [NPC716]
 Name=Etognil Plata
@@ -9816,8 +9816,8 @@ SND2=141
 SND3=140
 BackUp=0
 NROITEMS=5
-Drop1=193-6000 'Minerales de Plata 
-Drop2=387-420 'Lingote de Plata
+Drop1=193-5000 'Minerales de Plata 
+Drop2=387-400 'Lingote de Plata
 
 [NPC717]
 Name=Etognil Oro
@@ -9847,7 +9847,7 @@ SND2=141
 SND3=140
 BackUp=0
 NROITEMS=5
-Drop1=194-6000 'Minerales de Oro
+Drop1=194-5000 'Minerales de Oro
 Drop2=388-300 'Lingote de Oro
 
 ############################################
@@ -10888,7 +10888,7 @@ BackUp=0
 NROITEMS=0
 
 [NPC784]
-Name=Orco de las Mazmorras
+Name=Lord Orco de las Mazmorras
 NpcType=0
 Head=0
 Heading=3
@@ -11009,7 +11009,7 @@ BackUp=0
 NROITEMS=0
 
 [NPC788]
-Name=Cuervo
+Name=Agilucho
 NpcType=0
 Head=0
 Heading=3
@@ -11037,7 +11037,7 @@ BackUp=0
 NROITEMS=0
 
 [NPC789]
-Name=Aguilucho
+Name=Tigre Joven
 NpcType=0
 Head=0
 Heading=3
@@ -11065,40 +11065,7 @@ BackUp=0
 NROITEMS=0
 
 [NPC790]
-Name=Tigre Joven
-NpcType=0
-Head=0
-Heading=3
-Body=657
-Movement=3
-AguaValida=0
-Attackable=1
-ReSpawn=1
-Hostile=1
-Domable=0
-Alineacion=2
-Comercia=0
-GiveEXP=2000
-GiveGLD=0
-MinHP=80
-MaxHP=80
-MaxHIT=50
-MinHIT=30
-DEF=30
-AfectaParalisis=0
-PoderAtaque=230
-PoderEvasion=220
-Snd3=100
-BackUp=0
-NROITEMS=5
-Drop1=388-500 'Lingote de Oro
-Drop2=194-10000 'Minerales de Oro
-Drop3=38-100 'Pociones Rojas
-Drop4=37-100 'Pociones Azules
-Drop5=12-7500 'Oro
-
-[NPC791]
-Name=Medusa Joven
+Name=Medusa Reina Moribunda
 NpcType=0
 Head=0
 Heading=3
@@ -11111,12 +11078,42 @@ Hostile=1
 Domable=0
 Alineacion=2
 Comercia=0
-GiveEXP=9000
+GiveEXP=3500
 GiveGLD=0
-MinHP=6000
-MaxHP=6000
-MaxHIT=180
-MinHIT=130
+MinHP=2300
+MaxHP=2300
+MaxHIT=70
+MinHIT=90
+DEF=30
+AfectaParalisis=0
+PoderAtaque=230
+PoderEvasion=220
+Snd3=100
+BackUp=0
+NROITEMS=2
+Drop1=38-100 'Pociones Rojas
+Drop2=37-100 'Pociones Azules
+
+[NPC791]
+Name=Medusa Reina
+NpcType=0
+Head=0
+Heading=3
+Body=658
+Movement=3
+AguaValida=0
+Attackable=1
+ReSpawn=1
+Hostile=1
+Domable=0
+Alineacion=2
+Comercia=0
+GiveEXP=36000
+GiveGLD=0
+MinHP=16000
+MaxHP=16000
+MaxHIT=235
+MinHIT=135
 DEF=30
 AfectaParalisis=0
 PoderAtaque=230
@@ -11124,12 +11121,12 @@ PoderEvasion=220
 Snd3=100
 BackUp=0
 NROITEMS=3
-Drop1=38-100 'Pociones Rojas
-Drop2=37-100 'Pociones Azules
-Drop3=12-4500 'Oro
+Drop1=38-12 'Pociones Rojas
+Drop2=37-125 'Pociones Azules
+Drop3=12-7500 'Oro
 
 [NPC792]
-Name=Reyna de veril
+Name=Golem feo
 NpcType=0
 Head=0
 Heading=3
@@ -11977,10 +11974,10 @@ Hostile=1
 Domable=0
 Alineacion=2
 Comercia=0
-GiveEXP=12000
+GiveEXP=14000
 GiveGLD=0
-MinHP=8000
-MaxHP=8000
+MinHP=7000
+MaxHP=7000
 MaxHIT=70
 MinHIT=120
 DEF=30
@@ -13245,7 +13242,7 @@ Hostile=1
 Domable=0
 Alineacion=2
 Comercia=0
-GiveEXP=3250
+GiveEXP=3000
 MinHP=2500
 MaxHP=2500
 MaxHIT=130
@@ -13255,7 +13252,7 @@ PoderAtaque=100
 PoderEvasion=100
 BackUp=0
 NROITEMS=1
-Drop1=12-1000 'Oro
+Drop1=12-600 'Oro
 
 [NPC932]
 Name=Momia
