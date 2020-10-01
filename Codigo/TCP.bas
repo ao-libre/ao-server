@@ -1159,6 +1159,7 @@ Sub ConnectUser(ByVal Userindex As Integer, _
         If .Invent.WeaponEqpSlot = 0 Then .Char.WeaponAnim = NingunArma
     
         .CurrentInventorySlots = getMaxInventorySlots(Userindex)
+        Call WriteInventoryUnlockSlots(Userindex)
 
         If (.flags.Muerto = 0) Then
             .flags.SeguroResu = False
@@ -1673,6 +1674,7 @@ Sub ResetBasicUserInfo(ByVal Userindex As Integer)
             .def = 0
             .NPCsMuertos = 0
             .UsuariosMatados = 0
+            .InventLevel = 0
             .SkillPts = 0
             .Gld = 0
             .UserAtributos(1) = 0
@@ -1762,7 +1764,6 @@ Sub ResetUserFlags(ByVal Userindex As Integer)
         .TargetObjX = 0
         .TargetObjY = 0
         .TargetUser = 0
-        .TipoPocion = 0
         .TomoPocion = False
         .Descuento = vbNullString
         .Hambre = 0

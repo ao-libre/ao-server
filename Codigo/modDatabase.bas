@@ -370,7 +370,6 @@ Sub UpdateUserToDatabase(ByVal Userindex As Integer, _
         query = query & "slot_ammo = " & .Invent.MunicionEqpSlot & ", "
         query = query & "slot_ship = " & .Invent.BarcoSlot & ", "
         query = query & "slot_ring = " & .Invent.AnilloEqpSlot & ", "
-        query = query & "slot_bag = " & .Invent.MochilaEqpSlot & ", "
         query = query & "min_hp = " & .Stats.MinHp & ", "
         query = query & "max_hp = " & .Stats.MaxHp & ", "
         query = query & "min_man = " & .Stats.MinMAN & ", "
@@ -650,7 +649,6 @@ Sub LoadUserFromDatabase(ByVal Userindex As Integer)
         .Invent.MunicionEqpSlot = SanitizeNullValue(Database_RecordSet!slot_ammo, 0)
         .Invent.BarcoSlot = SanitizeNullValue(Database_RecordSet!slot_ship, 0)
         .Invent.AnilloEqpSlot = SanitizeNullValue(Database_RecordSet!slot_ring, 0)
-        .Invent.MochilaEqpSlot = SanitizeNullValue(Database_RecordSet!slot_bag, 0)
         .Stats.MinHp = Database_RecordSet!min_hp
         .Stats.MaxHp = Database_RecordSet!max_hp
         .Stats.MinMAN = Database_RecordSet!min_man

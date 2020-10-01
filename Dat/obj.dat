@@ -38,7 +38,7 @@
 ' 34: botellas llenas
 ' 35: Manuales
 ' 36: Arbol Elfico
-' 37: Mochilas
+' 37: Sin Uso
 ' 38: Yacimiento Pez
 
 
@@ -72,8 +72,6 @@ usar primero los nros mas bajos.
 'aca va el numero de OBJ mas alto, NO la cantidad de OBJs.
 'esto sirve para que los GMS puedan ver la lista completa de items para crear en una ventanita.
 NumOBJs=1240
-
-
 
 [OBJ1]
 Name=Manzana Roja
@@ -450,7 +448,7 @@ Name=Pocion Amarilla
 GrhIndex=540
 ObjType=11
 Agarrable=0
-TipoPocion=1
+SubTipo=1
 MaxModificador=5
 MinModificador=3
 DuracionEfecto=1000
@@ -462,7 +460,7 @@ Name=Pocion Azul
 GrhIndex=541
 ObjType=11
 Agarrable=0
-TipoPocion=4
+SubTipo=4
 MaxModificador=20
 MinModificador=12
 Valor=25
@@ -473,7 +471,7 @@ Name=Pocion Roja
 GrhIndex=542
 ObjType=11
 Agarrable=0
-TipoPocion=3
+SubTipo=3
 MaxModificador=30
 MinModificador=30
 Valor=20
@@ -484,7 +482,7 @@ Name=Pocion Verde
 GrhIndex=543
 ObjType=11
 Agarrable=0
-TipoPocion=2
+SubTipo=2
 MaxModificador=6
 MinModificador=2
 DuracionEfecto=1000
@@ -1888,7 +1886,7 @@ Name=Pocion Violeta
 GrhIndex=601
 ObjType=11
 Agarrable=0
-TipoPocion=5
+SubTipo=5
 Valor=10
 Crucial=1
 
@@ -5242,7 +5240,7 @@ GrhIndex=5736
 ObjType=11
 Agarrable=0
 newbie=1
-TipoPocion=3
+SubTipo=3
 MaxModificador=30
 MinModificador=30
 Crucial=0
@@ -5253,7 +5251,7 @@ GrhIndex=5737
 ObjType=11
 Agarrable=0
 newbie=1
-TipoPocion=2
+SubTipo=2
 MaxModificador=5
 MinModificador=1
 DuracionEfecto=1000
@@ -6594,13 +6592,11 @@ SkCarpinteria=90
 [OBJ554]
 Name=Sangre
 GrhIndex=264
-ObjType=35
 Agarrable=1
 
 [OBJ555]
 Name=Sangre
 GrhIndex=263
-ObjType=35
 Agarrable=1
 
 [OBJ556]
@@ -7718,7 +7714,7 @@ Name=Pocion Negra
 GrhIndex=53
 ObjType=11
 Agarrable=0
-TipoPocion=6
+SubTipo=6
 Valor=1000
 Crucial=1
 
@@ -7796,19 +7792,16 @@ ObjType=29
 [OBJ653]
 Name=Reja
 GrhIndex=12402
-ObjType=35
 Agarrable=1
 
 [OBJ654]
 Name=Reja
 GrhIndex=12408
-ObjType=35
 Agarrable=1
 
 [OBJ655]
 Name=Reja
 GrhIndex=12410
-ObjType=35
 Agarrable=1
 
 [OBJ656]
@@ -8149,7 +8142,6 @@ HechizoIndex=42
 [OBJ674]
 Name=Sangre de Liche
 GrhIndex=264
-ObjType=35
 Agarrable=1
 
 [OBJ675]
@@ -9727,7 +9719,7 @@ Name=Pocion Amarilla (Newbie)
 GrhIndex=5733
 ObjType=11
 Agarrable=0
-TipoPocion=1
+SubTipo=1
 MaxModificador=5
 MinModificador=3
 DuracionEfecto=1000
@@ -9740,7 +9732,7 @@ Name=Pocion Azul (Newbie)
 GrhIndex=5734
 ObjType=11
 Agarrable=0
-TipoPocion=4
+SubTipo=4
 MaxModificador=20
 MinModificador=12
 Valor=10
@@ -9752,7 +9744,7 @@ Name=Pocion Roja (Newbie)
 GrhIndex=5736
 ObjType=11
 Agarrable=0
-TipoPocion=3
+SubTipo=3
 MaxModificador=10
 MinModificador=10
 Valor=4
@@ -9764,7 +9756,7 @@ Name=Pocion Verde (Newbie)
 GrhIndex=5737
 ObjType=11
 Agarrable=0
-TipoPocion=2
+SubTipo=2
 MaxModificador=6
 MinModificador=2
 DuracionEfecto=1000
@@ -9891,28 +9883,6 @@ CP11=TRABAJADOR
 SND1=218
 SND2=218
 SND3=218
-
-[OBJ865]
-Name=Alforja
-GrhIndex=388
-ObjType=37
-Agarrable=0
-Anim=16
-Crucial=0
-Valor=15000
-MochilaType=2
-
-[OBJ866]
-Name=Mochila de Viajero
-GrhIndex=403
-ObjType=37
-Agarrable=0
-Anim=17
-MinHit=1
-MaxHit=1
-Valor=10000
-Crucial=0
-MochilaType=1
 
 [OBJ867]
 Name=Tunica de Gnomo (E/G)
@@ -13988,21 +13958,28 @@ Valor=10000
 Name=Manual de Liderazgo
 GrhIndex=538
 ObjType=35
-Agarrable=0
+SubTipo=1
 Valor=2000000
 
 [OBJ1128]
 Name=Manual de Supervivencia
 GrhIndex=538
 ObjType=35
-Agarrable=0
+SubTipo=2
 Valor=350000
 
 [OBJ1129]
 Name=Manual de Navegacion
 GrhIndex=538
 ObjType=35
-Agarrable=0
+SubTipo=3
+Valor=250000
+
+[OBJ865]
+Name=Pergamino del Viajero
+GrhIndex=403
+ObjType=35
+SubTipo=4
 Valor=250000
 
 [OBJ1130]

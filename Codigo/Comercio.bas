@@ -289,7 +289,7 @@ Private Sub UpdateNpcInv(ByVal UpdateAll As Boolean, ByVal Userindex As Integer,
         End With
     Else
     'Actualiza todos los slots
-        For LoopC = 1 To MAX_NORMAL_INVENTORY_SLOTS
+        For LoopC = 1 To MAX_INVENTORY_SLOTS
             With Npclist(NpcIndex).Invent.Object(LoopC)
                 obj.ObjIndex = .ObjIndex
                 obj.Amount = .Amount

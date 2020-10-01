@@ -1007,10 +1007,10 @@ Sub MoveUserChar(ByVal Userindex As Integer, ByVal nHeading As eHeading)
     If MoveToLegalPos(UserList(Userindex).Pos.Map, nPos.X, nPos.Y, sailing, Not sailing) Then
 
         'No se puede caminar con monturas en casas, bajo techo o dungeons
-        If UserList(Userindex).flags.Equitando And _ 
-           (MapData(UserList(Userindex).Pos.Map, nPos.X, nPos.Y).trigger = eTrigger.CASA Or _ 
+        If UserList(Userindex).flags.Equitando And _
+           (MapData(UserList(Userindex).Pos.Map, nPos.X, nPos.Y).trigger = eTrigger.CASA Or _
            MapData(UserList(Userindex).Pos.Map, nPos.X, nPos.Y).trigger = eTrigger.BAJOTECHO Or _
-           MapInfo(UserList(Userindex).Pos.Map).Zona = Dungeon ) Then _
+           MapInfo(UserList(Userindex).Pos.Map).Zona = Dungeon) Then _
 
             Exit Sub
         End If
@@ -1775,12 +1775,6 @@ Public Sub UserDie(ByVal Userindex As Integer, Optional ByVal AttackerIndex As I
                 
                 ' Si estas en zona segura no se caen los items.
                 If MapInfo(.Pos.Map).Pk Then
-
-                    'desequipar mochila u alforja
-                    If .Invent.MochilaEqpObjIndex > 0 Then
-                        Call Desequipar(Userindex, .Invent.MochilaEqpSlot)
-
-                    End If
                 
                     ' << Si es newbie no pierde el inventario >>
                     If Not EsNewbie(Userindex) Then
@@ -2939,18 +2933,14 @@ End Function
 Public Function getMaxInventorySlots(ByVal Userindex As Integer) As Byte
     '***************************************************
     'Author: Unknown
-    'Last Modification: Recox
-    'Puse un comentario y hago uso de una constante SLOTS_PER_ROW_INVENTORY, en ves de un integer harcodeado. (17/12/2019)
+    'Last Modification: 30/09/2020
+    '
     '***************************************************
 
-    If UserList(Userindex).Invent.MochilaEqpObjIndex > 0 Then
-        'Pongo este comentario aca para entender un poco mas facil en el futuro como funciona esto
-        'Hay 2 tipos de objeto de mochila, tipo 1 y 2 que son mochila grande y chica
-        'Basicamente hace una multiplicacion por con el mochilaType y con eso se suman los items que puedo transportar.
-        getMaxInventorySlots = MAX_NORMAL_INVENTORY_SLOTS + ObjData(UserList(Userindex).Invent.MochilaEqpObjIndex).MochilaType * SLOTS_PER_ROW_INVENTORY
+    If UserList(Userindex).Stats.InventLevel > 0 Then
+        getMaxInventorySlots = MAX_USERINVENTORY_SLOTS + UserList(Userindex).Stats.InventLevel * SLOTS_PER_ROW_INVENTORY
     Else
-        getMaxInventorySlots = MAX_NORMAL_INVENTORY_SLOTS
-
+        getMaxInventorySlots = MAX_USERINVENTORY_SLOTS
     End If
 
 End Function
