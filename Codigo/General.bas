@@ -1344,7 +1344,6 @@ Public Sub DuracionPociones(ByVal Userindex As Integer)
 
             If .flags.DuracionEfecto = 0 Then
                 .flags.TomoPocion = False
-                .flags.TipoPocion = 0
 
                 'volvemos los atributos al estado normal
                 Dim loopX As Integer
@@ -1678,10 +1677,6 @@ Sub LoadUser(ByVal Userindex As Integer)
         If .Invent.AnilloEqpSlot > 0 Then
             .Invent.AnilloEqpObjIndex = .Invent.Object(.Invent.AnilloEqpSlot).ObjIndex
 
-        End If
-
-        If .Invent.MochilaEqpSlot > 0 Then
-            .Invent.MochilaEqpObjIndex = .Invent.Object(.Invent.MochilaEqpSlot).ObjIndex
         End If
 
         If .Invent.MonturaObjIndex > 0 Then

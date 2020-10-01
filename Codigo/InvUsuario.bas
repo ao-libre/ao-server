@@ -256,9 +256,6 @@ Sub LimpiarInventario(ByVal Userindex As Integer)
     
         .Invent.BarcoObjIndex = 0
         .Invent.BarcoSlot = 0
-    
-        .Invent.MochilaEqpObjIndex = 0
-        .Invent.MochilaEqpSlot = 0
         
         .Invent.MonturaObjIndex = 0
         .Invent.MonturaEqpSlot = 0
@@ -350,11 +347,11 @@ Sub TirarOro(ByVal Cantidad As Long, ByVal Userindex As Integer)
 
                 Dim EsGaleraOGaleon As Boolean
                 EsGaleraOGaleon = False
-                If .Invent.BarcoObjIndex <> 0 Then 
+                If .Invent.BarcoObjIndex <> 0 Then
                     If EsGalera(ObjData(.Invent.BarcoObjIndex)) Or EsGalera(ObjData(.Invent.BarcoObjIndex)) Then
                         EsGaleraOGaleon = True
                     End If
-                End If        
+                End If
                 
                 If .Clase = eClass.Pirat And EsGaleraOGaleon Then
                     AuxPos = TirarItemAlPiso(.Pos, MiObj, False)
@@ -506,82 +503,74 @@ Sub DropObj(ByVal Userindex As Integer, _
 
     Dim MapObj  As obj
 
-1    With UserList(Userindex)
+With UserList(Userindex)
 
-2        If Num > 0 Then
-            
-            'Validacion para que no podamos tirar nuestra monturas mientras la usamos.
-3            If .flags.Equitando = 1 And .Invent.MonturaEqpSlot = Slot Then
-4                Call WriteConsoleMsg(Userindex, "No podes tirar tu montura mientras la estas usando.", FontTypeNames.FONTTYPE_INFO)
-                Exit Sub
-            End If
+   If Num > 0 Then
+      
+      'Validacion para que no podamos tirar nuestra monturas mientras la usamos.
+       If .flags.Equitando = 1 And .Invent.MonturaEqpSlot = Slot Then
+           Call WriteConsoleMsg(Userindex, "No podes tirar tu montura mientras la estas usando.", FontTypeNames.FONTTYPE_INFO)
+          Exit Sub
+      End If
+ 
+        DropObj.ObjIndex = .Invent.Object(Slot).ObjIndex
+  
+       If (ItemNewbie(DropObj.ObjIndex) And (.flags.Privilegios And PlayerType.User)) Then
+            Call WriteConsoleMsg(Userindex, "No puedes tirar objetos newbie.", FontTypeNames.FONTTYPE_WARNING)
+          Exit Sub
 
-            'Validacion para que no podamos tirar nuestra mochila mientras la usamos.
-5            If .Invent.MochilaEqpSlot > 0 Then
-6                If .Invent.MochilaEqpSlot = Slot Then
-7                    Call WriteConsoleMsg(Userindex, "No puedes tirar tu alforja o mochila mientras la estes usando.", FontTypeNames.FONTTYPE_TALK)
-                    Exit Sub
-                End If
-            End If
-        
-8            DropObj.ObjIndex = .Invent.Object(Slot).ObjIndex
-        
-9            If (ItemNewbie(DropObj.ObjIndex) And (.flags.Privilegios And PlayerType.User)) Then
-10                Call WriteConsoleMsg(Userindex, "No puedes tirar objetos newbie.", FontTypeNames.FONTTYPE_WARNING)
-                Exit Sub
+      End If
+  
+        DropObj.Amount = MinimoInt(Num, .Invent.Object(Slot).Amount)
 
-            End If
-        
-11            DropObj.Amount = MinimoInt(Num, .Invent.Object(Slot).Amount)
+      'Check objeto en el suelo
+        MapObj.ObjIndex = MapData(.Pos.Map, X, Y).ObjInfo.ObjIndex
+        MapObj.Amount = MapData(.Pos.Map, X, Y).ObjInfo.Amount
+  
+        If MapObj.ObjIndex = 0 Or MapObj.ObjIndex = DropObj.ObjIndex Then
+  
+            If MapObj.Amount = MAX_INVENTORY_OBJS Then
+                Call WriteConsoleMsg(Userindex, "No hay espacio en el piso.", FontTypeNames.FONTTYPE_WARNING)
+              Exit Sub
 
-            'Check objeto en el suelo
-12            MapObj.ObjIndex = MapData(.Pos.Map, X, Y).ObjInfo.ObjIndex
-13            MapObj.Amount = MapData(.Pos.Map, X, Y).ObjInfo.Amount
-        
-14            If MapObj.ObjIndex = 0 Or MapObj.ObjIndex = DropObj.ObjIndex Then
-        
-15                If MapObj.Amount = MAX_INVENTORY_OBJS Then
-16                    Call WriteConsoleMsg(Userindex, "No hay espacio en el piso.", FontTypeNames.FONTTYPE_WARNING)
-                    Exit Sub
+          End If
+      
+            If DropObj.Amount + MapObj.Amount > MAX_INVENTORY_OBJS Then
+                DropObj.Amount = MAX_INVENTORY_OBJS - MapObj.Amount
 
-                End If
-            
-17                If DropObj.Amount + MapObj.Amount > MAX_INVENTORY_OBJS Then
-18                    DropObj.Amount = MAX_INVENTORY_OBJS - MapObj.Amount
+          End If
+      
+            Call QuitarUserInvItem(Userindex, Slot, DropObj.Amount)
+            Call UpdateUserInv(False, Userindex, Slot)
+            Call MakeObj(DropObj, Map, X, Y)
+      
+            If ObjData(DropObj.ObjIndex).OBJType = eOBJType.otBarcos Then
+                Call WriteConsoleMsg(Userindex, "ATENCION!! ACABAS DE TIRAR TU BARCA!", FontTypeNames.FONTTYPE_WARNING)
 
-                End If
-            
-19                Call QuitarUserInvItem(Userindex, Slot, DropObj.Amount)
-20                Call UpdateUserInv(False, Userindex, Slot)
-21                Call MakeObj(DropObj, Map, X, Y)
-            
-22                If ObjData(DropObj.ObjIndex).OBJType = eOBJType.otBarcos Then
-23                    Call WriteConsoleMsg(Userindex, "ATENCION!! ACABAS DE TIRAR TU BARCA!", FontTypeNames.FONTTYPE_WARNING)
+          End If
+      
+            If Not .flags.Privilegios And PlayerType.User Then Call LogGM(.Name, "Tiro cantidad:" & Num & " Objeto:" & ObjData(DropObj.ObjIndex).Name)
+      
+          'Log de Objetos que se tiran al piso. Pablo (ToxicWaste) 07/09/07
+          'Es un Objeto que tenemos que loguear?
+            If ObjData(DropObj.ObjIndex).Log = 1 Then
+                Call LogDesarrollo(.Name & " tiro al piso " & DropObj.Amount & " " & ObjData(DropObj.ObjIndex).Name & " Mapa: " & Map & " X: " & X & " Y: " & Y)
+            ElseIf DropObj.Amount > 5000 Then 'Es mucha cantidad? > Subi a 5000 el minimo porque si no se llenaba el log de cosas al pedo. (NicoNZ)
 
-                End If
-            
-24                If Not .flags.Privilegios And PlayerType.User Then Call LogGM(.Name, "Tiro cantidad:" & Num & " Objeto:" & ObjData(DropObj.ObjIndex).Name)
-            
-                'Log de Objetos que se tiran al piso. Pablo (ToxicWaste) 07/09/07
-                'Es un Objeto que tenemos que loguear?
-25                If ObjData(DropObj.ObjIndex).Log = 1 Then
-26                    Call LogDesarrollo(.Name & " tiro al piso " & DropObj.Amount & " " & ObjData(DropObj.ObjIndex).Name & " Mapa: " & Map & " X: " & X & " Y: " & Y)
-27                ElseIf DropObj.Amount > 5000 Then 'Es mucha cantidad? > Subi a 5000 el minimo porque si no se llenaba el log de cosas al pedo. (NicoNZ)
+              'Si no es de los prohibidos de loguear, lo logueamos.
+                If ObjData(DropObj.ObjIndex).NoLog <> 1 Then
+                    Call LogDesarrollo(.Name & " tiro al piso " & DropObj.Amount & " " & ObjData(DropObj.ObjIndex).Name & " Mapa: " & Map & " X: " & X & " Y: " & Y)
 
-                    'Si no es de los prohibidos de loguear, lo logueamos.
-28                    If ObjData(DropObj.ObjIndex).NoLog <> 1 Then
-29                        Call LogDesarrollo(.Name & " tiro al piso " & DropObj.Amount & " " & ObjData(DropObj.ObjIndex).Name & " Mapa: " & Map & " X: " & X & " Y: " & Y)
+              End If
 
-                    End If
+          End If
 
-                End If
+      Else
+            Call WriteConsoleMsg(Userindex, "No hay espacio en el piso.", FontTypeNames.FONTTYPE_INFO)
 
-            Else
-30                Call WriteConsoleMsg(Userindex, "No hay espacio en el piso.", FontTypeNames.FONTTYPE_INFO)
+      End If
 
-            End If
-
-        End If
+  End If
 
     End With
     
@@ -659,7 +648,6 @@ Sub MakeObj(ByRef obj As obj, _
             Dim IsNotInstrumentos As Boolean
             Dim IsNotPergaminos As Boolean
             Dim IsNotGemas As Boolean
-            Dim IsNotMochilas As Boolean
             Dim IsValidObjectToClean As Boolean
 
 8            IsNotObjFogata = ObjData(obj.ObjIndex).OBJType <> otFogata
@@ -680,10 +668,9 @@ Sub MakeObj(ByRef obj As obj, _
 23            IsNotInstrumentos = ObjData(obj.ObjIndex).OBJType <> otInstrumentos
 24            IsNotPergaminos = ObjData(obj.ObjIndex).OBJType <> otPergaminos
 25            IsNotGemas = ObjData(obj.ObjIndex).OBJType <> otGemas
-26            IsNotMochilas = ObjData(obj.ObjIndex).OBJType <> otMochilas
             
 
-27            If IsNotObjFogata And IsNotObjTeleport And IsNotFragua And IsNotYacimientoPez And IsNotYacimiento And IsNotMueble And IsNotArbolElfico And IsNotArbol And IsNotCartel And IsNotBarco And IsNotMontura And IsNotYunque And IsNotManual And IsNotForo And IsNotPuerta And IsNotInstrumentos And IsNotPergaminos And IsNotGemas And IsNotMochilas Then
+27            If IsNotObjFogata And IsNotObjTeleport And IsNotFragua And IsNotYacimientoPez And IsNotYacimiento And IsNotMueble And IsNotArbolElfico And IsNotArbol And IsNotCartel And IsNotBarco And IsNotMontura And IsNotYunque And IsNotManual And IsNotForo And IsNotPuerta And IsNotInstrumentos And IsNotPergaminos And IsNotGemas Then
 28                IsValidObjectToClean = True
 29            Else
 30                IsValidObjectToClean = False
@@ -722,7 +709,7 @@ Function MeterItemEnInventario(ByVal Userindex As Integer, ByRef MiObj As obj) A
     '***************************************************
     'Author: Unknown
     'Last Modification: 17/12/2019
-    'Obtengo el numero de getMaxInventorySlots antes que nada para que funcionen correctamente las mochilas y alforjas (Recox)
+    '
     '***************************************************
 
     On Error GoTo ErrHandler
@@ -730,29 +717,27 @@ Function MeterItemEnInventario(ByVal Userindex As Integer, ByRef MiObj As obj) A
     Dim Slot As Byte
 
     With UserList(Userindex)
-        'Chequeamos la cantidad maxima de items en inventario para poder activar/desactivar
-        'la mochila sin tener que reiniciar el juego
-        'Ya que en en el unico lugar donde se setea este valor es en ConnectUser (Recox)
-        .CurrentInventorySlots = getMaxInventorySlots(Userindex)
-        
+            
         'el user ya tiene un objeto del mismo tipo?
         Slot = 1
         
         Do Until .Invent.Object(Slot).ObjIndex = MiObj.ObjIndex And .Invent.Object(Slot).Amount + MiObj.Amount <= MAX_INVENTORY_OBJS
+        
             Slot = Slot + 1
 
             If Slot > .CurrentInventorySlots Then
                 Exit Do
-
             End If
-
+            
         Loop
             
         'Sino busca un slot vacio
         If Slot > .CurrentInventorySlots Then
+        
             Slot = 1
 
             Do Until .Invent.Object(Slot).ObjIndex = 0
+            
                 Slot = Slot + 1
 
                 If Slot > .CurrentInventorySlots Then
@@ -761,22 +746,13 @@ Function MeterItemEnInventario(ByVal Userindex As Integer, ByRef MiObj As obj) A
                     Exit Function
 
                 End If
-
+                
             Loop
+            
             .Invent.NroItems = .Invent.NroItems + 1
 
         End If
     
-        If Slot > MAX_NORMAL_INVENTORY_SLOTS And Slot <= MAX_INVENTORY_SLOTS Then
-            If Not ItemSeCae(MiObj.ObjIndex) Then
-                Call WriteConsoleMsg(Userindex, "No puedes agarrar objetos especiales y ponerlos directamente en tu " & ObjData(.Invent.MochilaEqpObjIndex).Name & ". Puedes acomodar los items en tu inventario con drag and drop y asi si poder moverlos dentro de tu alforja. Recuerda que items que no se caen normalmente si estan dentro de la mochila caeran", FontTypeNames.FONTTYPE_WARNING)
-                MeterItemEnInventario = False
-                Exit Function
-
-            End If
-
-        End If
-
         'Mete el objeto
         If .Invent.Object(Slot).Amount + MiObj.Amount <= MAX_INVENTORY_OBJS Then
             'Menor que MAX_INV_OBJS
@@ -784,7 +760,6 @@ Function MeterItemEnInventario(ByVal Userindex As Integer, ByRef MiObj As obj) A
             .Invent.Object(Slot).Amount = .Invent.Object(Slot).Amount + MiObj.Amount
         Else
             .Invent.Object(Slot).Amount = MAX_INVENTORY_OBJS
-
         End If
 
     End With
@@ -1009,18 +984,6 @@ Public Sub Desequipar(ByVal Userindex As Integer, ByVal Slot As Byte)
                     End With
 
                 End If
-            
-            Case eOBJType.otMochilas
-
-                With .Invent
-                    .Object(Slot).Equipped = 0
-                    .MochilaEqpObjIndex = 0
-                    .MochilaEqpSlot = 0
-
-                End With
-                
-                Call InvUsuario.TirarTodosLosItemsEnMochila(Userindex)
-                .CurrentInventorySlots = MAX_NORMAL_INVENTORY_SLOTS
 
         End Select
 
@@ -1493,31 +1456,7 @@ Sub EquiparInvItem(ByVal Userindex As Integer, ByVal Slot As Byte)
                     Call WriteConsoleMsg(Userindex, sMotivo, FontTypeNames.FONTTYPE_INFO)
 
                 End If
-                 
-            Case eOBJType.otMochilas
-
-                If .flags.Muerto = 1 Then
-                    'Call WriteConsoleMsg(UserIndex, "Estas muerto!! Solo podes usar items cuando estas vivo. ", FontTypeNames.FONTTYPE_INFO)
-                    Call WriteMultiMessage(Userindex, eMessages.UserMuerto)
-                    Exit Sub
-
-                End If
-
-                If .Invent.Object(Slot).Equipped Then
-                    Call Desequipar(Userindex, Slot)
-                    Exit Sub
-
-                End If
-
-                If .Invent.MochilaEqpObjIndex > 0 Then
-                    Call Desequipar(Userindex, .Invent.MochilaEqpSlot)
-
-                End If
-
-                .Invent.Object(Slot).Equipped = 1
-                .Invent.MochilaEqpObjIndex = ObjIndex
-                .Invent.MochilaEqpSlot = Slot
-
+                
         End Select
 
     End With
@@ -1809,11 +1748,10 @@ Sub UseInvItem(ByVal Userindex As Integer, ByVal Slot As Byte)
                 End If
                 
                 .flags.TomoPocion = True
-                .flags.TipoPocion = obj.TipoPocion
                         
-                Select Case .flags.TipoPocion
+                Select Case obj.SubTipo
                 
-                    Case 1 'Modif la agilidad
+                    Case ePocionType.otAgilidad 'Modif la agilidad
                         .flags.DuracionEfecto = obj.DuracionEfecto
                 
                         'Usa el item
@@ -1836,7 +1774,7 @@ Sub UseInvItem(ByVal Userindex As Integer, ByVal Slot As Byte)
 
                         Call WriteUpdateDexterity(Userindex)
                         
-                    Case 2 'Modif la fuerza
+                    Case ePocionType.otFuerza 'Modif la fuerza
                         .flags.DuracionEfecto = obj.DuracionEfecto
                 
                         'Usa el item
@@ -1859,7 +1797,7 @@ Sub UseInvItem(ByVal Userindex As Integer, ByVal Slot As Byte)
 
                         Call WriteUpdateStrenght(Userindex)
                         
-                    Case 3 'Pocion roja, restaura HP
+                    Case ePocionType.otSalud 'Pocion roja, restaura HP
                         'Usa el item
                         .Stats.MinHp = .Stats.MinHp + RandomNumber(obj.MinModificador, obj.MaxModificador)
 
@@ -1876,7 +1814,7 @@ Sub UseInvItem(ByVal Userindex As Integer, ByVal Slot As Byte)
 
                         End If
                     
-                    Case 4 'Pocion azul, restaura MANA
+                    Case ePocionType.otMana 'Pocion azul, restaura MANA
                         'Usa el item
                         'nuevo calculo para recargar mana
                         .Stats.MinMAN = .Stats.MinMAN + Porcentaje(.Stats.MaxMAN, 4) + .Stats.ELV \ 2 + 40 / .Stats.ELV
@@ -1894,7 +1832,7 @@ Sub UseInvItem(ByVal Userindex As Integer, ByVal Slot As Byte)
 
                         End If
                         
-                    Case 5 ' Pocion violeta
+                    Case ePocionType.otCuraVeneno ' Pocion violeta
 
                         If .flags.Envenenado = 1 Then
                             .flags.Envenenado = 0
@@ -1913,7 +1851,7 @@ Sub UseInvItem(ByVal Userindex As Integer, ByVal Slot As Byte)
 
                         End If
                         
-                    Case 6  ' Pocion Negra
+                    Case ePocionType.otNegra  ' Pocion Negra
                         If .flags.SlotReto > 0 Then Exit Sub
                         
                         If .flags.Privilegios And PlayerType.User Then
@@ -2182,7 +2120,7 @@ Sub UseInvItem(ByVal Userindex As Integer, ByVal Slot As Byte)
                 If .Stats.ELV < 25 Then
 
                     ' Solo pirata y trabajador pueden navegar antes
-                    If .Clase <> eClass.Worker And .Clase <> eClass.Pirat Then
+                    If .clase <> eClass.Worker And .clase <> eClass.Pirat Then
                         Call WriteConsoleMsg(Userindex, "Para recorrer los mares debes ser nivel 25 o superior.", FontTypeNames.FONTTYPE_INFO)
                         Exit Sub
                     Else
@@ -2190,7 +2128,7 @@ Sub UseInvItem(ByVal Userindex As Integer, ByVal Slot As Byte)
                         ' Pero a partir de 20
                         If .Stats.ELV < 20 Then
                             
-                            If .Clase = eClass.Worker And .Stats.UserSkills(eSkill.pesca) <> 100 Then
+                            If .clase = eClass.Worker And .Stats.UserSkills(eSkill.pesca) <> 100 Then
                                 Call WriteConsoleMsg(Userindex, "Para recorrer los mares debes ser nivel 20 y ademas tu skill en pesca debe ser 100.", FontTypeNames.FONTTYPE_INFO)
                             Else
                                 Call WriteConsoleMsg(Userindex, "Para recorrer los mares debes ser nivel 20 o superior.", FontTypeNames.FONTTYPE_INFO)
@@ -2201,7 +2139,7 @@ Sub UseInvItem(ByVal Userindex As Integer, ByVal Slot As Byte)
                         Else
 
                             ' Esta entre 20 y 25, si es trabajador necesita tener 100 en pesca
-                            If .Clase = eClass.Worker Then
+                            If .clase = eClass.Worker Then
                                 If .Stats.UserSkills(eSkill.pesca) <> 100 Then
                                     Call WriteConsoleMsg(Userindex, "Para recorrer los mares debes ser nivel 20 o superior y ademas tu skill en pesca debe ser 100.", FontTypeNames.FONTTYPE_INFO)
                                     Exit Sub
@@ -2224,7 +2162,6 @@ Sub UseInvItem(ByVal Userindex As Integer, ByVal Slot As Byte)
                     
                 Else
                     Call WriteConsoleMsg(Userindex, "Debes aproximarte al agua para usar un barco y a la tierra para desembarcar!", FontTypeNames.FONTTYPE_INFO)
-
                 End If
 
 
@@ -2253,28 +2190,50 @@ Sub UseInvItem(ByVal Userindex As Integer, ByVal Slot As Byte)
                     
             Case eOBJType.otManuales
             
-                Select Case ObjIndex
+                Select Case obj.SubTipo
                 
-                    Case 1127   ' Manual de Liderazgo
+                    Case eManualType.otLiderazgo            ' Manual de Liderazgo
                         
                         If .Stats.UserSkills(eSkill.Liderazgo) < 100 Then
                             .Stats.UserSkills(eSkill.Liderazgo) = 100
-                            
+                            Call WriteConsoleMsg(Userindex, "�Has aprendido todo lo necesario para conformar un Clan!", FontTypeNames.FONTTYPE_INFO)
+                        Else
+                            Call WriteConsoleMsg(Userindex, "Este pergamino no tiene ning�n conocimiento que te sirva.", FontTypeNames.FONTTYPE_INFO)
+                            Exit Sub
                         End If
                         
-                    Case 1128   ' Manual de Supervivencia
+                    Case eManualType.otSupervivencia        ' Manual de Supervivencia
                         
                         If .Stats.UserSkills(eSkill.Supervivencia) < 100 Then
                             .Stats.UserSkills(eSkill.Supervivencia) = 100
-                            
+                            Call WriteConsoleMsg(Userindex, "�Te has vuelto un experto en el arte de la Supervivencia!", FontTypeNames.FONTTYPE_INFO)
+                        Else
+                            Call WriteConsoleMsg(Userindex, "Este pergamino no tiene ning�n conocimiento que te sirva.", FontTypeNames.FONTTYPE_INFO)
+                            Exit Sub
                         End If
                         
-                    Case 1129   ' Manual de Navegacion
+                    Case eManualType.otNavegacion           ' Manual de Navegacion
                         
                         If .Stats.UserSkills(eSkill.Navegacion) < 100 Then
                             .Stats.UserSkills(eSkill.Navegacion) = 100
-                            
+                            Call WriteConsoleMsg(Userindex, "�Ya est�s listo para comandar todo tipo de embarcaci�n!", FontTypeNames.FONTTYPE_INFO)
+                        Else
+                            Call WriteConsoleMsg(Userindex, "Este pergamino no tiene ning�n conocimiento que te sirva.", FontTypeNames.FONTTYPE_INFO)
+                            Exit Sub
                         End If
+                        
+                    Case eManualType.otInventSlots          ' Slots de Inventario
+                    
+                        If .Stats.InventLevel < INVENTORY_EXTRA_ROWS Then
+                            .Stats.InventLevel = .Stats.InventLevel + 1
+                            .CurrentInventorySlots = getMaxInventorySlots(Userindex)
+                            Call WriteInventoryUnlockSlots(Userindex)
+                            Call WriteConsoleMsg(Userindex, "�Has aumentado el espacio de tu inventario!", FontTypeNames.FONTTYPE_INFO)
+                        Else
+                            Call WriteConsoleMsg(Userindex, "Ya has desbloqueado todos los casilleros disponibles.", FontTypeNames.FONTTYPE_INFO)
+                            Exit Sub
+                        End If
+                        
                         
                 End Select
 
@@ -2520,50 +2479,6 @@ Sub TirarTodosLosItemsNoNewbies(ByVal Userindex As Integer)
 
 End Sub
 
-Sub TirarTodosLosItemsEnMochila(ByVal Userindex As Integer)
-
-    '***************************************************
-    'Author: Unknown
-    'Last Modification: 12/01/09 (Budi)
-    '***************************************************
-    Dim i         As Byte
-
-    Dim NuevaPos  As WorldPos
-
-    Dim MiObj     As obj
-
-    Dim ItemIndex As Integer
-    
-    With UserList(Userindex)
-        For i = MAX_NORMAL_INVENTORY_SLOTS + 1 To .CurrentInventorySlots
-            ItemIndex = .Invent.Object(i).ObjIndex
-
-            If ItemIndex > 0 Then
-                If Not ItemSeCae(ItemIndex) Then
-                    Call WriteConsoleMsg(Userindex, "Acabas de tirar un objeto que no se cae normalmente ya que lo tenias en tu mochila u alforja y la desequipaste o tiraste", FontTypeNames.FONTTYPE_WARNING)
-                End If
-
-                NuevaPos.X = 0
-                NuevaPos.Y = 0
-                
-                'Creo MiObj
-                MiObj.Amount = .Invent.Object(i).Amount
-                MiObj.ObjIndex = ItemIndex
-                Call Tilelibre(.Pos, NuevaPos, MiObj, True, True)
-
-                If NuevaPos.X <> 0 And NuevaPos.Y <> 0 Then
-                    Call DropObj(Userindex, i, MAX_INVENTORY_OBJS, NuevaPos.Map, NuevaPos.X, NuevaPos.Y)
-
-                End If
-
-            End If
-
-        Next i
-
-    End With
-
-End Sub
-
 Public Function getObjType(ByVal ObjIndex As Integer) As eOBJType
     '***************************************************
     'Author: Unknown
@@ -2596,61 +2511,46 @@ Public Sub moveItem(ByVal Userindex As Integer, _
         .Invent.Object(originalSlot) = .Invent.Object(newSlot)
         .Invent.Object(newSlot) = tmpObj
     
-        'Viva VB6 y sus putas deficiencias.
         If .Invent.AnilloEqpSlot = originalSlot Then
             .Invent.AnilloEqpSlot = newSlot
         ElseIf .Invent.AnilloEqpSlot = newSlot Then
             .Invent.AnilloEqpSlot = originalSlot
-
         End If
     
         If .Invent.ArmourEqpSlot = originalSlot Then
             .Invent.ArmourEqpSlot = newSlot
         ElseIf .Invent.ArmourEqpSlot = newSlot Then
             .Invent.ArmourEqpSlot = originalSlot
-
         End If
     
         If .Invent.BarcoSlot = originalSlot Then
             .Invent.BarcoSlot = newSlot
         ElseIf .Invent.BarcoSlot = newSlot Then
             .Invent.BarcoSlot = originalSlot
-
         End If
     
         If .Invent.CascoEqpSlot = originalSlot Then
             .Invent.CascoEqpSlot = newSlot
         ElseIf .Invent.CascoEqpSlot = newSlot Then
             .Invent.CascoEqpSlot = originalSlot
-
         End If
     
         If .Invent.EscudoEqpSlot = originalSlot Then
             .Invent.EscudoEqpSlot = newSlot
         ElseIf .Invent.EscudoEqpSlot = newSlot Then
             .Invent.EscudoEqpSlot = originalSlot
-
-        End If
-    
-        If .Invent.MochilaEqpSlot = originalSlot Then
-            .Invent.MochilaEqpSlot = newSlot
-        ElseIf .Invent.MochilaEqpSlot = newSlot Then
-            .Invent.MochilaEqpSlot = originalSlot
-
         End If
     
         If .Invent.MunicionEqpSlot = originalSlot Then
             .Invent.MunicionEqpSlot = newSlot
         ElseIf .Invent.MunicionEqpSlot = newSlot Then
             .Invent.MunicionEqpSlot = originalSlot
-
         End If
     
         If .Invent.WeaponEqpSlot = originalSlot Then
             .Invent.WeaponEqpSlot = newSlot
         ElseIf .Invent.WeaponEqpSlot = newSlot Then
             .Invent.WeaponEqpSlot = originalSlot
-
         End If
 
         Call UpdateUserInv(False, Userindex, originalSlot)

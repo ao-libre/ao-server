@@ -606,13 +606,6 @@ Public Enum eSkill
 
 End Enum
 
-Public Enum eMochilas
-
-    Mediana = 1
-    Grande = 2
-
-End Enum
-
 Public Const FundirMetal = 88
 
 Public Enum eAtributos
@@ -688,29 +681,26 @@ Public Const SND_RESUCITAR_SACERDOTE    As Byte = 213
 
 Public Const SND_CURAR_SACERDOTE        As Byte = 214
 
-''
 ' Cantidad maxima de objetos por slot de inventario
 Public Const MAX_INVENTORY_OBJS         As Integer = 10000
 
-''
-' Cantidad de "slots" en el inventario con mochila
-Public Const MAX_INVENTORY_SLOTS        As Byte = 35
+' Cantidad de "slots" en el inventario con todos los slots desbloqueados
+Public Const MAX_INVENTORY_SLOTS        As Byte = 42
 
-''
-' Cantidad de "slots" en el inventario sin mochila
-Public Const MAX_NORMAL_INVENTORY_SLOTS As Byte = 25
+' Cantidad de "slots" en el inventario b�sico
+Public Const MAX_USERINVENTORY_SLOTS    As Byte = 24
 
-''
 ' Cantidad de "slots" en el inventario por fila
-Public Const SLOTS_PER_ROW_INVENTORY As Byte = 5
+Public Const SLOTS_PER_ROW_INVENTORY    As Byte = 6
 
-''
+' Cantidad m�xima de filas a desbloquear en el inventario
+Public Const INVENTORY_EXTRA_ROWS       As Byte = 3
+
 ' Constante para indicar que se esta usando ORO
-Public Const FLAGORO                    As Integer = MAX_INVENTORY_SLOTS + 1
+Public Const FLAGORO                    As Integer = 200
 
 ' CATEGORIAS PRINCIPALES
 Public Enum eOBJType
-
     otUseOnce = 1
     otWeapon = 2
     otArmadura = 3
@@ -747,10 +737,26 @@ Public Enum eOBJType
     otBotellaLlena = 34
     otManuales = 35
     otArbolElfico = 36
-    otMochilas = 37
     otYacimientoPez = 38
     otCualquiera = 1000
+End Enum
 
+'Tipo de Pociones
+Public Enum ePocionType
+    otAgilidad = 1
+    otFuerza = 2
+    otSalud = 3
+    otMana = 4
+    otCuraVeneno = 5
+    otNegra = 6
+End Enum
+
+'Tipos de Manuales
+Public Enum eManualType
+    otLiderazgo = 1
+    otSupervivencia = 2
+    otNavegacion = 3
+    otInventSlots = 4
 End Enum
 
 'Estadisticas
@@ -919,8 +925,6 @@ Public Type Inventario
     AnilloEqpSlot As Byte
     BarcoObjIndex As Integer
     BarcoSlot As Byte
-    MochilaEqpObjIndex As Integer
-    MochilaEqpSlot As Byte
     MonturaObjIndex As Integer
     MonturaEqpSlot As Byte
     NroItems As Integer
@@ -985,11 +989,12 @@ Public Const MAX_ITEMS_CRAFTEO As Byte = 4
 'Tipos de objetos
 Public Type ObjData
 
-    Name As String 'Nombre del obj
+    Name As String                  'Nombre del obj
     
-    OBJType As eOBJType 'Tipo enum que determina cuales son las caract del obj
+    OBJType As eOBJType             'Tipo enum que determina cuales son las caract del obj
+    SubTipo As Integer              'Determina el tipo particular de ObjType
     
-    GrhIndex As Long ' Indice del grafico que representa el obj
+    GrhIndex As Long                'Indice del grafico que representa el obj
     GrhSecundario As Long
     
     'Solo contenedores
@@ -1002,8 +1007,8 @@ Public Type ObjData
     
     ForoID As String
     
-    MinHp As Integer ' Minimo puntos de vida
-    MaxHp As Integer ' Maximo puntos de vida
+    MinHp As Integer                'Minimo puntos de vida
+    MaxHp As Integer                'Maximo puntos de vida
     
     MineralIndex As Integer
     LingoteInex As Integer
@@ -1015,43 +1020,40 @@ Public Type ObjData
     Newbie As Integer
     
     'Puntos de Stamina que da
-    MinSta As Integer ' Minimo puntos de stamina
+    MinSta As Integer               'Minimo puntos de stamina
     
     'Pociones
-    TipoPocion As Byte
     MaxModificador As Integer
     MinModificador As Integer
     DuracionEfecto As Long
     LingoteIndex As Integer
     
-    MinHIT As Integer 'Minimo golpe
-    MaxHIT As Integer 'Maximo golpe
+    MinHIT As Integer               'Minimo golpe
+    MaxHIT As Integer               'Maximo golpe
     
     MinHam As Integer
     MinSed As Integer
     
     def As Integer
-    MinDef As Integer ' Armaduras
-    MaxDef As Integer ' Armaduras
+    MinDef As Integer               'Armaduras
+    MaxDef As Integer               'Armaduras
     
-    Ropaje As Integer 'Indice del grafico del ropaje
+    Ropaje As Integer               'Indice del grafico del ropaje
     
-    WeaponAnim As Integer ' Apunta a una anim de armas
+    WeaponAnim As Integer           'Apunta a una anim de armas
     WeaponRazaEnanaAnim As Integer
-    ShieldAnim As Integer ' Apunta a una anim de escudo
+    ShieldAnim As Integer           'Apunta a una anim de escudo
     CascoAnim As Integer
     
-    Valor As Long     ' Precio
+    Valor As Long                   'Precio
     
     Cerrada As Integer
     Llave As Byte
-    Clave As Long 'si clave=llave la puerta se abre o cierra
+    Clave As Long                   'si clave=llave la puerta se abre o cierra
     
-    Radio As Integer ' Para teleps: El radio para calcular el random de la pos destino
-    
-    MochilaType As Byte 'Tipo de Mochila (1 la chica, 2 la grande)
-    
-    Guante As Byte ' Indica si es un guante o no.
+    Radio As Integer                'Para teleps: El radio para calcular el random de la pos destino
+        
+    Guante As Byte                  'Indica si es un guante o no.
     
     IndexAbierta As Integer
     IndexCerrada As Integer
@@ -1115,8 +1117,8 @@ Public Type ObjData
     ImpideAturdir As Boolean
     ImpideCegar As Boolean
 
-    Log As Byte 'es un objeto que queremos loguear? Pablo (ToxicWaste) 07/09/07
-    NoLog As Byte 'es un objeto que esta prohibido loguear?
+    Log As Byte                     'es un objeto que queremos loguear? Pablo (ToxicWaste) 07/09/07
+    NoLog As Byte                   'es un objeto que esta prohibido loguear?
     
     Upgrade As Integer
 
@@ -1298,6 +1300,7 @@ Public Type UserStats
 
     Gld As Long 'Dinero
     Banco As Long
+    InventLevel As Byte                             'Filas extra desbloqueadas en el inventario
     
     MaxHp As Integer
     MinHp As Integer
@@ -1339,7 +1342,7 @@ Public Type UserFlags
     ' Retos
     SlotReto As Byte
     SlotRetoUser As Byte
-
+    
     SlotCarcel As Integer
     Muerto As Byte 'Esta muerto?
     Escondido As Byte 'Esta escondido?
@@ -1365,7 +1368,6 @@ Public Type UserFlags
     Descansar As Boolean
     Hechizo As Integer
     TomoPocion As Boolean
-    TipoPocion As Byte
     
     NoPuedeSerAtacado As Boolean
     AtacablePor As Integer
@@ -1424,15 +1426,11 @@ Public Type UserFlags
     
     ChatColor As Long
     
-    '[Barrin 30-11-03]
     TimesWalk As Long
     StartWalk As Long
     CountSH As Long
-    '[/Barrin 30-11-03]
     
-    '[CDT 17-02-04]
     UltimoMensaje As Byte
-    '[/CDT]
     
     Silenciado As Byte
     
@@ -1591,7 +1589,7 @@ Public Type User
     Desc As String ' Descripcion
     DescRM As String
     
-    Clase As eClass
+    clase As eClass
     raza As eRaza
     Genero As eGenero
     Email As String
@@ -1628,7 +1626,7 @@ Public Type User
         UpTime As Long
     #End If
 
-    IP As String
+    ip As String
     
     ComUsu As tCOmercioUsuario
     
