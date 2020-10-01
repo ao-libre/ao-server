@@ -194,6 +194,9 @@ Sub InsertUserToDatabase(ByVal Userindex As Integer, _
         query = query & "items_amount = " & .Invent.NroItems & ", "
         query = query & "slot_armour = " & .Invent.ArmourEqpSlot & ", "
         query = query & "slot_weapon = " & .Invent.WeaponEqpSlot & ", "
+        query = query & "slot_shield = " & .Invent.EscudoEqpSlot & ", "
+        query = query & "slot_ammo = " & .Invent.MunicionEqpSlot & ", "
+        query = query & "slot_ring = " & .Invent.AnilloEqpSlot & ", "
         query = query & "min_hp = " & .Stats.MinHp & ", "
         query = query & "max_hp = " & .Stats.MaxHp & ", "
         query = query & "min_man = " & .Stats.MinMAN & ", "
@@ -208,7 +211,9 @@ Sub InsertUserToDatabase(ByVal Userindex As Integer, _
         query = query & "max_hit = " & .Stats.MaxHIT & ", "
         query = query & "rep_noble = " & .Reputacion.NobleRep & ", "
         query = query & "rep_plebe = " & .Reputacion.PlebeRep & ", "
-        query = query & "rep_average = " & .Reputacion.Promedio & ";"
+        query = query & "rep_average = " & .Reputacion.Promedio & ", "
+        query = query & "is_naked = " & .flags.Desnudo & ", "
+        query = query & "email = '" & .Email & "';"
 
         'Insert the user
         Call Database_Connection.Execute(query)
@@ -308,6 +313,43 @@ Sub InsertUserToDatabase(ByVal Userindex As Integer, _
         Next LoopC
 
         Call Database_Connection.Execute(query)
+        
+        'User friends
+        query = "INSERT INTO friend (user_id, number) VALUES "
+
+        For LoopC = 1 To MAXAMIGOS
+            query = query & "("
+            query = query & .ID & ", "
+            query = query & LoopC & ")"
+
+            If LoopC < MAXAMIGOS Then
+                query = query & ", "
+            Else
+                query = query & ";"
+
+            End If
+        Next LoopC
+
+        Call Database_Connection.Execute(query)
+        
+        'User quests
+        query = "INSERT INTO quest (user_id, number) VALUES "
+
+        For LoopC = 1 To MAXUSERQUESTS
+            query = query & "("
+            query = query & .ID & ", "
+            query = query & LoopC & ")"
+
+            If LoopC < MAXUSERQUESTS Then
+                query = query & ", "
+            Else
+                query = query & ";"
+
+            End If
+
+        Next LoopC
+
+        Call Database_Connection.Execute(query)
 
     End With
 
@@ -332,6 +374,8 @@ Sub UpdateUserToDatabase(ByVal Userindex As Integer, _
     Dim query  As String
     Dim UserId As Integer
     Dim LoopC  As Byte
+    Dim LoopK  As Byte
+    Dim Tmp    As Byte
 
     Call Database_Connect
 
@@ -369,6 +413,7 @@ Sub UpdateUserToDatabase(ByVal Userindex As Integer, _
         query = query & "slot_shield = " & .Invent.EscudoEqpSlot & ", "
         query = query & "slot_ammo = " & .Invent.MunicionEqpSlot & ", "
         query = query & "slot_ship = " & .Invent.BarcoSlot & ", "
+        query = query & "slot_mount = " & .Invent.MonturaEqpSlot & ", "
         query = query & "slot_ring = " & .Invent.AnilloEqpSlot & ", "
         query = query & "slot_bag = " & .Invent.MochilaEqpSlot & ", "
         query = query & "min_hp = " & .Stats.MinHp & ", "
@@ -419,8 +464,8 @@ Sub UpdateUserToDatabase(ByVal Userindex As Integer, _
         query = query & "nivel_ingreso = " & .Faccion.NivelIngreso & ", "
         query = query & "matados_ingreso = " & .Faccion.MatadosIngreso & ", "
         query = query & "siguiente_recompensa = " & .Faccion.NextRecompensa & ", "
-        query = query & "guild_index = " & .GuildIndex & " "
-        query = query & "WHERE id = " & .ID & ";"
+        query = query & "guild_index = " & .GuildIndex
+        query = query & " WHERE id = " & .ID & ";"
         Call Database_Connection.Execute(query)
 
         'User attributes
@@ -582,6 +627,101 @@ Sub UpdateUserToDatabase(ByVal Userindex As Integer, _
         Next LoopC
 
         Call Database_Connection.Execute(query)
+        
+        'User friends
+        query = "DELETE FROM friend WHERE user_id = " & .ID & ";"
+        Call Database_Connection.Execute(query)
+
+        query = "INSERT INTO friend (user_id, number, friend, ignored) VALUES "
+
+        For LoopC = 1 To MAXAMIGOS
+            query = query & "("
+            query = query & .ID & ", "
+            query = query & LoopC & ", "
+            query = query & "'" & .Amigos(LoopC).Nombre & "', "
+            query = query & .Amigos(LoopC).Ignorado & ")"
+
+            If LoopC < MAXAMIGOS Then
+                query = query & ", "
+            Else
+                query = query & ";"
+
+            End If
+        Next LoopC
+
+        Call Database_Connection.Execute(query)
+        
+        'User connections 'INSERT INTO table (id, name, age) VALUES(1, "A", 19) ON DUPLICATE KEY UPDATE name="A", age=19
+        query = "INSERT INTO connection (user_id, ip, date_last_login) VALUES ("
+        query = query & .ID & ", "
+        query = query & "'" & .ip & "', "
+        query = query & "NOW()) "
+        query = query & "ON DUPLICATE KEY UPDATE "
+        query = query & "date_last_login = NOW();"
+
+        Call Database_Connection.Execute(query)
+        
+        'User quests
+        query = "DELETE FROM quest WHERE user_id = " & .ID & ";"
+        Call Database_Connection.Execute(query)
+        
+        query = "INSERT INTO quest (user_id, number, quest_id, npcs) VALUES "
+
+        For LoopC = 1 To MAXUSERQUESTS
+            query = query & "("
+            query = query & .ID & ", "
+            query = query & LoopC & ", "
+            query = query & .QuestStats.Quests(LoopC).QuestIndex & ", '"
+            
+            If .QuestStats.Quests(LoopC).QuestIndex > 0 Then
+                Tmp = QuestList(.QuestStats.Quests(LoopC).QuestIndex).RequiredNPCs
+                If Tmp Then
+                    For LoopK = 1 To Tmp
+                        query = query & .QuestStats.Quests(LoopC).NPCsKilled(LoopK)
+                        
+                        If LoopK < Tmp Then
+                            query = query & "-"
+                        End If
+                    Next LoopK
+                End If
+            End If
+            
+            query = query & "')"
+
+            If LoopC < MAXUSERQUESTS Then
+                query = query & ", "
+            Else
+                query = query & ";"
+
+            End If
+
+        Next LoopC
+
+        Call Database_Connection.Execute(query)
+        
+        'User completed quests
+        query = "DELETE FROM quest_done WHERE user_id = " & .ID & ";"
+        Call Database_Connection.Execute(query)
+        
+        If .QuestStats.NumQuestsDone > 0 Then
+            query = "INSERT INTO quest_done (user_id, quest_id) VALUES "
+    
+            For LoopC = 1 To .QuestStats.NumQuestsDone
+                query = query & "("
+                query = query & .ID & ", "
+                query = query & .QuestStats.QuestsDone(LoopC) & ")"
+    
+                If LoopC < .QuestStats.NumQuestsDone Then
+                    query = query & ", "
+                Else
+                    query = query & ";"
+    
+                End If
+    
+            Next LoopC
+    
+            Call Database_Connection.Execute(query)
+        End If
 
     End With
 
@@ -649,6 +789,7 @@ Sub LoadUserFromDatabase(ByVal Userindex As Integer)
         .Invent.EscudoEqpSlot = SanitizeNullValue(Database_RecordSet!slot_shield, 0)
         .Invent.MunicionEqpSlot = SanitizeNullValue(Database_RecordSet!slot_ammo, 0)
         .Invent.BarcoSlot = SanitizeNullValue(Database_RecordSet!slot_ship, 0)
+        .Invent.MonturaEqpSlot = SanitizeNullValue(Database_RecordSet!slot_mount, 0)
         .Invent.AnilloEqpSlot = SanitizeNullValue(Database_RecordSet!slot_ring, 0)
         .Invent.MochilaEqpSlot = SanitizeNullValue(Database_RecordSet!slot_bag, 0)
         .Stats.MinHp = Database_RecordSet!min_hp
@@ -710,6 +851,8 @@ Sub LoadUserFromDatabase(ByVal Userindex As Integer)
         .Faccion.NextRecompensa = SanitizeNullValue(Database_RecordSet!siguiente_recompensa, 0)
 
         .GuildIndex = SanitizeNullValue(Database_RecordSet!Guild_Index, 0)
+        
+        .Email = Database_RecordSet!Email
 
         Set Database_RecordSet = Nothing
 
@@ -819,6 +962,81 @@ Sub LoadUserFromDatabase(ByVal Userindex As Integer)
                 .Stats.UserSkills(Database_RecordSet!Number) = Database_RecordSet!Value
                 .Stats.ExpSkills(Database_RecordSet!Number) = Database_RecordSet!Exp
                 .Stats.EluSkills(Database_RecordSet!Number) = Database_RecordSet!ELU
+
+                Database_RecordSet.MoveNext
+            Wend
+
+        End If
+
+        Set Database_RecordSet = Nothing
+        
+        'User friends
+        query = "SELECT * FROM friend WHERE user_id = " & .ID & ";"
+        Set Database_RecordSet = Database_Connection.Execute(query)
+
+        If Database_RecordSet.RecordCount > 0 Then
+            Database_RecordSet.MoveFirst
+
+            While Not Database_RecordSet.EOF
+
+                .Amigos(Database_RecordSet!Number).Nombre = Database_RecordSet!friend
+                .Amigos(Database_RecordSet!Number).Ignorado = Database_RecordSet!Ignored
+
+                Database_RecordSet.MoveNext
+            Wend
+
+        End If
+
+        Set Database_RecordSet = Nothing
+        
+        'User quests
+        query = "SELECT * FROM quest WHERE user_id = " & .ID & ";"
+        Set Database_RecordSet = Database_Connection.Execute(query)
+
+        If Database_RecordSet.RecordCount > 0 Then
+            Database_RecordSet.MoveFirst
+
+            While Not Database_RecordSet.EOF
+
+                .QuestStats.Quests(Database_RecordSet!Number).QuestIndex = Database_RecordSet!quest_id
+                
+                If .QuestStats.Quests(Database_RecordSet!Number).QuestIndex > 0 Then
+                    If QuestList(.QuestStats.Quests(Database_RecordSet!Number).QuestIndex).RequiredNPCs Then
+                        Dim NPCs() As String
+                        NPCs = Split(Database_RecordSet!NPCs, "-")
+                        ReDim .QuestStats.Quests(Database_RecordSet!Number).NPCsKilled(1 To QuestList(.QuestStats.Quests(Database_RecordSet!Number).QuestIndex).RequiredNPCs)
+
+                        For LoopC = 1 To QuestList(.QuestStats.Quests(Database_RecordSet!Number).QuestIndex).RequiredNPCs
+                            .QuestStats.Quests(Database_RecordSet!Number).NPCsKilled(LoopC) = val(NPCs(LoopC - 1))
+                        Next LoopC
+
+                    End If
+                End If
+
+                Database_RecordSet.MoveNext
+            Wend
+
+        End If
+
+        Set Database_RecordSet = Nothing
+        
+        'User quests done
+        query = "SELECT * FROM quest_done WHERE user_id = " & .ID & ";"
+        Set Database_RecordSet = Database_Connection.Execute(query)
+
+        If Database_RecordSet.RecordCount > 0 Then
+            .QuestStats.NumQuestsDone = Database_RecordSet.RecordCount
+                
+            ReDim .QuestStats.QuestsDone(1 To .QuestStats.NumQuestsDone)
+        
+            Database_RecordSet.MoveFirst
+            
+            LoopC = 1
+
+            While Not Database_RecordSet.EOF
+            
+                .QuestStats.QuestsDone(LoopC) = Database_RecordSet!quest_id
+                LoopC = LoopC + 1
 
                 Database_RecordSet.MoveNext
             Wend
@@ -1730,7 +1948,8 @@ Public Function GetUserLastIpsDatabase(ByVal UserName As String) As String
 
     '***************************************************
     'Author: Juan Andres Dalmasso (CHOTS)
-    'Last Modification: 10/10/2018
+    'Last Modification: 01/10/2020 Alexis Caraballo (WyroX)
+    ' WyroX: Cambio totalmente el sistema de ultimas conexiones
     '***************************************************
     On Error GoTo ErrorHandler
 
@@ -1738,18 +1957,28 @@ Public Function GetUserLastIpsDatabase(ByVal UserName As String) As String
 
     Call Database_Connect
 
-    query = "SELECT last_ip FROM account WHERE id = (SELECT account_id from user WHERE UPPER(name) = '" & UCase$(UserName) & "');"
-
+    query = "SELECT * FROM connection WHERE user_id = (SELECT id from user WHERE UPPER(name) = '" & UCase$(UserName) & "') ORDER BY date_last_login DESC;"
     Set Database_RecordSet = Database_Connection.Execute(query)
 
-    If Database_RecordSet.BOF Or Database_RecordSet.EOF Then
-        GetUserLastIpsDatabase = vbNullString
-        Exit Function
+    If Database_RecordSet.RecordCount > 0 Then
+        Database_RecordSet.MoveFirst
 
+        While Not Database_RecordSet.EOF
+
+            GetUserLastIpsDatabase = GetUserLastIpsDatabase & Database_RecordSet!ip & " ("
+            GetUserLastIpsDatabase = GetUserLastIpsDatabase & Database_RecordSet!date_last_login & ")" & vbCrLf
+
+            Database_RecordSet.MoveNext
+        Wend
+        
+        GetUserLastIpsDatabase = Left$(GetUserLastIpsDatabase, Len(GetUserLastIpsDatabase) - 1)
+        
+    Else
+        GetUserLastIpsDatabase = vbNullString
     End If
 
-    GetUserLastIpsDatabase = Database_RecordSet!last_ip
     Set Database_RecordSet = Nothing
+
     Call Database_Close
 
     Exit Function
@@ -2654,8 +2883,7 @@ Public Sub SaveNewAccountDatabase(ByVal UserName As String, _
     query = query & "password = '" & Password & "', "
     query = query & "salt = '" & Salt & "', "
     query = query & "hash = '" & Hash & "', "
-    query = query & "date_created = NOW(), "
-    query = query & "date_last_login = NOW();"
+    query = query & "date_created = NOW();"
 
     Database_Connection.Execute (query)
 
@@ -2664,33 +2892,6 @@ Public Sub SaveNewAccountDatabase(ByVal UserName As String, _
     Exit Sub
 ErrorHandler:
     Call LogDatabaseError("Error in SaveNewAccountDatabase: " & UserName & ". " & Err.Number & " - " & Err.description)
-
-End Sub
-
-Public Sub SaveAccountLastLoginDatabase(ByVal UserName As String, ByVal UserIP As String)
-
-    '***************************************************
-    'Author: Juan Andres Dalmasso (CHOTS)
-    'Last Modification: 12/10/2018
-    '***************************************************
-    On Error GoTo ErrorHandler
-
-    Dim query As String
-
-    Call Database_Connect
-
-    query = "UPDATE account SET "
-    query = query & "date_last_login = NOW(), "
-    query = query & "last_ip = '" & UserIP & "' "
-    query = query & "WHERE UPPER(username) = '" & UCase$(UserName) & "';"
-
-    Database_Connection.Execute (query)
-
-    Call Database_Close
-
-    Exit Sub
-ErrorHandler:
-    Call LogDatabaseError("Error in SaveAccountLastLoginDatabase: " & UserName & ". " & Err.Number & " - " & Err.description)
 
 End Sub
 
