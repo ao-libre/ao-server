@@ -10007,7 +10007,7 @@ Hostile=1
 Domable=0
 Alineacion=2
 Comercia=0
-GiveEXP=6100
+GiveEXP=6900
 MinHP=4800
 MaxHP=4800
 MaxHIT=140
@@ -10027,7 +10027,7 @@ Drop1=12-3500 'Oro
 Drop2=205-1 'Proyectil Magico
 
 [NPC755]
-Name=Prisionera Veril
+Name=Dama de Veril
 NpcType=0
 Head=0
 Heading=3
@@ -10040,7 +10040,7 @@ Hostile=1
 Domable=0
 Alineacion=2
 Comercia=0
-GiveEXP=9500
+GiveEXP=10900
 MinHP=8200
 MaxHP=8200
 MaxHIT=170
