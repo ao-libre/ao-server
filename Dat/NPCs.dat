@@ -86,7 +86,7 @@ NumNPCs=959
 [NPC34] 'Propiedades Ulla 
 Name=Cullighan
 NpcType=0
-Desc=Usted sabe que no hay persona noble o respetable en estas tierras que no tenga su propia vivienda. acerquese y sea poseedor de una de las exclusivas casas de Ullathorpe. Sera admirado por toda la poblacion!
+Desc=Acercaos y podes comprar de una de las exclusivas casas de Ullathorpe.
 Head=33
 Heading=3
 Body=240
@@ -111,7 +111,7 @@ BackUp=1
 [NPC35] 'Propiedades Nix
 Name=Moraday
 NpcType=0
-Desc=Ha descubierto que la ciudad de Nix es la mas hermosa de todo Argentum, verdad? Pues que mejor que ser un terrateniente de este paraiso! Acercate que haremos negocios!
+Desc=Nix es lo mas hermosa de todo Argentum, verdad? Pues que mejor que ser un terrateniente de este paraiso! Acercaos que haremos negocios!
 Head=35
 Heading=3
 Body=239
@@ -142,8 +142,7 @@ BackUp=1
 [NPC52] 'Propiedades Bander
 Name=Rantarisk
 NpcType=0
-Desc=De lejos pude ver vuestro blazon, seguro busca una de las moradas mas lujosas de todo el Argentum. En la ciudad real de Banderbill es donde deben habitar la flor y la nata de la nobleza Venga y hagamos negocios!
-Head=32
+Desc=De lejos pude ver vuestro blazon, seguro busca una de las moradas mas lujosas de todo el Argentum.
 Heading=3
 Body=241
 Movement=1
@@ -180,7 +179,7 @@ BackUp=1
 
 [NPC62] 'Propiedades Lindos
 Name=Guldorf
-Desc=Si esta buscando la paz y la tranquilidad en estas tierras ha llegado al lugar indicado... adquiera una de nuestras exclusivas residencias, y cambie su vida para siempre.
+Desc=Si esta buscando la paz y la tranquilidad en estas tierras ha llegado al lugar indicado... adquiera una de nuestras residencias.
 Head=36
 Body=234
 Heading=3
@@ -206,7 +205,7 @@ BackUp=1
 
 [NPC101] ' Propiedades Arkhein
 Name=Vendedor de propiedades.
-Desc=En estas tierras demoniacas estan las mejores residencias para los miembros de la Legion Oscura... Si no eres legionario puedes tambien vivir aca, pero os aseguro que los augura un infierno! jajaja!
+Desc=En estas tierras demoniacas estan las residencias para la Legion Oscura... Si no eres miembro tambien puedes vivir aca, pero os recomiendo..
 Head=34
 Body=170
 Heading=3
@@ -240,7 +239,7 @@ BackUp=1
 [NPC5]
 Name=Sacerdote
 NpcType=1
-Desc=Hola, hijo mio! Soy el Sacerdote de estas tierras. Si quieres que te resucite escribe /RESUCITAR, o haz doble click sobre mi. 
+Desc=Hola! Soy el Sacerdote de estas tierras. Si quieres que te resucite escribe /RESUCITAR, o haz doble click sobre mi. 
 Head=3
 Heading=3
 Body=49
@@ -258,7 +257,7 @@ BackUp=0
 [NPC119]
 Name=Sacerdote
 NpcType=1
-Desc=Hola, hijo mio! Soy el sacerdote de estas tierras. Si eres newbie te podre resucitar, solo necesitas tipear /RESUCITAR o hacer doble click sobre mi cabeza.
+Desc=Hola! Soy el sacerdote de estas tierras. Si eres newbie te podre resucitar, solo necesitas tipear /RESUCITAR o hacer doble click sobre mi cabeza.
 Head=3
 Heading=3
 Body=49
@@ -279,7 +278,7 @@ BackUp=0
 [NPC72]
 Name=Tancredo de Hauteville, soberano de Banderbill
 NpcType=5
-Desc=Saludos ciudadano, soy Tancredo de Hauteville, nuevo soberano de Banderbill. Mi deber es mantener el nuevo orden del Imperio. Si deseas unirte a mis filas y ayudarme di /ENLISTAR.
+Desc=Saludos, soy Tancredo de Hauteville, nuevo soberano de Banderbill. Mi deber es mantener el nuevo orden del Imperio. Si deseas unirte a mis filas y ayudarme di /ENLISTAR.
 Head=510
 Heading=3
 Body=409
@@ -297,7 +296,7 @@ BackUp=0
 [NPC98]
 Name=Demonio Legionario
 NpcType=5
-Desc=Si deseas unirte a la Legion Oscura escribe /ENLISTAR
+Desc=Si deseas unirte a las fuerzas del CAOS /ENLISTAR
 Head=0
 Heading=3
 Body=405
@@ -321,7 +320,7 @@ BackUp=0
 
 [NPC60] 'Entrenador de Banderbill
 Name=O'Riley de Banderbill
-Desc=Hola amigo! Soy el Maestro de armas de la Milicia de Banderbill, si deseas que traiga una criatura solo debes pedirmelo. (Escribe /ENTRENAR)
+Desc=Hola! Soy el Maestro de armas de la Milicia de Banderbill, si deseas que traiga una criatura solo debes pedirmelo. (Escribe /ENTRENAR)
 NpcType=3
 Head=6
 Heading=3
@@ -349,7 +348,7 @@ BackUp=0
 [NPC108] 'Entrenador de Arkhein
 Name=O'Riley de Arkhein
 NpcType=3
-Desc=Hola amigo! Escribe /ENTRENAR para divertirte con estas almas malvadas que hemos domado para tu diversion en estos festejos.
+Desc=Hola! Escribe /ENTRENAR para divertirte con estas almas malvadas que hemos domado para tu diversion.
 Head=6
 Heading=3
 Body=57
@@ -401,7 +400,7 @@ BackUp=0
 [NPC24]
 Name=Banquero
 NpcType=4
-Desc=Hola, bienvenido a la cadena de finanzas Goliath. Somos la cadena mas grande en Argentum, contamos con bancos en las ciudades mas importantes.
+Desc=Hola, estas en la cadena de finanzas Goliath. Somos la cadena mas grande en Argentum, contamos con bancos en las ciudades mas importantes.
 Head=503
 Heading=3
 Body=201
@@ -419,7 +418,7 @@ BackUp=0
 [NPC104]
 Name=Timbero
 NpcType=7
-Desc=Hola joven! Si deseas apostar escribe /APOSTAR X
+Desc=Hola! Si deseas apostar escribe /APOSTAR X
 Head=9
 Heading=3
 Body=47
@@ -467,7 +466,7 @@ BackUp=1
 [NPC33] 'Talador
 Name=Talador
 NpcType=0
-Desc=Hola muchacho!, si deseas vender o comprar madera escribe /COMERCIAR.
+Desc=Hola !, si deseas vender o comprar madera escribe /COMERCIAR.
 Head=4
 Heading=3
 Body=1
@@ -488,7 +487,7 @@ BackUp=1
 [NPC44] 'Carpintero
 Name=Carpintero
 NpcType=0
-Desc=Hola muchacho!, bienvenido a mi humilde Carpinteria.
+Desc=Hola!, esta es mi humilde Carpinteria.
 Head=2
 Heading=3
 Body=1
@@ -500,16 +499,13 @@ Domable=0
 Alineacion=0
 Comercia=1
 TipoItems=20
-NROITEMS=9
+NROITEMS=6
 Obj1=163-1000 	'Cuchara
 Obj2=167-1000 	'Mueble Rustico
 Obj3=168-1000 	'Silla
 Obj4=198-1000 	'Serrucho
 Obj5=480-10000 	'Flecha
 Obj6=478-1000 	'Arco Simple
-Obj7=663-1000 	'Arco Simple Reforzado
-Obj8=479-1000 	'Arco Compuesto
-Obj9=664-1000 	'Arco Compuesto Reforzado
 BackUp=1
 
 #############################################
@@ -517,7 +513,7 @@ BackUp=1
 [NPC41] 'Pescador Quieto
 Name=Pescador
 NpcType=0
-Desc=Bienvenido al gremio de pescadores! 
+Desc= Aca esta el gremio de pescadores! 
 Head=2
 Heading=3
 Body=3
@@ -540,7 +536,7 @@ BackUp=1
 [NPC58] 'Pescador Movil
 Name=Pescador
 NpcType=0
-Desc=Bienvenido al gremio de pescadores!
+Desc=Gremio de pescadores!
 Head=101
 Heading=3
 Body=3
@@ -584,7 +580,7 @@ BackUp=1
 [NPC80] 'Mercader
 Name=Mercader
 NpcType=0
-Desc=Hola buen amigo, compro y vendo todo tipo de mercancias!!
+Desc=Hola..vendes algo??? compro y vendo todo tipo de mercancias!!
 Head=2
 Heading=3
 Body=3
@@ -597,9 +593,9 @@ Alineacion=0
 Comercia=1
 TipoItems=1000
 NROITEMS=5
-Obj1=1127-1000 'Manual de Liderazgo
-Obj2=1128-1000 'Manual de Supervivencia
-Obj3=1129-1000 'Manual de Navegacion
+Obj1=15-1000 'Daga
+Obj2=64-1000 'Manzana
+Obj3=43-1000 'Botella Agua
 Obj4=866-1000 'Mochila del viajero
 Obj5=865-1000 'Alforja
 BackUp=1
@@ -609,7 +605,7 @@ BackUp=1
 [NPC9] 'Provisiones Newbie Dungeon
 Name=Ralph
 NpcType=0
-Desc=Hola, aventurero, tengo aqui unas mercaderias para saciar tu hambre y sed!.
+Desc=Hola, tengo aqui unas mercaderias para saciar tu hambre y sed!.
 Head=504
 Heading=3
 Body=202
@@ -648,7 +644,7 @@ BackUp=1
 [NPC42] 'Provisiones camino Ulla-Bander
 Name=Antogne
 NpcType=0
-Desc=Hola aventurero! Si estais hambriento habeis venido al lugar apropiador, tengo todo tipo de frutas.
+Desc=Hola! Si teneis hambre habeis venido al lugar apropiador, tengo todo tipo de frutas.
 Head=505
 Heading=3
 Body=202
@@ -687,7 +683,7 @@ BackUp=1
 [NPC114] 'Sastre Armada Real. NO CAMBIAR EL NAME=SR
 Name=SR
 NpcType=0
-Desc=Bienvenido a la Sastreria Real.
+Desc=Soy el Sastre de la Armada Real!
 Head=171
 Heading=3
 Body=174
@@ -720,7 +716,7 @@ BackUp=1
 [NPC159]'Sastre Armada Real Bajos. NO CAMBIAR EL NAME=SR
 Name=SR
 NpcType=0
-Desc=Bienvenido a la Sastreria Real.
+Desc=Soy el Sastre de la Armada Real!
 Head=309
 Heading=3
 Body=175
@@ -750,7 +746,7 @@ BackUp=1
 [NPC115] 'Sastre Legion Oscura. NO CAMBIAR EL NAME=SC
 Name=SC
 NpcType=0
-Desc=AQUI OBTENDRAS TU ARMADURA LEGIONARIA!
+Desc=AQUI OBTENDRAS TU ARMADURA DEL CAOS!
 Head=0
 Heading=3
 Body=69
@@ -782,7 +778,7 @@ BackUp=1
 [NPC160] 'Monturas
 Name=Mario [Vendedor Monturas]
 NpcType=0
-Desc=Ven joven, seguro que te interesa una de mis monturas mas rapidas.
+Desc=Ven, seguro que te interesa una de mis monturas.
 Head=3
 Heading=3
 Body=265
@@ -794,17 +790,15 @@ Domable=0
 Alineacion=0
 Comercia=1
 TipoItems=25
-NROITEMS=2
+NROITEMS=3
 'Obj1=1139-1000 'Montura de Gran Dragon rojo
 'Obj2=1156-1000 'Montura de Gran Dragon dorado
 'Obj3=1157-1000 'Montura de Gran Dragon negro
-Obj1=1159-1000 'Montura de Elefante
-Obj2=1160-1000 'Montura de caballo
 BackUp=1
 
 [NPC161]
 Name=SC
-Desc=AQUI OBTENDRAS TU ARMADURA LEGIONARIA!
+Desc=AQUI OBTENDRAS TU ARMADURA DEL CAOS!
 Head=318
 Body=177
 Heading=3
@@ -842,7 +836,7 @@ Obj10=1037-1000
 [NPC162] 'VendeMagia Basica
 Name=Vito
 NpcType=0
-Desc=Bienvenido a nuestra tienda, yo vendo hechizos que no requieren alto conocimiento de las artes arcanas, son buenos para comenzar.
+Desc=Aqui, yo vendo hechizos que no requieren alto conocimiento de las artes arcanas, son buenos para comenzar.
 Head=110
 Heading=3
 Body=46
@@ -876,7 +870,7 @@ BackUp=1
 [NPC163] 'VendeMagia Avanazada
 Name=Tovi
 NpcType=0
-Desc=Bienvenido a nuestra tienda, yo vendo hechizos que requieren un alto conocimiento de las artes arcanas, unicamente los mejores hechizeros podrar dominarlos.
+Desc=Yo vendo hechizos que requieren un alto conocimiento de las artes arcanas, unicamente los mejores hechizeros podrar dominarlos.
 Head=110
 Heading=3
 Body=46
@@ -956,7 +950,7 @@ Comercia=0
 GiveEXP=3700
 MinHP=2600
 MaxHP=2600
-MaxHIT=100
+MaxHIT=80
 MinHIT=65
 DEF=0
 PoderAtaque=250
@@ -965,9 +959,9 @@ BackUp=0
 NROITEMS=5
 Drop1=416-1 'Piel Oso Polar
 Drop2=12-26 'Oro
-Drop3=480-50 'Flechas
+Drop3=480-30 'Flechas
 Drop4=479-1 'Arco Compuesto
-Drop5=38-100 'Pociones Rojas
+Drop5=38-25 'Pociones Rojas
 
 [NPC166]
 Name=Gorila Blanco
@@ -994,8 +988,8 @@ PoderEvasion=145
 BackUp=0
 NROITEMS=5
 Drop1=12-1200 'Oro
-Drop2=38-100 'Pociones Rojas
-Drop3=12-7500 'Oro
+Drop2=38-50 'Pociones Rojas
+Drop3=12-2500 'Oro
 Drop4=551-50 'flecha +1
 Drop5=664-1 'arco compuesto reforzado
 
@@ -1004,7 +998,7 @@ Drop5=664-1 'arco compuesto reforzado
 [NPC167] 'npc gobernador de totem
 Name=Gobernador de Aldea Totem
 NpcType=11
-Desc=Hola, soy el gobernador de Aldea Totem Bienvenido a nuestra aldea! Escribe /Hogar para obtener la ciudadania.
+Desc=Hola, soy el gobernador de Aldea Totem,Gracias por venir a nuestra aldea! Escribe /Hogar para obtener la ciudadania.
 Head=0
 Ciudad=9
 Heading=3
@@ -1025,7 +1019,7 @@ BackUp=0
 [NPC168] 'npc gobernador de ciudad perdida
 Name=Gobernador de Ciudad Perdida
 NpcType=11
-Desc=Hola, soy el gobernador de Ciudad Perdida Bienvenido a nuestra ciudad! Escribe /Hogar para obtener la ciudadania.
+Desc=Ehm... como as llegado hasta aqui???...Bienvenido a nuestra ciudad! Escribe /Hogar para obtener la ciudadania.
 Head=0
 Ciudad=8
 Heading=3
@@ -1047,7 +1041,7 @@ BackUp=0
 [NPC169] 'npc gobernador de ciudad perdida
 Name=Gobernador de Ciudad Gotland
 NpcType=11
-Desc=Hola, soy el gobernador de Ciudad Gotland Bienvenido a nuestra ciudad! Escribe /Hogar para obtener la ciudadania.
+Desc=Hola, soy el gobernador de Ciudad Gotland Gracias por venir a nuestra ciudad! Escribe /Hogar para obtener la ciudadania.
 Head=0
 Ciudad=7
 Heading=3
@@ -1065,7 +1059,7 @@ BackUp=0
 
 [NPC120] 'Sastre Razas (humanos mujer)
 Name=Ireth
-Desc=Bienvenido amigo, vendo ropajes para MUJERES HUMANAS.
+Desc=Tengo las mejores vestimentas para mujeres humanas!
 Head=71
 Heading=3
 Body=254
@@ -1077,7 +1071,7 @@ Domable=0
 Alineacion=0
 Comercia=1
 TipoItems=3
-NROITEMS=15
+NROITEMS=13
 Obj1=879-1000 'Vestido Bordado de Gala (H/E/EO-M)
 Obj2=880-1000 'Tunica del Oraculo (H/E/EO-M)
 Obj3=884-1000 'Cota de Anillas Compuesta (H/E/EO-M)
@@ -1091,15 +1085,13 @@ Obj10=896-1000 'Tunica de Morgana (H/E/EO-M)
 Obj11=899-1000 'Cota de Peto Liso (H/E/EO-M)
 Obj12=900-1000 'Anillas Con Manto Desgastado (H/E/EO-M)
 Obj13=901-1000 'Coraza Compuesta de Mujer (H/E/EO-M)
-Obj14=902-1000 'Cota de Mallas Enteriza (H/E/EO-M)
-Obj15=904-1000 'Placas Combinadas (H/E/EO-M)
 BackUp=1
 
 ##############################################
 
 [NPC121] 'Sastre Razas (humanos hombres)
 Name=Isaac
-Desc=Buscas ropas para HOMBRES HUMANOS? Entonces has hecho bien en acudir a mi.
+Desc=Buscas ropas para HUMANOS? Entonces has hecho bien en acudir a mi.
 Head=7
 Heading=3
 Body=240
@@ -1111,21 +1103,20 @@ Domable=0
 Alineacion=0
 Comercia=1
 TipoItems=3
-NROITEMS=7
+NROITEMS=6
 Obj1=882-1000 'Anillas Livianas de Aventurero (H/E/EO)
 Obj2=887-1000 'Cotas de Manto Marron (H/E/EO)
 Obj3=888-1000 'Brial del Bosque (H/E/EO)
 Obj4=889-1000 'Anillas Con Manto Verde (H/E/EO)
 Obj5=890-1000 'Armadura de Cuero de Oso Pardo (H/E/EO)
 Obj6=897-1000 'Cota de Piquero (H/E/EO)
-Obj7=903-1000 'Armadura de Campeon (H/E/EO)
 BackUp=1
 
 ##############################################
 
 [NPC122] 'Sastre Razas (gnomos varon)
 Name=Nelvi
-Desc=Poseo una gran cantidad de ropajes para los astutos GNOMOS, Deseas algo en particular?
+Desc=Poseo una gran cantidad de ropajes para la raza GNOMOS, Deseas algo en particular?
 Head=403
 Heading=3
 Body=294
@@ -1137,7 +1128,7 @@ Domable=0
 Alineacion=0
 Comercia=1
 TipoItems=3
-NROITEMS=20
+NROITEMS=19
 Obj1=908-1000 'Vestimentas de Pescador (E/G)
 Obj2=910-1000 'Atuendo de Gnomo (E/G)
 Obj3=911-1000 'Vestimenta Bordo de Poblador (E/G)
@@ -1157,14 +1148,13 @@ Obj16=927-1000 'Alifafe de Lobo (E/G)
 Obj17=928-1000 'Barragan de Cazador (E/G)
 Obj18=929-1000 'Barragan Compuesto (E/G)
 Obj19=930-1000 'Toga de Aprendiz (E/G)
-Obj20=932-1000 'Sotana de Gran Hechicero (E/G)
 BackUp=1
 
 ##############################################
 
 [NPC123] 'Sastre Razas (gnomos mujer y varon)
 Name=Aile
-Desc=Bienvenido, vendo ropas para los hermosos GNOMOS de estas tierras.
+Desc=Vendo ropas para los hermosos GNOMOS de estas tierras.
 Head=473
 Heading=3
 Body=288
@@ -1176,7 +1166,7 @@ Domable=0
 Alineacion=0
 Comercia=1
 TipoItems=3
-NROITEMS=15
+NROITEMS=13
 Obj1=909-1000 'Vestido de Novia (E/G-M)
 Obj2=914-1000 'Ropaje de Aldeana (E/G-M)
 Obj3=925-1000 'Peto de Gladiadora (E/G-M)
@@ -1185,13 +1175,11 @@ Obj5=931-1000 'Vestido Elegante Purpura (E/G)
 Obj6=933-1000 'Cota Liviana Verde (E/G-M)
 Obj7=935-1000 'Cotas con Peto Compuesto (E/G-M)
 Obj8=936-1000 'Tunica de Gran Hechicera (E/G-M)
-Obj9=938-1000 'Traje de Bruja (E/G-M)
-Obj10=941-1000 'Traje Seductor de Pitonisa (E/G-M)
-Obj11=942-1000 'Vestido de Gala Turquesa (E/G-M)
-Obj12=934-1000 'Cotas Livianas (E/G)
-Obj13=937-1000 'Cota de Peto Purpura (E/G)
-Obj14=939-1000 'Tunica de Gala Roja (E/G)
-Obj15=940-1000 'Cota de Mallas Enteriza (E/G)
+Obj9=941-1000 'Traje Seductor de Pitonisa (E/G-M)
+Obj10=942-1000 'Vestido de Gala Turquesa (E/G-M)
+Obj11=934-1000 'Cotas Livianas (E/G)
+Obj12=937-1000 'Cota de Peto Purpura (E/G)
+Obj13=939-1000 'Tunica de Gala Roja (E/G)
 BackUp=1
 
 ##############################################
@@ -1231,7 +1219,7 @@ BackUp=1
 
 [NPC125] 'Sastre Razas (enanos)
 Name=Torke
-Desc=Solo tengo ropajes para ENANOS, si no las puedes usar, vete de aqui!
+Desc=Solo tengo ropajes para los mas pequeños de argentum, si no las puedes usar, vete de aqui!
 Head=371
 Heading=3
 Body=306
@@ -1243,7 +1231,7 @@ Domable=0
 Alineacion=0
 Comercia=1
 TipoItems=3
-NROITEMS=18
+NROITEMS=12
 Obj1=957-1000 'Vestido de Enana (E/G-M)
 Obj2=958-1000 'Vestimenta Comun (E/G)
 Obj3=959-1000 'Ropa de Carpintero Enano (E/G)
@@ -1256,12 +1244,6 @@ Obj9=965-1000 'Antigua Armadura Dorada (E/G)
 Obj10=966-1000 'Alifafe de Pirata (E/G)
 Obj11=967-1000 'Ropas de Buscador (E/G)
 Obj12=968-1000 'Armadura Grabada Completa (E/G)
-Obj13=969-1000 'Tunica Dorada de Gala (E/G)
-Obj14=970-1000 'Armadura de Placas Livianas Thor (E/G)
-Obj15=971-1000 'Armadura Metal Oscuro (E/G)
-Obj16=972-1000 'Tunica de Mahal (E/G)
-Obj17=973-1000 'Armadura de Placas Livianas Thor (E/G-M)
-Obj18=974-1000 'Capa de Monje Cocida con Mithril (E/G)
 BackUp=1
 
 ##############################################
@@ -1297,7 +1279,7 @@ BackUp=1
 [NPC36] 'Borracho
 Name=Astor
 NpcType=0
-Desc=orcoszhh zson todsh orcshhh..hip..
+Desc=orcoszhh zson todsh orcshhh..hip..GLUPGLUP
 Head=2140
 Body=285
 Heading=3
@@ -1316,7 +1298,7 @@ Comercia=0
 [NPC1]
 Name=Aldeano
 NpcType=0
-Desc=Hola forastero! Bienvenido a nuestra humilde aldea.
+Desc=Hola! Bienvenido a nuestra humilde aldea.
 Head=0
 Heading=3
 Body=18
@@ -1332,7 +1314,7 @@ BackUp=0
 #############################################
 
 [NPC10] 'npc adorno
-Name=Bardo
+Name=Lenny
 NpcType=0
 Desc=Hola, os gustaria oir una hermosa melodia?!.
 Head=0
@@ -1352,7 +1334,7 @@ BackUp=0
 [NPC11] 'npc adorno
 Name=Aldeana
 NpcType=0
-Desc=Hola forastero! Bienvenido a nuestra humilde aldea.
+Desc=Sera verdad eso que dicen de el portal??
 Head=0
 Heading=3
 Body=19
@@ -1370,7 +1352,7 @@ BackUp=0
 [NPC13] 'npc gobernador de ulla
 Name=Gobernador de Ulla
 NpcType=11
-Desc=Hola, soy el gobernador de Ullathorpe Bienvenido a nuestra aldea! Escribe /Hogar para obtener la ciudadania.
+Desc=Hola, soy el gobernador de Ullathorpe,Esta es nuestra aldea! Escribe /Hogar para obtener la ciudadania.
 Head=0
 Ciudad=1
 Heading=3
@@ -1389,7 +1371,7 @@ BackUp=0
 [NPC118]
 Name=Alarnick, antiguo soberano de Banderbill
 NpcType=0
-Desc=Esto no es digno de un soberano! Exijo me devuelvan mi trono y me saquen de esta pocilga!...Maldito Tancredo, me las pagaras!
+Desc=Esto no es digno..Exijo me devuelvan mi trono... me saquen de esta pocilga!...Maldito Tancredo!! me las pagaras!
 Head=101
 Heading=3
 Body=348
@@ -1407,7 +1389,7 @@ BackUp=0
 [NPC128] 'Pregonero
 Name=Nelmasil - [Pregonero Ulla]
 NpcType=0
-Desc=El pueblo de Ullathorpe en contra del alcalde... Todos aquellos que esten en contra se presenten en el castillo del rey en Banderbill!
+Desc=No estoy loco....vi un portal por el bosque dork.....
 Head=0
 Body=410
 Heading=3
@@ -1458,7 +1440,7 @@ Comercia=0
 [NPC131] 'Viajero
 Name=Linderoth
 NpcType=0
-Desc=Hey tu, que me andas mirando? He matado Medusas en peligrosos Dungeons desde que era un joven...
+Desc=No soy un comun viajero,yo viaje al portal del que tanto se habla.
 Head=503
 Body=342
 Heading=3
@@ -1475,7 +1457,7 @@ Comercia=0
 [NPC132] 'Sujeto sospechoso
 Name= Sebastien
 NpcType=0
-Desc=EH, EH?!! no! Yo no he hecho nada! Vete si no quieres problemas!
+Desc=EH, EH?!! no! Yo no he hecho nada!El portal aparecio solo y se fue solo!
 Head=110
 Body=349
 Heading=3
@@ -1509,7 +1491,7 @@ Comercia=0
 [NPC134] 'Granjero desesperado
 Name=Vuragon
 NpcType=0
-Desc=Estoy hasta la coronilla de que se escape mi vaca! ya recibira su merecido cuando la encuentre.
+Desc=Estoy hasta la coronilla de que se escape mi vaca!
 Head=503
 Body=3
 Heading=3
@@ -1524,9 +1506,9 @@ Comercia=0
 ##############################################
 
 [NPC135] 'Criminal de servicio comunitario
-Name=Belial
+Name=Ciudadano comun
 NpcType=0
-Desc=Maldito seas Tancredo de Hauteville! Me obligan limpiar esta mugrosa ciudad por haber hecho algo que no hice!!!
+Desc=Shh no digas nada,pero corren rumores acerca de un teleport en el bosque dork!
 Head=101
 Body=57
 Heading=3
@@ -1540,10 +1522,10 @@ Comercia=0
 
 ##############################################
 
-[NPC136] ' Asesino maniatico
+[NPC136] ' maniatico
 Name=Efral
 NpcType=0
-Desc=Que miras tu? Acaso quieres sufrir?
+Desc=Que miras tu?saves ir al teleport del bosque dork?DIMELO! COMO???ES VERDAD???
 Head=32
 Body=46
 Heading=3
@@ -1560,7 +1542,7 @@ Comercia=0
 [NPC137] 'Mendigo
 Name=Manrique - [Mendigo Ulla]
 NpcType=0
-Desc=El Rey es avaro y sus terratenientes tambien, dame algo por favor, no seas como el...
+Desc=Lo perdi todo al entrar al telleport del bosque dork...dame algo para intentar volver!tengo que volver!!
 Head=0
 Body=411
 Heading=3
@@ -1740,7 +1722,7 @@ BackUp=1
 [NPC147]Pregonero Fiesta de la Cerveza.
 Name=Dugh Dhail
 NpcType=0
-Desc=Hola forastero! Pronto se celebrara un nuevo aniversario de la creacion de la Cerveza. Acudiras a los festejos?
+Desc=Hola! Pronto se celebrara un nuevo aniversario de la creacion de la Cerveza. Acudiras a los festejos?
 Head=0
 Heading=3
 Body=410
@@ -1760,7 +1742,7 @@ BackUp=1
 [NPC8] 'Provisiones Ulla
 Name=Thorkis
 NpcType=0
-Desc=Hooooola jovencito, tengo las mejores provisiones de Ullathorpe!!
+Desc=Hooooola, tengo las mejores provisiones de Ullathorpe!!
 Head=504
 Heading=3
 Body=202
@@ -1799,7 +1781,7 @@ BackUp=1
 [NPC7] 'Herrero Ulla
 Name=Herrero
 NpcType=0
-Desc=Bienvenido, rata de alcantarilla, soy el Herrero de Ullathorpe...tengo algunas armas que pueden ayudarte en tus viajes.
+Desc=Soy el Herrero de Ullathorpe...tengo algunas armas que pueden ayudarte en tus viajes.
 Head=505
 Heading=3
 Body=199
@@ -1811,7 +1793,7 @@ Domable=0
 Alineacion=0
 Comercia=1
 TipoItems=2
-NROITEMS=18
+NROITEMS=11
 Obj1=389-1000 	'Martillo de Herrero
 Obj2=1009-10000 'Cuchillas
 Obj3=15-1000 	'Daga
@@ -1821,15 +1803,8 @@ Obj6=19-1000 	'Espada Dos Manos
 Obj7=9-1000 	'Horquilla
 Obj8=164-1000 	'Espada Corta
 Obj9=2-1000 	'Espada Larga
-Obj10=125-1000 	'Sable
-Obj11=123-1000 	'Vikinga
-Obj12=124-1000 	'Katana
-Obj13=126-1000 	'Hacha Larga de Guerra
-Obj14=159-1000 	'Hacha de Barbaro
-Obj15=990-1000 	'Mazo del Juicio 
-obj16=753-1000 'Mayal Triple
-obj17=873-1000 'Guantes de Hurto
-obj18=1036-1000 'Guantes de Lucha
+Obj10=123-1000 	'Vikinga
+obj11=753-1000 'Mayal Triple
 BackUp=1
 
 #############################################
@@ -1837,7 +1812,7 @@ BackUp=1
 [NPC46] 'VendeMagia Ulla
 Name=Mago
 NpcType=0
-Desc=Bienvenido a mi tienda de Ullathorpe... Tengo algunos hechizos que podrian interesarte.
+Desc=Gracias por venir a mi tienda de Ullathorpe... Tengo algunos hechizos que podrian interesarte.
 Head=110
 Heading=3
 Body=46
@@ -1871,7 +1846,7 @@ BackUp=1
 [NPC12] 'Sastre Ulla (hombres)
 Name=Sastre
 NpcType=0
-Desc=Hola forastero! Soy el Sastre de Ullathorpe, Bienvenido!
+Desc=Hola! Soy el Sastre de Ullathorpe!
 Head=9
 Heading=3
 Body=50
@@ -1900,7 +1875,7 @@ BackUp=1
 [NPC19] 'Sastre Ulla (mujeres)
 Name=Sastre
 NpcType=0
-Desc=Bienvenida Viajera! Tengo hermosas vestimentas para ofrecerte...
+Desc=Tengo hermosas vestimentas para ofrecerte...
 Head=70
 Heading=3
 Body=80
@@ -1972,16 +1947,13 @@ NROITEMS=13
 Obj1=30-1000 'Armadura de Cuero
 Obj2=529-1000 'Armadura de Cuero (H/E/EO-M)
 Obj3=668-1000 'Armadura de Cuero (E/G)
-Obj4=1001-1000 'Casco de Aguila
-Obj5=1002-1000 'Casco de Lobo
-Obj6=132-1000 'Casco de Hierro
-Obj7=370-1000 'Capucha de Cazador
-Obj8=903-1000 'Armadura de Campeon (H/E/EO)
-Obj9=889-1000 'Anillas Con Manto Verde (H/E/EO)
-Obj10=359-1000 'Cota de Mallas
-Obj11=499-1000 'Cota de Mallas (H/E/EO-M)
-Obj12=667-1000 'Cota de Mallas (E/G)
-Obj13=404-1000 'Escudo de Tortuga
+Obj4=370-1000 'Capucha de Cazador
+Obj5=903-1000 'Armadura de Campeon (H/E/EO)
+Obj6=889-1000 'Anillas Con Manto Verde (H/E/EO)
+Obj7=359-1000 'Cota de Mallas
+Obj8=499-1000 'Cota de Mallas (H/E/EO-M)
+Obj9=667-1000 'Cota de Mallas (E/G)
+Obj10=404-1000 'Escudo de Tortuga
 BackUp=1
 
 
@@ -1992,7 +1964,7 @@ BackUp=1
 [NPC15] 'Provisiones Nix
 Name=Thorkis
 NpcType=0
-Desc=Que tal amigo! Entra, pues tengo las mejores provisiones de todo Argentum!
+Desc=Que tal! Entra, pues tengo las mejores provisiones de todo Argentum!
 Head=504
 Heading=3
 Body=202
@@ -2031,7 +2003,7 @@ BackUp=1
 [NPC37] 'Herrero Nix
 Name=Herrero
 NpcType=0
-Desc=Bienvenido, rata de alcantarilla, soy el Herrero de Nix, tengo algunas armas que pueden ayudarte en tus viajes.
+Desc=Que tal??, rata de alcantarilla, soy el Herrero de Nix, tengo algunas armas que pueden ayudarte en tus viajes.
 Head=505
 Heading=3
 Body=199
@@ -2047,21 +2019,19 @@ NROITEMS=18
 Obj1=389-1000 	'Martillo de Herrero
 Obj2=1009-10000 'Cuchillas
 Obj3=15-1000 	'Daga
-Obj4=619-1000 	'Daga Envenenada
-Obj5=165-1000 	'Daga +1
-Obj6=19-1000 	'Espada Dos Manos
-Obj7=9-1000 	'Horquilla
-Obj8=164-1000 	'Espada Corta
-Obj9=2-1000 	'Espada Larga
-Obj10=125-1000 	'Sable
-Obj11=123-1000 	'Vikinga
-Obj12=124-1000 	'Katana
-Obj13=126-1000 	'Hacha Larga de Guerra
-Obj14=159-1000 	'Hacha de Barbaro
-Obj15=990-1000 	'Mazo del Juicio 
-obj16=753-1000 'Mayal Triple
-obj17=873-1000 'Guantes de Hurto
-obj18=1036-1000 'Guantes de Lucha
+Obj4=398-1000 	'Garrote
+Obj5=19-1000 	'Espada Dos Manos
+Obj6=9-1000 	'Horquilla
+Obj7=164-1000 	'Espada Corta
+Obj8=2-1000 	'Espada Larga
+Obj9=125-1000 	'Sable
+Obj10=123-1000 	'Vikinga
+Obj11=124-1000 	'Katana
+Obj12=126-1000 	'Hacha Larga de Guerra
+Obj13=159-1000 	'Hacha de Barbaro
+Obj14=990-1000 	'Mazo del Juicio 
+obj15=873-1000 'Guantes de Hurto
+obj16=1036-1000 'Guantes de Lucha
 BackUp=1
 
 #############################################
@@ -2069,7 +2039,7 @@ BackUp=1
 [NPC47] 'VendeMagia NIX
 Name=Mago
 NpcType=0
-Desc=Bienvenido a mi tienda de Nix... Tengo algunos hechizos que podrian interesarte.
+Desc=Que tal?a mi tienda de Nix... Tengo algunos hechizos que podrian interesarte.
 Head=110
 Heading=3
 Body=46
@@ -2105,7 +2075,7 @@ BackUp=1
 [NPC21] 'Sastre Nix (hombres)
 Name=Sastre
 NpcType=0
-Desc=Hola forastero! Soy el Sastre de Nix, Bienvenido!
+Desc=Hola! Soy el Sastre de Nix, Bienvenido!
 Head=7
 Heading=3
 Body=50
@@ -2134,7 +2104,7 @@ BackUp=1
 [NPC22] 'Sastre Nix (mujeres)
 Name=Sastre
 NpcType=0
-Desc=Bienvenida Viajera! Entra a mi tienda, Tengo las mejores prendas de Nix!
+Desc=Entra a mi tienda, Tengo las mejores prendas de Nix!
 Head=71
 Heading=3
 Body=80
@@ -2212,20 +2182,18 @@ Domable=0
 Alineacion=0
 Comercia=1
 TipoItems=3
-NROITEMS=13
+NROITEMS=12
 Obj1=30-1000 'Armadura de Cuero
 Obj2=529-1000 'Armadura de Cuero (H/E/EO-M)
 Obj3=668-1000 'Armadura de Cuero (E/G)
 Obj4=1001-1000 'Casco de Aguila
 Obj5=1002-1000 'Casco de Lobo
-Obj6=132-1000 'Casco de Hierro
-Obj7=370-1000 'Capucha de Cazador
-Obj8=903-1000 'Armadura de Campeon (H/E/EO)
-Obj9=889-1000 'Anillas Con Manto Verde (H/E/EO)
-Obj10=359-1000 'Cota de Mallas
-Obj11=499-1000 'Cota de Mallas (H/E/EO-M)
-Obj12=667-1000 'Cota de Mallas (E/G)
-Obj13=404-1000 'Escudo de Tortuga
+Obj6=903-1000 'Armadura de Campeon (H/E/EO)
+Obj7=889-1000 'Anillas Con Manto Verde (H/E/EO)
+Obj8=359-1000 'Cota de Mallas
+Obj9=499-1000 'Cota de Mallas (H/E/EO-M)
+Obj10=667-1000 'Cota de Mallas (E/G)
+Obj11=128-1000 'Escudo Hierro Debil
 BackUp=1
 
 
@@ -2303,7 +2271,7 @@ Obj12=124-1000 	'Katana
 Obj13=126-1000 	'Hacha Larga de Guerra
 Obj14=159-1000 	'Hacha de Barbaro
 Obj15=990-1000 	'Mazo del Juicio 
-obj16=753-1000 'Mayal Triple
+obj16=129-1000 'Hacha dos filos
 obj17=873-1000 'Guantes de Hurto
 obj18=1036-1000 'Guantes de Lucha
 BackUp=1
@@ -2313,7 +2281,7 @@ BackUp=1
 [NPC51] 'VendeMagia Bander
 Name=Mago
 NpcType=0
-Desc=Bienvenido a mi Tienda de Banderbill... Tengo algunos hechizos que podrian interesarte.
+Desc=ven a mi Tienda de Banderbill... Tengo algunos hechizos que podrian interesarte.
 Head=110
 Heading=3
 Body=46
@@ -2355,7 +2323,7 @@ BackUp=1
 [NPC25] 'Sastre Bander (hombres)
 Name=Sastre
 NpcType=0
-Desc=Bienvenido a la Sastreria de Banderbill! En que lo puedo ayudar?
+Desc=Ven a la Sastreria de Banderbill! En que lo puedo ayudar?
 Head=7
 Heading=3
 Body=56
@@ -2468,20 +2436,14 @@ Domable=0
 Alineacion=0
 Comercia=1
 TipoItems=3
-NROITEMS=13
-Obj1=30-1000 'Armadura de Cuero
-Obj2=529-1000 'Armadura de Cuero (H/E/EO-M)
-Obj3=668-1000 'Armadura de Cuero (E/G)
-Obj4=1001-1000 'Casco de Aguila
-Obj5=1002-1000 'Casco de Lobo
-Obj6=132-1000 'Casco de Hierro
-Obj7=370-1000 'Capucha de Cazador
-Obj8=903-1000 'Armadura de Campeon (H/E/EO)
-Obj9=889-1000 'Anillas Con Manto Verde (H/E/EO)
-Obj10=359-1000 'Cota de Mallas
-Obj11=499-1000 'Cota de Mallas (H/E/EO-M)
-Obj12=667-1000 'Cota de Mallas (E/G)
-Obj13=404-1000 'Escudo de Tortuga
+NROITEMS=7
+Obj1=131-1000 'Casco Completo
+Obj2=132-1000 'Casco semi completo
+Obj3=903-1000 'Armadura de Campeon (H/E/EO)
+Obj4=195-1000 'Armadura Placas Completa
+Obj5=243-1000 'Armadura Placas Completa (E/G)
+Obj6=130-1000 'Escudo de Hierro Reforzado
+Obj7=625-1000 'Escudo de Hierro Completo
 BackUp=1
 
 
@@ -2548,14 +2510,14 @@ Obj1=389-1000 	'Martillo de Herrero
 Obj2=1009-10000 'Cuchillas
 Obj3=15-1000 	'Daga
 Obj4=619-1000 	'Daga Envenenada
-Obj5=165-1000 	'Daga +1
+Obj5=398-1000 	'Garrote
 Obj6=19-1000 	'Espada Dos Manos
 Obj7=9-1000 	'Horquilla
 Obj8=164-1000 	'Espada Corta
 Obj9=2-1000 	'Espada Larga
 Obj10=125-1000 	'Sable
 Obj11=123-1000 	'Vikinga
-Obj12=124-1000 	'Katana
+Obj12=399-1000 	'Cimitarra
 Obj13=126-1000 	'Hacha Larga de Guerra
 Obj14=159-1000 	'Hacha de Barbaro
 Obj15=990-1000 	'Mazo del Juicio 
@@ -2674,7 +2636,7 @@ Obj15=943-1000 'Sobrevesta Elfica (H/E/EO)
 [NPC39] 'Sastre Lindos (enanos)
 Name=Sastre
 NpcType=0
-Desc=Hola forastero! confeccionamos las mejores ropas de la zona.
+Desc=Hola! confeccionamos las mejores ropas de la zona.
 Head=304
 Heading=3
 Body=135
@@ -2743,7 +2705,7 @@ BackUp=1
 [NPC103] 'Provisiones Arghal
 Name=Carahuel
 NpcType=0
-Desc=Hola, amigo! Estas buscando algo para llenar tu estomago? Creo que puedo ayudarte...
+Desc=Hola! Estas buscando algo para llenar tu estomago? Creo que puedo ayudarte...
 Head=474
 Heading=3
 Body=309
@@ -2782,7 +2744,7 @@ BackUp=1
 [NPC57] 'Provisiones Arghal (Taberna)
 Name=Bhoemond
 NpcType=0
-Desc= Sea bienvenido a la famosa Taberna de Arghal!, Aqui podra saciarse con la mejor comida y la mejor bebida de toda la zona.
+Desc=la famosa Taberna de Arghal!, Aqui podra saciarse con la mejor comida y la mejor bebida de toda la zona.
 Head=17
 Heading=3
 Body=100
@@ -2859,7 +2821,7 @@ BackUp=1
 
 [NPC59] 'VendeMagia Arghal
 Name=Mago
-Desc=Bienvenido, neofito a esta, a mi escuela de Magia, ubicada en el corazon mismo de la ciudad de Arghal.
+Desc=Mi escuela de Magia, ubicada en el corazon mismo de la ciudad de Arghal.
 Head=20
 Heading=3
 Body=34
@@ -2928,7 +2890,7 @@ BackUp=1
 [NPC64] 'Sastre Arghal (mujeres)
 Name=Virgin
 NpcType=0
-Desc=Bienvenida jovencita! Soy quien hace los mejores atuendos femeninos de todo Arghal, ven y prueba mi mercaderia.
+Desc=Soy quien hace los mejores atuendos femeninos de todo Arghal, ven y prueba mi mercaderia.
 Head=70
 Heading=3
 Body=80
@@ -3105,7 +3067,7 @@ BackUp=1
 
 [NPC61] 'VendeMagia Arkhein
 Name=Mago
-Desc=Bienvenido a mi tienda de Arkhein... Tengo algunos hechizos que podrian interesarte.
+Desc=Ven a mi tienda de Arkhein... Tengo algunos hechizos que podrian interesarte.
 Head=110
 Heading=3
 Body=46
@@ -3142,7 +3104,7 @@ BackUp=1
 [NPC28] 'Sastre Arkhein (hombres)
 Name=Sastre
 NpcType=0
-Desc=Entrad Valiente Viajero! En la Sastreria de Arkhein estan las mejores ropas del continente.
+Desc=Entrad! En la Sastreria de Arkhein estan las mejores ropas del continente.
 Head=15
 Heading=3
 Body=56
@@ -3282,7 +3244,7 @@ BackUp=1
 [NPC53] 'Provisiones Esperanza
 Name=Roksar
 NpcType=0
-Desc=Hola, buen viajero! Dispongo de todo tipo de provisiones... Que deseas?
+Desc=Hola! Dispongo de todo tipo de provisiones... Que deseas?
 Head=505
 Heading=3
 Body=202
@@ -3375,7 +3337,7 @@ Hostile=0
 Domable=0
 Alineacion=0
 Comercia=1
-TipoItems=24
+TipoItems=23
 NROITEMS=24
 Obj1=363-1000 'Ataque de Hambre
 Obj2=470-1000 'Fuerza
@@ -3400,7 +3362,6 @@ Obj20=659-1000 'Baston nudoso
 Obj21=696-1000 'Laud Magico
 Obj22=208-1000 'Flauta Magica
 Obj23=531-1000 'Descarga Electrica
-Obj24=205-1000 'Proyectil magico
 BackUp=1
 
 #############################################
@@ -3408,7 +3369,7 @@ BackUp=1
 [NPC109] 'Sastre Ciudad Perdida (hombres)
 Name=Sastre
 NpcType=0
-Desc=Bienvenidos a la Gran Sastreria de la Ciudad ! Aqui encontraran las ropas mas exoticas del mundo...
+Desc=Estas en la Gran Sastreria de la Ciudad ! Aqui encontraran las ropas mas exoticas del mundo...
 Head=406
 Heading=3
 Body=130
@@ -3650,7 +3611,7 @@ BackUp=0
 [NPC106] 'Guardia Armada (Arquera)
 Name=Arquera Real
 NpcType=2
-Desc=Ningun criminal escapara de mi punteria.
+Desc=Ningun criminal escapara de mis flechas.
 Head=172
 Heading=3
 Body=131
@@ -3682,7 +3643,7 @@ BackUp=0
 [NPC81] 'Guardia Armada (Sacerdote)
 Name=Sacerdote Imperial
 NpcType=2
-Desc=Ohhh hijo mio!! que la llama de la virtud arda en tu corazon!!!
+Desc=Ohhh!! que la llama de la virtud arda en tu corazon!!!
 Head=4
 Heading=3
 Body=101
@@ -3713,7 +3674,7 @@ BackUp=0
 [NPC82] 'Guardia Armada (Sacerdote II)
 Name=Sacerdote Imperial
 NpcType=2
-Desc=Ohhh hijo mio!! que la llama de la virtud arda en tu corazon!!!
+Desc=Ohhh!! que la llama de la virtud arda en tu corazon!!!
 Head=5
 Heading=3
 Body=101
@@ -3744,7 +3705,7 @@ BackUp=0
 [NPC83] 'Guardia Armada (Druida)
 Name=Druida Imperial
 NpcType=2
-Desc=Ohhh hijo mio!! que la llama de la virtud arda en tu corazon!!!
+Desc=Ohhh!! que la llama de la virtud arda en tu corazon!!!
 Head=101
 Heading=3
 Body=56
@@ -3776,7 +3737,7 @@ BackUp=0
 [NPC84] 'Guardia Armada (Druida II)
 Name=Druida Imperial
 NpcType=2
-Desc=Ohhh hijo mio!! que la llama de la virtud arda en tu corazon!!!
+Desc=Ohhh!! que la llama de la virtud arda en tu corazon!!!
 Head=102
 Heading=3
 Body=56
@@ -3808,7 +3769,7 @@ BackUp=0
 [NPC85] 'Guardia Armada (Druida III)
 Name=Druida Imperial
 NpcType=2
-Desc=Ohhh hijo mio!! que la llama de la virtud arda en tu corazon!!!
+Desc=Ohhh!! que la llama de la virtud arda en tu corazon!!!
 Head=103
 Heading=3
 Body=56
@@ -3840,7 +3801,7 @@ BackUp=0
 [NPC86] 'Guardia Armada (Mago)
 Name=Mago Imperial
 NpcType=2
-Desc=Ohhh hijo mio!! que la llama de la virtud arda en tu corazon!!!
+Desc=Ohhh!! que la llama de la virtud arda en tu corazon!!!
 Head=6
 Heading=3
 Body=130
@@ -3871,7 +3832,7 @@ BackUp=0
 [NPC87] 'guardia armada
 Name=Mago Imperial
 NpcType=2
-Desc=Ohhh hijo mio!! que la llama de la virtud arda en tu corazon!!!
+Desc=Ohhh!! que la llama de la virtud arda en tu corazon!!!
 Head=6
 Heading=3
 Body=128
@@ -3968,7 +3929,7 @@ BackUp=0
 [NPC152] 'npc gobernador de Lindos
 Name=Gobernador de Lindos
 NpcType=11
-Desc=Hola, soy el gobernador de Lindos Bienvenido a nuestra aldea! Escribe /Hogar para obtener la ciudadania.
+Desc=Hola, soy el gobernador de Lindos Gracias por venir a nuestra aldea! Escribe /Hogar para obtener la ciudadania.
 Head=0
 Heading=3
 Body=4
@@ -3987,7 +3948,7 @@ BackUp=0
 [NPC153] 'npc gobernador de Arghal
 Name=Gobernador de Arghal
 NpcType=11
-Desc=Hola, soy el gobernador de Arghal Bienvenido a nuestra aldea! Escribe /Hogar para obtener la ciudadania.
+Desc=Hola, soy el gobernador de Arghal  Gracias por venir nuestra aldea! Escribe /Hogar para obtener la ciudadania.
 Head=0
 Heading=3
 Body=4
@@ -4006,7 +3967,7 @@ BackUp=0
 [NPC158] 'npc gobernador de Arkhein
 Name=Gobernador de Arkhein
 NpcType=11
-Desc=Hola, soy el gobernador de Arkhein Bienvenido a nuestra aldea! Escribe /Hogar para obtener la ciudadania.
+Desc=Hola, soy el gobernador de Arkhein  Gracias por venir a nuestra aldea! Escribe /Hogar para obtener la ciudadania.
 Head=0
 Heading=3
 Body=4
@@ -4195,7 +4156,7 @@ BackUp=1
 [NPC156] 'Vende Armas newbie
 Name=Armas Newbie
 NpcType=0
-Desc=Hola novato, tengo algunas armas que pueden ayudarte en tus aventuras.
+Desc=Hola, tengo algunas armas que pueden ayudarte en tus aventuras.
 Head=505
 Heading=3
 Body=199
@@ -4222,7 +4183,7 @@ BackUp=1
 [NPC157] 'Vende Magia newbie
 Name=Magia Newbie
 NpcType=0
-Desc=Bienvenido a mi tienda. Tengo algunos hechizos que podrian interesarte.
+Desc=Veni a mi tienda. Tengo algunos hechizos que podrian interesarte.
 Head=110
 Heading=3
 Body=46
@@ -4944,7 +4905,7 @@ NROITEMS=5
 Drop1=12-1  ' Oro
 Drop2=12-2  ' Oro
 Drop4=12-15 ' Oro
-Drop5=12-70 ' Oro
+Drop5=12-5 ' Oro
 
 ############################################
 
@@ -4995,9 +4956,9 @@ Hostile=1
 Domable=0
 Alineacion=2
 Comercia=0
-GiveEXP=175
-MinHP=250
-MaxHP=250
+GiveEXP=210
+MinHP=200
+MaxHP=200
 MaxHIT=12
 MinHIT=4
 DEF=20
@@ -5006,11 +4967,11 @@ PoderEvasion=20
 Snd2=33
 Snd3=164
 BackUp=0
-NROITEMS=5
+NROITEMS=4
 Drop1=12-21 'Oro
 Drop2=45-1 'Ropa de Clan
-Drop3=12-50 'Oro
-Drop4=38-30 'Pociones Rojas
+Drop3=12-30 'Oro
+Drop4=38-15 'Pociones Rojas
 
 ############################################
 
@@ -5028,7 +4989,7 @@ Hostile=1
 Domable=0
 Alineacion=2
 Comercia=0
-GiveEXP=47
+GiveEXP=55
 MinHP=50
 MaxHP=50
 MaxHIT=8
@@ -5039,10 +5000,7 @@ PoderEvasion=30
 BackUp=0
 NROITEMS=5
 Drop1=12-8 'Oro
-Drop2=12-8 'Oro
-Drop3=363-1 'Ataque de Hambre
-Drop4=2-2 ' Espada larga
-Drop5=197-1 'Flecha magica
+Drop2=12-9 'Oro
 
 ############################################
 
@@ -5063,17 +5021,14 @@ Comercia=0
 GiveEXP=15
 MinHP=22
 MaxHP=22
-MaxHIT=1
+MaxHIT=2
 MinHIT=1
 DEF=0
 PoderAtaque=10
 PoderEvasion=0
 SND2=103
 BackUp=0
-NROITEMS=5
-Drop3=38-10 'Pociones Rojas
-Drop4=200-1 'Antidoto Magico
-Drop5=202-1 'Toxina
+NROITEMS=0
 
 ############################################
 
@@ -5101,12 +5056,11 @@ PoderAtaque=60
 PoderEvasion=40
 Snd3=142
 BackUp=0
-NROITEMS=5
+NROITEMS=4
 Drop1=12-15 'Oro
 Drop2=12-22 'Oro
 Drop3=15-1 'Daga
-Drop4=132-1 'Casco de Hierro
-Drop5=39-10 'Pociones Verdes
+Drop4=39-10 'Pociones Verdes
 
 ############################################
 
@@ -5127,17 +5081,16 @@ Comercia=0
 GiveEXP=10
 MinHP=15
 MaxHP=15
-MaxHIT=1
+MaxHIT=2
 MinHIT=1
 DEF=0
 PoderAtaque=5
 PoderEvasion=5
 SND3=67
 BackUp=0
-NROITEMS=5
+NROITEMS=2
 Drop1=26-1 'Pollo
 Drop2=12-5 'Oro
-Drop3=12-50 'Oro
 
 ############################################
 
@@ -5155,7 +5108,7 @@ Hostile=1
 Domable=0
 Alineacion=2
 Comercia=0
-GiveEXP=355
+GiveEXP=360
 MinHP=350
 MaxHP=350
 MaxHIT=25
@@ -5166,10 +5119,10 @@ PoderEvasion=35
 SND2=33
 Snd3=164
 BackUp=0
-NROITEMS=5
+NROITEMS=3
 Drop1=12-50 'Oro
-Drop2=38-7 'Pociones Rojas
-Drop3=37-5 'Pociones Azules
+Drop2=38-10 'Pociones Rojas
+Drop3=37-10 'Pociones Azules
 Drop5=395-1 'Llamado Nigromante
 
 ############################################
@@ -5188,7 +5141,7 @@ Hostile=1
 Domable=0
 Alineacion=2
 Comercia=0
-GiveEXP=155
+GiveEXP=165
 MinHP=150
 MaxHP=150
 MaxHIT=18
@@ -5197,11 +5150,8 @@ DEF=19
 PoderAtaque=60
 PoderEvasion=50
 BackUp=0
-NROITEMS=5
+NROITEMS=1
 Drop1=12-25 'Oro
-Drop3=132-1 'Casco de Hierro
-Drop4=126-1 'Hacha Larga de Guerra
-Drop5=380-1 'Invocacion de Ultratumba
 
 ############################################
 
@@ -5219,28 +5169,24 @@ Hostile=1
 Domable=0
 Alineacion=2
 Comercia=0
-GiveEXP=8500
+GiveEXP=6800
 MinHP=5000
 MaxHP=5000
-MaxHIT=300
-MinHIT=250
+MaxHIT=250
+MinHIT=230
 GolpeExacto=1
 DEF=50
 PoderAtaque=380
 PoderEvasion=250
 Snd3=160
 BackUp=0
-NROITEMS=5
-Drop1=12-1000 'Oro
-Drop2=239-1 'Tunica Roja
-Drop3=12-4700 'Oro
-Drop4=981-2 'Piwafwi de Fuego
-Drop5=481-1 'Armadura de Dragon
+NROITEMS=1
+Drop1=12-1200 'Oro
 
 ############################################
 
 [NPC510]
-Name=Aracnido Gigante
+Name=Aracnido
 NpcType=0
 Head=0
 Heading=3
@@ -5254,8 +5200,8 @@ Domable=1530
 Alineacion=2
 Comercia=0
 GiveEXP=1450
-MinHP=1000
-MaxHP=1000
+MinHP=1050
+MaxHP=1050
 MaxHIT=100
 MinHIT=75
 DEF=0
@@ -5263,12 +5209,10 @@ PoderAtaque=150
 PoderEvasion=70
 Veneno=1
 BackUp=0
-NROITEMS=5
+NROITEMS=3
 Drop1=12-175 'Oro
 Drop2=38-30 ' Pociones Rojas
 Drop3=164-1 'Espada Corta
-Drop4=480-110 'Flechas
-Drop5=206-1 'Paralizar
 
 ############################################
 
@@ -5298,7 +5242,7 @@ PoderEvasion=210
 snd2=78
 BackUp=0
 NROITEMS=5
-Drop1=12-1500 'Oro
+Drop1=12-1000 'Oro
 Drop2=37-55 'Pociones Azul
 Drop3=401-1 'Martillo de Guerra
 Drop5=697-1 'Anillo Magico
@@ -5348,7 +5292,7 @@ Hostile=1
 Domable=0
 Alineacion=2
 Comercia=0
-GiveEXP=7288
+GiveEXP=5288
 MinHP=4500
 MaxHP=4500
 MaxHIT=250
@@ -5363,8 +5307,7 @@ NROITEMS=5
 Drop1=12-900 'Oro
 Drop2=37-145 'Pocion Azul
 Drop3=990-1 'Mazo de Juicio
-Drop4=698-1 'Anillo de Resitencia Magica
-Drop5=359-3 'Cotas de Mallas
+Drop4=359-3 'Cotas de Mallas
 
 ############################################
 
@@ -5382,10 +5325,10 @@ Hostile=1
 Domable=0
 Alineacion=2
 Comercia=0
-GiveEXP=495
-MinHP=5000
-MaxHP=5000
-MaxHIT=45
+GiveEXP=60
+MinHP=50
+MaxHP=50
+MaxHIT=25
 MinHIT=10
 DEF=0
 DEFm=50
@@ -5393,12 +5336,8 @@ PoderAtaque=150
 PoderEvasion=80
 SND2=103
 BackUp=0
-NROITEMS=5
-Drop1=12-300 'Oro
-Drop2=697-1 'Anillo Magico
-Drop3=698-1 'Anillo de Resistencia Magica
-Drop4=699-1 'Anillo de Disolucion Magica
-Drop5=503-1 'Trampa Visual
+NROITEMS=1
+Drop1=12-35 'Oro
 
 ############################################
 
@@ -5426,12 +5365,11 @@ DEFm=10
 PoderAtaque=160
 PoderEvasion=70
 BackUp=0
-NROITEMS=5
+NROITEMS=4
 Drop1=12-175 'Oro
 Drop2=38-30 'Pocion Roja
 Drop3=37-50 'Pocion Azul
-Drop4=480-310 'Flechas
-Drop5=697-2 'Anillo Magico
+Drop4=697-1 'Anillo Magico
 
 ############################################
 
@@ -5476,8 +5414,8 @@ Domable=0
 Alineacion=2
 Comercia=0
 GiveEXP=5900
-MinHP=4200
-MaxHP=4200
+MinHP=4400
+MaxHP=4400
 MaxHIT=140
 MinHIT=75
 DEF=45
@@ -5545,7 +5483,7 @@ Hostile=1
 Domable=1530
 Alineacion=2
 Comercia=0
-GiveEXP=1450
+GiveEXP=1250
 MinHP=1000
 MaxHP=1000
 MaxHIT=100
@@ -5555,11 +5493,10 @@ PoderAtaque=150
 PoderEvasion=70
 Veneno=1
 BackUp=0
-NROITEMS=5
-Drop1=12-175 'Oro
+NROITEMS=4
+Drop1=12-75 'Oro
 Drop2=38-30 'Pocion Roja
 Drop3=36-10 'Pocion Amarilla
-Drop4=480-365 'Flechas
 
 ############################################
 
@@ -5614,9 +5551,10 @@ PoderAtaque=700
 PoderEvasion=45
 BackUp=0
 NROITEMS=5
-Drop1=414-20 'Piel de Tigre (le pongo de lobo mientras, cambiar!!)
+Drop1=27-23 'Chuleta
+Drop2=27-23 'Chuleta
 Drop3=27-23 'Chuleta
-Drop4=30-1 'Armadura de Cuero
+Drop4=27-23 'Chuleta
 Drop5=1004-1 'Casco de Tigre
 
 ############################################
@@ -5644,12 +5582,10 @@ DEF=30
 PoderAtaque=100
 PoderEvasion=75
 BackUp=0
-NROITEMS=5
+NROITEMS=3
 Drop1=12-114 'Oro
 Drop2=3-1 'Hacha
 Drop3=39-10 'Pocion Verde
-Drop4=990-2 'Mazos de Juicio
-Drop5=359-2 'Cotas de Malla
 
 ############################################
 
@@ -5676,12 +5612,11 @@ MinHIT=5
 DEF=30
 PoderAtaque=100
 PoderEvasion=75
-NROITEMS=5
+NROITEMS=4
 Drop1=12-114 'Oro
 Drop2=3-1 'Hacha
 Drop3=39-10 'Pocion Verde
-Drop4=990-2 'Mazos de Juicio
-Drop5=359-2 'Cotas de Malla
+Drop4=990-1 'Mazos de Juicio
 BackUp=0
 
 ############################################
@@ -5701,10 +5636,10 @@ Domable=0
 Alineacion=2
 Comercia=0
 GiveEXP=2000
-MinHP=1000
-MaxHP=1000
+MinHP=25000
+MaxHP=25000
 MaxHIT=400
-MinHIT=75
+MinHIT=200
 DEF=30
 PoderAtaque=250
 PoderEvasion=200
@@ -5745,7 +5680,7 @@ SND3=62
 BackUp=0
 NROITEMS=5
 Drop2=139-1 'Pescado
-Drop3=544-5 'Pez Dorado
+Drop3=544-3 'Pez Dorado
 
 ############################################
 
@@ -5836,7 +5771,7 @@ PoderAtaque=30
 PoderEvasion=0
 SND2=103
 BackUp=0
-NROITEMS=5
+NROITEMS=3
 Drop1=12-5 'Oro
 Drop2=12-10 'Oro
 Drop3=12-50 'Oro
@@ -5867,11 +5802,10 @@ PoderAtaque=30
 PoderEvasion=10
 Veneno=1
 BackUp=0
-NROITEMS=5
+NROITEMS=2
 Drop1=12-2   ' Oro
-Drop3=12-30  ' Oro
-Drop4=2-1    ' Espada larga
-Drop5=164-1  ' Espada corta
+Drop2=12-10  ' Oro
+
 
 ############################################
 
@@ -5899,10 +5833,10 @@ PoderAtaque=70
 PoderEvasion=50
 Snd3=157
 BackUp=0
-NROITEMS=5
-Drop1=12-50 'Oro
+NROITEMS=4
+Drop1=641-1 'Ropa Pordiosero
 Drop2=641-1 'Ropa Pordiosero
-Drop3=38-10 'Pociones Rojas
+Drop3=641-1 'Ropa Pordiosero
 Drop4=873-1 'Guantes de Hurto
 
 ############################################
@@ -5922,20 +5856,20 @@ Domable=0
 Alineacion=2
 Comercia=0
 GiveEXP=1500
-MinHP=850
-MaxHP=850
+MinHP=1000
+MaxHP=1000
 MaxHIT=139
 MinHIT=15
 DEF=0
 PoderAtaque=200
-PoderEvasion=200
+PoderEvasion=180
 Snd3=155
 BackUp=0
 NROITEMS=5
-Drop1=12-200 'Oro
-Drop2=38-10 'Pociones Rojas
+Drop1=12-250 'Oro
+Drop2=38-25 'Pociones Rojas
 Drop3=366-1 'Daga +3
-Drop4=367-1 'Daga +4
+Drop4=356-1 'Armadura de las Sombras
 Drop5=356-1 'Armadura de las Sombras
 
 ############################################
@@ -5963,10 +5897,9 @@ DEF=0
 PoderAtaque=230
 PoderEvasion=60
 BackUp=0
-NROITEMS=5
+NROITEMS=2
 Drop1=415-1 'Piel de Oso Pardo
-Drop3=38-10 'Pociones Rojas
-Drop4=480-50 'Flechas
+Drop2=38-10 'Pociones Rojas
 
 ############################################
 
@@ -5996,11 +5929,9 @@ PoderAtaque=20
 PoderEvasion=25
 SND3=63
 BackUp=0
-NROITEMS=5
+NROITEMS=2
 Drop1=12-4    ' Oro
-Drop3=12-53   ' Oro
-Drop4=12-250  ' Oro
-Drop5=12-1000 ' Oro
+Drop2=12-53   ' Oro
 
 ############################################
 
@@ -6027,12 +5958,9 @@ DEF=5
 PoderAtaque=150
 PoderEvasion=100
 BackUp=0
-NROITEMS=5
-Drop1=12-100 'Oro
-Drop2=478-1 'Arco Simple
-Drop3=479-1 'Arco Compuesto
-Drop4=38-15 'Pociones Rojas
-Drop5=480-500 ' Flechas
+NROITEMS=2
+Drop1=12-15 'Oro
+Drop2=38-15 'Pociones Rojas
 
 ############################################
 
@@ -6062,7 +5990,7 @@ BackUp=0
 NROITEMS=5
 Drop1=12-1 'Oro
 Drop3=12-10 'Oro
-Drop5=12-200 'Oro
+Drop5=12-2 'Oro
 
 ############################################
 
@@ -6094,9 +6022,9 @@ EXP2=Clir chuik
 BackUp=0
 NROITEMS=5
 Drop1=12-2 'Oro
-Drop3=28-10 'Queso de Cabra
-Drop4=534-10 'Odre Vacia
-Drop5=12-100 'Oro
+Drop3=28-1 'Queso de Cabra
+Drop4=534-1 'Odre Vacia
+Drop5=12-20 'Oro
 
 ############################################
 
@@ -6123,12 +6051,10 @@ DEF=0
 PoderAtaque=350
 PoderEvasion=200
 BackUp=0
-NROITEMS=5
+NROITEMS=3
 Drop1=12-360 'Oro
 Drop2=12-500 'Oro
-Drop3=37-100 'Pociones Azules
-Drop4=205-1 'Proyectil Etereo
-Drop5=12-10000 'Oro
+Drop3=37-50 'Pociones Azules
 
 ############################################
 
@@ -6155,12 +6081,10 @@ DEF=0
 PoderAtaque=250
 PoderEvasion=65
 BackUp=0
-NROITEMS=5
+NROITEMS=3
 Drop1=415-1 'Piel Oso Pardo
 Drop2=12-26 'Oro
-Drop3=480-50 'Flechas
-Drop4=479-1 'Arco Compuesto
-Drop5=38-100 'Pociones Rojas
+Drop3=38-250 'Pociones Rojas
 
 ############################################
 
@@ -6187,11 +6111,10 @@ DEF=0
 PoderAtaque=100
 PoderEvasion=45
 BackUp=0
-NROITEMS=5
+NROITEMS=4
 Drop1=404-1 'Escudo de Tortuga
-Drop2=12-175 'Oro
+Drop2=12-125 'Oro
 Drop3=38-20 'Pociones Rojas
-Drop4=5-1 'Curar Heridas Graves
 
 ############################################
 
@@ -6251,12 +6174,11 @@ PoderAtaque=260
 PoderEvasion=230
 snd2=78
 BackUp=0
-NROITEMS=5
+NROITEMS=4
 Drop1=12-512 'Oro
 Drop2=398-20 'Garrote
 Drop3=38-120 'Pociones Rojas
 Drop4=37-150 'Pociones Azules
-Drop5=698-1 'Anillo de Resistencia Magica
 
 ############################################
 
@@ -6289,11 +6211,12 @@ SND2=31
 SND3=32
 AfectaParalisis=1
 BackUp=0
-NROITEMS=4
+NROITEMS=5
 Drop1=12-65000 'Oro
 Drop2=12-130000 'oro
-Drop3=532-1 'Apocalipsis
-Drop4=1139-1 'Montura Gran Dragon Rojo
+Drop3=12-65000 'Oro
+Drop4=12-65000 'Oro
+Drop5=1139-1 'Montura Gran Dragon Rojo
 
 ############################################
 
@@ -6436,9 +6359,9 @@ Hostile=1
 Domable=1530
 Alineacion=2
 Comercia=0
-GiveEXP=1450
-MinHP=1000
-MaxHP=1000
+GiveEXP=1600
+MinHP=1150
+MaxHP=1150
 MaxHIT=150
 MinHIT=55
 DEF=0
@@ -6451,7 +6374,7 @@ Drop1=12-175 'Oro
 Drop2=38-25 'Pociones Rojas
 Drop3=36-15 'Pocion Amarilla
 Drop4=39-20 'Pocion Verde
-Drop5=159-2 'Hachas de Barbaro
+Drop5=159-1 'Hachas de Barbaro
 
 ############################################
 
@@ -6471,8 +6394,8 @@ Domable=0
 Alineacion=2
 Comercia=0
 GiveEXP=8500
-MinHP=6000
-MaxHP=6000
+MinHP=7000
+MaxHP=7000
 MaxHIT=181
 MinHIT=60
 DEF=0
@@ -6480,12 +6403,11 @@ PoderAtaque=220
 PoderEvasion=180
 Snd2=59
 BackUp=0
-NROITEMS=5
-Drop1=12-2100 'Oro
-Drop2=36-30 'Pocion Amarilla
-Drop3=39-30 'Pocion Verde
-Drop4=537-1 'Invocar Elemental de Agua
-Drop5=496-1 'Armadura de las Cienagas
+NROITEMS=4
+Drop1=12-3100 'Oro
+Drop2=36-50 'Pocion Amarilla
+Drop3=39-50 'Pocion Verde
+Drop4=496-1 'Armadura de las Cienagas
 ############################################
 
 [NPC549]
@@ -6516,10 +6438,10 @@ Snd3=171
 BackUp=0
 NROITEMS=5
 Drop1=12-500 'Oro
-Drop2=12-650 'Oro
+Drop2=12-750 'Oro
 Drop3=205-1 'Proyectil Etereo
-Drop4=38-300 'Pocion Roja
-Drop5=37-500 'Pocion Azul
+Drop4=38-50 'Pocion Roja
+Drop5=37-50 'Pocion Azul
 
 ############################################
 
@@ -6540,8 +6462,8 @@ Comercia=0
 GiveEXP=6100
 MinHP=4200
 MaxHP=4200
-MaxHIT=140
-MinHIT=75
+MaxHIT=130
+MinHIT=85
 DEF=30
 PoderAtaque=200
 PoderEvasion=250
@@ -6556,8 +6478,8 @@ NROITEMS=5
 Drop1=12-1000 Oro
 Drop2=659-1 'Baston Nudoso
 Drop3=514-1 'Vestido de Bruja Especial
-Drop4=12-5000 'Oro
-Drop5=12-15000 'Oro
+Drop5=514-1 'Vestido de Bruja Especial
+Drop5=514-1 'Vestido de Bruja Especial
 
 ############################################
 
@@ -6576,8 +6498,8 @@ Domable=0
 Alineacion=2
 Comercia=0
 GiveEXP=4000
-MinHP=3000
-MaxHP=3000
+MinHP=3200
+MaxHP=3200
 MaxHIT=126
 MinHIT=75
 DEF=30
@@ -6589,8 +6511,8 @@ Sp2=9
 Sp3=15
 BackUp=0
 NROITEMS=5
-Drop1=12-1500 'Oro
-Drop2=12-2000 'Oro
+Drop1=12-500 'Oro
+Drop2=12-1500 'Oro
 Drop3=524-1 'Tunica Roja Especial (E/G)
 Drop4=206-1 'Paralizar
 Drop5=660-1 'Baculos Engarzados
@@ -6623,10 +6545,10 @@ Snd2=79
 Snd3=89
 BackUp=0
 NROITEMS=5
-Drop1=12-2000 'Oro
-Drop2=12-2750 'Oro
-Drop3=12-10000 'Oro
-Drop4=403-2 'Espadas de Plata
+Drop1=12-5000 'Oro
+Drop2=12-12750 'Oro
+Drop3=12-15000 'Oro
+Drop4=403-1 'Espadas de Plata
 Drop5=485-1 'Armadura Legendaria
 
 ############################################
@@ -6645,7 +6567,7 @@ Hostile=1
 Domable=0
 Alineacion=2
 Comercia=0
-GiveEXP=12250
+GiveEXP=12000
 MinHP=6500
 MaxHP=6500
 MaxHIT=170
@@ -6661,8 +6583,8 @@ Sp3=9
 BackUp=0
 NROITEMS=5
 Drop1=12-1200 'Oro
-Drop2=38-100 'Pociones Rojas
-Drop3=12-7500 'Oro
+Drop2=38-120 'Pociones Rojas
+Drop3=12-4500 'Oro
 Drop4=206-1 'Paralizar
 Drop5=531-1 'Descarga Electrica
 
@@ -6683,8 +6605,8 @@ Domable=0
 Alineacion=2
 Comercia=0
 GiveEXP=3000
-MinHP=2000
-MaxHP=2000
+MinHP=2200
+MaxHP=2200
 MaxHIT=210
 MinHIT=190
 DEF=14
@@ -6693,11 +6615,11 @@ PoderEvasion=190
 Snd3=168
 BackUp=0
 NROITEMS=5
-Drop1=12-1000 'Oro
-Drop2=12-2000 'Oro
-Drop3=196-5 'Tunica de Mago
+Drop1=12-500 'Oro
+Drop2=12-1200 'Oro
+Drop3=196-1 'Tunica de Mago
 Drop4=380-1 'Invocacion de Ultratumba
-Drop5=660-5 'Baculos Engarzados
+Drop5=660-1 'Baculos Engarzados
 
 ############################################
 
@@ -6724,12 +6646,9 @@ DEF=30
 PoderAtaque=170
 PoderEvasion=100
 BackUp=0
-NROITEMS=5
+NROITEMS=2
 Drop1=12-800 'Oro
-Drop2=38-100 'Pociones Rojas
-Drop3=132-2 'Casco de Hierro
-Drop4=126-5 'Hacha Larga de Guerra
-Drop5=130-3 'Escudo de Plata
+Drop2=38-50 'Pociones Rojas
 
 ############################################
 
@@ -6756,12 +6675,10 @@ DEF=5
 PoderAtaque=45
 PoderEvasion=50
 BackUp=0
-NROITEMS=5
+NROITEMS=3
 Drop1=12-15  'Oro
 Drop2=12-20  'Oro
 Drop3=12-100 'Oro
-Drop4=12-250 'Oro
-Drop5=12-750 'Oro
 
 ############################################
 
@@ -6826,7 +6743,7 @@ BackUp=0
 ############################################
 
 [NPC559]
-Name=Dark NuKeR
+Name=Dark Haracin
 NpcType=0
 Head=102
 Heading=3
@@ -6853,7 +6770,7 @@ BackUp=0
 ############################################
 
 [NPC560]
-Name=Dark Valkira
+Name=Dark ReYaRB
 NpcType=0
 Head=72
 Heading=3
@@ -6880,7 +6797,7 @@ BackUp=0
 ############################################
 
 [NPC561]
-Name=Dark Chatillon
+Name=Dark SeNSuI
 NpcType=0
 Head=9
 Heading=3
@@ -6907,7 +6824,7 @@ BackUp=0
 ############################################
 
 [NPC562]
-Name=Dark Jennifer
+Name=Dark ReCoX
 NpcType=0
 Head=72
 Heading=3
@@ -7046,7 +6963,7 @@ NROITEMS=5
 Drop1=12-50 'Oro
 Drop2=12-75 'Oro
 Drop3=12-150' Oro
-Drop4=199-5 'Dardo Magico
+Drop4=199-1 'Dardo Magico
 
 ############################################
 
@@ -7075,12 +6992,9 @@ PoderAtaque=200
 PoderEvasion=150
 Snd3=172
 BackUp=0
-NROITEMS=5
-Drop1=12-2500 'Oro
+NROITEMS=2
+Drop1=12-1500 'Oro
 Drop2=865-1 'Alforja
-Drop3=474-1 'Barca
-Drop4=476-1 'Galera
-Drop5=475-1 'Galeon
 
 ############################################
 
@@ -7100,8 +7014,8 @@ Domable=0
 Alineacion=2
 Comercia=0
 GiveEXP=10000
-MinHP=7000
-MaxHP=7000
+MinHP=8000
+MaxHP=8000
 MaxHIT=350
 MinHIT=150
 DEF=50
@@ -7110,10 +7024,10 @@ PoderEvasion=450
 LanzaSpells=1
 Sp1=15
 BackUp=0
-NROITEMS=5
-Drop2=12-2000 'Oro (Poner Mochila de Viajero despues)
-Drop3=474-1 'Barca
-Drop4=475-1 'Galera
+NROITEMS=3
+Drop1=12-1050 'Oro
+Drop2=12-1550 'Oro
+Drop3=12-1850 'Oro
 
 ############################################
 
@@ -7132,18 +7046,21 @@ Hostile=1
 Domable=0
 Alineacion=2
 Comercia=0
-GiveEXP=100
-MinHP=10
-MaxHP=10
-MaxHIT=2
-MinHIT=1
+GiveEXP=1000
+MinHP=1500
+MaxHP=1500
+MaxHIT=15
+MinHIT=11
 DEF=0
 PoderAtaque=500
 PoderEvasion=10
 Veneno=1
 BackUp=0
-NROITEMS=5
-Drop2=58-15 'Madera
+NROITEMS=4
+Drop1=58-15 'Madera
+Drop2=58-25 'Madera
+Drop3=58-5 'Madera
+Drop4=58-10 'Madera
 
 ############################################
 
@@ -7174,11 +7091,11 @@ Snd2=13
 Veneno=1
 BackUp=0
 NROITEMS=5
-Drop1=58-50 'Madera
-Drop2=58-100 'Madera
-Drop3=58-500 'Madera
-Drop4=58-3000 'Madera
-Drop5=58-10000 'Madera
+Drop1=58-10 'Madera
+Drop2=58-15 'Madera
+Drop3=58-40 'Madera
+Drop4=58-30'Madera
+Drop5=58-10 'Madera
 
 ############################################
 
@@ -7210,8 +7127,10 @@ Veneno=1
 BackUp=0
 NROITEMS=5
 Drop1=58-10 'Madera
-Drop2=208-1 'Flauta Magica
-Drop3=696-5 'Laud Magico
+Drop2=58-20 'Madera
+Drop3=58-30 'Madera
+Drop4=58-40 'Madera
+Drop5=58-50 'Madera
 
 ############################################
 
@@ -7229,9 +7148,9 @@ Hostile=1
 Domable=90
 Alineacion=2
 Comercia=0
-GiveEXP=100
-MinHP=10
-MaxHP=10
+GiveEXP=1000
+MinHP=1500
+MaxHP=1500
 MaxHIT=2
 MinHIT=1
 DEF=0
@@ -7239,8 +7158,10 @@ PoderAtaque=500
 PoderEvasion=10
 Veneno=1
 BackUp=0
-NROITEMS=5
-Drop2=58-15 'Madera
+NROITEMS=3
+Drop1=58-10 'Madera
+Drop2=58-50 'Madera
+Drop3=58-30 'Madera
 
 ############################################
 
@@ -7259,7 +7180,7 @@ Hostile=1
 Domable=0
 Alineacion=2
 Comercia=0
-GiveEXP=500
+GiveEXP=700
 MinHP=700
 MaxHP=700
 MaxHIT=100
@@ -7274,7 +7195,7 @@ BackUp=0
 NROITEMS=5
 Drop1=12-50 'Oro
 Drop2=12-100 'Oro
-Drop3=645-1 'Pocion Negra
+Drop3=645-5 'Pocion Negra
 
 ############################################
 
@@ -7303,7 +7224,7 @@ PoderAtaque=10
 PoderEvasion=15
 BackUp=0
 NROITEMS=5
-Drop1=27-1 'Chuleta
+Drop1=27-2 'Chuleta
 Drop2=12-10 'Oro
 
 ############################################
@@ -7334,7 +7255,7 @@ PoderEvasion=15
 Snd2=8
 BackUp=0
 NROITEMS=5
-Drop1=27-5 'Chuleta
+Drop1=27-6 'Chuleta
 Drop2=12-50 'Oro
 
 ############################################
@@ -7353,22 +7274,21 @@ Hostile=1
 Domable=0
 Alineacion=2
 Comercia=0
-GiveEXP=5000
+GiveEXP=4000
 MinHP=3000
 MaxHP=3000
 MaxHIT=165
-MinHIT=93
+MinHIT=135
 DEF=30
 PoderAtaque=200
 PoderEvasion=140
 AfectaParalisis=1
 BackUp=0
 NROITEMS=5
-Drop1=12-1500 'Oro
-Drop2=38-50 'Pociones Rojas
+Drop1=12-1000 'Oro
+Drop2=38-10 'Pociones Rojas
 Drop3=159-1 'Hacha de Barbaro
 Drop4=243-2 'Armadura de Placas Completas (E/G)
-Drop5=393-3 'Armadura de Placas Completas + 2 (E/G)
 
 ############################################
 
@@ -7387,9 +7307,9 @@ Domable=0
 Alineacion=2
 Comercia=0
 GiveEXP=10000
-MinHP=10000
-MaxHP=10000
-MaxHIT=250
+MinHP=9000
+MaxHP=9000
+MaxHIT=160
 MinHIT=120
 DEF=30
 PoderAtaque=220
@@ -7401,11 +7321,8 @@ Sp3=15
 AfectaParalisis=1
 BackUp=0
 NROITEMS=5
-Drop1=12-6500 'Oro
-Drop2=12-13000 'Oro
-Drop3=361-2 'Tormentas de Fuego
-Drop4=206-3 'Paralizar
-Drop5=400-3 'Varas de Mago
+Drop1=12-500 'Oro
+Drop2=12-1500 'Oro
 
 ############################################
 
@@ -7423,11 +7340,11 @@ Hostile=1
 Domable=0
 Alineacion=2
 Comercia=0
-GiveEXP=10000
-MinHP=15000
-MaxHP=15000
+GiveEXP=15000
+MinHP=18000
+MaxHP=18000
 MaxHIT=350
-MinHIT=75
+MinHIT=200
 DEF=0
 PoderAtaque=230
 PoderEvasion=220
@@ -7435,10 +7352,10 @@ Snd3=100
 BackUp=0
 NROITEMS=5
 Drop1=12-6000 'Oro
-Drop2=12-12000 'Oro
+Drop2=12-15000 'Oro
 Drop3=126-3 'Hacha Larga de Guerra
-Drop4=129-5 'Hachas Doble Filo
-Drop5=495-2 'Armaduras Escarlata
+Drop4=129-2 'Hachas Doble Filo
+Drop5=495-1 'Armaduras Escarlata
 
 ############################################
 
@@ -7459,19 +7376,18 @@ Comercia=0
 GiveEXP=2500
 MinHP=5000
 MaxHP=5000
-MaxHIT=300
-MinHIT=250
+MaxHIT=260
+MinHIT=220
 GolpeExacto=1
 DEF=50
 PoderAtaque=380
 PoderEvasion=250
 BackUp=0
 NROITEMS=5
-Drop1=12-4000 'Oro
-Drop2=12-6000 'Oro
-Drop3=12-10000 'Oro
-Drop4=12-50000 'Oro
-Drop5=402-1 'Espada Mata Dragones
+Drop1=12-900 'Oro
+Drop2=12-1100 'Oro
+Drop3=12-1000 'Oro
+Drop4=12-5000 'Oro
 
 ############################################
 
@@ -7501,11 +7417,11 @@ Snd2=79
 Snd3=89
 BackUp=0
 NROITEMS=5
-Drop1=12-15000 'Oro
-Drop2=38-1000 'Pociones Rojas
-Drop3=37-2000 'Pociones Azules
-Drop4=12-100000 'Oro
-Drop5=485-2 'Armaduras Legendarias
+Drop1=12-10000 'Oro
+Drop2=38-250 'Pociones Rojas
+Drop3=37-250 'Pociones Azules
+Drop4=12-15000 'Oro
+Drop5=12-19000 'Oro
 
 ############################################
 
@@ -7523,7 +7439,7 @@ Hostile=1
 Domable=0
 Alineacion=2
 Comercia=0
-GiveEXP=2000
+GiveEXP=3500
 MinHP=3500
 MaxHP=3500
 MaxHIT=126
@@ -7537,12 +7453,10 @@ Sp2=9
 Sp3=15
 Snd3=156
 BackUp=0
-NROITEMS=5
-Drop1=12-5000 'Oro
+NROITEMS=3
+Drop1=12-1000 'Oro
 Drop2=37-200 'Pociones Azules
 Drop3=361-1 'Tormentas de Fuego
-Drop4=530-1 'Inmovilizar
-Drop5=699-1 'Anillo de Disolucion Magica
 
 ############################################
 
@@ -7560,7 +7474,7 @@ Hostile=1
 Domable=0
 Alineacion=2
 Comercia=0
-GiveEXP=100
+GiveEXP=600
 MinHP=600
 MaxHP=600
 MaxHIT=250
@@ -7572,7 +7486,7 @@ LanzaSpells=1
 Sp1=8
 BackUp=0
 NROITEMS=5
-Drop1=12-1000 'Oro
+Drop1=12-200 'Oro
 Drop2=38-100 'Pociones Rojas
 Drop3=239-1 'Tunica Roja
 Drop4=205-1 'Proyectil Etereo
@@ -7608,12 +7522,9 @@ LanzaSpells=2
 Sp1=15
 Sp2=25
 BackUp=0
-NROITEMS=5
-Drop1=12-10000 'Oro
-Drop2=12-15000 'Oro
-Drop3=361-2 'Tormentas de Fuego
-Drop4=536-1 'Invocar Elemental de Fuego
-Drop5=532-1 'Apocalipsis
+NROITEMS=2
+Drop1=361-2 'Tormentas de Fuego
+Drop2=536-1 'Invocar Elemental de Fuego
 
 ############################################
 
@@ -7631,21 +7542,16 @@ Hostile=1
 Domable=0
 Alineacion=2
 Comercia=0
-GiveEXP=455
-MinHP=435
-MaxHP=435
-MaxHIT=90
-MinHIT=50
+GiveEXP=199
+MinHP=150
+MaxHP=150
+MaxHIT=30
+MinHIT=20
 DEF=10
 PoderAtaque=150
 PoderEvasion=50
 BackUp=0
-NROITEMS=5
-Drop1=12-100 'Oro
-Drop2=12-150 'Oro
-Drop3=12-300 'Oro
-Drop4=12-600 'Oro
-Drop5=12-1200 'Oro
+NROITEMS=0
 
 ############################################
 
@@ -7663,26 +7569,22 @@ Hostile=1
 Domable=0
 Alineacion=2
 Comercia=0
-GiveEXP=1100
-MinHP=700
-MaxHP=700
-MaxHIT=100
-MinHIT=65
+GiveEXP=535
+MinHP=400
+MaxHP=400
+MaxHIT=50
+MinHIT=35
 DEF=10
 PoderAtaque=200
 PoderEvasion=80
 BackUp=0
 NROITEMS=5
 Drop1=12-125 'Oro
-Drop2=12-200 'Oro
-Drop3=12-300 'Oro
-Drop4=12-500 'Oro
-Drop5=12-1500 'Oro
 
 ############################################
 
 [NPC592]
-Name=Aracnido de los Rincones
+Name=Aracnido bebe rojo
 NpcType=0
 Head=0
 Heading=3
@@ -7695,19 +7597,16 @@ Hostile=1
 Domable=900
 Alineacion=2
 Comercia=0
-GiveEXP=700
-MinHP=650
-MaxHP=650
-MaxHIT=75
-MinHIT=35
+GiveEXP=70
+MinHP=65
+MaxHP=65
+MaxHIT=7
+MinHIT=3
 DEF=0
 PoderAtaque=110
 PoderEvasion=70
 BackUp=0
-NROITEMS=5
-Drop1=12-75 'Oro
-Drop2=619-1 'Daga Envenenada
-Drop4=202-1 'Toxina
+NROITEMS=0
 
 ############################################
 
@@ -7725,9 +7624,9 @@ Hostile=1
 Domable=0
 Alineacion=2
 Comercia=0
-GiveEXP=850
-MinHP=700
-MaxHP=700
+GiveEXP=1250
+MinHP=100
+MaxHP=100
 MaxHIT=100
 MinHIT=65
 DEF=0
@@ -7735,7 +7634,7 @@ PoderAtaque=250
 PoderEvasion=85
 BackUp=0
 NROITEMS=5
-Drop1=12-50 'Oro
+Drop1=12-100 'Oro
 Drop3=19-1 'Espada Dos manos
 Drop4=125-1 'Sable
 Drop5=873-1 'Guantes de Hurto
@@ -7756,7 +7655,7 @@ Hostile=1
 Domable=900
 Alineacion=2
 Comercia=0
-GiveEXP=500
+GiveEXP=600
 MinHP=550
 MaxHP=550
 MaxHIT=80
@@ -7855,10 +7754,9 @@ DEF=10
 PoderAtaque=150
 PoderEvasion=50
 BackUp=0
-NROITEMS=5
+NROITEMS=2
 Drop1=12-50 'Oro
 Drop2=12-65 'Oro
-Drop5=380-1
 
 ############################################
 
@@ -7876,7 +7774,7 @@ Hostile=1
 Domable=0
 Alineacion=2
 Comercia=0
-GiveEXP=4700
+GiveEXP=4000
 MinHP=3000
 MaxHP=3000
 MaxHIT=126
@@ -7890,11 +7788,10 @@ Sp1=8
 Sp2=15
 Sp3=9
 BackUp=0
-NROITEMS=5
+NROITEMS=4
 Drop1=12-2000 'Oro
 Drop2=978-1 'Harapos de la Cueva
 Drop4=697-1 'Anillos Magicos
-Drop5=513-1 'Vestido de Bruja
 
 ############################################
 
@@ -7924,8 +7821,8 @@ Snd3=162
 BackUp=0
 NROITEMS=5
 Drop1=12-75 'Oro
-Drop2=38-12 'Pociones Rojas
-Drop3=398-4 'Garrotes
+Drop2=38-25 'Pociones Rojas
+Drop3=398-5 'Garrotes
 Drop4=30-1 'Armaduras de Cuero
 
 ############################################
@@ -7953,10 +7850,8 @@ DEF=10
 PoderAtaque=200
 PoderEvasion=80
 BackUp=0
-NROITEMS=5
+NROITEMS=1
 Drop1=12-125 'Oro
-Drop2=551-50 'Flechas +1
-Drop3=552-50 'Flechas +2
 
 ############################################
 
@@ -7987,12 +7882,12 @@ BackUp=0
 NROITEMS=5
 Drop1=12-100 'Oro
 Drop2=414-20 'Pieles de Lobo
-Drop5=1002-5 'Cascos de Lobo
+Drop5=1002-1 'Cascos de Lobo
 
 ############################################
 
 [NPC602]
-Name=Piranha de Oceano
+Name=Piranha
 NpcType=0
 Head=0
 Heading=3
@@ -8084,7 +7979,7 @@ BackUp=0
 NROITEMS=5
 Drop1=12-100 'Oro
 Drop2=38-20 'Pociones Rojas
-Drop3=36-4 'Pociones Amarillas
+Drop3=36-25 'Pociones Amarillas
 
 ############################################
 
@@ -8117,7 +8012,7 @@ NROITEMS=5
 Drop1=12-550 'Oro
 Drop2=36-15 'Pociones Amarillas
 Drop3=39-15 'Pociones Verdes
-Drop4=12-13500 'Oro
+Drop4=12-2500 'Oro
 
 ############################################
 
@@ -8149,8 +8044,8 @@ BackUp=0
 NROITEMS=5
 Drop1=12-150 'Oro
 Drop2=38-25 'Pociones Rojas
-Drop3=39-5 'Pociones Verdes
-Drop4=12-2100 'Oro
+Drop3=39-25 'Pociones Verdes
+Drop4=12-900 'Oro
 
 ############################################
 
@@ -8204,8 +8099,8 @@ Comercia=0
 GiveEXP=3500
 MinHP=2000
 MaxHP=2000
-MaxHIT=300
-MinHIT=100
+MaxHIT=240
+MinHIT=130
 DEF=15
 PoderAtaque=350
 PoderEvasion=210
@@ -8214,7 +8109,7 @@ snd3=210
 NROITEMS=5
 Drop1=12-400 'Oro
 Drop2=37-50 'Pociones Azules
-Drop3=38-130 'Pociones Rojas
+Drop3=38-50 'Pociones Rojas
 Drop4=361-1 'Tormenta de Fuego
 
 ############################################
@@ -8234,11 +8129,11 @@ Hostile=1
 Domable=0
 Alineacion=2
 Comercia=0
-GiveEXP=2000
+GiveEXP=3500
 MinHP=7000
 MaxHP=7000
-MaxHIT=250
-MinHIT=150
+MaxHIT=150
+MinHIT=120
 DEF=30
 DEFm=10
 PoderAtaque=250
@@ -8249,8 +8144,8 @@ AtacaDoble=1
 AfectaParalisis=1
 BackUp=0
 NROITEMS=5
-Drop1=12-7000 'Oro
-Drop2=12-14000 'Oro
+Drop1=12-200 'Oro
+Drop2=12-600 'Oro
 Drop3=657-1 'Quitar la Turbacion
 Drop4=542-1 'Turbacion
 Drop5=537-1 'Invocar Elemental de Agua
@@ -8272,11 +8167,11 @@ Hostile=1
 Domable=0
 Alineacion=2
 Comercia=0
-GiveEXP=10500
-MinHP=6250
-MaxHP=6250
-MaxHIT=170
-MinHIT=95
+GiveEXP=15000
+MinHP=9000
+MaxHP=9000
+MaxHIT=220
+MinHIT=140
 DEF=15
 PoderAtaque=220
 PoderEvasion=170
@@ -8286,10 +8181,10 @@ Sp1=9
 AtacaDoble=1
 BackUp=0
 NROITEMS=5
-Drop1=12-2000 'Oro
+Drop1=12-4000 'Oro
 Drop2=38-110 'Pociones Rojas
 Drop3=405-1 'Casco de Plata
-Drop4=206-1 'Paralizar
+Drop4=126-1  ' Hacha larga de guerra
 Drop5=475-1 'Galera
 
 
@@ -8313,15 +8208,15 @@ Comercia=0
 GiveEXP=7100
 MinHP=6000
 MaxHP=6000
-MaxHIT=60
-MinHIT=40
+MaxHIT=80
+MinHIT=50
 DEF=0
 PoderAtaque=200
 PoderEvasion=70
 BackUp=0
-NROITEMS=5
+NROITEMS=2
 Drop1=12-1000 'Oro
-Drop2=38-2000 'Pociones Rojas
+Drop2=38-100 'Pociones Rojas
 
 
 ############################################
@@ -8341,7 +8236,7 @@ Hostile=1
 Domable=1620
 Alineacion=2
 Comercia=0
-GiveEXP=1800
+GiveEXP=1400
 MinHP=1250
 MaxHP=1250
 MaxHIT=101
@@ -8351,9 +8246,7 @@ DEFm=5
 PoderAtaque=220
 PoderEvasion=60
 BackUp=0
-NROITEMS=5
-Drop4=619-1 'Daga Envenenada
-Drop5=365-1 'Daga +2
+NROITEMS=0
 
 
 ############################################
@@ -8373,7 +8266,7 @@ Hostile=1
 Domable=1530
 Alineacion=2
 Comercia=0
-GiveEXP=1900
+GiveEXP=1500
 MinHP=1350
 MaxHP=1350
 MaxHIT=115
@@ -8383,12 +8276,9 @@ DEFm=10
 PoderAtaque=150
 PoderEvasion=70
 BackUp=0
-NROITEMS=5
+NROITEMS=2
 Drop1=12-150 'Oro
 Drop2=37-23 'Pociones Azules
-Drop3=658-1 'Vara de Frezno
-Drop4=697-1 'Anillo Magico
-Drop5=698-1 'Anillo de Resistencia Magica
 
 
 ############################################
@@ -8408,9 +8298,9 @@ Hostile=1
 Domable=0
 Alineacion=2
 Comercia=0
-GiveEXP=2300
-MinHP=1500
-MaxHP=1500
+GiveEXP=1800
+MinHP=1600
+MaxHP=1600
 MaxHIT=115
 MinHIT=60
 DEF=15
@@ -8423,9 +8313,9 @@ BackUp=0
 NROITEMS=5
 Drop1=12-500 'Oro
 Drop2=480-115 'Flechas
-Drop3=479-3 'Arcos Compuestos
-Drop4=551-200 'Flechas +1
-Drop5=665-6 'Arcos de Cazador
+Drop3=479-1 'Arcos Compuestos
+Drop4=551-100 'Flechas +1
+Drop5=665-1 'Arco de Cazador
 
 ############################################
 
@@ -8459,11 +8349,10 @@ Sp2=45
 Snd3=173
 AfectaParalisis=1
 BackUp=0
-NROITEMS=5
-Drop1=12-1000 'Oro
+NROITEMS=3
+Drop1=12-800 'Oro
 Drop2=1005-2 'Hachas de Madera Elfica
-Drop3=38-300 'Pociones Rojas
-Drop4=5-1 'Curar Heridas Graves
+Drop3=38-120 'Pociones Rojas
 
 ############################################
 
@@ -8482,7 +8371,7 @@ Hostile=1
 Domable=900
 Alineacion=2
 Comercia=0
-GiveEXP=60
+GiveEXP=45
 MinHP=35
 MaxHP=35
 MaxHIT=7
@@ -8492,10 +8381,8 @@ DEFm=0
 PoderAtaque=40
 PoderEvasion=35
 BackUp=0
-NROITEMS=5
+NROITEMS=1
 Drop3=12-50 'Oro
-Drop4=12-500 'Oro
-Drop5=12-5000 'Oro
 
 ############################################
 
@@ -8514,8 +8401,8 @@ Domable=0
 Alineacion=2
 Comercia=0
 GiveEXP=175
-MinHP=200
-MaxHP=200
+MinHP=160
+MaxHP=160
 MaxHIT=14
 MinHIT=1
 DEF=5
@@ -8523,11 +8410,8 @@ DefM=5
 PoderAtaque=75
 PoderEvasion=25
 BackUp=0
-NROITEMS=5
-Drop1=12-10  ' Oro
-Drop2=855-10 ' Pocion amarilla (newbie)
-Drop3=858-20 ' Pocion verde(newbie)
-Drop5=126-1  ' Hacha larga de guerra
+NROITEMS=1
+Drop1=12-40  ' Oro
 
 ############################################
 
@@ -8545,7 +8429,7 @@ Hostile=1
 Domable=0
 Alineacion=2
 Comercia=0
-GiveEXP=80
+GiveEXP=110
 MinHP=100
 MaxHP=100
 MaxHIT=17
@@ -8554,11 +8438,9 @@ DEF=8
 PoderAtaque=90
 PoderEvasion=100
 BackUp=0
-NROITEMS=5
-Drop1=12-65  ' Oro
-Drop2=856-24 ' Pocion Azul (newbie)
+NROITEMS=2
+Drop1=12-50  ' Oro
 Drop4=208-1  ' Flauta Magica
-Drop5=696-1  ' Laud Magico
 
 ############################################
 
@@ -8576,27 +8458,25 @@ Hostile=1
 Domable=0
 Alineacion=2
 Comercia=0
-GiveEXP=417
-MinHP=278
-MaxHP=278
-MaxHIT=23
-MinHIT=15
+GiveEXP=915
+MinHP=850
+MaxHP=850
+MaxHIT=50
+MinHIT=40
 DEF=5
 PoderAtaque=150
 PoderEvasion=150
 Snd3=166
 BackUp=0
-NROITEMS=5 
-Drop1=12-40  ' Oro
-Drop2=12-85  ' Oro
-Drop3=857-20 ' Pocion roja (newbie)
-Drop4=658-1  ' Vara de fresno
-Drop5=205-1  ' Misil Magico
+NROITEMS=3
+Drop1=12-120  ' Oro
+Drop2=12-190  ' Oro
+Drop3=205-1  ' Misil Magico
 
 ############################################
 
 [NPC620]
-Name=Insignificante Aracnido
+Name=Aracnido bebe
 NpcType=0
 Head=0
 Heading=3
@@ -8610,9 +8490,9 @@ Domable=0
 Alineacion=2
 Comercia=0
 GiveEXP=75
-MinHP=125
-MaxHP=125
-MaxHIT=8
+MinHP=75
+MaxHP=75
+MaxHIT=5
 MinHIT=3
 DEF=4
 DefM=5
@@ -8621,9 +8501,7 @@ PoderEvasion=20
 BackUp=0
 NROITEMS=5
 Drop1=12-12  ' Oro
-Drop3=12-110 ' Oro
-Drop4=366-1  ' Daga +3
-Drop5=30-1   ' Armadura de cuero
+Drop3=12-30 ' Oro
 
 ############################################
 
@@ -8643,20 +8521,18 @@ Domable=0
 Alineacion=2
 Comercia=0
 GiveEXP=135
-MinHP=150
-MaxHP=150
+MinHP=135
+MaxHP=135
 MaxHIT=16
-MinHIT=10
+MinHIT=14
 DEF=4
 DefM=5
 PoderAtaque=75
 PoderEvasion=25
 BackUp=0
-NROITEMS=5
-Drop1=12-20   ' Oro
-Drop2=480-15  ' Flechas 
-Drop3=855-30  ' Pocion amarilla (newbie)
-Drop4=1009-20 ' cuchillas
+NROITEMS=0
+
+
 
 ############################################
 
@@ -8741,21 +8617,19 @@ Hostile=1
 Domable=0
 Alineacion=2
 Comercia=0
-GiveEXP=500
-MinHP=300
-MaxHP=300
-MaxHIT=13
-MinHIT=2
+GiveEXP=400
+MinHP=350
+MaxHP=350
+MaxHIT=18
+MinHIT=6
 DEF=7
 PoderAtaque=40
 PoderEvasion=50
 Snd3=160
 BackUp=0
-NROITEMS=5
+NROITEMS=2
 Drop1=12-25 ' Oro
-Drop2=12-25 ' Oro
-Drop4=204-1 ' Flecha Electrica
-Drop5=990-3 ' Mazo del juicio
+Drop2=12-40 ' Oro
 
 ############################################
 
@@ -8773,8 +8647,8 @@ Hostile=1
 Alineacion=2
 Comercia=0
 GiveEXP=30
-MinHP=22
-MaxHP=22
+MinHP=25
+MaxHP=25
 MaxHIT=6
 MinHIT=2
 DEF=3
@@ -8782,10 +8656,7 @@ PoderAtaque=35
 PoderEvasion=20
 SND2=103
 BackUp=0
-NROITEMS=5
-Drop3=38-10 ' Pocion roja
-Drop4=200-1 ' Antidoto magico
-Drop5=202-1 ' Toxina
+NROITEMS=0
 
 ############################################
 
@@ -8802,11 +8673,11 @@ ReSpawn=0
 Hostile=1
 Alineacion=2
 Comercia=0
-GiveEXP=70
+GiveEXP=80
 MinHP=75
 MaxHP=75
-MaxHIT=9
-MinHIT=2
+MaxHIT=12
+MinHIT=4
 DEF=2
 DefM=4
 PoderAtaque=58
@@ -8814,14 +8685,14 @@ PoderEvasion=15
 Snd3=142
 BackUp=0
 NROITEMS=5
-Drop1=12-200   ' Oro
-Drop3=480-10 ' Flechas
+Drop1=12-150   ' Oro
+Drop3=480-20 ' Flechas
 Drop4=479-1  ' Arco compuesto
 
 ############################################
 
 [NPC627]
-Name=Protector de almas
+Name=Monton de huesos
 NpcType=0
 Head=0
 Heading=3
@@ -8834,27 +8705,24 @@ Hostile=1
 Domable=0
 Alineacion=2
 Comercia=0
-GiveEXP=100
+GiveEXP=150
 MinHP=130
 MaxHP=130
-MaxHIT=23
-MinHIT=15
+MaxHIT=29
+MinHIT=22
 DEF=10
 Defm=5
 PoderAtaque=69
 PoderEvasion=55
 BackUp=0
-NROITEMS=5
-Drop1=12-41 ' Oro
-Drop2=12-41 ' Oro
-Drop3=364-1 ' Terrible hambre de Igor
-Drop4=19-2  ' Espada dos manos
-Drop5=470-1 ' Fuerza
+NROITEMS=2
+Drop1=12-31 ' Oro
+Drop2=12-71 ' Oro
 
 ############################################
 
 [NPC628]
-Name=Tarantula venenosa
+Name=Tarantula Joven
 NpcType=0
 Head=0
 Heading=3
@@ -8867,20 +8735,17 @@ Hostile=1
 Domable=0
 Alineacion=2
 Comercia=0
-GiveEXP=95
+GiveEXP=100
 MinHP=95
 MaxHP=95
-MaxHIT=15
+MaxHIT=13
 MinHIT6
 DEF=2
 PoderAtaque=63
 PoderEvasion=32
 Veneno=1
 BackUp=0
-NROITEMS=5
-Drop1=166-5 ' Pocion violeta
-Drop3=201-1 ' Curar heridas leves
-Drop4=396-1 ' Celeridad
+NROITEMS=0
 
 ############################################
 
@@ -9477,7 +9342,7 @@ Name=Lobo Zombie
 NpcType=0
 Head=0
 Heading=3
-Body=550
+Body=552
 Movement=3
 AguaValida=0
 Attackable=1
@@ -9486,19 +9351,18 @@ Hostile=1
 Domable=0
 Alineacion=2
 Comercia=0
-GiveEXP=2000
-MinHP=1500
-MaxHP=1500
-MaxHIT=150
-MinHIT=75
+GiveEXP=195
+MinHP=150
+MaxHP=150
+MaxHIT=20
+MinHIT=40
 DEF=0
 PoderAtaque=230
-PoderEvasion=170
-Snd3=100
+PoderEvasion=60
 BackUp=0
-NROITEMS=5
-Drop1=12-1000 'Oro
-Drop2=12-2000 'Oro
+NROITEMS=2
+Drop1=12-40 'Oro
+Drop2=12-100 'Oro
 
 
 ############################################
@@ -9506,9 +9370,10 @@ Drop2=12-2000 'Oro
 [NPC702]
 Name=Lobo de las nieves
 NpcType=0
+NpcType=0
 Head=0
 Heading=3
-Body=551
+Body=552
 Movement=3
 AguaValida=0
 Attackable=1
@@ -9517,19 +9382,18 @@ Hostile=1
 Domable=0
 Alineacion=2
 Comercia=0
-GiveEXP=1800
-MinHP=1500
-MaxHP=1500
-MaxHIT=180
-MinHIT=100
+GiveEXP=220
+MinHP=190
+MaxHP=190
+MaxHIT=30
+MinHIT=50
 DEF=0
 PoderAtaque=230
-PoderEvasion=200
-Snd3=100
+PoderEvasion=60
 BackUp=0
-NROITEMS=5
-Drop1=12-1000 'Oro
-Drop2=12-3500 'Oro
+NROITEMS=2
+Drop1=12-50 'Oro
+Drop2=12-150 'Oro
 
 
 
@@ -9549,18 +9413,18 @@ Hostile=1
 Domable=0
 Alineacion=2
 Comercia=0
-GiveEXP=1800
-MinHP=1500
-MaxHP=1500
-MaxHIT=150
-MinHIT=100
+GiveEXP=220
+MinHP=190
+MaxHP=190
+MaxHIT=30
+MinHIT=50
 DEF=0
 PoderAtaque=230
-PoderEvasion=200
+PoderEvasion=60
 BackUp=0
 NROITEMS=2
-Drop1=12-700 'Oro
-Drop2=12-1000 'Oro
+Drop1=12-50 'Oro
+Drop2=12-150 'Oro
 ############################################
 
 [NPC704]
@@ -9609,19 +9473,18 @@ Hostile=1
 Domable=0
 Alineacion=2
 Comercia=0
-GiveEXP=3000
-MinHP=3500
-MaxHP=3500
-MaxHIT=215
-MinHIT=150
+GiveEXP=2150
+MinHP=1950
+MaxHP=1950
+MaxHIT=110
+MinHIT=70
 DEF=0
 PoderAtaque=230
 PoderEvasion=200
 BackUp=0
-NROITEMS=3
-Drop1=12-1000 'Oro
+NROITEMS=2
+Drop1=12-500 'Oro
 Drop2=12-1100 'Oro
-Drop3=126-1 'Hacha Larga de Guerra
 
 [NPC706]
 Name=Viuda negra
@@ -9637,21 +9500,18 @@ Hostile=1
 Domable=0
 Alineacion=2
 Comercia=0
-GiveEXP=10500
-MinHP=8000
-MaxHP=8000
-MaxHIT=240
-MinHIT=150
+GiveEXP=3250
+MinHP=2650
+MaxHP=2650
+MaxHIT=140
+MinHIT=120
 DEF=0
 PoderAtaque=230
 PoderEvasion=220
 BackUp=0
-NROITEMS=5
-Drop1=12-3500 'Oro
-Drop2=12-7000 'Oro
-Drop3=126-1 'Hacha Larga de Guerra
-Drop4=129-1 'Hachas Doble Filo
-Drop5=495-1 'Armaduras Escarlata
+NROITEMS=2
+Drop1=12-500 'Oro
+Drop2=12-1500 'Oro
 
 [NPC707]
 Name=Monstruo verde
@@ -9713,7 +9573,7 @@ Drop4=129-5 'Hachas Doble Filo
 Drop5=495-2 'Armaduras Escarlata
 
 [NPC709]
-Name=Hombre lobo
+Name=Fantasma
 NpcType=0
 Head=0
 Heading=3
@@ -9726,19 +9586,19 @@ Hostile=1
 Domable=0
 Alineacion=2
 Comercia=0
-GiveEXP=8500
-MinHP=5500
-MaxHP=5500
-MaxHIT=350
-MinHIT=120
+GiveEXP=3250
+MinHP=2650
+MaxHP=2650
+MaxHIT=120
+MinHIT=85
 DEF=0
 PoderAtaque=230
 PoderEvasion=220
 Snd3=81
 BackUp=0
 NROITEMS=6
-Drop1=12-1500 'Oro
-Drop2=12-2700 'Oro
+Drop1=12-800 'Oro
+Drop2=12-2200 'Oro
  
 [NPC710]
 Name=Errante de la Mazmorra
@@ -9925,8 +9785,8 @@ SND2=141
 SND3=140
 BackUp=0
 NROITEMS=5
-Drop1=192-6000 'Minerales de hierro
-Drop2=386-600 'Lingote de Hierro
+Drop1=192-5000 'Minerales de hierro
+Drop2=386-500 'Lingote de Hierro
 
 [NPC716]
 Name=Etognil Plata
@@ -9956,8 +9816,8 @@ SND2=141
 SND3=140
 BackUp=0
 NROITEMS=5
-Drop1=193-6000 'Minerales de Plata 
-Drop2=387-420 'Lingote de Plata
+Drop1=193-5000 'Minerales de Plata 
+Drop2=387-400 'Lingote de Plata
 
 [NPC717]
 Name=Etognil Oro
@@ -9987,7 +9847,7 @@ SND2=141
 SND3=140
 BackUp=0
 NROITEMS=5
-Drop1=194-6000 'Minerales de Oro
+Drop1=194-5000 'Minerales de Oro
 Drop2=388-300 'Lingote de Oro
 
 ############################################
@@ -10148,8 +10008,8 @@ Domable=0
 Alineacion=2
 Comercia=0
 GiveEXP=6100
-MinHP=4200
-MaxHP=4200
+MinHP=4800
+MaxHP=4800
 MaxHIT=140
 MinHIT=75
 DEF=30
@@ -10163,11 +10023,11 @@ Sp2=24
 Sp3=19
 BackUp=0
 NROITEMS=2
-Drop1=12-5000 'Oro
+Drop1=12-3500 'Oro
 Drop2=205-1 'Proyectil Magico
 
 [NPC755]
-Name=Dama De Las Tinieblas
+Name=Prisionera Veril
 NpcType=0
 Head=0
 Heading=3
@@ -10180,7 +10040,7 @@ Hostile=1
 Domable=0
 Alineacion=2
 Comercia=0
-GiveEXP=7100
+GiveEXP=9500
 MinHP=8200
 MaxHP=8200
 MaxHIT=170
@@ -10195,7 +10055,7 @@ Sp1=19
 Sp2=25
 BackUp=0
 NROITEMS=2
-Drop1=12-7000 'Oro
+Drop1=12-5500 'Oro
 Drop2=660-1 'Baculo Engarzado 
 
 [NPC756]
@@ -10607,7 +10467,7 @@ NROITEMS=1
 Drop1=12-4000 'Oro
 
 [NPC770]
-Name=Lacayo del Demonio
+Name=Esqueleton
 NpcType=0
 Head=0
 Heading=3
@@ -10620,19 +10480,19 @@ Hostile=1
 Domable=0
 Alineacion=2
 Comercia=0
-GiveEXP=35000
+GiveEXP=3500
 GiveGLD=0
-MinHP=8000
-MaxHP=8000
-MaxHIT=220
-MinHIT=180
+MinHP=2250
+MaxHP=2250
+MaxHIT=90
+MinHIT=70
 DEF=30
 AfectaParalisis=0
 PoderAtaque=300
 PoderEvasion=30
 BackUp=0
 NROITEMS=1
-Drop1=12-3000 'Oro
+Drop1=12-1000 'Oro
 
 [NPC771]
 Name=Hiena Del Inframundo
@@ -10762,7 +10622,7 @@ Drop4=37-300 'Pociones Azules
 Drop5=12-10500 'Oro
 
 [NPC775]
-Name=Sin Nombre
+Name=Caballo
 NpcType=0
 Head=0
 Heading=3
@@ -10787,15 +10647,10 @@ PoderAtaque=230
 PoderEvasion=220
 Snd3=100
 BackUp=0
-NROITEMS=5
-Drop1=388-500 'Lingote de Oro
-Drop2=194-10000 'Minerales de Oro
-Drop3=38-100 'Pociones Rojas
-Drop4=37-100 'Pociones Azules
-Drop5=12-7500 'Oro
+NROITEMS=0
 
 [NPC776]
-Name=Sin Nombre
+Name=Dragon volador
 NpcType=0
 Head=0
 Heading=3
@@ -10808,10 +10663,10 @@ Hostile=1
 Domable=0
 Alineacion=2
 Comercia=0
-GiveEXP=2000
+GiveEXP=12500
 GiveGLD=0
-MinHP=80000
-MaxHP=80000
+MinHP=8000
+MaxHP=8000
 MaxHIT=280
 MinHIT=120
 DEF=30
@@ -10820,12 +10675,10 @@ PoderAtaque=230
 PoderEvasion=220
 Snd3=100
 BackUp=0
-NROITEMS=5
-Drop1=388-500 'Lingote de Oro
-Drop2=194-10000 'Minerales de Oro
-Drop3=38-100 'Pociones Rojas
-Drop4=37-100 'Pociones Azules
-Drop5=12-7500 'Oro
+NROITEMS=3
+Drop1=38-100 'Pociones Rojas
+Drop2=37-100 'Pociones Azules
+Drop3=12-7500 'Oro
 
 [NPC777]
 Name=Valkiria
@@ -10858,7 +10711,7 @@ NROITEMS=1
 Drop1=12-800 'Oro
 
 [NPC778]
-Name=Sin Nombre
+Name=Angel
 NpcType=0
 Head=0
 Heading=3
@@ -10871,27 +10724,25 @@ Hostile=1
 Domable=0
 Alineacion=2
 Comercia=0
-GiveEXP=2000
+GiveEXP=3000
 GiveGLD=0
-MinHP=80000
-MaxHP=80000
-MaxHIT=280
-MinHIT=120
+MinHP=2500
+MaxHP=2500
+MaxHIT=70
+MinHIT=50
 DEF=30
 AfectaParalisis=0
 PoderAtaque=230
 PoderEvasion=220
 Snd3=100
 BackUp=0
-NROITEMS=5
-Drop1=388-500 'Lingote de Oro
-Drop2=194-10000 'Minerales de Oro
-Drop3=38-100 'Pociones Rojas
-Drop4=37-100 'Pociones Azules
-Drop5=12-7500 'Oro
+NROITEMS=3
+Drop1=38-100 'Pociones Rojas
+Drop2=37-100 'Pociones Azules
+Drop3=12-7500 'Oro
 
 [NPC779]
-Name=Sin Nombre
+Name=Hada
 NpcType=0
 Head=0
 Heading=3
@@ -10906,25 +10757,22 @@ Alineacion=2
 Comercia=0
 GiveEXP=2000
 GiveGLD=0
-MinHP=80000
-MaxHP=80000
-MaxHIT=280
-MinHIT=120
+MinHP=1500
+MaxHP=1500
+MaxHIT=60
+MinHIT=40
 DEF=30
 AfectaParalisis=0
 PoderAtaque=230
 PoderEvasion=220
 Snd3=100
 BackUp=0
-NROITEMS=5
-Drop1=388-500 'Lingote de Oro
-Drop2=194-10000 'Minerales de Oro
-Drop3=38-100 'Pociones Rojas
-Drop4=37-100 'Pociones Azules
-Drop5=12-7500 'Oro
+NROITEMS=2
+Drop1=37-100 'Pociones Azules
+Drop2=12-7500 'Oro
 
 [NPC780]
-Name=Sin Nombre
+Name=Demonio Joven
 NpcType=0
 Head=0
 Heading=3
@@ -10939,25 +10787,21 @@ Alineacion=2
 Comercia=0
 GiveEXP=2000
 GiveGLD=0
-MinHP=80000
-MaxHP=80000
-MaxHIT=280
-MinHIT=120
+MinHP=2000
+MaxHP=2000
+MaxHIT=80
+MinHIT=60
 DEF=30
 AfectaParalisis=0
 PoderAtaque=230
 PoderEvasion=220
 Snd3=100
 BackUp=0
-NROITEMS=5
-Drop1=388-500 'Lingote de Oro
-Drop2=194-10000 'Minerales de Oro
-Drop3=38-100 'Pociones Rojas
-Drop4=37-100 'Pociones Azules
-Drop5=12-7500 'Oro
+NROITEMS=1
+Drop1=12-1000 'Oro
 
 [NPC781]
-Name=Sin Nombre
+Name=Gato negro
 NpcType=0
 Head=0
 Heading=3
@@ -10970,27 +10814,22 @@ Hostile=1
 Domable=0
 Alineacion=2
 Comercia=0
-GiveEXP=2000
+GiveEXP=80
 GiveGLD=0
-MinHP=80000
-MaxHP=80000
-MaxHIT=280
-MinHIT=120
-DEF=30
+MinHP=25
+MaxHP=25
+MaxHIT=5
+MinHIT=2
+DEF=5
 AfectaParalisis=0
-PoderAtaque=230
-PoderEvasion=220
+PoderAtaque=2
+PoderEvasion=2
 Snd3=100
 BackUp=0
-NROITEMS=5
-Drop1=388-500 'Lingote de Oro
-Drop2=194-10000 'Minerales de Oro
-Drop3=38-100 'Pociones Rojas
-Drop4=37-100 'Pociones Azules
-Drop5=12-7500 'Oro
+NROITEMS=0
 
 [NPC782]
-Name=Sin Nombre
+Name=Aracnido Piojoso
 NpcType=0
 Head=0
 Heading=3
@@ -11003,27 +10842,25 @@ Hostile=1
 Domable=0
 Alineacion=2
 Comercia=0
-GiveEXP=2000
+GiveEXP=1350
 GiveGLD=0
-MinHP=80000
-MaxHP=80000
-MaxHIT=280
-MinHIT=120
+MinHP=2000
+MaxHP=2000
+MaxHIT=80
+MinHIT=50
 DEF=30
 AfectaParalisis=0
-PoderAtaque=230
-PoderEvasion=220
+PoderAtaque=130
+PoderEvasion=120
 Snd3=100
 BackUp=0
-NROITEMS=5
-Drop1=388-500 'Lingote de Oro
-Drop2=194-10000 'Minerales de Oro
-Drop3=38-100 'Pociones Rojas
-Drop4=37-100 'Pociones Azules
-Drop5=12-7500 'Oro
+NROITEMS=3
+Drop1=38-500 'Pociones Rojas
+Drop2=37-50 'Pociones Azules
+Drop3=12-500 'Oro
 
 [NPC783]
-Name=Sin Nombre
+Name=Tortuga joven
 NpcType=0
 Head=0
 Heading=3
@@ -11036,27 +10873,22 @@ Hostile=1
 Domable=0
 Alineacion=2
 Comercia=0
-GiveEXP=2000
+GiveEXP=200
 GiveGLD=0
-MinHP=80000
-MaxHP=80000
-MaxHIT=280
-MinHIT=120
+MinHP=150
+MaxHP=150
+MaxHIT=38
+MinHIT=28
 DEF=30
 AfectaParalisis=0
-PoderAtaque=230
-PoderEvasion=220
+PoderAtaque=23
+PoderEvasion=22
 Snd3=100
 BackUp=0
-NROITEMS=5
-Drop1=388-500 'Lingote de Oro
-Drop2=194-10000 'Minerales de Oro
-Drop3=38-100 'Pociones Rojas
-Drop4=37-100 'Pociones Azules
-Drop5=12-7500 'Oro
+NROITEMS=0
 
 [NPC784]
-Name=Orco de las Mazmorras
+Name=Lord Orco de las Mazmorras
 NpcType=0
 Head=0
 Heading=3
@@ -11088,7 +10920,7 @@ Drop4=37-50 'Pociones Azules
 Drop5=126-1 'Hacha Larga de Guerra
 
 [NPC785]
-Name=Sin Nombre
+Name=Escorpion viejo
 NpcType=0
 Head=0
 Heading=3
@@ -11103,22 +10935,18 @@ Alineacion=2
 Comercia=0
 GiveEXP=2000
 GiveGLD=0
-MinHP=80000
-MaxHP=80000
-MaxHIT=280
-MinHIT=120
+MinHP=100
+MaxHP=100
+MaxHIT=30
+MinHIT=20
 DEF=30
 AfectaParalisis=0
 PoderAtaque=230
 PoderEvasion=220
 Snd3=100
 BackUp=0
-NROITEMS=5
-Drop1=388-500 'Lingote de Oro
-Drop2=194-10000 'Minerales de Oro
-Drop3=38-100 'Pociones Rojas
-Drop4=37-100 'Pociones Azules
-Drop5=12-7500 'Oro
+NROITEMS=1
+Drop5=12-10 'Oro
 
 [NPC786]
 Name=Spriggans (Ent Magico)
@@ -11153,7 +10981,7 @@ Drop2=38-10 'Pociones Rojas
 
 
 [NPC787]
-Name=Sin Nombre
+Name=Murcielago viejo
 NpcType=0
 Head=0
 Heading=3
@@ -11166,10 +10994,10 @@ Hostile=1
 Domable=0
 Alineacion=2
 Comercia=0
-GiveEXP=2000
+GiveEXP=45
 GiveGLD=0
-MinHP=80000
-MaxHP=80000
+MinHP=25
+MaxHP=25
 MaxHIT=280
 MinHIT=120
 DEF=30
@@ -11178,15 +11006,10 @@ PoderAtaque=230
 PoderEvasion=220
 Snd3=100
 BackUp=0
-NROITEMS=5
-Drop1=388-500 'Lingote de Oro
-Drop2=194-10000 'Minerales de Oro
-Drop3=38-100 'Pociones Rojas
-Drop4=37-100 'Pociones Azules
-Drop5=12-7500 'Oro
+NROITEMS=0
 
 [NPC788]
-Name=Sin Nombre
+Name=Agilucho
 NpcType=0
 Head=0
 Heading=3
@@ -11199,27 +11022,22 @@ Hostile=1
 Domable=0
 Alineacion=2
 Comercia=0
-GiveEXP=2000
+GiveEXP=90
 GiveGLD=0
-MinHP=80000
-MaxHP=80000
+MinHP=80
+MaxHP=80
 MaxHIT=280
 MinHIT=120
 DEF=30
 AfectaParalisis=0
-PoderAtaque=230
-PoderEvasion=220
+PoderAtaque=23
+PoderEvasion=22
 Snd3=100
 BackUp=0
-NROITEMS=5
-Drop1=388-500 'Lingote de Oro
-Drop2=194-10000 'Minerales de Oro
-Drop3=38-100 'Pociones Rojas
-Drop4=37-100 'Pociones Azules
-Drop5=12-7500 'Oro
+NROITEMS=0
 
 [NPC789]
-Name=Sin Nombre
+Name=Tigre Joven
 NpcType=0
 Head=0
 Heading=3
@@ -11232,60 +11050,22 @@ Hostile=1
 Domable=0
 Alineacion=2
 Comercia=0
-GiveEXP=2000
+GiveEXP=90
 GiveGLD=0
-MinHP=80000
-MaxHP=80000
-MaxHIT=280
-MinHIT=120
+MinHP=80
+MaxHP=80
+MaxHIT=28
+MinHIT=12
 DEF=30
 AfectaParalisis=0
-PoderAtaque=230
-PoderEvasion=220
+PoderAtaque=23
+PoderEvasion=22
 Snd3=100
 BackUp=0
-NROITEMS=5
-Drop1=388-500 'Lingote de Oro
-Drop2=194-10000 'Minerales de Oro
-Drop3=38-100 'Pociones Rojas
-Drop4=37-100 'Pociones Azules
-Drop5=12-7500 'Oro
+NROITEMS=0
 
 [NPC790]
-Name=Sin Nombre
-NpcType=0
-Head=0
-Heading=3
-Body=657
-Movement=3
-AguaValida=0
-Attackable=1
-ReSpawn=1
-Hostile=1
-Domable=0
-Alineacion=2
-Comercia=0
-GiveEXP=2000
-GiveGLD=0
-MinHP=80000
-MaxHP=80000
-MaxHIT=280
-MinHIT=120
-DEF=30
-AfectaParalisis=0
-PoderAtaque=230
-PoderEvasion=220
-Snd3=100
-BackUp=0
-NROITEMS=5
-Drop1=388-500 'Lingote de Oro
-Drop2=194-10000 'Minerales de Oro
-Drop3=38-100 'Pociones Rojas
-Drop4=37-100 'Pociones Azules
-Drop5=12-7500 'Oro
-
-[NPC791]
-Name=Sin Nombre
+Name=Medusa Reina Moribunda
 NpcType=0
 Head=0
 Heading=3
@@ -11298,27 +11078,55 @@ Hostile=1
 Domable=0
 Alineacion=2
 Comercia=0
-GiveEXP=2000
+GiveEXP=3500
 GiveGLD=0
-MinHP=80000
-MaxHP=80000
-MaxHIT=280
-MinHIT=120
+MinHP=2300
+MaxHP=2300
+MaxHIT=70
+MinHIT=90
 DEF=30
 AfectaParalisis=0
 PoderAtaque=230
 PoderEvasion=220
 Snd3=100
 BackUp=0
-NROITEMS=5
-Drop1=388-500 'Lingote de Oro
-Drop2=194-10000 'Minerales de Oro
-Drop3=38-100 'Pociones Rojas
-Drop4=37-100 'Pociones Azules
-Drop5=12-7500 'Oro
+NROITEMS=2
+Drop1=38-100 'Pociones Rojas
+Drop2=37-100 'Pociones Azules
+
+[NPC791]
+Name=Medusa Reina
+NpcType=0
+Head=0
+Heading=3
+Body=658
+Movement=3
+AguaValida=0
+Attackable=1
+ReSpawn=1
+Hostile=1
+Domable=0
+Alineacion=2
+Comercia=0
+GiveEXP=36000
+GiveGLD=0
+MinHP=16000
+MaxHP=16000
+MaxHIT=235
+MinHIT=135
+DEF=30
+AfectaParalisis=0
+PoderAtaque=230
+PoderEvasion=220
+Snd3=100
+BackUp=0
+NROITEMS=3
+Drop1=38-12 'Pociones Rojas
+Drop2=37-125 'Pociones Azules
+Drop3=12-7500 'Oro
 
 [NPC792]
-Name=Guardian de la Mastaba
+Name=Golem feo
 NpcType=0
 Head=0
 Heading=3
@@ -11331,12 +11139,12 @@ Hostile=1
 Domable=0
 Alineacion=2
 Comercia=0
-GiveEXP=70000
-GiveGLD=75000
-MinHP=100000
-MaxHP=100000
-MaxHIT=220
-MinHIT=160
+GiveEXP=20000
+GiveGLD=20000
+MinHP=14000
+MaxHP=14000
+MaxHIT=260
+MinHIT=180
 DEF=30
 AfectaParalisis=1
 PoderAtaque=230
@@ -11345,13 +11153,11 @@ LanzaSpells=1
 Sp1=49
 AtacaDoble=1
 BackUp=0
-NROITEMS=5
-Drop1=194-10000 'Minerales de Oro
-Drop2=388-500 'Lingote de Oro
+NROITEMS=1
 Drop3=699-1 'Anillo de Disolucion Magica
 
 [NPC793]
-Name=Sin Nombre
+Name=GOLEM FEO PLATA
 NpcType=0
 Head=0
 Heading=3
@@ -11384,7 +11190,7 @@ Drop4=37-100 'Pociones Azules
 Drop5=12-7500 'Oro
 
 [NPC794]
-Name=Sin Nombre
+Name=GOLEM MAS FEO
 NpcType=0
 Head=0
 Heading=3
@@ -11417,7 +11223,7 @@ Drop4=37-100 'Pociones Azules
 Drop5=12-7500 'Oro
 
 [NPC795]
-Name=Sin Nombre
+Name=GOLEM FEO RARO ORO
 NpcType=0
 Head=0
 Heading=3
@@ -11482,7 +11288,7 @@ Drop4=403-1 'Espadas de Plata
 Drop5=485-1 'Armadura Legendaria
 
 [NPC797]
-Name=Sin Nombre
+Name=GOLEM FEO RARO
 NpcType=0
 Head=0
 Heading=3
@@ -11614,7 +11420,7 @@ NROITEMS=1
 Drop1=413-1 'Gema Violeta
 
 [NPC801]
-Name=Sin Nombre
+Name=Pisionera Veril
 NpcType=0
 Head=0
 Heading=3
@@ -11629,9 +11435,9 @@ Alineacion=2
 Comercia=0
 GiveEXP=2000
 GiveGLD=0
-MinHP=80000
-MaxHP=80000
-MaxHIT=280
+MinHP=8000
+MaxHP=8000
+MaxHIT=180
 MinHIT=120
 DEF=30
 AfectaParalisis=0
@@ -11639,15 +11445,13 @@ PoderAtaque=230
 PoderEvasion=220
 Snd3=100
 BackUp=0
-NROITEMS=5
-Drop1=388-500 'Lingote de Oro
-Drop2=194-10000 'Minerales de Oro
-Drop3=38-100 'Pociones Rojas
-Drop4=37-100 'Pociones Azules
-Drop5=12-7500 'Oro
+NROITEMS=3
+Drop1=38-100 'Pociones Rojas
+Drop=37-100 'Pociones Azules
+Drop3=12-7500 'Oro
 
 [NPC802]
-Name=Sin Nombre
+Name=Zorro Joven
 NpcType=0
 Head=0
 Heading=3
@@ -11660,27 +11464,23 @@ Hostile=1
 Domable=0
 Alineacion=2
 Comercia=0
-GiveEXP=2000
+GiveEXP=200
 GiveGLD=0
-MinHP=80000
-MaxHP=80000
-MaxHIT=280
-MinHIT=120
+MinHP=250
+MaxHP=250
+MaxHIT=28
+MinHIT=40
 DEF=30
 AfectaParalisis=0
-PoderAtaque=230
-PoderEvasion=220
+PoderAtaque=30
+PoderEvasion=20
 Snd3=100
 BackUp=0
-NROITEMS=5
-Drop1=388-500 'Lingote de Oro
-Drop2=194-10000 'Minerales de Oro
-Drop3=38-100 'Pociones Rojas
-Drop4=37-100 'Pociones Azules
-Drop5=12-7500 'Oro
+NROITEMS=1
+Drop1=12-40 'Oro
 
 [NPC803]
-Name=Sin Nombre
+Name=Lobo joven
 NpcType=0
 Head=0
 Heading=3
@@ -11695,25 +11495,21 @@ Alineacion=2
 Comercia=0
 GiveEXP=2000
 GiveGLD=0
-MinHP=80000
-MaxHP=80000
-MaxHIT=280
-MinHIT=120
+MinHP=60
+MaxHP=60
+MaxHIT=10
+MinHIT=25
 DEF=30
 AfectaParalisis=0
 PoderAtaque=230
 PoderEvasion=220
 Snd3=100
 BackUp=0
-NROITEMS=5
-Drop1=388-500 'Lingote de Oro
-Drop2=194-10000 'Minerales de Oro
-Drop3=38-100 'Pociones Rojas
-Drop4=37-100 'Pociones Azules
-Drop5=12-7500 'Oro
+NROITEMS=1
+Drop5=12-20 'Oro
 
 [NPC804]
-Name=Sin Nombre
+Name=Rana venenosa
 NpcType=0
 Head=0
 Heading=3
@@ -11726,12 +11522,12 @@ Hostile=1
 Domable=0
 Alineacion=2
 Comercia=0
-GiveEXP=2000
+GiveEXP=100
 GiveGLD=0
-MinHP=80000
-MaxHP=80000
-MaxHIT=280
-MinHIT=120
+MinHP=80
+MaxHP=80
+MaxHIT=35
+MinHIT=35
 DEF=30
 AfectaParalisis=0
 PoderAtaque=230
@@ -11746,7 +11542,7 @@ Drop4=37-100 'Pociones Azules
 Drop5=12-7500 'Oro
 
 [NPC805]
-Name=Sin Nombre
+Name=Rana venenosa
 NpcType=0
 Head=0
 Heading=3
@@ -11759,27 +11555,22 @@ Hostile=1
 Domable=0
 Alineacion=2
 Comercia=0
-GiveEXP=2000
+GiveEXP=50
 GiveGLD=0
-MinHP=80000
-MaxHP=80000
-MaxHIT=280
-MinHIT=120
+MinHP=50
+MaxHP=50
+MaxHIT=30
+MinHIT=20
 DEF=30
 AfectaParalisis=0
 PoderAtaque=230
 PoderEvasion=220
 Snd3=100
 BackUp=0
-NROITEMS=5
-Drop1=388-500 'Lingote de Oro
-Drop2=194-10000 'Minerales de Oro
-Drop3=38-100 'Pociones Rojas
-Drop4=37-100 'Pociones Azules
-Drop5=12-7500 'Oro
+NROITEMS=0
 
 [NPC806]
-Name=Sin Nombre
+Name=Cisne
 NpcType=0
 Head=0
 Heading=3
@@ -11792,24 +11583,19 @@ Hostile=1
 Domable=0
 Alineacion=2
 Comercia=0
-GiveEXP=2000
+GiveEXP=20
 GiveGLD=0
-MinHP=80000
-MaxHP=80000
-MaxHIT=280
-MinHIT=120
+MinHP=15
+MaxHP=15
+MaxHIT=2
+MinHIT=1
 DEF=30
 AfectaParalisis=0
-PoderAtaque=230
-PoderEvasion=220
+PoderAtaque=1
+PoderEvasion=1
 Snd3=100
 BackUp=0
-NROITEMS=5
-Drop1=388-500 'Lingote de Oro
-Drop2=194-10000 'Minerales de Oro
-Drop3=38-100 'Pociones Rojas
-Drop4=37-100 'Pociones Azules
-Drop5=12-7500 'Oro
+NROITEMS=0
 
 [NPC807]
 Name=Gorgona
@@ -11845,7 +11631,7 @@ Drop4=206-1 'Paralizar
 Drop5=531-1 'Descarga Electrica
 
 [NPC808]
-Name=Sin Nombre
+Name=Tigre joven
 NpcType=0
 Head=0
 Heading=3
@@ -11860,25 +11646,20 @@ Alineacion=2
 Comercia=0
 GiveEXP=2000
 GiveGLD=0
-MinHP=80000
-MaxHP=80000
-MaxHIT=280
-MinHIT=120
+MinHP=80
+MaxHP=80
+MaxHIT=20
+MinHIT=10
 DEF=30
 AfectaParalisis=0
 PoderAtaque=230
 PoderEvasion=220
 Snd3=100
 BackUp=0
-NROITEMS=5
-Drop1=388-500 'Lingote de Oro
-Drop2=194-10000 'Minerales de Oro
-Drop3=38-100 'Pociones Rojas
-Drop4=37-100 'Pociones Azules
-Drop5=12-7500 'Oro
+NROITEMS=0
 
 [NPC809]
-Name=Sin Nombre
+Name=Lord Goblin
 NpcType=0
 Head=0
 Heading=3
@@ -11891,12 +11672,12 @@ Hostile=1
 Domable=0
 Alineacion=2
 Comercia=0
-GiveEXP=2000
+GiveEXP=1110
 GiveGLD=0
-MinHP=80000
-MaxHP=80000
-MaxHIT=280
-MinHIT=120
+MinHP=800
+MaxHP=800
+MaxHIT=50
+MinHIT=30
 DEF=30
 AfectaParalisis=0
 PoderAtaque=230
@@ -11911,7 +11692,7 @@ Drop4=37-100 'Pociones Azules
 Drop5=12-7500 'Oro
 
 [NPC810]
-Name=Sin Nombre
+Name=Kobold
 NpcType=0
 Head=0
 Heading=3
@@ -11924,11 +11705,11 @@ Hostile=1
 Domable=0
 Alineacion=2
 Comercia=0
-GiveEXP=2000
+GiveEXP=3250
 GiveGLD=0
-MinHP=80000
-MaxHP=80000
-MaxHIT=280
+MinHP=4500
+MaxHP=4500
+MaxHIT=140
 MinHIT=120
 DEF=30
 AfectaParalisis=0
@@ -11936,12 +11717,10 @@ PoderAtaque=230
 PoderEvasion=220
 Snd3=100
 BackUp=0
-NROITEMS=5
-Drop1=388-500 'Lingote de Oro
-Drop2=194-10000 'Minerales de Oro
-Drop3=38-100 'Pociones Rojas
-Drop4=37-100 'Pociones Azules
-Drop5=12-7500 'Oro
+NROITEMS=3
+Drop1=38-100 'Pociones Rojas
+Drop2=37-100 'Pociones Azules
+Drop3=12-3500 'Oro
 
 [NPC811]
 Name=Golem de Barro
@@ -12006,7 +11785,7 @@ Drop4=206-1 'Paralizar
 Drop5=475-1 'Galera
 
 [NPC813]
-Name=Sin Nombre
+Name=Fuego Fatuo viejo
 NpcType=0
 Head=0
 Heading=3
@@ -12021,22 +11800,19 @@ Alineacion=2
 Comercia=0
 GiveEXP=2000
 GiveGLD=0
-MinHP=80000
-MaxHP=80000
-MaxHIT=280
-MinHIT=120
+MinHP=800
+MaxHP=800
+MaxHIT=50
+MinHIT=60
 DEF=30
 AfectaParalisis=0
 PoderAtaque=230
 PoderEvasion=220
 Snd3=100
 BackUp=0
-NROITEMS=5
-Drop1=388-500 'Lingote de Oro
-Drop2=194-10000 'Minerales de Oro
-Drop3=38-100 'Pociones Rojas
-Drop4=37-100 'Pociones Azules
-Drop5=12-7500 'Oro
+NROITEMS=2
+Drop1=37-100 'Pociones Azules
+Drop2=12-7500 'Oro
 
 [NPC814]
 Name=Ogro Joven
@@ -12066,7 +11842,7 @@ Drop1=12-200 'Oro
 Drop2=38-100 'Pociones Rojas
 
 [NPC815]
-Name=Sin Nombre
+Name=Rata sucia
 NpcType=0
 Head=0
 Heading=3
@@ -12081,25 +11857,20 @@ Alineacion=2
 Comercia=0
 GiveEXP=2000
 GiveGLD=0
-MinHP=80000
-MaxHP=80000
-MaxHIT=280
-MinHIT=120
-DEF=30
+MinHP=45
+MaxHP=845
+MaxHIT=3
+MinHIT=2
+DEF=2
 AfectaParalisis=0
-PoderAtaque=230
-PoderEvasion=220
+PoderAtaque=23
+PoderEvasion=22
 Snd3=100
 BackUp=0
-NROITEMS=5
-Drop1=388-500 'Lingote de Oro
-Drop2=194-10000 'Minerales de Oro
-Drop3=38-100 'Pociones Rojas
-Drop4=37-100 'Pociones Azules
-Drop5=12-7500 'Oro
+NROITEMS=0
 
 [NPC816]
-Name=Sin Nombre
+Name=Liche con farol
 NpcType=0
 Head=0
 Heading=3
@@ -12114,8 +11885,8 @@ Alineacion=2
 Comercia=0
 GiveEXP=2000
 GiveGLD=0
-MinHP=80000
-MaxHP=80000
+MinHP=15000
+MaxHP=15000
 MaxHIT=280
 MinHIT=120
 DEF=30
@@ -12124,15 +11895,13 @@ PoderAtaque=230
 PoderEvasion=220
 Snd3=100
 BackUp=0
-NROITEMS=5
-Drop1=388-500 'Lingote de Oro
-Drop2=194-10000 'Minerales de Oro
-Drop3=38-100 'Pociones Rojas
-Drop4=37-100 'Pociones Azules
-Drop5=12-7500 'Oro
+NROITEMS=3
+Drop1=38-100 'Pociones Rojas
+Drop2=37-100 'Pociones Azules
+Drop3=12-7500 'Oro
 
 [NPC817]
-Name=Sin Nombre
+Name=Mago Guardian
 NpcType=0
 Head=0
 Heading=3
@@ -12145,27 +11914,24 @@ Hostile=1
 Domable=0
 Alineacion=2
 Comercia=0
-GiveEXP=2000
+GiveEXP=13000
 GiveGLD=0
-MinHP=80000
-MaxHP=80000
-MaxHIT=280
-MinHIT=120
+MinHP=3000
+MaxHP=3000
+MaxHIT=60
+MinHIT=90
 DEF=30
 AfectaParalisis=0
 PoderAtaque=230
 PoderEvasion=220
 Snd3=100
 BackUp=0
-NROITEMS=5
-Drop1=388-500 'Lingote de Oro
-Drop2=194-10000 'Minerales de Oro
-Drop3=38-100 'Pociones Rojas
-Drop4=37-100 'Pociones Azules
-Drop5=12-7500 'Oro
+NROITEMS=2
+Drop1=37-100 'Pociones Azules
+Drop2=12-7500 'Oro
 
 [NPC818]
-Name=Sin Nombre
+Name=Aracnido Magico
 NpcType=0
 Head=0
 Heading=3
@@ -12180,8 +11946,8 @@ Alineacion=2
 Comercia=0
 GiveEXP=2000
 GiveGLD=0
-MinHP=80000
-MaxHP=80000
+MinHP=2500
+MaxHP=2500
 MaxHIT=280
 MinHIT=120
 DEF=30
@@ -12190,15 +11956,12 @@ PoderAtaque=230
 PoderEvasion=220
 Snd3=100
 BackUp=0
-NROITEMS=5
-Drop1=388-500 'Lingote de Oro
-Drop2=194-10000 'Minerales de Oro
-Drop3=38-100 'Pociones Rojas
-Drop4=37-100 'Pociones Azules
-Drop5=12-7500 'Oro
+NROITEMS=2
+Drop1=37-100 'Pociones Azules
+Drop2=12-2500 'Oro
 
 [NPC819]
-Name=Sin Nombre
+Name=Rey medusa
 NpcType=0
 Head=0
 Heading=3
@@ -12211,11 +11974,11 @@ Hostile=1
 Domable=0
 Alineacion=2
 Comercia=0
-GiveEXP=2000
+GiveEXP=14000
 GiveGLD=0
-MinHP=80000
-MaxHP=80000
-MaxHIT=280
+MinHP=7000
+MaxHP=7000
+MaxHIT=70
 MinHIT=120
 DEF=30
 AfectaParalisis=0
@@ -12224,14 +11987,12 @@ PoderEvasion=220
 Snd3=100
 BackUp=0
 NROITEMS=5
-Drop1=388-500 'Lingote de Oro
-Drop2=194-10000 'Minerales de Oro
-Drop3=38-100 'Pociones Rojas
-Drop4=37-100 'Pociones Azules
-Drop5=12-7500 'Oro
+Drop1=38-100 'Pociones Rojas
+Drop2=37-100 'Pociones Azules
+Drop3=12-4500 'Oro
 
 [NPC820]
-Name=Sin Nombre
+Name=Gato salvaje
 NpcType=0
 Head=0
 Heading=3
@@ -12246,25 +12007,21 @@ Alineacion=2
 Comercia=0
 GiveEXP=2000
 GiveGLD=0
-MinHP=80000
-MaxHP=80000
-MaxHIT=280
-MinHIT=120
-DEF=30
+MinHP=80
+MaxHP=80
+MaxHIT=2
+MinHIT=9
+DEF=0
 AfectaParalisis=0
-PoderAtaque=230
-PoderEvasion=220
+PoderAtaque=2
+PoderEvasion=2
 Snd3=100
 BackUp=0
-NROITEMS=5
-Drop1=388-500 'Lingote de Oro
-Drop2=194-10000 'Minerales de Oro
-Drop3=38-100 'Pociones Rojas
-Drop4=37-100 'Pociones Azules
-Drop5=12-7500 'Oro
+NROITEMS=0
+
 
 [NPC821]
-Name=Sin Nombre
+Name=Brujo Capa roja
 NpcType=0
 Head=0
 Heading=3
@@ -12279,8 +12036,8 @@ Alineacion=2
 Comercia=0
 GiveEXP=2000
 GiveGLD=0
-MinHP=80000
-MaxHP=80000
+MinHP=8000
+MaxHP=8000
 MaxHIT=280
 MinHIT=120
 DEF=30
@@ -12289,15 +12046,13 @@ PoderAtaque=230
 PoderEvasion=220
 Snd3=100
 BackUp=0
-NROITEMS=5
-Drop1=388-500 'Lingote de Oro
-Drop2=194-10000 'Minerales de Oro
-Drop3=38-100 'Pociones Rojas
-Drop4=37-100 'Pociones Azules
-Drop5=12-7500 'Oro
+NROITEMS=3
+Drop1=38-100 'Pociones Rojas
+Drop2=37-100 'Pociones Azules
+Drop3=12-7500 'Oro
 
 [NPC822]
-Name=Sin Nombre
+Name=Rata gigante
 NpcType=0
 Head=0
 Heading=3
@@ -12312,10 +12067,10 @@ Alineacion=2
 Comercia=0
 GiveEXP=2000
 GiveGLD=0
-MinHP=80000
-MaxHP=80000
-MaxHIT=280
-MinHIT=120
+MinHP=500
+MaxHP=500
+MaxHIT=28
+MinHIT=45
 DEF=30
 AfectaParalisis=0
 PoderAtaque=230
@@ -13474,7 +13229,7 @@ NROITEMS=1
 Drop1=12-30000 'Oro
 
 [NPC931]
-Name=Destructor
+Name=Zombie Squiz
 NpcType=0
 Head=0
 Heading=3
@@ -13487,17 +13242,17 @@ Hostile=1
 Domable=0
 Alineacion=2
 Comercia=0
-GiveEXP=20000
-MinHP=7500
-MaxHP=7500
-MaxHIT=140
-MinHIT=100
+GiveEXP=3000
+MinHP=2500
+MaxHP=2500
+MaxHIT=130
+MinHIT=80
 DEF=5
 PoderAtaque=100
 PoderEvasion=100
 BackUp=0
 NROITEMS=1
-Drop1=12-1000 'Oro
+Drop1=12-600 'Oro
 
 [NPC932]
 Name=Momia
@@ -13513,21 +13268,21 @@ Hostile=1
 Domable=0
 Alineacion=2
 Comercia=0
-GiveEXP=20500
+GiveEXP=17500
 MinHP=13000
 MaxHP=13000
-MaxHIT=270
-MinHIT=200
+MaxHIT=200
+MinHIT=150
 DEF=20
 PoderAtaque=300
 PoderEvasion=200
 BackUp=0
 NROITEMS=1
-Drop1=12-4500 'Oro
+Drop1=12-3500 'Oro
 Drop2=131-1   ' Casco de Hierro Completo
 
 [NPC933]
-Name=Titan de Tierra
+Name=Aracanido Rey
 NpcType=0
 Head=0
 Heading=3
@@ -13540,11 +13295,11 @@ Hostile=1
 Domable=0
 Alineacion=2
 Comercia=0
-GiveEXP=150000
-MinHP=300000
-MaxHP=300000
-MaxHIT=600
-MinHIT=300
+GiveEXP=25000
+MinHP=30000
+MaxHP=30000
+MaxHIT=280
+MinHIT=160
 DEF=8
 AfectaParalisis=1
 PoderAtaque=300
@@ -13554,7 +13309,7 @@ SND2=31
 SND3=32
 BackUp=0
 NROITEMS=1
-Drop1=12-30000 'Oro
+Drop1=12-15000 'Oro
 
 [NPC934]
 Name=Titan de Agua
@@ -13659,8 +13414,8 @@ Drop2=402-1 'Espada Mata Dragones
 Drop3=532-1 'Apocalipsis
 Drop4=1156-1 'Montura de Gran Dragon Dorado
 
-[NPC937] 'Rick
-Name=Pickle Rick
+[NPC937] 'Aracnido
+Name=Aracnido sclopetarius
 NpcType=0
 Head=0
 Heading=3
@@ -13673,11 +13428,11 @@ Hostile=1
 Domable=0
 Alineacion=2
 Comercia=0
-GiveEXP=1000000
-MinHP=15000
-MaxHP=15000
-MaxHIT=600
-MinHIT=140
+GiveEXP=2850
+MinHP=3000
+MaxHP=3000
+MaxHIT=90
+MinHIT=80
 DEF=8
 AfectaParalisis=1
 PoderAtaque=300
@@ -13687,7 +13442,7 @@ SND2=31
 SND3=32
 BackUp=0
 NROITEMS=1
-Drop1=12-1000000 'Oro
+Drop1=12-1250 'Oro
 
 [NPC938]
 Name=Artesano

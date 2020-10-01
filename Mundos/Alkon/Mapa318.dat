@@ -1,0 +1,12 @@
+[MAPA318]
+Name=Catacumbas Nivel Tres
+MusicNumMp3=9
+MagiaSinefecto=0
+InviSinEfecto=1
+ResuSinEfecto=0
+NoEncriptarMP=0
+Terreno=BOSQUE
+Zona=DUNGEON
+Restringir=NO
+BackUp= 0
+Pk=0
