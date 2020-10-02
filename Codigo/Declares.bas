@@ -520,7 +520,7 @@ Public Const MAXSKILLPOINTS As Byte = 100
 
 ''
 ' Cantidad de Ciudades
-Public Const NUMCIUDADES    As Byte = 6
+Public Const NUMCIUDADES    As Byte = 9
 
 ''
 'Direccion

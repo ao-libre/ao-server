@@ -81,7 +81,7 @@ Public Sub BorrarUsuarioCharfile(ByVal UserName As String)
                 Call WriteVar(AccountCharfile, "INIT", "CANTIDADPERSONAJES", NumberOfCharacters - 1)
 
                 'Por ultimo borramos el archivo.
-                Kill(CharPath & UCase$(UserName) & ".chr")
+                Kill (CharPath & UCase$(UserName) & ".chr")
                 
                 Exit Sub
             End If
@@ -189,7 +189,7 @@ Public Sub MarcarPjComoQueYaVotoCharfile(ByVal Userindex As Integer, _
     'Author: Juan Andres Dalmasso (CHOTS)
     'Last Modification: 19/09/2018
     '***************************************************
-    Call WriteVar(CharPath & UserList(Userindex).Name & ".chr", "CONSULTAS", "Voto", str(NumeroEncuesta))
+    Call WriteVar(CharPath & UserList(Userindex).Name & ".chr", "CONSULTAS", "Voto", Str(NumeroEncuesta))
 
 End Sub
 

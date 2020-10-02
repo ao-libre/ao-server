@@ -3,17 +3,15 @@
 # Fixture for the database creation
 # Created on September 17th 2018
 # By Juan Andres Dalmasso (CHOTS)
-# Last modification: 10/10/2018 (CHOTS)
+# Last modification: 30/09/2020 by Alexis Caraballo (WyroX)
 
 CREATE TABLE account (
     id MEDIUMINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    username VARCHAR(50) NOT NULL,
-    password VARCHAR(64) NOT NULL,
-    salt VARCHAR(10) NOT NULL,
-    hash VARCHAR(32) NOT NULL,
-    date_created TIMESTAMP NOT NULL,
-    date_last_login TIMESTAMP NOT NULL,
-    last_ip VARCHAR(16)
+    username VARCHAR(320) NOT NULL,
+    password CHAR(64) NOT NULL,
+    salt CHAR(10) NOT NULL,
+    hash CHAR(32) NOT NULL,
+    date_created TIMESTAMP NOT NULL
 );
 
 CREATE TABLE user (
@@ -58,6 +56,7 @@ CREATE TABLE user (
     slot_shield TINYINT UNSIGNED,
     slot_ammo TINYINT UNSIGNED,
     slot_ship TINYINT UNSIGNED,
+    slot_mount TINYINT UNSIGNED,
     slot_ring TINYINT UNSIGNED,
     slot_bag TINYINT UNSIGNED,
 
@@ -129,6 +128,9 @@ CREATE TABLE user (
     guild_requests_history VARCHAR(1024),
     guild_rejected_because VARCHAR(255),
 
+    # CONTACTO
+    email VARCHAR(320) NOT NULL,
+
     CONSTRAINT fk_user_account FOREIGN KEY (account_id) REFERENCES account(id),
     INDEX (name)
 );
@@ -199,6 +201,43 @@ CREATE TABLE skillpoint (
 
     PRIMARY KEY (user_id, number),
     CONSTRAINT fk_skillpoint_user FOREIGN KEY (user_id) REFERENCES user(id)
+);
+
+CREATE TABLE friend (
+    user_id MEDIUMINT UNSIGNED NOT NULL,
+    number TINYINT UNSIGNED NOT NULL,
+    friend VARCHAR(30) NOT NULL DEFAULT '',
+    ignored BOOLEAN NOT NULL DEFAULT FALSE,
+
+    PRIMARY KEY (user_id, number),
+    CONSTRAINT fk_friend_user FOREIGN KEY (user_id) REFERENCES user(id)
+);
+
+CREATE TABLE connection (
+    user_id MEDIUMINT UNSIGNED NOT NULL,
+    ip VARCHAR(16),
+    date_last_login TIMESTAMP NOT NULL,
+
+    PRIMARY KEY (user_id, ip),
+    CONSTRAINT fk_ip_user FOREIGN KEY (user_id) REFERENCES user(id)
+);
+
+CREATE TABLE quest (
+    user_id MEDIUMINT UNSIGNED NOT NULL,
+    number TINYINT UNSIGNED NOT NULL,
+    quest_id TINYINT UNSIGNED NOT NULL DEFAULT 0,
+    npcs VARCHAR(64) NOT NULL DEFAULT '',
+
+    PRIMARY KEY (user_id, number),
+    CONSTRAINT fk_quest_user FOREIGN KEY (user_id) REFERENCES user(id)
+);
+
+CREATE TABLE quest_done (
+    user_id MEDIUMINT UNSIGNED NOT NULL,
+    quest_id TINYINT UNSIGNED NOT NULL,
+
+    PRIMARY KEY (user_id, quest_id),
+    CONSTRAINT fk_quest_done_user FOREIGN KEY (user_id) REFERENCES user(id)
 );
 
 # Credentials for testing environment
