@@ -22188,6 +22188,10 @@ Public Function PrepareMessageCharacterChange(ByVal body As Integer, _
         Call .WriteInteger(FX)
         Call .WriteInteger(FXLoops)
         
+        Call .WriteByte(ServerPacketID.HeadingChange)
+        Call .WriteInteger(CharIndex)
+        Call .WriteByte(heading)
+        
         PrepareMessageCharacterChange = .ReadASCIIStringFixed(.Length)
 
     End With
