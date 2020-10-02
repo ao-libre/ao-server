@@ -2332,6 +2332,8 @@ Private Sub HandleWalk(ByVal Userindex As Integer)
         
         'If exiting, cancel
         Call CancelExit(Userindex)
+
+        If .flags.Comerciando Then Exit Sub
         
         'Esta usando el /HOGAR, no se puede mover
         If .flags.Traveling = 1 Then
@@ -3975,6 +3977,8 @@ Private Sub HandleChangeHeading(ByVal Userindex As Integer)
         Dim posY    As Integer
                 
         heading = .incomingData.ReadByte()
+        
+        If .flags.Comerciando Then Exit Sub
         
         If .flags.Paralizado = 1 And .flags.Inmovilizado = 0 Then
 
