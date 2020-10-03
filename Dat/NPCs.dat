@@ -11099,7 +11099,7 @@ Name=Medusa Reina
 NpcType=0
 Head=0
 Heading=3
-Body=658
+Body=693
 Movement=3
 AguaValida=0
 Attackable=1
@@ -11126,7 +11126,7 @@ Drop2=37-125 'Pociones Azules
 Drop3=12-7500 'Oro
 
 [NPC792]
-Name=Golem feo
+Name=Golem
 NpcType=0
 Head=0
 Heading=3
@@ -11157,7 +11157,7 @@ NROITEMS=1
 Drop3=699-1 'Anillo de Disolucion Magica
 
 [NPC793]
-Name=GOLEM FEO PLATA
+Name=Golem
 NpcType=0
 Head=0
 Heading=3
