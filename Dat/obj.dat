@@ -7343,7 +7343,7 @@ Agarrable=1
 Texto=Teleport a las Catacumbas.
 
 [OBJ622]
-Name=Barrilito de cerveza
+Name=Mate
 GrhIndex=20505
 ObjType=13
 Agarrable=0
