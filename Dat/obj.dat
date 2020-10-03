@@ -470,10 +470,10 @@ Name=Pocion Roja
 GrhIndex=542
 ObjType=11
 Agarrable=0
-TipoPocion=4
-MaxModificador=25
-MinModificador=20
-Valor=24
+TipoPocion=3
+MaxModificador=30
+MinModificador=30
+Valor=20
 Crucial=1
 
 [OBJ39]
