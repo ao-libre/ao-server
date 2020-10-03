@@ -1279,7 +1279,7 @@ BackUp=1
 [NPC36] 'Borracho
 Name=Astor
 NpcType=0
-Desc=orcoszhh zson todsh orcshhh..hip..GLUPGLUP
+Desc=orcoszh zson todsh orcshhh..hip..GLUPGLUP
 Head=2140
 Body=285
 Heading=3
@@ -1298,7 +1298,7 @@ Comercia=0
 [NPC1]
 Name=Aldeano
 NpcType=0
-Desc=Hola! Bienvenido a nuestra humilde aldea.
+Desc=Hola! Gracias por venir a nuestra humilde aldea.
 Head=0
 Heading=3
 Body=18
@@ -1314,7 +1314,7 @@ BackUp=0
 #############################################
 
 [NPC10] 'npc adorno
-Name=Lenny
+Name=Lenni
 NpcType=0
 Desc=Hola, os gustaria oir una hermosa melodia?!.
 Head=0
@@ -1540,7 +1540,7 @@ Comercia=0
 ##############################################
 
 [NPC137] 'Mendigo
-Name=Manrique - [Mendigo Ulla]
+Name=Manrique - [Mendigo]
 NpcType=0
 Desc=Lo perdi todo al entrar al telleport del bosque dork...dame algo para intentar volver!tengo que volver!!
 Head=0
@@ -1658,7 +1658,7 @@ Comercia=0
 ##############################################
 
 [NPC144] 'Bardo
-Name=Whyx
+Name=Lenni
 NpcType=0
 Desc=Mis melodias podrian hacer que hasta el mas habil guerrero, caiga a mis pies...
 Head=0
@@ -1743,7 +1743,7 @@ BackUp=1
 Name=Thorkis
 NpcType=0
 Desc=Hooooola, tengo las mejores provisiones de Ullathorpe!!
-Head=504
+Head=0
 Heading=3
 Body=202
 Movement=1
@@ -1965,7 +1965,7 @@ BackUp=1
 Name=Thorkis
 NpcType=0
 Desc=Que tal! Entra, pues tengo las mejores provisiones de todo Argentum!
-Head=504
+Head=0
 Heading=3
 Body=202
 Movement=1
