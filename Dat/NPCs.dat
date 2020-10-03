@@ -13199,7 +13199,7 @@ Comercia=0
 BackUp=0
 
 [NPC930]
-Name=Titan de Fuego
+Name=Ogro Gigante
 NpcType=0
 Head=0
 Heading=3
@@ -13213,20 +13213,24 @@ Domable=0
 Alineacion=2
 Comercia=0
 GiveEXP=150000
-MinHP=300000
-MaxHP=300000
-MaxHIT=600
-MinHIT=300
+MinHP=90000
+MaxHP=90000
+MaxHIT=265
+MinHIT=180
 DEF=8
-AfectaParalisis=1
+AfectaParalisis=0
 PoderAtaque=300
 PoderEvasion=100
 SND1=30
 SND2=31
 SND3=32
 BackUp=0
-NROITEMS=1
+NROITEMS=5
 Drop1=12-30000 'Oro
+Drop2=12-50000 'Oro
+Drop3=12-20000 'Oro
+Drop4=129-3 'Hacha Dos filos
+Drop5=12-15000 'Oro
 
 [NPC931]
 Name=Zombie Squiz
