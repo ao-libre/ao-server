@@ -987,6 +987,7 @@ Sub MoveUserChar(ByVal Userindex As Integer, ByVal nHeading As eHeading)
     '13/07/2009: ZaMa - Now all the clients don't know when an invisible admin moves, they force the admin to move.
     '13/07/2009: ZaMa - Invisible admins aren't allowed to force dead characater to move
     '06/04/2020: FrankoH298 - Ahora no se puede entrar a las casas montado.
+    '03/10/2020: WyroX - Ahora te desmonta al entrar a casas o dungeon
     '*************************************************
     Dim nPos          As WorldPos
 
@@ -1010,9 +1011,10 @@ Sub MoveUserChar(ByVal Userindex As Integer, ByVal nHeading As eHeading)
         If UserList(Userindex).flags.Equitando And _
            (MapData(UserList(Userindex).Pos.Map, nPos.X, nPos.Y).trigger = eTrigger.CASA Or _
            MapData(UserList(Userindex).Pos.Map, nPos.X, nPos.Y).trigger = eTrigger.BAJOTECHO Or _
-           MapInfo(UserList(Userindex).Pos.Map).Zona = Dungeon) Then _
+           MapInfo(UserList(Userindex).Pos.Map).Zona = Dungeon) Then
 
-            Exit Sub
+            Call UnmountMontura(Userindex)
+            Call WriteEquitandoToggle(Userindex)
         End If
 
         'si no estoy solo en el mapa...
