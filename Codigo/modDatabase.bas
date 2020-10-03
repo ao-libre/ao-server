@@ -400,6 +400,7 @@ Sub UpdateUserToDatabase(ByVal Userindex As Integer, _
         query = query & "pos_x = " & .Pos.X & ", "
         query = query & "pos_y = " & .Pos.Y & ", "
         query = query & "last_map = " & .flags.lastMap & ", "
+        query = query & "inv_level = " & .Stats.InventLevel & ", "
         query = query & "body_id = " & .Char.body & ", "
         query = query & "head_id = " & .OrigChar.Head & ", "
         query = query & "weapon_id = " & .Char.WeaponAnim & ", "
