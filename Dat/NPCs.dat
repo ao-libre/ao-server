@@ -9994,7 +9994,7 @@ Drop4=38-500 'Pocion Roja
 Drop5=39-150 'Pocion Verde
 
 [NPC754]
-Name=Conjuradora Del Bosque
+Name=Conjuradora
 NpcType=0
 Head=0
 Heading=3
@@ -10007,7 +10007,7 @@ Hostile=1
 Domable=0
 Alineacion=2
 Comercia=0
-GiveEXP=6900
+GiveEXP=7150
 MinHP=4800
 MaxHP=4800
 MaxHIT=140
