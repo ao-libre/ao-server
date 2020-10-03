@@ -1242,6 +1242,7 @@ Sub LoadUserStats(ByVal Userindex As Integer, ByRef UserFile As clsIniManager)
     'Author: Unknown
     'Last modified: 11/19/2009
     '11/19/2009: Pato - Load the EluSkills and ExpSkills
+    '03/10/2020 WyroX - Uso "val" para castear string a numerico, porque los otros casteos no funcionan con el string nulo ("")
     '*************************************************
     Dim LoopC As Long
 
@@ -1249,59 +1250,59 @@ Sub LoadUserStats(ByVal Userindex As Integer, ByRef UserFile As clsIniManager)
         With .Stats
 
             For LoopC = 1 To NUMATRIBUTOS
-                .UserAtributos(LoopC) = CByte(UserFile.GetValue("ATRIBUTOS", "AT" & LoopC))
-                .UserAtributosBackUP(LoopC) = CByte(.UserAtributos(LoopC))
+                .UserAtributos(LoopC) = val(UserFile.GetValue("ATRIBUTOS", "AT" & LoopC))
+                .UserAtributosBackUP(LoopC) = val(.UserAtributos(LoopC))
             Next LoopC
         
             For LoopC = 1 To NUMSKILLS
-                .UserSkills(LoopC) = CByte(UserFile.GetValue("SKILLS", "SK" & LoopC))
-                .EluSkills(LoopC) = CLng(UserFile.GetValue("SKILLS", "ELUSK" & LoopC))
-                .ExpSkills(LoopC) = CLng(UserFile.GetValue("SKILLS", "EXPSK" & LoopC))
+                .UserSkills(LoopC) = val(UserFile.GetValue("SKILLS", "SK" & LoopC))
+                .EluSkills(LoopC) = val(UserFile.GetValue("SKILLS", "ELUSK" & LoopC))
+                .ExpSkills(LoopC) = val(UserFile.GetValue("SKILLS", "EXPSK" & LoopC))
             Next LoopC
         
             For LoopC = 1 To MAXUSERHECHIZOS
-                .UserHechizos(LoopC) = CInt(UserFile.GetValue("Hechizos", "H" & LoopC))
+                .UserHechizos(LoopC) = val(UserFile.GetValue("Hechizos", "H" & LoopC))
             Next LoopC
         
-            .Gld = CLng(UserFile.GetValue("STATS", "GLD"))
-            .Banco = CLng(UserFile.GetValue("STATS", "BANCO"))
+            .Gld = val(UserFile.GetValue("STATS", "GLD"))
+            .Banco = val(UserFile.GetValue("STATS", "BANCO"))
         
-            .MaxHp = CInt(UserFile.GetValue("STATS", "MaxHP"))
-            .MinHp = CInt(UserFile.GetValue("STATS", "MinHP"))
+            .MaxHp = val(UserFile.GetValue("STATS", "MaxHP"))
+            .MinHp = val(UserFile.GetValue("STATS", "MinHP"))
         
-            .MinSta = CInt(UserFile.GetValue("STATS", "MinSTA"))
-            .MaxSta = CInt(UserFile.GetValue("STATS", "MaxSTA"))
+            .MinSta = val(UserFile.GetValue("STATS", "MinSTA"))
+            .MaxSta = val(UserFile.GetValue("STATS", "MaxSTA"))
         
-            .MaxMAN = CInt(UserFile.GetValue("STATS", "MaxMAN"))
-            .MinMAN = CInt(UserFile.GetValue("STATS", "MinMAN"))
+            .MaxMAN = val(UserFile.GetValue("STATS", "MaxMAN"))
+            .MinMAN = val(UserFile.GetValue("STATS", "MinMAN"))
         
-            .MaxHIT = CInt(UserFile.GetValue("STATS", "MaxHIT"))
-            .MinHIT = CInt(UserFile.GetValue("STATS", "MinHIT"))
+            .MaxHIT = val(UserFile.GetValue("STATS", "MaxHIT"))
+            .MinHIT = val(UserFile.GetValue("STATS", "MinHIT"))
         
-            .MaxAGU = CByte(UserFile.GetValue("STATS", "MaxAGU"))
-            .MinAGU = CByte(UserFile.GetValue("STATS", "MinAGU"))
+            .MaxAGU = val(UserFile.GetValue("STATS", "MaxAGU"))
+            .MinAGU = val(UserFile.GetValue("STATS", "MinAGU"))
         
-            .MaxHam = CByte(UserFile.GetValue("STATS", "MaxHAM"))
-            .MinHam = CByte(UserFile.GetValue("STATS", "MinHAM"))
+            .MaxHam = val(UserFile.GetValue("STATS", "MaxHAM"))
+            .MinHam = val(UserFile.GetValue("STATS", "MinHAM"))
         
-            .SkillPts = CInt(UserFile.GetValue("STATS", "SkillPtsLibres"))
+            .SkillPts = val(UserFile.GetValue("STATS", "SkillPtsLibres"))
         
-            .Exp = CDbl(UserFile.GetValue("STATS", "EXP"))
-            .ELU = CLng(UserFile.GetValue("STATS", "ELU"))
-            .ELV = CByte(UserFile.GetValue("STATS", "ELV"))
-            
-            .InventLevel = CByte(UserFile.GetValue("STATS", "InventLevel"))
+            .Exp = val(UserFile.GetValue("STATS", "EXP"))
+            .ELU = val(UserFile.GetValue("STATS", "ELU"))
+            .ELV = val(UserFile.GetValue("STATS", "ELV"))
+
+            .InventLevel = val(UserFile.GetValue("STATS", "InventLevel"))
         
-            .UsuariosMatados = CLng(UserFile.GetValue("MUERTES", "UserMuertes"))
-            .NPCsMuertos = CInt(UserFile.GetValue("MUERTES", "NpcsMuertes"))
+            .UsuariosMatados = val(UserFile.GetValue("MUERTES", "UserMuertes"))
+            .NPCsMuertos = val(UserFile.GetValue("MUERTES", "NpcsMuertes"))
 
         End With
     
         With .flags
 
-            If CByte(UserFile.GetValue("CONSEJO", "PERTENECE")) Then .Privilegios = .Privilegios Or PlayerType.RoyalCouncil
+            If val(UserFile.GetValue("CONSEJO", "PERTENECE")) > 0 Then .Privilegios = .Privilegios Or PlayerType.RoyalCouncil
         
-            If CByte(UserFile.GetValue("CONSEJO", "PERTENECECAOS")) Then .Privilegios = .Privilegios Or PlayerType.ChaosCouncil
+            If val(UserFile.GetValue("CONSEJO", "PERTENECECAOS")) > 0 Then .Privilegios = .Privilegios Or PlayerType.ChaosCouncil
 
         End With
 
@@ -1314,17 +1315,17 @@ Sub LoadUserReputacion(ByVal Userindex As Integer, ByRef UserFile As clsIniManag
     'Author: Unknown
     'Last Modification: Recox
     'Recox - Castie todo a long para que sea el mismo tipo de dato que en Declares
+    '03/10/2020 WyroX - Vuelvo a usar "val" para castear string a numerico, porque los otros casteos no funcionan con el string nulo ("")
     '***************************************************
 
     With UserList(Userindex).Reputacion
-        .AsesinoRep = CLng(UserFile.GetValue("REP", "Asesino"))
-        .BandidoRep = CLng(UserFile.GetValue("REP", "Bandido"))
-        .BurguesRep = CLng(UserFile.GetValue("REP", "Burguesia"))
-        .LadronesRep = CLng(UserFile.GetValue("REP", "Ladrones"))
-        .NobleRep = CLng(UserFile.GetValue("REP", "Nobles"))
-        .PlebeRep = CLng(UserFile.GetValue("REP", "Plebe"))
-        .Promedio = CLng(UserFile.GetValue("REP", "Promedio"))
-
+        .AsesinoRep = val(UserFile.GetValue("REP", "Asesino"))
+        .BandidoRep = val(UserFile.GetValue("REP", "Bandido"))
+        .BurguesRep = val(UserFile.GetValue("REP", "Burguesia"))
+        .LadronesRep = val(UserFile.GetValue("REP", "Ladrones"))
+        .NobleRep = val(UserFile.GetValue("REP", "Nobles"))
+        .PlebeRep = val(UserFile.GetValue("REP", "Plebe"))
+        .Promedio = val(UserFile.GetValue("REP", "Promedio"))
     End With
     
 End Sub
@@ -1338,6 +1339,7 @@ Sub LoadUserInit(ByVal Userindex As Integer, ByRef UserFile As clsIniManager)
     '23/01/2007 Pablo (ToxicWaste) - Agrego NivelIngreso, FechaIngreso, MatadosIngreso y NextRecompensa.
     '23/01/2007 Pablo (ToxicWaste) - Quito CriminalesMatados de Stats porque era redundante.
     '19/11/2019 Recox - Casteo todas las propiedades a su tipo de dato en Declares para evitar errores
+    '03/10/2020 WyroX - Vuelvo a usar "val" para castear string a numerico, porque los otros casteos no funcionan con el string nulo ("")
     '*************************************************
     Dim LoopC As Long
 
@@ -1345,42 +1347,42 @@ Sub LoadUserInit(ByVal Userindex As Integer, ByRef UserFile As clsIniManager)
     
     With UserList(Userindex)
         With .Faccion
-            .ArmadaReal = CByte(UserFile.GetValue("FACCIONES", "EjercitoReal"))
-            .FuerzasCaos = CByte(UserFile.GetValue("FACCIONES", "EjercitoCaos"))
-            .CiudadanosMatados = CLng(UserFile.GetValue("FACCIONES", "CiudMatados"))
-            .CriminalesMatados = CLng(UserFile.GetValue("FACCIONES", "CrimMatados"))
-            .RecibioArmaduraCaos = CByte(UserFile.GetValue("FACCIONES", "rArCaos"))
-            .RecibioArmaduraReal = CByte(UserFile.GetValue("FACCIONES", "rArReal"))
-            .RecibioExpInicialCaos = CByte(UserFile.GetValue("FACCIONES", "rExCaos"))
-            .RecibioExpInicialReal = CByte(UserFile.GetValue("FACCIONES", "rExReal"))
-            .RecompensasCaos = CLng(UserFile.GetValue("FACCIONES", "recCaos"))
-            .RecompensasReal = CLng(UserFile.GetValue("FACCIONES", "recReal"))
-            .Reenlistadas = CByte(UserFile.GetValue("FACCIONES", "Reenlistadas"))
-            .NivelIngreso = CInt(UserFile.GetValue("FACCIONES", "NivelIngreso"))
+            .ArmadaReal = val(UserFile.GetValue("FACCIONES", "EjercitoReal"))
+            .FuerzasCaos = val(UserFile.GetValue("FACCIONES", "EjercitoCaos"))
+            .CiudadanosMatados = val(UserFile.GetValue("FACCIONES", "CiudMatados"))
+            .CriminalesMatados = val(UserFile.GetValue("FACCIONES", "CrimMatados"))
+            .RecibioArmaduraCaos = val(UserFile.GetValue("FACCIONES", "rArCaos"))
+            .RecibioArmaduraReal = val(UserFile.GetValue("FACCIONES", "rArReal"))
+            .RecibioExpInicialCaos = val(UserFile.GetValue("FACCIONES", "rExCaos"))
+            .RecibioExpInicialReal = val(UserFile.GetValue("FACCIONES", "rExReal"))
+            .RecompensasCaos = val(UserFile.GetValue("FACCIONES", "recCaos"))
+            .RecompensasReal = val(UserFile.GetValue("FACCIONES", "recReal"))
+            .Reenlistadas = val(UserFile.GetValue("FACCIONES", "Reenlistadas"))
+            .NivelIngreso = val(UserFile.GetValue("FACCIONES", "NivelIngreso"))
             .FechaIngreso = UserFile.GetValue("FACCIONES", "FechaIngreso")
-            .MatadosIngreso = CInt(UserFile.GetValue("FACCIONES", "MatadosIngreso"))
-            .NextRecompensa = CInt(UserFile.GetValue("FACCIONES", "NextRecompensa"))
+            .MatadosIngreso = val(UserFile.GetValue("FACCIONES", "MatadosIngreso"))
+            .NextRecompensa = val(UserFile.GetValue("FACCIONES", "NextRecompensa"))
 
         End With
         
         With .flags
-            .Muerto = CByte(UserFile.GetValue("FLAGS", "Muerto"))
-            .Escondido = CByte(UserFile.GetValue("FLAGS", "Escondido"))
+            .Muerto = val(UserFile.GetValue("FLAGS", "Muerto"))
+            .Escondido = val(UserFile.GetValue("FLAGS", "Escondido"))
             
-            .Hambre = CByte(UserFile.GetValue("FLAGS", "Hambre"))
-            .Sed = CByte(UserFile.GetValue("FLAGS", "Sed"))
-            .Desnudo = CByte(UserFile.GetValue("FLAGS", "Desnudo"))
-            .Navegando = CByte(UserFile.GetValue("FLAGS", "Navegando"))
-            .Envenenado = CByte(UserFile.GetValue("FLAGS", "Envenenado"))
-            .Paralizado = CByte(UserFile.GetValue("FLAGS", "Paralizado"))
+            .Hambre = val(UserFile.GetValue("FLAGS", "Hambre"))
+            .Sed = val(UserFile.GetValue("FLAGS", "Sed"))
+            .Desnudo = val(UserFile.GetValue("FLAGS", "Desnudo"))
+            .Navegando = val(UserFile.GetValue("FLAGS", "Navegando"))
+            .Envenenado = val(UserFile.GetValue("FLAGS", "Envenenado"))
+            .Paralizado = val(UserFile.GetValue("FLAGS", "Paralizado"))
             
             'Matrix
             .lastMap = val(UserFile.GetValue("FLAGS", "LastMap"))
 
         End With
 
-        .Counters.Pena = CLng(UserFile.GetValue("COUNTERS", "Pena"))
-        .Counters.AsignedSkills = CByte(val(UserFile.GetValue("COUNTERS", "SkillsAsignados")))
+        .Counters.Pena = val(UserFile.GetValue("COUNTERS", "Pena"))
+        .Counters.AsignedSkills = val(val(UserFile.GetValue("COUNTERS", "SkillsAsignados")))
         
         .Email = UserFile.GetValue("CONTACTO", "Email")
         
@@ -1389,7 +1391,7 @@ Sub LoadUserInit(ByVal Userindex As Integer, ByRef UserFile As clsIniManager)
 
             For LoopC = 1 To MAXAMIGOS
                 .Amigos(LoopC).Nombre = UserFile.GetValue("AMIGOS", "NOMBRE" & LoopC)
-                .Amigos(LoopC).Ignorado = CByte(UserFile.GetValue("AMIGOS", "IGNORADO" & LoopC))
+                .Amigos(LoopC).Ignorado = val(UserFile.GetValue("AMIGOS", "IGNORADO" & LoopC))
             Next LoopC
 
         Else ' Si no existe AMIGOS entonces se crean:
@@ -1405,36 +1407,36 @@ Sub LoadUserInit(ByVal Userindex As Integer, ByRef UserFile As clsIniManager)
 
         End If
 
-        .AccountHash = CStr(UserFile.GetValue("INIT", "AccountHash"))
-        .Genero = CByte(UserFile.GetValue("INIT", "Genero"))
-        .clase = CByte(UserFile.GetValue("INIT", "Clase"))
-        .raza = CByte(UserFile.GetValue("INIT", "Raza"))
-        .Hogar = CByte(UserFile.GetValue("INIT", "Hogar"))
-        .Char.heading = CInt(UserFile.GetValue("INIT", "Heading"))
+        .AccountHash = UserFile.GetValue("INIT", "AccountHash")
+        .Genero = val(UserFile.GetValue("INIT", "Genero"))
+        .Clase = val(UserFile.GetValue("INIT", "Clase"))
+        .raza = val(UserFile.GetValue("INIT", "Raza"))
+        .Hogar = val(UserFile.GetValue("INIT", "Hogar"))
+        .Char.heading = val(UserFile.GetValue("INIT", "Heading"))
         
         With .OrigChar
-            .Head = CInt(UserFile.GetValue("INIT", "Head"))
-            .body = CInt(UserFile.GetValue("INIT", "Body"))
-            .WeaponAnim = CInt(UserFile.GetValue("INIT", "Arma"))
-            .ShieldAnim = CInt(UserFile.GetValue("INIT", "Escudo"))
-            .CascoAnim = CInt(UserFile.GetValue("INIT", "Casco"))
+            .Head = val(UserFile.GetValue("INIT", "Head"))
+            .body = val(UserFile.GetValue("INIT", "Body"))
+            .WeaponAnim = val(UserFile.GetValue("INIT", "Arma"))
+            .ShieldAnim = val(UserFile.GetValue("INIT", "Escudo"))
+            .CascoAnim = val(UserFile.GetValue("INIT", "Casco"))
             .heading = eHeading.SOUTH
 
         End With
         
         #If ConUpTime Then
-            .UpTime = CLng(UserFile.GetValue("INIT", "UpTime"))
+            .UpTime = val(UserFile.GetValue("INIT", "UpTime"))
         #End If
 
         .Desc = UserFile.GetValue("INIT", "Desc")
         
-        .Pos.Map = CInt(ReadField(1, UserFile.GetValue("INIT", "Position"), 45))
-        .Pos.X = CInt(ReadField(2, UserFile.GetValue("INIT", "Position"), 45))
-        .Pos.Y = CInt(ReadField(3, UserFile.GetValue("INIT", "Position"), 45))
+        .Pos.Map = val(ReadField(1, UserFile.GetValue("INIT", "Position"), 45))
+        .Pos.X = val(ReadField(2, UserFile.GetValue("INIT", "Position"), 45))
+        .Pos.Y = val(ReadField(3, UserFile.GetValue("INIT", "Position"), 45))
         
-        .Invent.NroItems = CInt(UserFile.GetValue("Inventory", "CantidadItems"))
+        .Invent.NroItems = val(UserFile.GetValue("Inventory", "CantidadItems"))
         
-        .BancoInvent.NroItems = CInt(UserFile.GetValue("BancoInventory", "CantidadItems"))
+        .BancoInvent.NroItems = val(UserFile.GetValue("BancoInventory", "CantidadItems"))
 
         'Lista de objetos del banco
         For LoopC = 1 To MAX_BANCOINVENTORY_SLOTS
@@ -1443,8 +1445,8 @@ Sub LoadUserInit(ByVal Userindex As Integer, ByRef UserFile As clsIniManager)
                 .BancoInvent.Object(LoopC).ObjIndex = 0
                 .BancoInvent.Object(LoopC).Amount = 0
             Else
-                .BancoInvent.Object(LoopC).ObjIndex = CInt(ReadField(1, ln, 45))
-                .BancoInvent.Object(LoopC).Amount = CInt(ReadField(2, ln, 45))
+                .BancoInvent.Object(LoopC).ObjIndex = val(ReadField(1, ln, 45))
+                .BancoInvent.Object(LoopC).Amount = val(ReadField(2, ln, 45))
             End If
         Next LoopC
         
@@ -1463,23 +1465,23 @@ Sub LoadUserInit(ByVal Userindex As Integer, ByRef UserFile As clsIniManager)
 
         Next LoopC
         
-        .Invent.WeaponEqpSlot = CByte(UserFile.GetValue("Inventory", "WeaponEqpSlot"))
-        .Invent.ArmourEqpSlot = CByte(UserFile.GetValue("Inventory", "ArmourEqpSlot"))
-        .Invent.EscudoEqpSlot = CByte(UserFile.GetValue("Inventory", "EscudoEqpSlot"))
-        .Invent.CascoEqpSlot = CByte(UserFile.GetValue("Inventory", "CascoEqpSlot"))
-        .Invent.BarcoSlot = CByte(UserFile.GetValue("Inventory", "BarcoSlot"))
+        .Invent.WeaponEqpSlot = val(UserFile.GetValue("Inventory", "WeaponEqpSlot"))
+        .Invent.ArmourEqpSlot = val(UserFile.GetValue("Inventory", "ArmourEqpSlot"))
+        .Invent.EscudoEqpSlot = val(UserFile.GetValue("Inventory", "EscudoEqpSlot"))
+        .Invent.CascoEqpSlot = val(UserFile.GetValue("Inventory", "CascoEqpSlot"))
+        .Invent.BarcoSlot = val(UserFile.GetValue("Inventory", "BarcoSlot"))
         
         'Si no existe MonturaEqpSlot, se agrega al charfile.
         If Not UserFile.KeyExists("MonturaEqpSlot") Then
             .Invent.MonturaEqpSlot = 0
         Else
-            .Invent.MonturaEqpSlot = CByte(UserFile.GetValue("Inventory", "MonturaEqpSlot"))
+            .Invent.MonturaEqpSlot = val(UserFile.GetValue("Inventory", "MonturaEqpSlot"))
         End If
         
-        .Invent.MunicionEqpSlot = CByte(UserFile.GetValue("Inventory", "MunicionSlot"))
-        .Invent.AnilloEqpSlot = CByte(UserFile.GetValue("Inventory", "AnilloSlot"))
+        .Invent.MunicionEqpSlot = val(UserFile.GetValue("Inventory", "MunicionSlot"))
+        .Invent.AnilloEqpSlot = val(UserFile.GetValue("Inventory", "AnilloSlot"))
         
-        .NroMascotas = CInt(UserFile.GetValue("MASCOTAS", "NroMascotas"))
+        .NroMascotas = val(UserFile.GetValue("MASCOTAS", "NroMascotas"))
 
         For LoopC = 1 To MAXMASCOTAS
             .MascotasType(LoopC) = val(UserFile.GetValue("MASCOTAS", "MAS" & LoopC))
@@ -1488,7 +1490,7 @@ Sub LoadUserInit(ByVal Userindex As Integer, ByRef UserFile As clsIniManager)
         ln = UserFile.GetValue("Guild", "GUILDINDEX")
 
         If IsNumeric(ln) Then
-            .GuildIndex = CInt(ln)
+            .GuildIndex = val(ln)
         Else
             .GuildIndex = 0
 
@@ -2259,7 +2261,7 @@ Sub SaveUserToCharfile(ByVal Userindex As Integer, Optional ByVal SaveTimeOnline
         Call Manager.ChangeValue("INIT", "Genero", CByte(.Genero))
         Call Manager.ChangeValue("INIT", "Raza", CByte(.raza))
         Call Manager.ChangeValue("INIT", "Hogar", CByte(.Hogar))
-        Call Manager.ChangeValue("INIT", "Clase", CByte(.clase))
+        Call Manager.ChangeValue("INIT", "Clase", CByte(.Clase))
         Call Manager.ChangeValue("INIT", "Desc", CStr(.Desc))
     
         Call Manager.ChangeValue("INIT", "Heading", CByte(.Char.heading))
