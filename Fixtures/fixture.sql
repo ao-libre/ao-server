@@ -7,11 +7,14 @@
 
 CREATE TABLE account (
     id MEDIUMINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    username VARCHAR(320) NOT NULL,
+    email VARCHAR(320) NOT NULL,
     password CHAR(64) NOT NULL,
     salt CHAR(10) NOT NULL,
     hash CHAR(32) NOT NULL,
-    date_created TIMESTAMP NOT NULL
+    date_created TIMESTAMP NOT NULL,
+    valid BOOLEAN NOT NULL DEFAULT FALSE,
+    validate_code VARCHAR(32) NOT NULL DEFAULT '',
+    recovery_code VARCHAR(32) NOT NULL DEFAULT ''
 );
 
 CREATE TABLE user (

@@ -1100,7 +1100,7 @@ Public Function CuentaExisteDatabase(ByVal UserName As String) As Boolean
 
     Call Database_Connect
 
-    query = "SELECT id FROM account WHERE UPPER(username) = '" & UCase$(UserName) & "';"
+    query = "SELECT id FROM account WHERE UPPER(email) = '" & UCase$(UserName) & "';"
 
     Set Database_RecordSet = Database_Connection.Execute(query)
 
@@ -1541,7 +1541,7 @@ Public Function GetAccountSaltDatabase(ByVal AccountName As String) As String
 
     Call Database_Connect
 
-    query = "SELECT salt FROM account WHERE UPPER(username) = '" & UCase$(AccountName) & "';"
+    query = "SELECT salt FROM account WHERE UPPER(email) = '" & UCase$(AccountName) & "';"
 
     Set Database_RecordSet = Database_Connection.Execute(query)
 
@@ -1573,7 +1573,7 @@ Public Function GetAccountPasswordDatabase(ByVal AccountName As String) As Strin
 
     Call Database_Connect
 
-    query = "SELECT password FROM account WHERE UPPER(username) = '" & UCase$(AccountName) & "';"
+    query = "SELECT password FROM account WHERE UPPER(email) = '" & UCase$(AccountName) & "';"
 
     Set Database_RecordSet = Database_Connection.Execute(query)
 
@@ -1637,7 +1637,7 @@ Public Function GetUserEmailDatabase(ByVal UserName As String) As String
 
     Call Database_Connect
 
-    query = "SELECT username FROM account WHERE id = (SELECT account_id from user WHERE UPPER(name) = '" & UCase$(UserName) & "');"
+    query = "SELECT email FROM account WHERE id = (SELECT account_id from user WHERE UPPER(name) = '" & UCase$(UserName) & "');"
 
     Set Database_RecordSet = Database_Connection.Execute(query)
 
@@ -1647,7 +1647,7 @@ Public Function GetUserEmailDatabase(ByVal UserName As String) As String
 
     End If
 
-    GetUserEmailDatabase = Database_RecordSet!UserName
+    GetUserEmailDatabase = Database_RecordSet!Email
     Set Database_RecordSet = Nothing
     Call Database_Close
 
@@ -1699,7 +1699,7 @@ Public Sub SaveUserEmailDatabase(ByVal UserName As String, ByVal Email As String
     Call Database_Connect
 
     query = "UPDATE account SET "
-    query = query & "username = '" & Email & "', """
+    query = query & "email = '" & Email & "', """
     query = query & "WHERE account_id = (SELECT account_id from user WHERE UPPER(name) = '" & UCase$(UserName) & "');"
 
     Database_Connection.Execute (query)
@@ -2878,7 +2878,7 @@ Public Sub SaveNewAccountDatabase(ByVal UserName As String, _
     Call Database_Connect
 
     query = "INSERT INTO account SET "
-    query = query & "username = '" & UCase$(UserName) & "', "
+    query = query & "email = '" & UCase$(UserName) & "', "
     query = query & "password = '" & Password & "', "
     query = query & "salt = '" & Salt & "', "
     query = query & "hash = '" & Hash & "', "
@@ -2914,8 +2914,8 @@ Public Sub LoginAccountDatabase(ByVal Userindex As Integer, ByVal UserName As St
 
     Call Database_Connect
 
-    query = "SELECT id, username, hash FROM account "
-    query = query & "WHERE UPPER(username) = '" & UCase$(UserName) & "';"
+    query = "SELECT id, email, hash, valid FROM account "
+    query = query & "WHERE UPPER(email) = '" & UCase$(UserName) & "';"
 
     Set Database_RecordSet = Database_Connection.Execute(query)
 
@@ -2925,9 +2925,15 @@ Public Sub LoginAccountDatabase(ByVal Userindex As Integer, ByVal UserName As St
         Exit Sub
 
     End If
+    
+    If val(Database_RecordSet!valid) = 0 Then
+        Call WriteErrorMsg(Userindex, "Debes validar tu cuenta antes de entrar al juego.")
+        Call CloseSocket(Userindex)
+        Exit Sub
+    End If
 
     AccountId = CInt(Database_RecordSet!ID)
-    UserName = Database_RecordSet!UserName
+    UserName = Database_RecordSet!Email
     AccountHash = Database_RecordSet!Hash
 
     Set Database_RecordSet = Nothing
