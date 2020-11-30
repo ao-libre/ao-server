@@ -177,7 +177,6 @@ Public Sub GameTimer()
                         If .flags.AdminInvisible <> 1 Then
                             If .flags.invisible = 1 Then Call EfectoInvisibilidad(iUserIndex)
                             If .flags.Oculto = 1 Then Call DoPermanecerOculto(iUserIndex)
-
                         End If
                         
                         If .flags.Mimetizado = 1 Then Call EfectoMimetismo(iUserIndex)
@@ -437,24 +436,28 @@ Public Sub PasarSegundo()
                 End If
                 
                 'Sacamos energia
-                If Lloviendo Then Call EfectoLluvia(i)
+                If Lloviendo And (.flags.Privilegios And PlayerType.User) Then Call EfectoLluvia(i)
                 
                 If Not .Pos.Map = 0 Then
 
                     'Counter de piquete
                     If MapData(.Pos.Map, .Pos.X, .Pos.Y).trigger = eTrigger.ANTIPIQUETE Then
-                            If .flags.Muerto = 0 Then
-                                .Counters.PiqueteC = .Counters.PiqueteC + 1
-                                .Counters.ContadorPiquete = .Counters.ContadorPiquete + 1
-                                If .Counters.ContadorPiquete = 6 Then
-                                    Call WriteConsoleMsg(i, "Estas obstruyendo la via publica, muevete o seras encarcelado!!!", FontTypeNames.FONTTYPE_INFO)
-                                    .Counters.ContadorPiquete = 0
-                                End If
-                                If .Counters.PiqueteC >= 30 Then
-                                    .Counters.PiqueteC = 0
-                                    .Counters.ContadorPiquete = 0
-                                    Call Encarcelar(i, MinutosCarcelPiquete)
-                                End If
+                        
+                        If .flags.Muerto = 0 Then
+                            .Counters.PiqueteC = .Counters.PiqueteC + 1
+                            .Counters.ContadorPiquete = .Counters.ContadorPiquete + 1
+                            
+                            If .Counters.ContadorPiquete = 6 Then
+                                Call WriteConsoleMsg(i, "Estas obstruyendo la via publica, muevete o seras encarcelado!!!", FontTypeNames.FONTTYPE_INFO)
+                                .Counters.ContadorPiquete = 0
+                            End If
+                                
+                            If .Counters.PiqueteC >= 30 Then
+                                .Counters.PiqueteC = 0
+                                .Counters.ContadorPiquete = 0
+                                Call Encarcelar(i, MinutosCarcelPiquete)
+                            End If
+                            
                         Else
                             .Counters.PiqueteC = 0
 
