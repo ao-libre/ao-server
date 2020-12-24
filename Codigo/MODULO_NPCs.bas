@@ -826,13 +826,22 @@ Public Function MoveNPCChar(ByVal NpcIndex As Integer, ByVal nHeading As Byte) A
 
     On Error GoTo errh
 
-    Dim nPos      As WorldPos
-
-    Dim Userindex As Integer
-    
+    Dim nPos        As WorldPos
+    Dim Userindex   As Integer
+        
     With Npclist(NpcIndex)
         nPos = .Pos
+        
+        ' @@ Fix?
+        Dim oldPos      As WorldPos
+        Dim oldHeading  As eHeading
+        oldPos = .Pos
+        oldHeading = .Char.heading
         Call HeadtoPos(nHeading, nPos)
+        If oldHeading <> nHeading Or (oldPos.X <> nPos.X Or oldPos.Y <> nPos.Y) Then
+            .Char.heading = nHeading
+            Call SendData(SendTarget.ToNPCArea, NpcIndex, PrepareMessageHeadingChange(nHeading, .Char.CharIndex))
+        End If
         
         ' es una posicion legal
         If LegalPosNPC(nPos.Map, nPos.X, nPos.Y, .flags.AguaValida = 1, .MaestroUser <> 0) Then
