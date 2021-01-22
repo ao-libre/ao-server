@@ -27,7 +27,7 @@ Attribute VB_Name = "InvUsuario"
 'Codigo Postal 1900
 'Pablo Ignacio Marquez
 #If False Then
-    Dim ErrHandler, Userindex As Variant
+    Dim errHandler, Userindex As Variant
 #End If
 
 Option Explicit
@@ -42,7 +42,7 @@ Public Function TieneObjetosRobables(ByVal Userindex As Integer) As Boolean
     '17/09/02
     'Agregue que la funcion se asegure que el objeto no es un barco
 
-    On Error GoTo ErrHandler
+    On Error GoTo errHandler
 
     Dim i        As Integer
 
@@ -64,7 +64,7 @@ Public Function TieneObjetosRobables(ByVal Userindex As Integer) As Boolean
     
     Exit Function
 
-ErrHandler:
+errHandler:
     Call LogError("Error en TieneObjetosRobables. Error: " & Err.Number & " - " & Err.description)
 
 End Function
@@ -273,7 +273,7 @@ Sub TirarOro(ByVal Cantidad As Long, ByVal Userindex As Integer)
     'Last Modification: 23/01/2007
     '23/01/2007 -> Pablo (ToxicWaste): Billetera invertida y explotar oro en el agua.
     '***************************************************
-    On Error GoTo ErrHandler
+    On Error GoTo errHandler
 
     'If Cantidad > 100000 Then Exit Sub
 
@@ -350,11 +350,11 @@ Sub TirarOro(ByVal Cantidad As Long, ByVal Userindex As Integer)
 
                 Dim EsGaleraOGaleon As Boolean
                 EsGaleraOGaleon = False
-                If .Invent.BarcoObjIndex <> 0 Then 
+                If .Invent.BarcoObjIndex <> 0 Then
                     If EsGalera(ObjData(.Invent.BarcoObjIndex)) Or EsGalera(ObjData(.Invent.BarcoObjIndex)) Then
                         EsGaleraOGaleon = True
                     End If
-                End If        
+                End If
                 
                 If .Clase = eClass.Pirat And EsGaleraOGaleon Then
                     AuxPos = TirarItemAlPiso(.Pos, MiObj, False)
@@ -390,7 +390,7 @@ Sub TirarOro(ByVal Cantidad As Long, ByVal Userindex As Integer)
 
     Exit Sub
 
-ErrHandler:
+errHandler:
     Call LogError("Error en TirarOro. Error " & Err.Number & " : " & Err.description)
 
 End Sub
@@ -404,7 +404,7 @@ Sub QuitarUserInvItem(ByVal Userindex As Integer, _
     '
     '***************************************************
 
-    On Error GoTo ErrHandler
+    On Error GoTo errHandler
 
     If Slot < 1 Or Slot > UserList(Userindex).CurrentInventorySlots Then Exit Sub
     
@@ -430,7 +430,7 @@ Sub QuitarUserInvItem(ByVal Userindex As Integer, _
 
     Exit Sub
 
-ErrHandler:
+errHandler:
     Call LogError("Error en QuitarUserInvItem. Error " & Err.Number & " : " & Err.description)
     
 End Sub
@@ -444,7 +444,7 @@ Sub UpdateUserInv(ByVal UpdateAll As Boolean, _
     '
     '***************************************************
 
-    On Error GoTo ErrHandler
+    On Error GoTo errHandler
 
     Dim NullObj As UserObj
 
@@ -484,7 +484,7 @@ Sub UpdateUserInv(ByVal UpdateAll As Boolean, _
 
     End With
 
-ErrHandler:
+errHandler:
     Call LogError("Error en UpdateUserInv. Error " & Err.Number & " : " & Err.description)
 
 End Sub
@@ -500,7 +500,7 @@ Sub DropObj(ByVal Userindex As Integer, _
     'Last Modification: 11/5/2010
     '11/5/2010 - ZaMa: Arreglo bug que permitia apilar mas de 10k de items.
     '***************************************************
-    On Error GoTo ErrHandler
+    On Error GoTo errHandler
     
     Dim DropObj As obj
 
@@ -587,7 +587,7 @@ Sub DropObj(ByVal Userindex As Integer, _
     
     Exit Sub
     
-ErrHandler:
+errHandler:
     Call LogError("Error en DropObj en " & Erl & " Nick: " & UserList(Userindex).Name & " (Map: " & UserList(Userindex).Pos.Map & "). Err: " & Err.Number & " " & Err.description)
 End Sub
 
@@ -625,7 +625,7 @@ Sub MakeObj(ByRef obj As obj, _
     'Last Modification: -
     '
     '***************************************************
-    On Error GoTo ErrHandler
+    On Error GoTo errHandler
     
 1    If obj.ObjIndex > 0 And obj.ObjIndex <= UBound(ObjData) Then
     
@@ -714,7 +714,7 @@ Sub MakeObj(ByRef obj As obj, _
     End If
     
     Exit Sub
-ErrHandler:
+errHandler:
         Call LogError("Error en MakeObj en " & Erl & " Map: " & Map & "-" & X & "-" & Y & ". Err: " & Err.Number & " " & Err.description)
 End Sub
 
@@ -725,7 +725,7 @@ Function MeterItemEnInventario(ByVal Userindex As Integer, ByRef MiObj As obj) A
     'Obtengo el numero de getMaxInventorySlots antes que nada para que funcionen correctamente las mochilas y alforjas (Recox)
     '***************************************************
 
-    On Error GoTo ErrHandler
+    On Error GoTo errHandler
 
     Dim Slot As Byte
 
@@ -794,7 +794,7 @@ Function MeterItemEnInventario(ByVal Userindex As Integer, ByRef MiObj As obj) A
     Call UpdateUserInv(False, Userindex, Slot)
     
     Exit Function
-ErrHandler:
+errHandler:
     Call LogError("Error en MeterItemEnInventario. Error " & Err.Number & " : " & Err.description)
 
 End Function
@@ -896,7 +896,7 @@ Public Sub Desequipar(ByVal Userindex As Integer, ByVal Slot As Byte)
     '
     '***************************************************
 
-    On Error GoTo ErrHandler
+    On Error GoTo errHandler
 
     'Desequipa el item slot del inventario
     Dim obj As ObjData
@@ -1031,7 +1031,7 @@ Public Sub Desequipar(ByVal Userindex As Integer, ByVal Slot As Byte)
     
     Exit Sub
 
-ErrHandler:
+errHandler:
     Call LogError("Error en Desquipar. Error " & Err.Number & " : " & Err.description)
 
 End Sub
@@ -1144,7 +1144,7 @@ Function SexoPuedeUsarItem(ByVal Userindex As Integer, _
     '14/01/2010: ZaMa - Agrego el motivo por el que no puede equipar/usar el item.
     '***************************************************
 
-    On Error GoTo ErrHandler
+    On Error GoTo errHandler
     
     If ObjData(ObjIndex).Mujer = 1 Then
         SexoPuedeUsarItem = UserList(Userindex).Genero <> eGenero.Hombre
@@ -1158,7 +1158,7 @@ Function SexoPuedeUsarItem(ByVal Userindex As Integer, _
     If Not SexoPuedeUsarItem Then sMotivo = "Tu genero no puede usar este objeto."
     
     Exit Function
-ErrHandler:
+errHandler:
     Call LogError("SexoPuedeUsarItem")
 
 End Function
@@ -1207,7 +1207,7 @@ Sub EquiparInvItem(ByVal Userindex As Integer, ByVal Slot As Byte)
     '03/02/2020: WyroX - Nivel minimo y skill minimo para poder equipar
     '*************************************************
 
-    On Error GoTo ErrHandler
+    On Error GoTo errHandler
 
     'Equipa un item del inventario
     Dim obj      As ObjData
@@ -1527,7 +1527,7 @@ Sub EquiparInvItem(ByVal Userindex As Integer, ByVal Slot As Byte)
     
     Exit Sub
     
-ErrHandler:
+errHandler:
     Call LogError("EquiparInvItem Slot:" & Slot & " - Error: " & Err.Number & " - Error Description : " & Err.description)
 
 End Sub
@@ -1541,7 +1541,7 @@ Private Function CheckRazaUsaRopa(ByVal Userindex As Integer, _
     '14/01/2010: ZaMa - Agrego el motivo por el que no puede equipar/usar el item.
     '***************************************************
 
-    On Error GoTo ErrHandler
+    On Error GoTo errHandler
 
     With UserList(Userindex)
 
@@ -1565,7 +1565,7 @@ Private Function CheckRazaUsaRopa(ByVal Userindex As Integer, _
     
     Exit Function
     
-ErrHandler:
+errHandler:
     Call LogError("Error CheckRazaUsaRopa ItemIndex:" & ItemIndex)
 
 End Function
@@ -2182,7 +2182,7 @@ Sub UseInvItem(ByVal Userindex As Integer, ByVal Slot As Byte)
                 If .Stats.ELV < 25 Then
 
                     ' Solo pirata y trabajador pueden navegar antes
-                    If .clase <> eClass.Worker And .clase <> eClass.Pirat Then
+                    If .Clase <> eClass.Worker And .Clase <> eClass.Pirat Then
                         Call WriteConsoleMsg(Userindex, "Para recorrer los mares debes ser nivel 25 o superior.", FontTypeNames.FONTTYPE_INFO)
                         Exit Sub
                     Else
@@ -2190,7 +2190,7 @@ Sub UseInvItem(ByVal Userindex As Integer, ByVal Slot As Byte)
                         ' Pero a partir de 20
                         If .Stats.ELV < 20 Then
                             
-                            If .clase = eClass.Worker And .Stats.UserSkills(eSkill.pesca) <> 100 Then
+                            If .Clase = eClass.Worker And .Stats.UserSkills(eSkill.pesca) <> 100 Then
                                 Call WriteConsoleMsg(Userindex, "Para recorrer los mares debes ser nivel 20 y ademas tu skill en pesca debe ser 100.", FontTypeNames.FONTTYPE_INFO)
                             Else
                                 Call WriteConsoleMsg(Userindex, "Para recorrer los mares debes ser nivel 20 o superior.", FontTypeNames.FONTTYPE_INFO)
@@ -2201,7 +2201,7 @@ Sub UseInvItem(ByVal Userindex As Integer, ByVal Slot As Byte)
                         Else
 
                             ' Esta entre 20 y 25, si es trabajador necesita tener 100 en pesca
-                            If .clase = eClass.Worker Then
+                            If .Clase = eClass.Worker Then
                                 If .Stats.UserSkills(eSkill.pesca) <> 100 Then
                                     Call WriteConsoleMsg(Userindex, "Para recorrer los mares debes ser nivel 20 o superior y ademas tu skill en pesca debe ser 100.", FontTypeNames.FONTTYPE_INFO)
                                     Exit Sub
@@ -2258,7 +2258,7 @@ Sub UseInvItem(ByVal Userindex As Integer, ByVal Slot As Byte)
                         
                         If .Stats.UserSkills(eSkill.Liderazgo) < 100 Then
                             .Stats.UserSkills(eSkill.Liderazgo) = 100
-                            Call WriteConsoleMsg(Userindex, "?Has aprendido todo lo necesario para conformar un Clan!", FontTypeNames.FONTTYPE_INFO)
+                            Call WriteConsoleMsg(Userindex, "Has aprendido todo lo necesario para conformar un Clan!", FontTypeNames.FONTTYPE_INFO)
                         Else
                             Call WriteConsoleMsg(Userindex, "Este pergamino no tiene ning?n conocimiento que te sirva.", FontTypeNames.FONTTYPE_INFO)
                             Exit Sub
@@ -2268,7 +2268,7 @@ Sub UseInvItem(ByVal Userindex As Integer, ByVal Slot As Byte)
                         
                         If .Stats.UserSkills(eSkill.Supervivencia) < 100 Then
                             .Stats.UserSkills(eSkill.Supervivencia) = 100
-                            Call WriteConsoleMsg(Userindex, "?Te has vuelto un experto en el arte de la Supervivencia!", FontTypeNames.FONTTYPE_INFO)
+                            Call WriteConsoleMsg(Userindex, "Te has vuelto un experto en el arte de la Supervivencia!", FontTypeNames.FONTTYPE_INFO)
                         Else
                             Call WriteConsoleMsg(Userindex, "Este pergamino no tiene ning?n conocimiento que te sirva.", FontTypeNames.FONTTYPE_INFO)
                             Exit Sub
@@ -2278,21 +2278,9 @@ Sub UseInvItem(ByVal Userindex As Integer, ByVal Slot As Byte)
                         
                         If .Stats.UserSkills(eSkill.Navegacion) < 100 Then
                             .Stats.UserSkills(eSkill.Navegacion) = 100
-                            Call WriteConsoleMsg(Userindex, "?Ya est?s listo para comandar todo tipo de embarcaci?n!", FontTypeNames.FONTTYPE_INFO)
+                            Call WriteConsoleMsg(Userindex, "Ya estas listo para comandar todo tipo de embarcacion!", FontTypeNames.FONTTYPE_INFO)
                         Else
                             Call WriteConsoleMsg(Userindex, "Este pergamino no tiene ning?n conocimiento que te sirva.", FontTypeNames.FONTTYPE_INFO)
-                            Exit Sub
-                        End If
-                        
-                    Case eManualType.otInventSlots          ' Slots de Inventario
-                    
-                        If .Stats.InventLevel < INVENTORY_EXTRA_ROWS Then
-                            .Stats.InventLevel = .Stats.InventLevel + 1
-                            .CurrentInventorySlots = getMaxInventorySlots(Userindex)
-                            Call WriteInventoryUnlockSlots(Userindex)
-                            Call WriteConsoleMsg(Userindex, "?Has aumentado el espacio de tu inventario!", FontTypeNames.FONTTYPE_INFO)
-                        Else
-                            Call WriteConsoleMsg(Userindex, "Ya has desbloqueado todos los casilleros disponibles.", FontTypeNames.FONTTYPE_INFO)
                             Exit Sub
                         End If
                         
@@ -2347,7 +2335,7 @@ Sub TirarTodo(ByVal Userindex As Integer)
     '
     '***************************************************
 
-    On Error GoTo ErrHandler
+    On Error GoTo errHandler
 
     With UserList(Userindex)
 
@@ -2370,7 +2358,7 @@ Sub TirarTodo(ByVal Userindex As Integer)
 
     Exit Sub
 
-ErrHandler:
+errHandler:
     Call LogError("Error en TirarTodo. Error: " & Err.Number & " - " & Err.description)
 
 End Sub
@@ -2396,7 +2384,7 @@ Sub TirarTodosLosItems(ByVal Userindex As Integer)
     'Last Modification: 12/01/2010 (ZaMa)
     '12/01/2010: ZaMa - Ahora los piratas no explotan items solo si estan entre 20 y 25
     '***************************************************
-    On Error GoTo ErrHandler
+    On Error GoTo errHandler
 
     Dim i         As Byte
 
@@ -2472,7 +2460,7 @@ Sub TirarTodosLosItems(ByVal Userindex As Integer)
     
     Exit Sub
     
-ErrHandler:
+errHandler:
     Call LogError("Error en TirarTodosLosItems en linea " & Erl & " - Nick:" & UserList(Userindex).Name & ". Error: " & Err.Number & " - " & Err.description)
 
 End Sub
