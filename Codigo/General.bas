@@ -607,6 +607,8 @@ Private Sub InitMainTimers()
         .TimerEnviarDatosServer.Enabled = True
     End With
     
+    LastGameTick = GetTickCount
+    
 End Sub
 
 Private Sub SocketConfig()
@@ -858,7 +860,7 @@ errHandler:
 
 End Sub
 
-Public Sub TiempoInvocacion(ByVal Userindex As Integer)
+Public Sub TiempoInvocacion(ByVal Userindex As Integer, ByVal DeltaTick As Single)
     '***************************************************
     'Author: Unknown
     'Last Modification: -
@@ -873,9 +875,9 @@ Public Sub TiempoInvocacion(ByVal Userindex As Integer)
 
             If .MascotasIndex(i) > 0 Then
                 If Npclist(.MascotasIndex(i)).Contadores.TiempoExistencia > 0 Then
-                    Npclist(.MascotasIndex(i)).Contadores.TiempoExistencia = Npclist(.MascotasIndex(i)).Contadores.TiempoExistencia - 1
+                    Npclist(.MascotasIndex(i)).Contadores.TiempoExistencia = Npclist(.MascotasIndex(i)).Contadores.TiempoExistencia - DeltaTick
 
-                    If Npclist(.MascotasIndex(i)).Contadores.TiempoExistencia = 0 Then Call MuereNpc(.MascotasIndex(i), 0)
+                    If Npclist(.MascotasIndex(i)).Contadores.TiempoExistencia <= 0 Then Call MuereNpc(.MascotasIndex(i), 0)
 
                 End If
 
@@ -887,7 +889,7 @@ Public Sub TiempoInvocacion(ByVal Userindex As Integer)
 
 End Sub
 
-Public Sub EfectoFrio(ByVal Userindex As Integer)
+Public Sub EfectoFrio(ByVal Userindex As Integer, ByVal DeltaTick As Single)
 
     '***************************************************
     'Autor: Unkonwn
@@ -901,7 +903,7 @@ Public Sub EfectoFrio(ByVal Userindex As Integer)
     With UserList(Userindex)
 
         If .Counters.Frio < IntervaloFrio Then
-            .Counters.Frio = .Counters.Frio + 1
+            .Counters.Frio = .Counters.Frio + DeltaTick
         Else
 
             If MapInfo(.Pos.Map).Terreno = Nieve Then
@@ -932,7 +934,7 @@ Public Sub EfectoFrio(ByVal Userindex As Integer)
 
 End Sub
 
-Public Sub EfectoLava(ByVal Userindex As Integer)
+Public Sub EfectoLava(ByVal Userindex As Integer, ByVal DeltaTick As Single)
 
     '***************************************************
     'Autor: Nacho (Integer)
@@ -943,7 +945,7 @@ Public Sub EfectoLava(ByVal Userindex As Integer)
     With UserList(Userindex)
 
         If .Counters.Lava < IntervaloFrio Then 'Usamos el mismo intervalo que el del frio
-            .Counters.Lava = .Counters.Lava + 1
+            .Counters.Lava = .Counters.Lava + DeltaTick
         Else
 
             If HayLava(.Pos.Map, .Pos.X, .Pos.Y) Then
@@ -1026,7 +1028,7 @@ End Sub
 ' @param UserIndex  El index del usuario a ser afectado por el mimetismo
 '
 
-Public Sub EfectoMimetismo(ByVal Userindex As Integer)
+Public Sub EfectoMimetismo(ByVal Userindex As Integer, ByVal DeltaTick As Single)
 
     '******************************************************
     'Author: Unknown
@@ -1039,7 +1041,7 @@ Public Sub EfectoMimetismo(ByVal Userindex As Integer)
     With UserList(Userindex)
 
         If .Counters.Mimetismo < IntervaloInvisible Then
-            .Counters.Mimetismo = .Counters.Mimetismo + 1
+            .Counters.Mimetismo = .Counters.Mimetismo + DeltaTick
         Else
             'restore old char
             Call WriteConsoleMsg(Userindex, "Recuperas tu apariencia normal.", FontTypeNames.FONTTYPE_INFO)
@@ -1080,7 +1082,7 @@ Public Sub EfectoMimetismo(ByVal Userindex As Integer)
 
 End Sub
 
-Public Sub EfectoInvisibilidad(ByVal Userindex As Integer)
+Public Sub EfectoInvisibilidad(ByVal Userindex As Integer, ByVal DeltaTick As Single)
     '***************************************************
     'Author: Unknown
     'Last Modification: 16/09/2010 (ZaMa)
@@ -1090,7 +1092,7 @@ Public Sub EfectoInvisibilidad(ByVal Userindex As Integer)
     With UserList(Userindex)
 
         If .Counters.Invisibilidad < IntervaloInvisible Then
-            .Counters.Invisibilidad = .Counters.Invisibilidad + 1
+            .Counters.Invisibilidad = .Counters.Invisibilidad + DeltaTick
         Else
             .Counters.Invisibilidad = 0 'RandomNumber(-100, 100) ' Invi variable :D
             .flags.invisible = 0
@@ -1133,7 +1135,7 @@ Public Sub EfectoParalisisNpc(ByVal NpcIndex As Integer)
 
 End Sub
 
-Public Sub EfectoCegueEstu(ByVal Userindex As Integer)
+Public Sub EfectoCegueEstu(ByVal Userindex As Integer, ByVal DeltaTick As Single)
     '***************************************************
     'Author: Unknown
     'Last Modification: -
@@ -1143,28 +1145,23 @@ Public Sub EfectoCegueEstu(ByVal Userindex As Integer)
     With UserList(Userindex)
 
         If .Counters.Ceguera > 0 Then
-            .Counters.Ceguera = .Counters.Ceguera - 1
-        Else
+            .Counters.Ceguera = .Counters.Ceguera - DeltaTick
 
-            If .flags.Ceguera = 1 Then
-                .flags.Ceguera = 0
-                Call WriteBlindNoMore(Userindex)
-
+            If .Counters.Ceguera <= 0 Then
+                If .flags.Estupidez = 1 Then
+                    .flags.Estupidez = 0
+                    Call WriteDumbNoMore(Userindex)
+                Else
+                    Call WriteBlindNoMore(Userindex)
+                End If
             End If
-
-            If .flags.Estupidez = 1 Then
-                .flags.Estupidez = 0
-                Call WriteDumbNoMore(Userindex)
-
-            End If
-        
         End If
 
     End With
 
 End Sub
 
-Public Sub EfectoParalisisUser(ByVal Userindex As Integer)
+Public Sub EfectoParalisisUser(ByVal Userindex As Integer, ByVal DeltaTick As Single)
     '***************************************************
     'Author: Unknown
     'Last Modification: 02/12/2010
@@ -1232,10 +1229,11 @@ Public Sub EfectoParalisisUser(ByVal Userindex As Integer)
 
             End If
             
-            .Counters.Paralisis = .Counters.Paralisis - 1
+            .Counters.Paralisis = .Counters.Paralisis - DeltaTick
 
-        Else
-            Call RemoveParalisis(Userindex)
+            If .Counters.Paralisis <= 0 Then
+                Call RemoveParalisis(Userindex)
+            End If
 
         End If
 
@@ -1264,6 +1262,7 @@ Public Sub RemoveParalisis(ByVal Userindex As Integer)
 End Sub
 
 Public Sub RecStamina(ByVal Userindex As Integer, _
+                      ByVal DeltaTick As Single, _
                       ByRef EnviarStats As Boolean, _
                       ByVal Intervalo As Integer)
     '***************************************************
@@ -1278,7 +1277,7 @@ Public Sub RecStamina(ByVal Userindex As Integer, _
 
         If .Stats.MinSta < .Stats.MaxSta Then
             If .Counters.STACounter < Intervalo Then
-                .Counters.STACounter = .Counters.STACounter + 1
+                .Counters.STACounter = .Counters.STACounter + DeltaTick
             Else
                 EnviarStats = True
                 .Counters.STACounter = 0
@@ -1301,7 +1300,7 @@ Public Sub RecStamina(ByVal Userindex As Integer, _
     
 End Sub
 
-Public Sub EfectoVeneno(ByVal Userindex As Integer)
+Public Sub EfectoVeneno(ByVal Userindex As Integer, ByVal DeltaTick As Single)
     '***************************************************
     'Author: Unknown
     'Last Modification: -
@@ -1313,7 +1312,7 @@ Public Sub EfectoVeneno(ByVal Userindex As Integer)
     With UserList(Userindex)
 
         If .Counters.Veneno < IntervaloVeneno Then
-            .Counters.Veneno = .Counters.Veneno + 1
+            .Counters.Veneno = .Counters.Veneno + DeltaTick
         Else
             Call WriteConsoleMsg(Userindex, "Estas envenenado, si no te curas moriras.", FontTypeNames.FONTTYPE_VENENO)
             .Counters.Veneno = 0
@@ -1329,7 +1328,7 @@ Public Sub EfectoVeneno(ByVal Userindex As Integer)
 
 End Sub
 
-Public Sub DuracionPociones(ByVal Userindex As Integer)
+Public Sub DuracionPociones(ByVal Userindex As Integer, ByVal DeltaTick As Single)
 
     '***************************************************
     'Author: ??????
@@ -1340,11 +1339,10 @@ Public Sub DuracionPociones(ByVal Userindex As Integer)
 
         'Controla la duracion de las pociones
         If .flags.DuracionEfecto > 0 Then
-            .flags.DuracionEfecto = .flags.DuracionEfecto - 1
+            .flags.DuracionEfecto = .flags.DuracionEfecto - DeltaTick
 
-            If .flags.DuracionEfecto = 0 Then
+            If .flags.DuracionEfecto <= 0 Then
                 .flags.TomoPocion = False
-                .flags.TipoPocion = 0
 
                 'volvemos los atributos al estado normal
                 Dim loopX As Integer
@@ -1363,7 +1361,7 @@ Public Sub DuracionPociones(ByVal Userindex As Integer)
 
 End Sub
 
-Public Sub HambreYSed(ByVal Userindex As Integer, ByRef fenviarAyS As Boolean)
+Public Sub HambreYSed(ByVal Userindex As Integer, ByVal DeltaTick As Single, ByRef fenviarAyS As Boolean)
     '***************************************************
     'Author: Unknown
     'Last Modification: -
@@ -1377,7 +1375,7 @@ Public Sub HambreYSed(ByVal Userindex As Integer, ByRef fenviarAyS As Boolean)
         'Sed
         If .Stats.MinAGU > 0 Then
             If .Counters.AGUACounter < IntervaloSed Then
-                .Counters.AGUACounter = .Counters.AGUACounter + 1
+                .Counters.AGUACounter = .Counters.AGUACounter + DeltaTick
             Else
                 .Counters.AGUACounter = 0
                 .Stats.MinAGU = .Stats.MinAGU - 10
@@ -1397,7 +1395,7 @@ Public Sub HambreYSed(ByVal Userindex As Integer, ByRef fenviarAyS As Boolean)
         'hambre
         If .Stats.MinHam > 0 Then
             If .Counters.COMCounter < IntervaloHambre Then
-                .Counters.COMCounter = .Counters.COMCounter + 1
+                .Counters.COMCounter = .Counters.COMCounter + DeltaTick
             Else
                 .Counters.COMCounter = 0
                 .Stats.MinHam = .Stats.MinHam - 10
@@ -1419,6 +1417,7 @@ Public Sub HambreYSed(ByVal Userindex As Integer, ByRef fenviarAyS As Boolean)
 End Sub
 
 Public Sub Sanar(ByVal Userindex As Integer, _
+                 ByVal DeltaTick As Single, _
                  ByRef EnviarStats As Boolean, _
                  ByVal Intervalo As Integer)
     '***************************************************
@@ -1434,7 +1433,7 @@ Public Sub Sanar(ByVal Userindex As Integer, _
         'con el paso del tiempo va sanando....pero muy lentamente ;-)
         If .Stats.MinHp < .Stats.MaxHp Then
             If .Counters.HPCounter < Intervalo Then
-                .Counters.HPCounter = .Counters.HPCounter + 1
+                .Counters.HPCounter = .Counters.HPCounter + DeltaTick
             Else
                 mashit = RandomNumber(2, Porcentaje(.Stats.MaxSta, 5))
                 
@@ -1678,10 +1677,6 @@ Sub LoadUser(ByVal Userindex As Integer)
         If .Invent.AnilloEqpSlot > 0 Then
             .Invent.AnilloEqpObjIndex = .Invent.Object(.Invent.AnilloEqpSlot).ObjIndex
 
-        End If
-
-        If .Invent.MochilaEqpSlot > 0 Then
-            .Invent.MochilaEqpObjIndex = .Invent.Object(.Invent.MochilaEqpSlot).ObjIndex
         End If
 
         If .Invent.MonturaObjIndex > 0 Then

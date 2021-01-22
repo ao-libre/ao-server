@@ -877,6 +877,8 @@ Public Sub LoginAccountCharfile(ByVal Userindex As Integer, ByVal UserName As St
 
     Call WriteUserAccountLogged(Userindex, UserName, AccountHash, NumberOfCharacters, Characters)
 
+    Call SaveLastIpsAccountCharfile(UserName, UserList(Userindex).ip)
+
     Exit Sub
 ErrorHandler:
     Call LogError("Error in LoginAccountCharfile: " & UserName & ". " & Err.Number & " - " & Err.description)

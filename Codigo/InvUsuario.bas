@@ -1813,7 +1813,7 @@ Sub UseInvItem(ByVal Userindex As Integer, ByVal Slot As Byte)
                         
                 Select Case .flags.TipoPocion
                 
-                    Case 1 'Modif la agilidad
+                    Case ePocionType.otAgilidad 'Modif la agilidad
                         .flags.DuracionEfecto = obj.DuracionEfecto
                 
                         'Usa el item
@@ -1836,7 +1836,7 @@ Sub UseInvItem(ByVal Userindex As Integer, ByVal Slot As Byte)
 
                         Call WriteUpdateDexterity(Userindex)
                         
-                    Case 2 'Modif la fuerza
+                    Case ePocionType.otFuerza 'Modif la fuerza
                         .flags.DuracionEfecto = obj.DuracionEfecto
                 
                         'Usa el item
@@ -1859,7 +1859,7 @@ Sub UseInvItem(ByVal Userindex As Integer, ByVal Slot As Byte)
 
                         Call WriteUpdateStrenght(Userindex)
                         
-                    Case 3 'Pocion roja, restaura HP
+                    Case ePocionType.otSalud 'Pocion roja, restaura HP
                         'Usa el item
                         .Stats.MinHp = .Stats.MinHp + RandomNumber(obj.MinModificador, obj.MaxModificador)
 
@@ -1876,7 +1876,7 @@ Sub UseInvItem(ByVal Userindex As Integer, ByVal Slot As Byte)
 
                         End If
                     
-                    Case 4 'Pocion azul, restaura MANA
+                    Case ePocionType.otMana 'Pocion azul, restaura MANA
                         'Usa el item
                         'nuevo calculo para recargar mana
                         .Stats.MinMAN = .Stats.MinMAN + Porcentaje(.Stats.MaxMAN, 4) + .Stats.ELV \ 2 + 40 / .Stats.ELV
@@ -1894,7 +1894,7 @@ Sub UseInvItem(ByVal Userindex As Integer, ByVal Slot As Byte)
 
                         End If
                         
-                    Case 5 ' Pocion violeta
+                    Case ePocionType.otCuraVeneno ' Pocion violeta
 
                         If .flags.Envenenado = 1 Then
                             .flags.Envenenado = 0
@@ -1913,7 +1913,7 @@ Sub UseInvItem(ByVal Userindex As Integer, ByVal Slot As Byte)
 
                         End If
                         
-                    Case 6  ' Pocion Negra
+                    Case ePocionType.otNegra  ' Pocion Negra
                         If .flags.SlotReto > 0 Then Exit Sub
                         
                         If .flags.Privilegios And PlayerType.User Then
@@ -2182,7 +2182,7 @@ Sub UseInvItem(ByVal Userindex As Integer, ByVal Slot As Byte)
                 If .Stats.ELV < 25 Then
 
                     ' Solo pirata y trabajador pueden navegar antes
-                    If .Clase <> eClass.Worker And .Clase <> eClass.Pirat Then
+                    If .clase <> eClass.Worker And .clase <> eClass.Pirat Then
                         Call WriteConsoleMsg(Userindex, "Para recorrer los mares debes ser nivel 25 o superior.", FontTypeNames.FONTTYPE_INFO)
                         Exit Sub
                     Else
@@ -2190,7 +2190,7 @@ Sub UseInvItem(ByVal Userindex As Integer, ByVal Slot As Byte)
                         ' Pero a partir de 20
                         If .Stats.ELV < 20 Then
                             
-                            If .Clase = eClass.Worker And .Stats.UserSkills(eSkill.pesca) <> 100 Then
+                            If .clase = eClass.Worker And .Stats.UserSkills(eSkill.pesca) <> 100 Then
                                 Call WriteConsoleMsg(Userindex, "Para recorrer los mares debes ser nivel 20 y ademas tu skill en pesca debe ser 100.", FontTypeNames.FONTTYPE_INFO)
                             Else
                                 Call WriteConsoleMsg(Userindex, "Para recorrer los mares debes ser nivel 20 o superior.", FontTypeNames.FONTTYPE_INFO)
@@ -2201,7 +2201,7 @@ Sub UseInvItem(ByVal Userindex As Integer, ByVal Slot As Byte)
                         Else
 
                             ' Esta entre 20 y 25, si es trabajador necesita tener 100 en pesca
-                            If .Clase = eClass.Worker Then
+                            If .clase = eClass.Worker Then
                                 If .Stats.UserSkills(eSkill.pesca) <> 100 Then
                                     Call WriteConsoleMsg(Userindex, "Para recorrer los mares debes ser nivel 20 o superior y ademas tu skill en pesca debe ser 100.", FontTypeNames.FONTTYPE_INFO)
                                     Exit Sub
@@ -2224,7 +2224,6 @@ Sub UseInvItem(ByVal Userindex As Integer, ByVal Slot As Byte)
                     
                 Else
                     Call WriteConsoleMsg(Userindex, "Debes aproximarte al agua para usar un barco y a la tierra para desembarcar!", FontTypeNames.FONTTYPE_INFO)
-
                 End If
 
 
@@ -2255,25 +2254,46 @@ Sub UseInvItem(ByVal Userindex As Integer, ByVal Slot As Byte)
             
                 Select Case ObjIndex
                 
-                    Case 1127   ' Manual de Liderazgo
+                    Case eManualType.otLiderazgo            ' Manual de Liderazgo
                         
                         If .Stats.UserSkills(eSkill.Liderazgo) < 100 Then
                             .Stats.UserSkills(eSkill.Liderazgo) = 100
-                            
+                            Call WriteConsoleMsg(Userindex, "?Has aprendido todo lo necesario para conformar un Clan!", FontTypeNames.FONTTYPE_INFO)
+                        Else
+                            Call WriteConsoleMsg(Userindex, "Este pergamino no tiene ning?n conocimiento que te sirva.", FontTypeNames.FONTTYPE_INFO)
+                            Exit Sub
                         End If
                         
-                    Case 1128   ' Manual de Supervivencia
+                    Case eManualType.otSupervivencia        ' Manual de Supervivencia
                         
                         If .Stats.UserSkills(eSkill.Supervivencia) < 100 Then
                             .Stats.UserSkills(eSkill.Supervivencia) = 100
-                            
+                            Call WriteConsoleMsg(Userindex, "?Te has vuelto un experto en el arte de la Supervivencia!", FontTypeNames.FONTTYPE_INFO)
+                        Else
+                            Call WriteConsoleMsg(Userindex, "Este pergamino no tiene ning?n conocimiento que te sirva.", FontTypeNames.FONTTYPE_INFO)
+                            Exit Sub
                         End If
                         
-                    Case 1129   ' Manual de Navegacion
+                    Case eManualType.otNavegacion           ' Manual de Navegacion
                         
                         If .Stats.UserSkills(eSkill.Navegacion) < 100 Then
                             .Stats.UserSkills(eSkill.Navegacion) = 100
-                            
+                            Call WriteConsoleMsg(Userindex, "?Ya est?s listo para comandar todo tipo de embarcaci?n!", FontTypeNames.FONTTYPE_INFO)
+                        Else
+                            Call WriteConsoleMsg(Userindex, "Este pergamino no tiene ning?n conocimiento que te sirva.", FontTypeNames.FONTTYPE_INFO)
+                            Exit Sub
+                        End If
+                        
+                    Case eManualType.otInventSlots          ' Slots de Inventario
+                    
+                        If .Stats.InventLevel < INVENTORY_EXTRA_ROWS Then
+                            .Stats.InventLevel = .Stats.InventLevel + 1
+                            .CurrentInventorySlots = getMaxInventorySlots(Userindex)
+                            Call WriteInventoryUnlockSlots(Userindex)
+                            Call WriteConsoleMsg(Userindex, "?Has aumentado el espacio de tu inventario!", FontTypeNames.FONTTYPE_INFO)
+                        Else
+                            Call WriteConsoleMsg(Userindex, "Ya has desbloqueado todos los casilleros disponibles.", FontTypeNames.FONTTYPE_INFO)
+                            Exit Sub
                         End If
                         
                 End Select

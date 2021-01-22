@@ -1843,7 +1843,6 @@ Private Sub HandleLoginNewChar(ByVal Userindex As Integer)
                                         
     If Not VersionOK(version) Then
         Call WriteErrorMsg(Userindex, "Esta version del juego es obsoleta, la ultima version es la " & ULTIMAVERSION & ". Tu Version " & version & ". La misma se encuentra disponible en www.argentumonline.org")
-        Call WriteErrorMsg(Userindex, "Esta version del juego es obsoleta, la ultima version es la " & ULTIMAVERSION & ". Tu Version " & version & ". La misma se encuentra disponible en www.argentumonline.org")
     Else
         Call ConnectNewUser(Userindex, UserName, AccountHash, race, gender, Class, homeland, Head)
 
@@ -2332,6 +2331,8 @@ Private Sub HandleWalk(ByVal Userindex As Integer)
         
         'If exiting, cancel
         Call CancelExit(Userindex)
+
+        If .flags.Comerciando Then Exit Sub
         
         'Esta usando el /HOGAR, no se puede mover
         If .flags.Traveling = 1 Then
@@ -7494,7 +7495,7 @@ Private Sub HandlePartyMessage(ByVal Userindex As Integer)
             Call mdParty.BroadCastParty(Userindex, Chat)
 
             'TODO : Con la 0.12.1 se debe definir si esto vuelve o se borra (/CMSG overhead)
-            'Call SendData(SendTarget.ToPartyArea, UserIndex, UserList(UserIndex).Pos.map, "||" & vbYellow & "°< " & mid$(rData, 7) & " >°" & CStr(UserList(UserIndex).Char.CharIndex))
+            'Call SendData(SendTarget.ToPartyArea, UserIndex, UserList(UserIndex).Pos.map, "||" & vbYellow & "Â°< " & mid$(rData, 7) & " >Â°" & CStr(UserList(UserIndex).Char.CharIndex))
         End If
         
         'If we got here then packet is complete, copy data back to original queue
@@ -10498,6 +10499,12 @@ Private Sub HandleKillNPC(ByVal Userindex As Integer)
 
         Dim auxNPC As npc
         
+        #If ProteccionGM = 1 Then
+            ' WyroX: A pedido de la gente, desactivo el comando /RMATA
+            Call WriteConsoleMsg(Userindex, "El comando /RMATA se encuentra desactivado.", FONTTYPE_SERVER)
+            Exit Sub
+        #End If
+        
         'Los consejeros no pueden RMATAr a nada en el mapa pretoriano
         If .flags.Privilegios And PlayerType.Consejero Then
             If .Pos.Map = MAPA_PRETORIANO Then
@@ -12166,7 +12173,7 @@ Private Sub HandleExecute(ByVal Userindex As Integer)
         Dim tUser    As Integer
         
         UserName = buffer.ReadASCIIString()
-        
+
         If (Not .flags.Privilegios And PlayerType.RoleMaster) <> 0 And (.flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios Or PlayerType.SemiDios)) <> 0 Then
             tUser = NameIndex(UserName)
             
@@ -12383,6 +12390,12 @@ Private Sub HandleNPCFollow(ByVal Userindex As Integer)
         Call .incomingData.ReadByte
         
         If .flags.Privilegios And (PlayerType.User Or PlayerType.Consejero) Then Exit Sub
+        
+        #If ProteccionGM = 1 Then
+            ' WyroX: A pedido de la gente, desactivo el comando /SEGUIR
+            Call WriteConsoleMsg(Userindex, "El comando /SEGUIR se encuentra desactivado.", FONTTYPE_SERVER)
+            Exit Sub
+        #End If
         
         If .flags.TargetNPC > 0 Then
             Call DoFollow(.flags.TargetNPC, .Name)
@@ -14717,6 +14730,12 @@ Private Sub HandleCreateItem(ByVal Userindex As Integer)
         ' Es Game-Master?
         If .flags.Privilegios And (PlayerType.User Or PlayerType.Consejero Or PlayerType.SemiDios) Then Exit Sub
         
+        ' WyroX: A pedido de la gente, desactivo el comando /CI
+        #If ProteccionGM = 1 Then
+            Call WriteConsoleMsg(Userindex, "El comando /CI se encuentra desactivado.", FONTTYPE_SERVER)
+            Exit Sub
+        #End If
+        
         ' Si hace mas de 10000, lo sacamos cagando.
         If Cuantos > 10000 Then Call WriteConsoleMsg(Userindex, "Estas tratando de crear demasiado, como mucho podes crear 10.000 unidades.", FontTypeNames.FONTTYPE_TALK): Exit Sub
         
@@ -15243,6 +15262,12 @@ Private Sub HandleKillNPCNoRespawn(ByVal Userindex As Integer)
         
         If .flags.TargetNPC = 0 Then Exit Sub
         
+        #If ProteccionGM = 1 Then
+            ' WyroX: A pedido de la gente, desactivo el comando /MATA
+            Call WriteConsoleMsg(Userindex, "El comando /MATA se encuentra desactivado.", FONTTYPE_SERVER)
+            Exit Sub
+        #End If
+        
         Call QuitarNPC(.flags.TargetNPC)
         Call LogGM(.Name, "/MATA " & Npclist(.flags.TargetNPC).Name)
 
@@ -15267,6 +15292,12 @@ Private Sub HandleKillAllNearbyNPCs(ByVal Userindex As Integer)
         Call .incomingData.ReadByte
         
         If .flags.Privilegios And (PlayerType.User Or PlayerType.Consejero Or PlayerType.SemiDios) Then Exit Sub
+        
+        #If ProteccionGM = 1 Then
+            ' WyroX: A pedido de la gente, desactivo el comando /MASSKILL
+            Call WriteConsoleMsg(Userindex, "El comando /MASSKILL se encuentra desactivado.", FONTTYPE_SERVER)
+            Exit Sub
+        #End If
         
         Dim X As Long
 
@@ -23075,6 +23106,7 @@ Public Sub WriteUserAccountLogged(ByVal Userindex As Integer, _
     End With
 
     Exit Sub
+    
 
 errHandler:
 
@@ -23344,7 +23376,7 @@ Public Sub WriteQuestDetails(ByVal Userindex As Integer, _
                              Optional QuestSlot As Byte = 0)
 
     '$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-    'Env�a el paquete QuestDetails y la informaci�n correspondiente.
+    'Envï¿½a el paquete QuestDetails y la informaciï¿½n correspondiente.
     'Last modified: 30/01/2010 by Amraphen
     '$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
     Dim i As Integer
@@ -23355,10 +23387,10 @@ Public Sub WriteQuestDetails(ByVal Userindex As Integer, _
         'ID del paquete
         Call .WriteByte(ServerPacketID.QuestDetails)
         
-        'Se usa la variable QuestSlot para saber si enviamos la info de una quest ya empezada o la info de una quest que no se acept� todav�a (1 para el primer caso y 0 para el segundo)
+        'Se usa la variable QuestSlot para saber si enviamos la info de una quest ya empezada o la info de una quest que no se aceptï¿½ todavï¿½a (1 para el primer caso y 0 para el segundo)
         Call .WriteByte(IIf(QuestSlot, 1, 0))
         
-        'Enviamos nombre, descripci�n y nivel requerido de la quest
+        'Enviamos nombre, descripciï¿½n y nivel requerido de la quest
         Call .WriteASCIIString(QuestList(QuestIndex).Nombre)
         Call .WriteASCIIString(QuestList(QuestIndex).Desc)
         Call .WriteByte(QuestList(QuestIndex).RequiredLevel)
@@ -23373,7 +23405,7 @@ Public Sub WriteQuestDetails(ByVal Userindex As Integer, _
                 Call .WriteInteger(QuestList(QuestIndex).RequiredNPC(i).Amount)
                 Call .WriteASCIIString(GetVar(DatPath & "NPCs.dat", "NPC" & QuestList(QuestIndex).RequiredNPC(i).NpcIndex, "Name"))
 
-                'Si es una quest ya empezada, entonces mandamos los NPCs que mat�.
+                'Si es una quest ya empezada, entonces mandamos los NPCs que matï¿½.
                 If QuestSlot Then
                     Call .WriteInteger(UserList(Userindex).QuestStats.Quests(QuestSlot).NPCsKilled(i))
 
@@ -23430,7 +23462,7 @@ End Sub
 Public Sub WriteQuestListSend(ByVal Userindex As Integer)
 
     '$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-    'Env�a el paquete QuestList y la informaci�n correspondiente.
+    'Envï¿½a el paquete QuestList y la informaciï¿½n correspondiente.
     'Last modified: 30/01/2010 by Amraphen
     '$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
     Dim i       As Integer
@@ -23457,7 +23489,7 @@ Public Sub WriteQuestListSend(ByVal Userindex As Integer)
         'Escribimos la cantidad de quests
         Call .outgoingData.WriteByte(tmpByte)
         
-        'Escribimos la lista de quests (sacamos el �ltimo caracter)
+        'Escribimos la lista de quests (sacamos el ï¿½ltimo caracter)
         If tmpByte Then
             Call .outgoingData.WriteASCIIString(Left$(tmpStr, Len(tmpStr) - 1))
 
@@ -23983,7 +24015,7 @@ End Sub
 
 Public Sub WriteSeeInProcess(ByVal Userindex As Integer)
 '***************************************************
-'Author:Franco Emmanuel Giménez (Franeg95)
+'Author:Franco Emmanuel GimÃ©nez (Franeg95)
 'Last Modification: 18/10/10
 '***************************************************
 On Error GoTo errHandler

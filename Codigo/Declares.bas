@@ -520,7 +520,7 @@ Public Const MAXSKILLPOINTS As Byte = 100
 
 ''
 ' Cantidad de Ciudades
-Public Const NUMCIUDADES    As Byte = 6
+Public Const NUMCIUDADES    As Byte = 9
 
 ''
 'Direccion
@@ -750,7 +750,24 @@ Public Enum eOBJType
     otMochilas = 37
     otYacimientoPez = 38
     otCualquiera = 1000
+End Enum
 
+'Tipo de Pociones
+Public Enum ePocionType
+    otAgilidad = 1
+    otFuerza = 2
+    otSalud = 3
+    otMana = 4
+    otCuraVeneno = 5
+    otNegra = 6
+End Enum
+
+'Tipos de Manuales
+Public Enum eManualType
+    otLiderazgo = 1
+    otSupervivencia = 2
+    otNavegacion = 3
+    otInventSlots = 4
 End Enum
 
 'Estadisticas
@@ -1377,7 +1394,7 @@ Public Type UserFlags
     Seguro As Boolean
     SeguroResu As Boolean
     
-    DuracionEfecto As Long
+    DuracionEfecto As Single
     TargetNPC As Integer ' Npc senalado por el usuario
     TargetNpcTipo As eNPCType ' Tipo del npc senalado
     OwnedNpc As Integer ' Npc que le pertenece (no puede ser atacado)
@@ -1449,25 +1466,25 @@ End Type
 
 Public Type UserCounters
     TimeFight As Long
-    IdleCount As Long
+    IdleCount As Single
     AttackCounter As Integer
-    HPCounter As Integer
-    STACounter As Integer
-    Frio As Integer
-    Lava As Integer
-    COMCounter As Integer
-    AGUACounter As Integer
-    Veneno As Integer
-    Paralisis As Integer
-    Ceguera As Integer
-    Estupidez As Integer
+    HPCounter As Single
+    STACounter As Single
+    Frio As Single
+    Lava As Single
+    COMCounter As Single
+    AGUACounter As Single
+    Veneno As Single
+    Paralisis As Single
+    Ceguera As Single
+    Estupidez As Single
     
-    MonturaCounter As Long
+    MonturaCounter As Single
     
-    Invisibilidad As Integer
-    TiempoOculto As Integer
+    Invisibilidad As Single
+    TiempoOculto As Single
     
-    Mimetismo As Integer
+    Mimetismo As Single
     PiqueteC As Long
     ContadorPiquete As Long
     Pena As Long
@@ -1628,7 +1645,7 @@ Public Type User
         UpTime As Long
     #End If
 
-    IP As String
+    ip As String
     
     ComUsu As tCOmercioUsuario
     
@@ -1684,7 +1701,7 @@ End Type
 Public Type NpcCounters
 
     Paralisis As Integer
-    TiempoExistencia As Long
+    TiempoExistencia As Single
     Ataque As Long
 
 End Type

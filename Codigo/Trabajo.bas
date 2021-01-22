@@ -33,7 +33,7 @@ Private Const GASTO_ENERGIA_TRABAJADOR    As Byte = 2
 
 Private Const GASTO_ENERGIA_NO_TRABAJADOR As Byte = 6
 
-Public Sub DoPermanecerOculto(ByVal Userindex As Integer)
+Public Sub DoPermanecerOculto(ByVal Userindex As Integer, ByVal DeltaTick As Single)
 
     '********************************************************
     'Autor: Nacho (Integer)
@@ -46,7 +46,7 @@ Public Sub DoPermanecerOculto(ByVal Userindex As Integer)
     On Error GoTo errHandler
 
     With UserList(Userindex)
-        .Counters.TiempoOculto = .Counters.TiempoOculto - 1
+        .Counters.TiempoOculto = .Counters.TiempoOculto - DeltaTick
 
         If .Counters.TiempoOculto <= 0 Then
             If .Clase = eClass.Hunter And .Stats.UserSkills(eSkill.Ocultarse) > 90 Then
@@ -2789,7 +2789,7 @@ errHandler:
 
 End Sub
 
-Public Sub DoMeditar(ByVal Userindex As Integer)
+Public Sub DoMeditar(ByVal Userindex As Integer, ByVal DeltaTick As Single)
     '***************************************************
     'Author: Unknown
     'Last Modification: -
@@ -2860,8 +2860,10 @@ Public Sub DoMeditar(ByVal Userindex As Integer)
             Suerte = 5
 
         End If
-
-        res = RandomNumber(1, Suerte)
+        
+        ' WyroX: Si, un poco rudimentario, pero deberia ayudar a equilibrar la cantidad de mana "perdida"
+        ' cuando los ticks del juego no son exactamente de 40ms
+        res = RandomNumber(1, Round(Suerte / DeltaTick))
         
         If res = 1 Then
             

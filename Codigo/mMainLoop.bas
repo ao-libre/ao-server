@@ -2,6 +2,9 @@ Attribute VB_Name = "mMainLoop"
 Option Explicit
 
 Public prgRun As Boolean
+Public LastGameTick As Long
+
+Private Const GAME_TIMER_INTERVAL = 40
 
 Public Sub Auditoria()
 
@@ -143,6 +146,10 @@ Public Sub GameTimer()
     Dim iUserIndex   As Long
     Dim bEnviarStats As Boolean
     Dim bEnviarAyS   As Boolean
+    Dim DeltaTick    As Single
+    
+    DeltaTick = (GetTickCount - LastGameTick) / GAME_TIMER_INTERVAL
+    LastGameTick = GetTickCount
     
     On Error GoTo hayerror
     
@@ -161,39 +168,39 @@ Public Sub GameTimer()
                     bEnviarStats = False
                     bEnviarAyS = False
                     
-                    If .flags.Paralizado = 1 Then Call EfectoParalisisUser(iUserIndex)
-                    If .flags.Ceguera = 1 Or .flags.Estupidez Then Call EfectoCegueEstu(iUserIndex)
+                    If .flags.Paralizado = 1 Then Call EfectoParalisisUser(iUserIndex, DeltaTick)
+                    If .flags.Ceguera = 1 Or .flags.Estupidez Then Call EfectoCegueEstu(iUserIndex, DeltaTick)
                     If .flags.Muerto = 0 Then
                         
                         '[Consejeros]
-                        If (.flags.Privilegios And PlayerType.User) Then Call EfectoLava(iUserIndex)
+                        If (.flags.Privilegios And PlayerType.User) Then Call EfectoLava(iUserIndex, DeltaTick)
                         
-                        If .flags.Desnudo <> 0 And (.flags.Privilegios And PlayerType.User) <> 0 Then Call EfectoFrio(iUserIndex)
+                        If .flags.Desnudo <> 0 And (.flags.Privilegios And PlayerType.User) <> 0 Then Call EfectoFrio(iUserIndex, DeltaTick)
                         
-                        If .flags.Meditando Then Call DoMeditar(iUserIndex)
+                        If .flags.Meditando Then Call DoMeditar(iUserIndex, DeltaTick)
                         
-                        If .flags.Envenenado <> 0 And (.flags.Privilegios And PlayerType.User) <> 0 Then Call EfectoVeneno(iUserIndex)
+                        If .flags.Envenenado <> 0 And (.flags.Privilegios And PlayerType.User) <> 0 Then Call EfectoVeneno(iUserIndex, DeltaTick)
                         
                         If .flags.AdminInvisible <> 1 Then
-                            If .flags.invisible = 1 Then Call EfectoInvisibilidad(iUserIndex)
-                            If .flags.Oculto = 1 Then Call DoPermanecerOculto(iUserIndex)
+                            If .flags.invisible = 1 Then Call EfectoInvisibilidad(iUserIndex, DeltaTick)
+                            If .flags.Oculto = 1 Then Call DoPermanecerOculto(iUserIndex, DeltaTick)
 
                         End If
                         
-                        If .flags.Mimetizado = 1 Then Call EfectoMimetismo(iUserIndex)
+                        If .flags.Mimetizado = 1 Then Call EfectoMimetismo(iUserIndex, DeltaTick)
                         
                         If .flags.AtacablePor <> 0 Then Call EfectoEstadoAtacable(iUserIndex)
                         
-                        Call DuracionPociones(iUserIndex)
+                        Call DuracionPociones(iUserIndex, DeltaTick)
                         
-                        Call HambreYSed(iUserIndex, bEnviarAyS)
+                        Call HambreYSed(iUserIndex, DeltaTick, bEnviarAyS)
                         
                         If .flags.Hambre = 0 And .flags.Sed = 0 Then
                             If Lloviendo Then
                                 If Not Intemperie(iUserIndex) Then
                                     If Not .flags.Descansar Then
                                         'No esta descansando
-                                        Call Sanar(iUserIndex, bEnviarStats, SanaIntervaloSinDescansar)
+                                        Call Sanar(iUserIndex, DeltaTick, bEnviarStats, SanaIntervaloSinDescansar)
 
                                         If bEnviarStats Then
                                             Call WriteUpdateHP(iUserIndex)
@@ -201,7 +208,7 @@ Public Sub GameTimer()
 
                                         End If
 
-                                        Call RecStamina(iUserIndex, bEnviarStats, StaminaIntervaloSinDescansar)
+                                        Call RecStamina(iUserIndex, DeltaTick, bEnviarStats, StaminaIntervaloSinDescansar)
 
                                         If bEnviarStats Then
                                             Call WriteUpdateSta(iUserIndex)
@@ -211,7 +218,7 @@ Public Sub GameTimer()
 
                                     Else
                                         'esta descansando
-                                        Call Sanar(iUserIndex, bEnviarStats, SanaIntervaloDescansar)
+                                        Call Sanar(iUserIndex, DeltaTick, bEnviarStats, SanaIntervaloDescansar)
 
                                         If bEnviarStats Then
                                             Call WriteUpdateHP(iUserIndex)
@@ -219,7 +226,7 @@ Public Sub GameTimer()
 
                                         End If
 
-                                        Call RecStamina(iUserIndex, bEnviarStats, StaminaIntervaloDescansar)
+                                        Call RecStamina(iUserIndex, DeltaTick, bEnviarStats, StaminaIntervaloDescansar)
 
                                         If bEnviarStats Then
                                             Call WriteUpdateSta(iUserIndex)
@@ -244,7 +251,7 @@ Public Sub GameTimer()
                                 If Not .flags.Descansar Then
                                     'No esta descansando
                                     
-                                    Call Sanar(iUserIndex, bEnviarStats, SanaIntervaloSinDescansar)
+                                    Call Sanar(iUserIndex, DeltaTick, bEnviarStats, SanaIntervaloSinDescansar)
 
                                     If bEnviarStats Then
                                         Call WriteUpdateHP(iUserIndex)
@@ -252,7 +259,7 @@ Public Sub GameTimer()
 
                                     End If
 
-                                    Call RecStamina(iUserIndex, bEnviarStats, StaminaIntervaloSinDescansar)
+                                    Call RecStamina(iUserIndex, DeltaTick, bEnviarStats, StaminaIntervaloSinDescansar)
 
                                     If bEnviarStats Then
                                         Call WriteUpdateSta(iUserIndex)
@@ -263,7 +270,7 @@ Public Sub GameTimer()
                                 Else
                                     'esta descansando
                                     
-                                    Call Sanar(iUserIndex, bEnviarStats, SanaIntervaloDescansar)
+                                    Call Sanar(iUserIndex, DeltaTick, bEnviarStats, SanaIntervaloDescansar)
 
                                     If bEnviarStats Then
                                         Call WriteUpdateHP(iUserIndex)
@@ -271,7 +278,7 @@ Public Sub GameTimer()
 
                                     End If
 
-                                    Call RecStamina(iUserIndex, bEnviarStats, StaminaIntervaloDescansar)
+                                    Call RecStamina(iUserIndex, DeltaTick, bEnviarStats, StaminaIntervaloDescansar)
 
                                     If bEnviarStats Then
                                         Call WriteUpdateSta(iUserIndex)
@@ -295,7 +302,7 @@ Public Sub GameTimer()
                         
                         If bEnviarAyS Then Call WriteUpdateHungerAndThirst(iUserIndex)
                         
-                        If .NroMascotas > 0 Then Call TiempoInvocacion(iUserIndex)
+                        If .NroMascotas > 0 Then Call TiempoInvocacion(iUserIndex, DeltaTick)
                     Else
 
                         If .flags.Traveling <> 0 Then Call TravelingEffect(iUserIndex)
@@ -303,7 +310,7 @@ Public Sub GameTimer()
 
                 Else 'no esta logeado?
                     'Inactive players will be removed!
-                    .Counters.IdleCount = .Counters.IdleCount + 1
+                    .Counters.IdleCount = .Counters.IdleCount + DeltaTick
 
                     If .Counters.IdleCount > IntervaloParaConexion Then
                         .Counters.IdleCount = 0
@@ -336,7 +343,7 @@ Public Sub PasarSegundo()
     '
     '***************************************************
 
-    On Error GoTo ErrHandler
+    On Error GoTo errHandler
 
     Dim i As Long
     
@@ -475,7 +482,7 @@ Public Sub PasarSegundo()
 
     Exit Sub
 
-ErrHandler:
+errHandler:
     Call LogError("Error en PasarSegundo. Err: " & Err.description & " - " & Err.Number & " - UserIndex: " & i)
 
     Resume Next

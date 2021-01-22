@@ -1022,6 +1022,14 @@ Sub LanzarHechizo(ByVal SpellIndex As Integer, ByVal Userindex As Integer)
             Select Case Hechizos(SpellIndex).Target
 
                 Case TargetType.uUsuarios
+                
+                    #If ProteccionGM = 1 Then
+                        ' WyroX: A pedido de la gente, desactivo que los GMs puedan lanzar hechizos a users y npcs
+                        If (.flags.Privilegios And PlayerType.User) = 0 Then
+                            Call WriteConsoleMsg(Userindex, "Los GMs no pueden lanzar hechizos a usuarios o NPCs.", FONTTYPE_SERVER)
+                            Exit Sub
+                        End If
+                    #End If
 
                     If .flags.TargetUser > 0 Then
                         Call HandleHechizoUsuario(Userindex, SpellIndex)
@@ -1032,6 +1040,14 @@ Sub LanzarHechizo(ByVal SpellIndex As Integer, ByVal Userindex As Integer)
                     End If
             
                 Case TargetType.uNPC
+                
+                    #If ProteccionGM = 1 Then
+                        ' WyroX: A pedido de la gente, desactivo que los GMs puedan lanzar hechizos a users y npcs
+                        If (.flags.Privilegios And PlayerType.User) = 0 Then
+                            Call WriteConsoleMsg(Userindex, "Los GMs no pueden lanzar hechizos a usuarios o NPCs.", FONTTYPE_SERVER)
+                            Exit Sub
+                        End If
+                    #End If
 
                     If .flags.TargetNPC > 0 Then
                         Call HandleHechizoNPC(Userindex, SpellIndex)
@@ -1042,6 +1058,14 @@ Sub LanzarHechizo(ByVal SpellIndex As Integer, ByVal Userindex As Integer)
                     End If
             
                 Case TargetType.uUsuariosYnpc
+                
+                    #If ProteccionGM = 1 Then
+                        ' WyroX: A pedido de la gente, desactivo que los GMs puedan lanzar hechizos a users y npcs
+                        If (.flags.Privilegios And PlayerType.User) = 0 Then
+                            Call WriteConsoleMsg(Userindex, "Los GMs no pueden lanzar hechizos a usuarios o NPCs.", FONTTYPE_SERVER)
+                            Exit Sub
+                        End If
+                    #End If
 
                     If .flags.TargetUser > 0 Then
                         Call HandleHechizoUsuario(Userindex, SpellIndex)
@@ -1069,7 +1093,7 @@ Sub LanzarHechizo(ByVal SpellIndex As Integer, ByVal Userindex As Integer)
 
     Exit Sub
 
-ErrHandler:
+errHandler:
     Call LogError("Error en LanzarHechizo. Error " & Err.Number & " : " & Err.description & " Hechizo: " & SpellIndex & "(" & SpellIndex & "). Casteado por: " & UserList(Userindex).Name & "(" & Userindex & ").")
     
 End Sub
@@ -1417,7 +1441,7 @@ Sub HechizoEstadoUsuario(ByVal Userindex As Integer, ByRef HechizoCasteado As Bo
                 End If
             
                 'revisamos si necesita vara
-                If .Clase = eClass.Mage Then
+                If .clase = eClass.Mage Then
                     If .Invent.WeaponEqpObjIndex > 0 Then
                         If ObjData(.Invent.WeaponEqpObjIndex).StaffPower < Hechizos(HechizoIndex).NeedStaff Then
                             Call WriteConsoleMsg(Userindex, "Necesitas un baculo mejor para lanzar este hechizo.", FontTypeNames.FONTTYPE_INFO)

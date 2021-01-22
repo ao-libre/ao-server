@@ -1468,6 +1468,22 @@ Sub ConnectUser(ByVal Userindex As Integer, _
         Call SendData(SendTarget.ToPCArea, Userindex, PrepareMessageCreateFX(.Char.CharIndex, FXIDs.FXWARP, 0))
     
         Call WriteLoggedMessage(Userindex)
+
+        If (.flags.Muerto = 0) Then
+            .flags.SeguroResu = False
+            Call WriteMultiMessage(Userindex, eMessages.ResuscitationSafeOff)
+        Else
+            .flags.SeguroResu = True
+            Call WriteMultiMessage(Userindex, eMessages.ResuscitationSafeOn)
+        End If
+
+        If criminal(Userindex) Then
+            Call WriteMultiMessage(Userindex, eMessages.SafeModeOff) 'Call WriteSafeModeOff(UserIndex)
+            .flags.Seguro = False
+        Else
+            .flags.Seguro = True
+            Call WriteMultiMessage(Userindex, eMessages.SafeModeOn) 'Call WriteSafeModeOn(UserIndex)
+        End If
     
         ' Esta protegido del ataque de npcs por 5 segundos, si no realiza ninguna accion
         Call IntervaloPermiteSerAtacado(Userindex, True)

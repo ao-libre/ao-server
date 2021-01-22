@@ -206,7 +206,7 @@ Public Function UserImpactoNpc(ByVal UserIndex As Integer, _
             
             MunicionObjIndex = UserList(UserIndex).Invent.MunicionEqpObjIndex
             
-            'Tiene munición?
+            'Tiene municion?
             'si es un caza oculto no manda la animacion de flecha o cuchillas
             If Not (UserList(Userindex).Clase = eClass.Hunter And UserList(Userindex).flags.Oculto = 1) Then
                 If MunicionObjIndex <> 0  Then
@@ -1071,13 +1071,13 @@ Public Sub NpcAtacaNpc(ByVal Atacante As Integer, _
             If MasterIndex > 0 Then
                 Call SendData(SendTarget.ToNPCArea, Atacante, PrepareMessagePlayWave(SND_SWING, .Pos.X, .Pos.Y))
                 
-                'Renderizo el daño en render.
+                'Renderizo el dano en render.
                 Call SendData(SendTarget.ToNPCArea, Atacante, PrepareMessageCreateDamage(Npclist(Victima).Pos.X, Npclist(Victima).Pos.Y, 1, DAMAGE_FALLO))
                 
             Else
                 Call SendData(SendTarget.ToNPCArea, Victima, PrepareMessagePlayWave(SND_SWING, Npclist(Victima).Pos.X, Npclist(Victima).Pos.Y))
                 
-                'Renderizo el daño en render.
+                'Renderizo el dano en render.
                 Call SendData(SendTarget.ToNPCArea, Victima, PrepareMessageCreateDamage(Npclist(Victima).Pos.X, Npclist(Victima).Pos.Y, 1, DAMAGE_FALLO))
                 
             End If
@@ -1177,7 +1177,15 @@ Public Sub UsuarioAtaca(ByVal UserIndex As Integer)
 
     End If
     
-    With UserList(UserIndex)
+    With UserList(Userindex)
+    
+        #If ProteccionGM = 1 Then
+            ' WyroX: A pedido de la gente, desactivo que los GMs puedan atacar
+            If (.flags.Privilegios And PlayerType.User) = 0 Then
+                Call WriteConsoleMsg(Userindex, "Los GMs no pueden atacar.", FONTTYPE_SERVER)
+                Exit Sub
+            End If
+        #End If
 
         'Chequeamos que tenga por lo menos 10 de stamina.
         If .Stats.MinSta < 10 Then
