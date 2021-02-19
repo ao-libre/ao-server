@@ -37,6 +37,11 @@ Option Explicit
 
 Global LeerNPCs As clsIniManager
 
+''
+' Retrieves the amount of ticks since the computer started running.
+'
+Private Declare Function timeGetTime Lib "winmm.dll" () As Long
+
 Function DarCuerpoDesnudo(ByVal Userindex As Integer, _
                      Optional ByVal Mimetizado As Boolean = False) As Integer
     '***************************************************
@@ -357,7 +362,7 @@ Sub Main()
         Call frmMain.InitMain(0)
     End If
     
-    tInicioServer = GetTickCount() And &H7FFFFFFF
+    tInicioServer = GetTickCount()
 
     IpPublicaServidor = frmMain.Inet1.OpenURL("http://ip1.dynupdate.no-ip.com:8245/")
     frmMain.lblIp.Caption = IpPublicaServidor & ":" & Puerto
@@ -1769,3 +1774,11 @@ Public Sub CloseServer()
     
     End
 End Sub
+
+Public Function GetTickCount() As Long
+
+    ' Funcion wrapper de timeGetTime que le saca el signo negativo al valor de retorno de la API timeGetTime
+
+    GetTickCount = timeGetTime And &H7FFFFFFF
+
+End Function

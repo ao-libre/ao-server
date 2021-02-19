@@ -6013,7 +6013,7 @@ Private Sub WriteConsoleServerUpTimeMsg(ByVal Userindex As Integer)
     Dim UpTimeStr As String
     
     'Get total time in seconds
-    time = ((GetTickCount() And &H7FFFFFFF) - tInicioServer) \ 1000
+    time = ((GetTickCount()) - tInicioServer) \ 1000
     
     'Get times in dd:hh:mm:ss format
     UpTimeStr = (time Mod 60) & " segundos."
@@ -6571,7 +6571,7 @@ Private Sub HandleMeditate(ByVal Userindex As Integer)
         
         'Barrin 3/10/03 Tiempo de inicio al meditar
         If .flags.Meditando Then
-            .Counters.tInicioMeditar = GetTickCount() And &H7FFFFFFF
+            .Counters.tInicioMeditar = GetTickCount()
             
             Call WriteConsoleMsg(Userindex, "Te estas concentrando. En " & Fix(TIEMPO_INICIOMEDITAR / 1000) & " segundos comenzaras a meditar.", FontTypeNames.FONTTYPE_INFO)
             

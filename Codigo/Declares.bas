@@ -2099,8 +2099,6 @@ Public Denuncias       As cCola
 
 Public ConsultaPopular As ConsultasPopulares
 
-Public Declare Function GetTickCount Lib "kernel32" () As Long
-
 Public Declare Function writeprivateprofilestring _
                Lib "kernel32" _
                Alias "WritePrivateProfileStringA" (ByVal lpApplicationname As String, _

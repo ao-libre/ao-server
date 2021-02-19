@@ -2811,7 +2811,7 @@ Public Sub DoMeditar(ByVal Userindex As Integer, ByVal DeltaTick As Single)
         'Esperamos a que se termine de concentrar
         Dim TActual      As Long
 
-        TActual = GetTickCount() And &H7FFFFFFF
+        TActual = GetTickCount()
 
         If TActual - .Counters.tInicioMeditar < TIEMPO_INICIOMEDITAR Then
             Exit Sub
