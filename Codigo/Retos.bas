@@ -358,7 +358,7 @@ Private Function CanAcceptFight(ByVal Userindex As Integer, _
 190               .RetoTemp.Accepts(SlotTemp) = 1
 200               CanAcceptFight = True
                   
-                  ' � Chequeo de aceptaciones
+                  ' Chequeo de aceptaciones
 210               If CheckAccepts(.RetoTemp.Accepts) Then
 220                   GoFight tUser
 230               End If
@@ -637,7 +637,7 @@ Private Sub SendInvitation(ByVal Userindex As Integer, _
 60                .RequiredGld = GldRequired
 90                .Users = Users
                   
-110               .Accepts(UBound(Users())) = 1 ' El ultimo personaje es el que envi� por lo tanto ya acept�.
+110               .Accepts(UBound(Users())) = 1 ' El ultimo personaje es el que envio por lo tanto ya acepto.
 120           End With
 130       End With
           
@@ -772,7 +772,7 @@ Private Sub WarpFight(ByRef Users() As tRetoUser)
 
 150                   Call WriteUserInEvent(tUser)
 
-                      ' Mensaje: Preparate en 10 segundos comenzar�s a luchar!
+                      ' Mensaje: Preparate en 10 segundos comenzaras a luchar!
                   
 160                   Call ClosestStablePos(Pos, Pos)
 170                   Call WarpUserChar(tUser, Pos.Map, Pos.X, Pos.Y, False)
@@ -1093,7 +1093,7 @@ Error:
 End Sub
 
 Public Sub WarpPosAnt(ByVal Userindex As Integer)
-          ' � Warpeo del personaje a su posici�n anterior.
+          ' Warpeo del personaje a su posicion anterior.
           
           Dim Pos As WorldPos
           

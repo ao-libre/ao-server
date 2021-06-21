@@ -592,7 +592,7 @@ Public Function CrearNPC(NroNPC As Integer, _
                          Optional ByVal CustomHead As Integer) As Integer
     '***************************************************
     'Author: Unknown
-    'Last Modification: 22/07/2019 - WyroX: Intentamos NO spawnear NPCs de agua en tierra, a menos que se alcance el límite de iteraciones.
+    'Last Modification: 22/07/2019 - WyroX: Intentamos NO spawnear NPCs de agua en tierra, a menos que se alcance el limite de iteraciones.
     '
     '***************************************************
 
@@ -674,7 +674,7 @@ Public Function CrearNPC(NroNPC As Integer, _
                     Npclist(nIndex).Pos.Y = altpos.Y
                     PosicionValida = True
                 Else
-                    ' WyroX: Super� la cantidad de intentos sin ninguna posici�n v�lida? Probamos un intento m�s pero sin el flag "PuedeTierra"
+                    ' WyroX: Supero la cantidad de intentos sin ninguna posicion valida? Probamos un intento mas pero sin el flag "PuedeTierra"
                     Call ClosestLegalPos(Pos, NEWPOS, PuedeAgua)
 
                     If NEWPOS.X <> 0 And NEWPOS.Y <> 0 Then

@@ -18,7 +18,7 @@ Option Explicit
 ' Author:   Steve McMahon (steve@vbaccelerator.com)
 ' Date:     1 January 2002
 '
-' Copyright © 2002 Steve McMahon for vbAccelerator
+' Copyright Â© 2002 Steve McMahon for vbAccelerator
 ' --------------------------------------------------------------------------------------
 ' Visit vbAccelerator - advanced free source code for VB programmers
 ' http://vbaccelerator.com

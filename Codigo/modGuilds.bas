@@ -24,7 +24,6 @@ Option Explicit
 
 'guilds nueva version. Hecho por el oso, eliminando los problemas
 'de sincronizacion con los datos en el HD... entre varios otros
-'��
 
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
