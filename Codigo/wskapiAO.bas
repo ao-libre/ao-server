@@ -64,8 +64,6 @@ Public WSAPISock2Usr  As Collection
 
 ' ====================================================================================
 ' ====================================================================================
-Public OldWProc       As Long
-Public ActualWProc    As Long
 Public hWndMsg        As Long
 
 ' ====================================================================================
@@ -85,11 +83,11 @@ Public Sub IniciaWsApi(ByVal hwndParent As Long)
         hWndMsg = CreateWindowEx(0, "STATIC", "AOMSG", WS_CHILD, 0, 0, 0, 0, hwndParent, 0, App.hInstance, ByVal 0&)
     #Else
         hWndMsg = hwndParent
-    #End If 'WSAPI_CREAR_LABEL
+    #End If
 
-    OldWProc = SetWindowLong(hWndMsg, GWL_WNDPROC, AddressOf WndProc)
-    ActualWProc = GetWindowLong(hWndMsg, GWL_WNDPROC)
-
+    Set frmmain.WinsockThread = New clsSubclass
+    Call frmmain.WinsockThread.Hook(hWndMsg)
+    
     Dim Desc As String
 
     Call StartWinsock(Desc)
@@ -103,12 +101,9 @@ Public Sub LimpiaWsApi()
     If WSAStartedUp Then
         Call EndWinsock
     End If
-
-    If OldWProc <> 0 Then
-        Call SetWindowLong(hWndMsg, GWL_WNDPROC, OldWProc)
-        OldWProc = 0
-    End If
-
+    
+    Set frmmain.WinsockThread = Nothing
+    
     #If WSAPI_CREAR_LABEL Then
 
         If hWndMsg <> 0 Then
@@ -160,96 +155,6 @@ Public Sub BorraSlotSock(ByVal Sock As Long)
     Debug.Print "BorraSockSlot " & cant & " -> " & WSAPISock2Usr.Count
 
 End Sub
-
-Public Function WndProc(ByVal hWnd As Long, ByVal msg As Long, ByVal wParam As Long, ByVal lParam As Long) As Long
-
-    On Error Resume Next
-
-    Dim ret      As Long
-    Dim Tmp()    As Byte
-    Dim S        As Long
-    Dim e        As Long
-    Dim n        As Integer
-    Dim UltError As Long
-    
-    Select Case msg
-
-        Case 1025
-            S = wParam
-            e = WSAGetSelectEvent(lParam)
-            
-            Select Case e
-
-                Case FD_ACCEPT
-                    If S = SockListen Then
-                        Call EventoSockAccept(S)
-                    End If
-
-                Case FD_READ
-                    n = BuscaSlotSock(S)
-
-                    If n < 0 And S <> SockListen Then
-                        Call WSApiCloseSocket(S)
-                        Exit Function
-                    End If
-                    
-                    'create appropiate sized buffer
-                    ReDim Preserve Tmp(SIZE_RCVBUF - 1) As Byte
-                    
-                    ret = recv(S, Tmp(0), SIZE_RCVBUF, 0)
-
-                    ' Comparo por = 0 ya que esto es cuando se cierra
-                    ' "gracefully". (mas abajo)
-                    If ret < 0 Then
-                        UltError = Err.LastDllError
-
-                        If UltError = WSAEMSGSIZE Then
-                            Debug.Print "WSAEMSGSIZE"
-                            ret = SIZE_RCVBUF
-                        
-                        Else
-                            Debug.Print "Error en Recv: " & GetWSAErrorString(UltError)
-                            Call LogApiSock("Error en Recv: N=" & n & " S=" & S & " Str=" & GetWSAErrorString(UltError))
-                            
-                            'no hay q llamar a CloseSocket() directamente,
-                            'ya q pueden abusar de algun error para
-                            'desconectarse sin los 10segs. CREEME.
-                            Call CloseSocketSL(n)
-                            Call Cerrar_Usuario(n)
-                            Exit Function
-
-                        End If
-
-                    ElseIf ret = 0 Then
-                        Call CloseSocketSL(n)
-                        Call Cerrar_Usuario(n)
-
-                    End If
-                    
-                    ReDim Preserve Tmp(ret - 1) As Byte
-                    
-                    Call EventoSockRead(n, Tmp)
-                
-                Case FD_CLOSE
-                    n = BuscaSlotSock(S)
-
-                    If S <> SockListen Then Call apiclosesocket(S)
-                    
-                    If n > 0 Then
-                        Call BorraSlotSock(S)
-                        UserList(n).ConnID = -1
-                        UserList(n).ConnIDValida = False
-                        Call EventoSockClose(n)
-                    End If
-
-            End Select
-        
-        Case Else
-            WndProc = CallWindowProc(OldWProc, hWnd, msg, wParam, lParam)
-
-    End Select
-
-End Function
 
 'Retorna 0 cuando se envio o se metio en la cola,
 'retorna <> 0 cuando no se pudo enviar o no se pudo meter en la cola

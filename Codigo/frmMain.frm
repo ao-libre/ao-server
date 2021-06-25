@@ -474,6 +474,9 @@ Attribute VB_Exposed = False
 
 Option Explicit
 
+Public WithEvents WinsockThread As clsSubclass
+Attribute WinsockThread.VB_VarHelpID = -1
+
 Public ESCUCHADAS As Long
 
 Private Type NOTIFYICONDATA
@@ -1019,4 +1022,94 @@ End Sub
 
 Private Sub TimerEnviarDatosServer_Timer()
     Call mMainLoop.TimerEnviarDatosServer
+End Sub
+
+Public Sub WinsockThread_WndProc(ByVal hWnd As Long, ByVal Msg As Long, ByVal wParam As Long, ByVal lParam As Long, ReturnVal As Long, DefCall As Boolean)
+
+    On Error Resume Next
+
+    Dim Ret      As Long
+    Dim Tmp()    As Byte
+    Dim S        As Long
+    Dim e        As Long
+    Dim n        As Integer
+    Dim UltError As Long
+    
+    Select Case Msg
+
+        Case 1025
+            S = wParam
+            e = WSAGetSelectEvent(lParam)
+            
+            Select Case e
+
+                Case FD_ACCEPT
+                    If S = SockListen Then
+                        Call EventoSockAccept(S)
+                    End If
+
+                Case FD_READ
+                    n = BuscaSlotSock(S)
+
+                    If n < 0 And S <> SockListen Then
+                        Call WSApiCloseSocket(S)
+                        Exit Sub
+                    End If
+                    
+                    'create appropiate sized buffer
+                    ReDim Preserve Tmp(SIZE_RCVBUF - 1) As Byte
+                    
+                    Ret = recv(S, Tmp(0), SIZE_RCVBUF, 0)
+
+                    ' Comparo por = 0 ya que esto es cuando se cierra
+                    ' "gracefully". (mas abajo)
+                    If Ret < 0 Then
+                        UltError = Err.LastDllError
+
+                        If UltError = WSAEMSGSIZE Then
+                            Debug.Print "WSAEMSGSIZE"
+                            Ret = SIZE_RCVBUF
+                        
+                        Else
+                            Debug.Print "Error en Recv: " & GetWSAErrorString(UltError)
+                            Call LogApiSock("Error en Recv: N=" & n & " S=" & S & " Str=" & GetWSAErrorString(UltError))
+                            
+                            'no hay q llamar a CloseSocket() directamente,
+                            'ya q pueden abusar de algun error para
+                            'desconectarse sin los 10segs. CREEME.
+                            Call CloseSocketSL(n)
+                            Call Cerrar_Usuario(n)
+                            Exit Sub
+
+                        End If
+
+                    ElseIf Ret = 0 Then
+                        Call CloseSocketSL(n)
+                        Call Cerrar_Usuario(n)
+
+                    End If
+                    
+                    ReDim Preserve Tmp(Ret - 1) As Byte
+                    
+                    Call EventoSockRead(n, Tmp)
+                
+                Case FD_CLOSE
+                    n = BuscaSlotSock(S)
+
+                    If S <> SockListen Then Call apiclosesocket(S)
+                    
+                    If n > 0 Then
+                        Call BorraSlotSock(S)
+                        UserList(n).ConnID = -1
+                        UserList(n).ConnIDValida = False
+                        Call EventoSockClose(n)
+                    End If
+
+            End Select
+        
+        Case Else
+            DefCall = True
+
+    End Select
+
 End Sub

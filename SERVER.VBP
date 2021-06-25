@@ -83,6 +83,7 @@ Module=modAntiCheat; Codigo\modAntiCheat.bas
 Class=clsSecurity; Codigo\clsSecurity.cls
 Module=Evento_Pesca; Codigo\Evento_Pesca.bas
 Class=cWorldPos; Codigo\cWorldPos.cls
+Class=clsSubclass; Codigo\clsSubClass.cls
 IconForm="frmMain"
 Startup="Sub Main"
 HelpFile=""
