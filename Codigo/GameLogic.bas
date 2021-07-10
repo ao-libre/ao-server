@@ -70,6 +70,15 @@ Public Function EsGm(ByVal Userindex As Integer) As Boolean
 
 End Function
 
+Public Function EsGmNoConsejero(ByVal Userindex As Integer) As Boolean
+    '***************************************************
+    'Autor: Pablo (ToxicWaste)
+    'Last Modification: 23/01/2007
+    '***************************************************
+
+    EsGmNoConsejero = (UserList(Userindex).flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios Or PlayerType.SemiDios))
+
+End Function
 Public Sub DoTileEvents(ByVal Userindex As Integer, _
                         ByVal Map As Integer, _
                         ByVal X As Integer, _
@@ -779,7 +788,7 @@ Function CheckForSameIP(ByVal Userindex As Integer, ByVal UserIP As String) As B
     For LoopC = 1 To MaxUsers
 
         If UserList(LoopC).flags.UserLogged = True Then
-            If UserList(LoopC).IP = UserIP And Userindex <> LoopC Then
+            If UserList(LoopC).ip = UserIP And Userindex <> LoopC Then
                 CheckForSameIP = True
                 Exit Function
 

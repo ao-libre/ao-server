@@ -1692,12 +1692,14 @@ Sub DoAdminInvisible(ByVal Userindex As Integer)
             .flags.invisible = 1
             .flags.Oculto = 1
             
-            ' Solo el admin sabe que se hace invi
+            ' Solo los gms saben que se hace invi
             tempData = PrepareMessageSetInvisible(.Char.CharIndex, True)
-            Call UserList(Userindex).outgoingData.WriteASCIIStringFixed(tempData)
+            'Call UserList(Userindex).outgoingData.WriteASCIIStringFixed(tempData)
+            Call SendData(SendTarget.ToAdminsAreaButConsejeros, Userindex, tempData)
+            Call SendData(SendTarget.ToAdminsAreaButConsejeros, Userindex, PrepareMessageCharacterChangeNick(.Char.CharIndex, .Name & " " & TAG_USER_INVISIBLE))
             
-            'Le mandamos el mensaje para que borre el personaje a los clientes que esten cerca
-            Call SendData(SendTarget.ToPCAreaButIndex, Userindex, PrepareMessageCharacterRemove(.Char.CharIndex))
+            'Le mandamos el mensaje para que borre el personaje a los users que esten cerca y no son gm
+            Call SendData(SendTarget.ToUsersAndRmsAndCounselorsAreaButGMs, Userindex, PrepareMessageCharacterRemove(.Char.CharIndex))
             
         Else
             .flags.AdminInvisible = 0
@@ -1705,13 +1707,14 @@ Sub DoAdminInvisible(ByVal Userindex As Integer)
             .flags.Oculto = 0
             .Counters.TiempoOculto = 0
             
-            ' Solo el admin sabe que se hace visible
+            ' Solo los gms saben que se hace visible
             tempData = PrepareMessageCharacterChange(.Char.body, .Char.Head, .Char.heading, .Char.CharIndex, .Char.WeaponAnim, .Char.ShieldAnim, .Char.FX, .Char.loops, .Char.CascoAnim)
             Call UserList(Userindex).outgoingData.WriteASCIIStringFixed(tempData)
             
             tempData = PrepareMessageSetInvisible(.Char.CharIndex, False)
-            Call UserList(Userindex).outgoingData.WriteASCIIStringFixed(tempData)
-             
+            'Call UserList(Userindex).outgoingData.WriteASCIIStringFixed(tempData)
+            Call SendData(SendTarget.ToAdminsAreaButConsejeros, Userindex, tempData)
+            
             'Le mandamos el mensaje para crear el personaje a los clientes que esten cerca
             Call MakeUserChar(True, .Pos.Map, Userindex, .Pos.Map, .Pos.X, .Pos.Y, True)
 
