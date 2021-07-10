@@ -37,7 +37,7 @@ Public Declare Sub Sleep Lib "kernel32" (ByVal dwMilliseconds As Long)
 
 Public Declare Function GetWindowLong Lib "user32" Alias "GetWindowLongA" (ByVal hWnd As Long, ByVal nIndex As Long) As Long
 Public Declare Function SetWindowLong Lib "user32" Alias "SetWindowLongA" (ByVal hWnd As Long, ByVal nIndex As Long, ByVal dwNewLong As Long) As Long
-Public Declare Function CallWindowProc Lib "user32" Alias "CallWindowProcA" (ByVal lpPrevWndFunc As Long, ByVal hWnd As Long, ByVal msg As Long, ByVal wParam As Long, ByVal lParam As Long) As Long
+Public Declare Function CallWindowProc Lib "user32" Alias "CallWindowProcA" (ByVal lpPrevWndFunc As Long, ByVal hWnd As Long, ByVal Msg As Long, ByVal wParam As Long, ByVal lParam As Long) As Long
 Private Declare Function CreateWindowEx Lib "user32" Alias "CreateWindowExA" (ByVal dwExStyle As Long, ByVal lpClassName As String, ByVal lpWindowName As String, ByVal dwStyle As Long, ByVal X As Long, ByVal Y As Long, ByVal nWidth As Long, ByVal nHeight As Long, ByVal hwndParent As Long, ByVal hMenu As Long, ByVal hInstance As Long, lpParam As Any) As Long
 Private Declare Function DestroyWindow Lib "user32" (ByVal hWnd As Long) As Long
 
@@ -45,7 +45,7 @@ Private Const WS_CHILD = &H40000000
 
 Public Const GWL_WNDPROC = (-4)
 
-Private Const SIZE_RCVBUF As Long = 8192
+Public Const SIZE_RCVBUF As Long = 8192
 Private Const SIZE_SNDBUF As Long = 8192
 
 ''
@@ -85,8 +85,8 @@ Public Sub IniciaWsApi(ByVal hwndParent As Long)
         hWndMsg = hwndParent
     #End If
 
-    Set frmmain.WinsockThread = New clsSubclass
-    Call frmmain.WinsockThread.Hook(hWndMsg)
+    Set frmMain.WinsockThread = New clsSubclass
+    Call frmMain.WinsockThread.Hook(hWndMsg)
     
     Dim Desc As String
 
@@ -102,7 +102,7 @@ Public Sub LimpiaWsApi()
         Call EndWinsock
     End If
     
-    Set frmmain.WinsockThread = Nothing
+    Set frmMain.WinsockThread = Nothing
     
     #If WSAPI_CREAR_LABEL Then
 
@@ -160,7 +160,7 @@ End Sub
 'retorna <> 0 cuando no se pudo enviar o no se pudo meter en la cola
 Public Function WsApiEnviar(ByVal Slot As Integer, ByRef Str As String) As Long
 
-    Dim ret     As String
+    Dim Ret     As String
     Dim Retorno As Long
     Dim data()  As Byte
     
@@ -172,12 +172,12 @@ Public Function WsApiEnviar(ByVal Slot As Integer, ByRef Str As String) As Long
     
     If UserList(Slot).ConnID <> -1 And UserList(Slot).ConnIDValida Then
         
-        ret = send(ByVal UserList(Slot).ConnID, data(0), ByVal UBound(data()) + 1, ByVal 0)
+        Ret = send(ByVal UserList(Slot).ConnID, data(0), ByVal UBound(data()) + 1, ByVal 0)
 
-        If ret < 0 Then
-            ret = Err.LastDllError
+        If Ret < 0 Then
+            Ret = Err.LastDllError
 
-            If ret = WSAEWOULDBLOCK Then
+            If Ret = WSAEWOULDBLOCK Then
                 ' WSAEWOULDBLOCK, put the data again in the outgoingData Buffer
                 Call UserList(Slot).outgoingData.WriteASCIIStringFixed(Str)
             End If
@@ -220,7 +220,7 @@ Public Sub EventoSockAccept(ByVal SockID As Long)
     '========================
     
     Dim NewIndex  As Integer
-    Dim ret       As Long
+    Dim Ret       As Long
     Dim Tam       As Long
     Dim sa        As sockaddr
     Dim NuevoSock As Long
@@ -237,15 +237,15 @@ Public Sub EventoSockAccept(ByVal SockID As Long)
     '================================================
     
     'Modificado por Maraxus
-    ret = accept(SockID, sa, Tam)
+    Ret = accept(SockID, sa, Tam)
 
-    If ret = INVALID_SOCKET Then
+    If Ret = INVALID_SOCKET Then
         i = Err.LastDllError
         Call LogCriticEvent("Error en Accept() API " & i & ": " & GetWSAErrorString(i))
         Exit Sub
     End If
 
-    NuevoSock = ret
+    NuevoSock = Ret
     
     If setsockopt(NuevoSock, SOL_SOCKET, SO_LINGER, 0, 4) <> 0 Then
         i = Err.LastDllError

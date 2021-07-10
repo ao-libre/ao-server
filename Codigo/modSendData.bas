@@ -43,6 +43,7 @@ Public Enum SendTarget
     ToAdmins
     ToPCAreaButIndex
     ToAdminsAreaButConsejeros
+    ToAdminsAreaButConsejerosAndIndex
     ToDiosesYclan
     ToConsejo
     ToClanArea
@@ -62,6 +63,7 @@ Public Enum SendTarget
     ToGMsAreaButRmsOrCounselors
     ToUsersAreaButGMs
     ToUsersAndRmsAndCounselorsAreaButGMs
+    ToUsersAndRmsAndCounselorsAreaButGMsAndIndex
 
 End Enum
 
@@ -184,6 +186,10 @@ Public Sub SendData(ByVal sndRoute As SendTarget, _
         
         Case SendTarget.ToAdminsAreaButConsejeros
             Call SendToAdminsButConsejerosArea(sndIndex, sndData)
+            Exit Sub
+            
+        Case SendTarget.ToAdminsAreaButConsejerosAndIndex
+            Call SendToAdminsButConsejerosAndIndexArea(sndIndex, sndData)
             Exit Sub
         
         Case SendTarget.ToNPCArea
@@ -418,6 +424,10 @@ Public Sub SendData(ByVal sndRoute As SendTarget, _
         Case SendTarget.ToUsersAndRmsAndCounselorsAreaButGMs
             Call SendToUsersAndRmsAndCounselorsAreaButGMs(sndIndex, sndData)
             Exit Sub
+            
+        Case SendTarget.ToUsersAndRmsAndCounselorsAreaButGMsAndIndex
+            Call SendToUsersAndRmsAndCounselorsAreaButGMsAndIndex(sndIndex, sndData)
+            Exit Sub
 
     End Select
 
@@ -592,6 +602,37 @@ Private Sub SendToAdminsButConsejerosArea(ByVal Userindex As Integer, _
         If EstanMismoArea(Userindex, tempIndex) Then
             If UserList(tempIndex).ConnIDValida Then
                 If UserList(tempIndex).flags.Privilegios And (PlayerType.SemiDios Or PlayerType.Dios Or PlayerType.Admin) Then
+                    Call UserList(tempIndex).outgoingData.WriteASCIIStringFixed(sdData)
+                End If
+            End If
+        End If
+
+    Next LoopC
+
+End Sub
+
+Private Sub SendToAdminsButConsejerosAndIndexArea(ByVal Userindex As Integer, _
+                                          ByVal sdData As String)
+
+    '**************************************************************
+    'Author: Juan Martin Sotuyo Dodero (Maraxus)
+    'Last Modify Date: Unknow
+    '
+    '**************************************************************
+    Dim LoopC     As Long
+    Dim tempIndex As Integer
+    Dim Map       As Integer
+
+    Map = UserList(Userindex).Pos.Map
+
+    If Not MapaValido(Map) Then Exit Sub
+
+    For LoopC = 1 To ConnGroups(Map).Count()
+        tempIndex = ConnGroups(Map).Item(LoopC)
+
+        If EstanMismoArea(Userindex, tempIndex) Then
+            If UserList(tempIndex).ConnIDValida Then
+                If Userindex <> tempIndex And UserList(tempIndex).flags.Privilegios And (PlayerType.SemiDios Or PlayerType.Dios Or PlayerType.Admin) Then
                     Call UserList(tempIndex).outgoingData.WriteASCIIStringFixed(sdData)
                 End If
             End If
@@ -798,6 +839,38 @@ Private Sub SendToUsersAndRmsAndCounselorsAreaButGMs(ByVal Userindex As Integer,
         If EstanMismoArea(Userindex, tempIndex) Then
             If UserList(tempIndex).ConnIDValida Then
                 If UserList(tempIndex).flags.Privilegios And (PlayerType.User Or PlayerType.Consejero Or PlayerType.RoleMaster) Then
+                    Call UserList(tempIndex).outgoingData.WriteASCIIStringFixed(sdData)
+                End If
+            End If
+        End If
+
+    Next LoopC
+
+End Sub
+
+Private Sub SendToUsersAndRmsAndCounselorsAreaButGMsAndIndex(ByVal Userindex As Integer, _
+                                                     ByVal sdData As String)
+
+    '**************************************************************
+    'Author: Torres Patricio(Pato)
+    'Last Modify Date: 10/17/2009
+    '9/07/2021: WalterSit0 : Copy-paste del SendToUsersAndRmsAndCounselorsAreaButGMs
+    'pero ahora tambien excluye el UserIndex.
+    '**************************************************************
+    Dim LoopC     As Long
+    Dim tempIndex As Integer
+    Dim Map       As Integer
+
+    Map = UserList(Userindex).Pos.Map
+
+    If Not MapaValido(Map) Then Exit Sub
+
+    For LoopC = 1 To ConnGroups(Map).Count()
+        tempIndex = ConnGroups(Map).Item(LoopC)
+
+        If EstanMismoArea(Userindex, tempIndex) Then
+            If UserList(tempIndex).ConnIDValida Then
+                If tempIndex <> Userindex And UserList(tempIndex).flags.Privilegios And (PlayerType.User Or PlayerType.Consejero Or PlayerType.RoleMaster) Then
                     Call UserList(tempIndex).outgoingData.WriteASCIIStringFixed(sdData)
                 End If
             End If

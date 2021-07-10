@@ -178,8 +178,8 @@ Public Sub CheckUpdateNeededUser(ByVal Userindex As Integer, ByVal heading As By
                     ' No nos enviamos a nosotros mismos...
                     If Userindex <> CurUser Then
 
-                        ' No vemos admins invisibles
-                        If Not (UserList(CurUser).flags.AdminInvisible = 1) Then
+                        ' No vemos gms invisibles (excepto si somos gm)
+                        If Not (UserList(CurUser).flags.AdminInvisible = 1) Or (EsGmNoConsejero(Userindex)) Then
                             ' Creamos el char del usuario
                             Call MakeUserChar(False, Userindex, CurUser, Map, X, Y)
 
@@ -193,8 +193,8 @@ Public Sub CheckUpdateNeededUser(ByVal Userindex As Integer, ByVal heading As By
                             End If
                         End If
 
-                        ' Si no somos un admin invisible
-                        If Not (.flags.AdminInvisible = 1) Then
+                        ' Si somos gm invisible solo nos mostramos a otros gms
+                        If Not (.flags.AdminInvisible = 1) Or (EsGmNoConsejero(CurUser)) Then
                             ' Enviamos nuestro char al usuario
                             Call MakeUserChar(False, CurUser, Userindex, .Pos.Map, .Pos.X, .Pos.Y)
                             
