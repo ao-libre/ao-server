@@ -474,6 +474,9 @@ Attribute VB_Exposed = False
 
 Option Explicit
 
+Private Const SIZE_RCVBUF As Long = 8192
+Private Const SIZE_SNDBUF As Long = 8192
+
 Public WithEvents WinsockThread As clsSubclass
 Attribute WinsockThread.VB_VarHelpID = -1
 
