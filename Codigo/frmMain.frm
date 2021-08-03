@@ -368,7 +368,7 @@ Begin VB.Form frmMain
       Alignment       =   2  'Center
       BackColor       =   &H00C0FFC0&
       BorderStyle     =   1  'Fixed Single
-      Caption         =   "245.234.555.777:1234"
+      Caption         =   "(Click para revelar)"
       BeginProperty Font 
          Name            =   "Consolas"
          Size            =   18
@@ -923,7 +923,13 @@ Private Sub lblIp_Click()
     Clipboard.Clear
     Clipboard.SetText (lblIp.Caption)
     
-    If frmMain.Visible Then frmMain.txtStatus.Text = Date & " " & time & " | " & lblIp.Caption & " - La ip y puerto fueron copiadas correctamente, pegalas donde quieras."
+    If lblIp.Caption = lblIp.Tag Then
+        lblIp.Caption = lblIp.Tag
+    Else
+        lblIp.Caption = "(Click para revelar)"
+    End If
+    
+    If frmMain.Visible Then frmMain.txtStatus.Text = Date & " " & time & " | La ip y puerto fueron copiadas correctamente, pegalas donde quieras."
 End Sub
 
 Private Sub mnusalir_Click()

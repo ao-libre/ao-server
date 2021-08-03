@@ -365,7 +365,7 @@ Sub Main()
     tInicioServer = GetTickCount()
 
     IpPublicaServidor = frmMain.Inet1.OpenURL("http://ip1.dynupdate.no-ip.com:8245/")
-    frmMain.lblIp.Caption = IpPublicaServidor & ":" & Puerto
+    frmMain.lblIp.Tag = IpPublicaServidor & ":" & Puerto
 
     MundoSeleccionado = GetVar(App.Path & "\Dat\Map.dat", "INIT", "MapPath")
     NombreServidor = GetVar(App.Path & "\Server.ini", "INIT", "Nombre")
