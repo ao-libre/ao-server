@@ -27,9 +27,9 @@
 *.inf binary
 
 # Declare encoding of all files for code.
-*.bas working-tree-encoding=windows-1252
-*.cls working-tree-encoding=windows-1252
-*.vbp working-tree-encoding=windows-1252
-*.frm working-tree-encoding=windows-1252
-*.json encoding=ansi
-*.dat encoding=ansi
+*.bas text working-tree-encoding=windows-1252
+*.cls text working-tree-encoding=windows-1252
+*.vbp text working-tree-encoding=windows-1252
+*.frm text working-tree-encoding=windows-1252
+*.json text working-tree-encoding=windows-1252
+*.dat text working-tree-encoding=windows-1252
