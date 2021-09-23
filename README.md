@@ -13,12 +13,17 @@ git clone https://www.github.com/ao-libre/ao-server
 
 ![AO Logo](https://github.com/ao-libre/ao-server/raw/master/Logo.jpg)
 
-Sponsors:
-https://minehost.com.ar/
+
+# Sponsors:
+### https://minehost.com.ar/
+
 ![Minehost](http://argentumonline.org/assets/images/footer-logo-minehost.png)
 
-https://www.conreco.com.ar/
+### https://www.conreco.com.ar/
+
 ![Conreco](http://argentumonline.org/assets/images/footer-logo-conreco.png)
+
+
 
 ![ScreenshotVersionNueva](https://user-images.githubusercontent.com/5874806/71776741-358dbe80-2ffb-11ea-8f52-e95391197fb5.png)
 
@@ -166,4 +171,5 @@ https://github.com/ao-libre/ao-cliente/wiki/How-to-create-and-publish-Releases%3
 While the Visual Basic 6.0 IDE is no longer supported, Microsoft's goal is that Visual Basic 6.0 applications continue to run on supported Windows versions. The resources available from this page should help you as you maintain existing applications, and as you migrate your functionality to .NET.
 
 https://docs.microsoft.com/en-us/previous-versions/visualstudio/visual-basic-6/visual-basic-6.0-documentation
+
 
