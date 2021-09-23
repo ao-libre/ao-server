@@ -1,7 +1,7 @@
 [INIT]
 Nombre=Alkon 0.13.X
 Descripcion=Servidor principal de AO Libre
-StartPort=7666
+StartPort=2021
 LastSockListen=2604
 LimiteConexionesPorIp=3
 Hide=0
