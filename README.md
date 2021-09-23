@@ -16,12 +16,11 @@ git clone https://www.github.com/ao-libre/ao-server
 
 # Sponsors:
 ### https://minehost.com.ar/
-
 ![Minehost](http://argentumonline.org/assets/images/footer-logo-minehost.png)
 
-### https://www.conreco.com.ar/
 
-<img src="image.png" src="http://argentumonline.org/assets/images/footer-logo-conre.png" width="250"/>
+### https://www.conreco.com.ar/
+![Conreco](http://argentumonline.org/assets/images/footer-logo-conre.png)
 
 
 ![ScreenshotVersionNueva](https://user-images.githubusercontent.com/5874806/71776741-358dbe80-2ffb-11ea-8f52-e95391197fb5.png)
