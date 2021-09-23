@@ -13,6 +13,13 @@ git clone https://www.github.com/ao-libre/ao-server
 
 ![AO Logo](https://github.com/ao-libre/ao-server/raw/master/Logo.jpg)
 
+Sponsors:
+https://minehost.com.ar/
+![Minehost](http://argentumonline.org/assets/images/footer-logo-minehost.png)
+
+https://www.conreco.com.ar/
+![Conreco](http://argentumonline.org/assets/images/footer-logo-conreco.png)
+
 ![ScreenshotVersionNueva](https://user-images.githubusercontent.com/5874806/71776741-358dbe80-2ffb-11ea-8f52-e95391197fb5.png)
 
 ![ScreenshotVersionVieja](https://preview.ibb.co/cojUf0/Screen-Shot-2018-11-04-at-6-53-52-PM.png)
