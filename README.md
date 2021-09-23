@@ -21,7 +21,7 @@ git clone https://www.github.com/ao-libre/ao-server
 
 ### https://www.conreco.com.ar/
 
-[<img src="image.png" width="250"/>](http://argentumonline.org/assets/images/footer-logo-conreco.png)
+<img src="image.png" src="http://argentumonline.org/assets/images/footer-logo-conreco.png" width="250"/>
 
 
 
