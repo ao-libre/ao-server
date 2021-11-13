@@ -12,7 +12,7 @@ IniciarDesdeBackUp=0
 PuedeCrearPersonajes=1
 OroDirectoABille=0
 DropItemsAlMorir=1
-VersionTagRelease=v0.13.58
+VersionTagRelease=v0.13.59
 
 NivelMaximo=55
 ExpMulti=5
