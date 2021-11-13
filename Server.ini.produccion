@@ -63,7 +63,7 @@ MaxUsers=550
 Record= 82
 
 Admines=1
-Dioses=4
+Dioses=5
 SemiDioses=1
 Consejeros=2
 RolesMasters=2
@@ -76,6 +76,7 @@ Dios1=ReyarB
 Dios2=Lorena
 Dios3=Plus
 Dios4=Jopi
+Dios5=hidEz
 
 [SemiDioses]
 SemiDios1=Zeus
