@@ -30,7 +30,7 @@ Public Sub BorrarObjetosLimpieza()
 
         With ItemsLimpieza.Item(i)
 
-            If (MapData(.Map, .X, .Y).trigger <> eTrigger.CASA Or _
+                If (MapData(.Map, .X, .Y).trigger <> eTrigger.CASA And _
                 MapData(.Map, .X, .Y).trigger <> eTrigger.BAJOTECHO) And _
                 MapData(.Map, .X, .Y).Blocked <> 1 Then
                 
