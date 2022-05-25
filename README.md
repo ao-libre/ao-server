@@ -12,13 +12,11 @@ git clone https://www.github.com/ao-libre/ao-server
 ```
 
 ![AO Logo](https://github.com/ao-libre/ao-server/raw/master/Logo.jpg)
-https://argentumonline.org/assets/images/partners/logo-02.png
 
 # Sponsors:
 ### https://minehost.com.ar/
 
 <img src="https://argentumonline.org/assets/images/partners/logo-02.png" width="200px" />
-
 
 ### https://www.conreco.com.ar/
 <img src="https://argentumonline.org/assets/images/partners/logo-01.png" width="200px" />
