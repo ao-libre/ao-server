@@ -495,7 +495,7 @@ Public Sub QuitarNPC(ByVal NpcIndex As Integer)
             Call EraseNPCChar(NpcIndex)
 
         End If
-
+        .esBot = False
     End With
         
     'Nos aseguramos de que el inventario sea removido...
@@ -742,10 +742,12 @@ Public Sub MakeNPCChar(ByVal toMap As Boolean, _
     
     MapData(Map, X, Y).NpcIndex = NpcIndex
     
-    If Not toMap Then
+    If Not toMap Or Npclist(NpcIndex).esBot = True Then
         'En caso de que sea hostil no mostramos el nombre, si es un npc no hostil mostramos nombre. (Recox)
         If Not Npclist(NpcIndex).Hostile = 1 Then
             Call WriteCharacterCreate(sndIndex, Npclist(NpcIndex).Char.body, Npclist(NpcIndex).Char.Head, Npclist(NpcIndex).Char.heading, Npclist(NpcIndex).Char.CharIndex, X, Y, 0, 0, 0, 0, 0, Npclist(NpcIndex).Name, 0, 0)
+        ElseIf Npclist(NpcIndex).esBot = True Then
+            Call WriteCharacterCreate(sndIndex, Npclist(NpcIndex).Char.body, Npclist(NpcIndex).Char.Head, Npclist(NpcIndex).Char.heading, Npclist(NpcIndex).Char.CharIndex, X, Y, Npclist(NpcIndex).Char.WeaponAnim, Npclist(NpcIndex).Char.ShieldAnim, 0, 0, Npclist(NpcIndex).Char.CascoAnim, user_Bot(Npclist(NpcIndex).BotData.BotIndex).nick & "- [BOT]", 0, 0)
         Else
             Call WriteCharacterCreate(sndIndex, Npclist(NpcIndex).Char.body, Npclist(NpcIndex).Char.Head, Npclist(NpcIndex).Char.heading, Npclist(NpcIndex).Char.CharIndex, X, Y, 0, 0, 0, 0, 0, vbNullString, 0, 0)
         End If

@@ -673,6 +673,9 @@ End Sub
 
 Private Sub Auditoria_Timer()
     Call mMainLoop.Auditoria
+    If RandomNumber(1, 60) < 20 Then
+        Call timer_minuto_bots
+    End If
 End Sub
 
 Private Sub AutoSave_Timer()
@@ -920,6 +923,16 @@ End Sub
 
 Private Sub GameTimer_Timer()
     Call mMainLoop.GameTimer
+    Static x As Byte
+    Dim y As Long
+    x = x + 1
+    If x = 4 Then
+        For y = 1 To maxBots
+            If user_Bot(y).online = True Then _
+                bot_Accion y
+        Next y
+        x = 0
+    End If
 End Sub
 
 Private Sub lblIp_Click()

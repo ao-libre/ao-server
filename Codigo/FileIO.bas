@@ -2445,7 +2445,7 @@ ErrorHandler:
 
 End Sub
 
-Function criminal(ByVal Userindex As Integer) As Boolean
+Function criminal(ByVal Userindex As Integer, Optional ByVal esBot As Boolean = False) As Boolean
     '***************************************************
     'Author: Unknown
     'Last Modification: -
@@ -2453,14 +2453,22 @@ Function criminal(ByVal Userindex As Integer) As Boolean
     '***************************************************
 
     Dim L As Long
+    If esBot = False Then
+        With UserList(Userindex).Reputacion
+            L = (-.AsesinoRep) + (-.BandidoRep) + .BurguesRep + (-.LadronesRep) + .NobleRep + .PlebeRep
+            L = L / 6
+            criminal = (L < 0)
+
+        End With
+    Else
+        With Npclist(Userindex).Reputacion
+            L = (-.AsesinoRep) + (-.BandidoRep) + .BurguesRep + (-.LadronesRep) + .NobleRep + .PlebeRep
+            L = L / 6
+            criminal = (L < 0)
     
-    With UserList(Userindex).Reputacion
-        L = (-.AsesinoRep) + (-.BandidoRep) + .BurguesRep + (-.LadronesRep) + .NobleRep + .PlebeRep
-        L = L / 6
-        criminal = (L < 0)
-
-    End With
-
+        End With
+    End if
+    
 End Function
 
 Sub BackUPnPc(ByVal NpcIndex As Integer, ByVal hFile As Integer)

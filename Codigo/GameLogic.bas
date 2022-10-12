@@ -1355,177 +1355,226 @@ Sub LookatTile(ByVal Userindex As Integer, _
             With .flags
 
                 If FoundChar = 2 Then 'Encontro un NPC?
-
-                    Dim estatus            As String
-                    Dim MinHp              As Long
-                    Dim MaxHp              As Long
-                    Dim SupervivenciaSkill As Byte
-                    Dim sDesc              As String
-                    Dim TimeParalizado     As String
-                
-                    MinHp = Npclist(TempCharIndex).Stats.MinHp
-                    MaxHp = Npclist(TempCharIndex).Stats.MaxHp
-                    SupervivenciaSkill = UserList(Userindex).Stats.UserSkills(eSkill.Supervivencia)
-                
-                    If .Privilegios And (PlayerType.SemiDios Or PlayerType.Dios Or PlayerType.Admin) Then
-                        estatus = "(" & MinHp & "/" & MaxHp & ") "
-                    Else
-
-                        If .Muerto = 0 Then
+                    If Npclist(TempCharIndex).esBot = False Then 'No es un bot
+                        Dim estatus            As String
+                        Dim MinHp              As Long
+                        Dim MaxHp              As Long
+                        Dim SupervivenciaSkill As Byte
+                        Dim sDesc              As String
+                        Dim TimeParalizado     As String
                     
-                            If SupervivenciaSkill <= 10 Then
-                                estatus = "(Dudoso) "
-                            
-                            ElseIf SupervivenciaSkill <= 20 Then
-
-                                If MinHp < (MaxHp / 2) Then
-                                    estatus = "(Herido) "
-                                Else
-                                    estatus = "(Sano) "
-
-                                End If
-                            
-                            ElseIf SupervivenciaSkill <= 30 Then
-
-                                If MinHp < (MaxHp * 0.5) Then
-                                    estatus = "(Malherido) "
-                                ElseIf MinHp < (MaxHp * 0.75) Then
-                                    estatus = "(Herido) "
-                                Else
-                                    estatus = "(Sano) "
-
-                                End If
-                            
-                            ElseIf SupervivenciaSkill <= 40 Then
-
-                                If MinHp < (MaxHp * 0.25) Then
-                                    estatus = "(Muy malherido) "
-                                ElseIf MinHp < (MaxHp * 0.5) Then
-                                    estatus = "(Herido) "
-                                ElseIf MinHp < (MaxHp * 0.75) Then
-                                    estatus = "(Levemente herido) "
-                                Else
-                                    estatus = "(Sano) "
-
-                                End If
-                            
-                            ElseIf SupervivenciaSkill < 60 Then
-
-                                If MinHp < (MaxHp * 0.05) Then
-                                    estatus = "(Agonizando) "
-                                ElseIf MinHp < (MaxHp * 0.1) Then
-                                    estatus = "(Casi muerto) "
-                                ElseIf MinHp < (MaxHp * 0.25) Then
-                                    estatus = "(Muy Malherido) "
-                                ElseIf MinHp < (MaxHp * 0.5) Then
-                                    estatus = "(Herido) "
-                                ElseIf MinHp < (MaxHp * 0.75) Then
-                                    estatus = "(Levemente herido) "
-                                ElseIf MinHp < (MaxHp) Then
-                                    estatus = "(Sano) "
-                                Else
-                                    estatus = "(Intacto) "
-
-                                End If
-
-                            Else
-                                estatus = "(" & MinHp & "/" & MaxHp & ") "
-
-                            End If
-
-                        End If
-
-                    End If
+                        MinHp = Npclist(TempCharIndex).Stats.MinHp
+                        MaxHp = Npclist(TempCharIndex).Stats.MaxHp
+                        SupervivenciaSkill = UserList(Userindex).Stats.UserSkills(eSkill.Supervivencia)
                     
-                    'Lorwik> Tiene 100 skills en supervivencia?
-                    If UserList(Userindex).Stats.UserSkills(eSkill.Supervivencia) = 100 Then
-
-                        'Lorwik> Esta paralizado o inmovilizado? Si lo esta miramos el tiempo que le queda.
-                        If Npclist(TempCharIndex).flags.Paralizado = 1 Or Npclist(TempCharIndex).flags.Inmovilizado = 1 Then
-                            TimeParalizado = " - Tiempo de paralisis: " & Npclist(TempCharIndex).Contadores.Paralisis & " segundos."
-                        End If
-                        
-                    End If
-                    
-                    If Len(Npclist(TempCharIndex).Desc) > 1 Then
-                        Stat = Npclist(TempCharIndex).Desc
-                    
-                        'Es el rey o el demonio?
-                        If Npclist(TempCharIndex).NPCtype = eNPCType.Noble Then
-                            If Npclist(TempCharIndex).flags.Faccion = 0 Then 'Es el Rey.
-
-                                'Si es de la Legion Oscura y usuario comun mostramos el mensaje correspondiente y lo ejecutamos:
-                                If UserList(Userindex).Faccion.FuerzasCaos = 1 Then
-                                    Stat = MENSAJE_REY_CAOS
-
-                                    If .Privilegios And PlayerType.User Then
-                                        If .Muerto = 0 Then Call UserDie(Userindex)
-
-                                    End If
-
-                                ElseIf criminal(Userindex) Then
-
-                                    'Nos fijamos si es criminal enlistable o no enlistable:
-                                    If UserList(Userindex).Faccion.CiudadanosMatados > 0 Or UserList(Userindex).Faccion.Reenlistadas > 4 Then 'Es criminal no enlistable.
-                                        Stat = MENSAJE_REY_CRIMINAL_NOENLISTABLE
-                                    Else 'Es criminal enlistable.
-                                        Stat = MENSAJE_REY_CRIMINAL_ENLISTABLE
-
-                                    End If
-
-                                End If
-
-                            Else 'Es el demonio
-
-                                'Si es de la Armada Real y usuario comun mostramos el mensaje correspondiente y lo ejecutamos:
-                                If UserList(Userindex).Faccion.ArmadaReal = 1 Then
-                                    Stat = MENSAJE_DEMONIO_REAL
-
-                                    '
-                                    If .Privilegios And PlayerType.User Then
-                                        If .Muerto = 0 Then Call UserDie(Userindex)
-
-                                    End If
-
-                                ElseIf Not criminal(Userindex) Then
-
-                                    'Nos fijamos si es ciudadano enlistable o no enlistable:
-                                    If UserList(Userindex).Faccion.RecibioExpInicialReal = 1 Or UserList(Userindex).Faccion.Reenlistadas > 4 Then 'Es ciudadano no enlistable.
-                                        Stat = MENSAJE_DEMONIO_CIUDADANO_NOENLISTABLE
-                                    Else 'Es ciudadano enlistable.
-                                        Stat = MENSAJE_DEMONIO_CIUDADANO_ENLISTABLE
-
-                                    End If
-
-                                End If
-
-                            End If
-
-                        End If
-                    
-                        'Enviamos el mensaje propiamente dicho:
-                        Call WriteChatOverHead(Userindex, Stat, Npclist(TempCharIndex).Char.CharIndex, vbWhite)
-                    Else
-
-                        If Npclist(TempCharIndex).MaestroUser > 0 Then
-                            Call WriteConsoleMsg(Userindex, estatus & Npclist(TempCharIndex).Name & " es mascota de " & UserList(Npclist(TempCharIndex).MaestroUser).Name & TimeParalizado, FontTypeNames.FONTTYPE_INFO)
-                        
+                        If .Privilegios And (PlayerType.SemiDios Or PlayerType.Dios Or PlayerType.Admin) Then
+                            estatus = "(" & MinHp & "/" & MaxHp & ") "
                         Else
-                            Call WriteConsoleMsg(Userindex, estatus & Npclist(TempCharIndex).Name & TimeParalizado, FontTypeNames.FONTTYPE_INFO)
-                            
-                            If Len(Npclist(TempCharIndex).flags.AttackedFirstBy) > 0 And (UserList(Userindex).flags.Privilegios And (PlayerType.Dios Or PlayerType.Admin)) Then
-                                Call WriteConsoleMsg(Userindex, "Le pego primero: " & Npclist(TempCharIndex).flags.AttackedFirstBy & ".", FontTypeNames.FONTTYPE_INFO)
+
+                            If .Muerto = 0 Then
+                        
+                                If SupervivenciaSkill <= 10 Then
+                                    estatus = "(Dudoso) "
+                                
+                                ElseIf SupervivenciaSkill <= 20 Then
+
+                                    If MinHp < (MaxHp / 2) Then
+                                        estatus = "(Herido) "
+                                    Else
+                                        estatus = "(Sano) "
+
+                                    End If
+                                
+                                ElseIf SupervivenciaSkill <= 30 Then
+
+                                    If MinHp < (MaxHp * 0.5) Then
+                                        estatus = "(Malherido) "
+                                    ElseIf MinHp < (MaxHp * 0.75) Then
+                                        estatus = "(Herido) "
+                                    Else
+                                        estatus = "(Sano) "
+
+                                    End If
+                                
+                                ElseIf SupervivenciaSkill <= 40 Then
+
+                                    If MinHp < (MaxHp * 0.25) Then
+                                        estatus = "(Muy malherido) "
+                                    ElseIf MinHp < (MaxHp * 0.5) Then
+                                        estatus = "(Herido) "
+                                    ElseIf MinHp < (MaxHp * 0.75) Then
+                                        estatus = "(Levemente herido) "
+                                    Else
+                                        estatus = "(Sano) "
+
+                                    End If
+                                
+                                ElseIf SupervivenciaSkill < 60 Then
+
+                                    If MinHp < (MaxHp * 0.05) Then
+                                        estatus = "(Agonizando) "
+                                    ElseIf MinHp < (MaxHp * 0.1) Then
+                                        estatus = "(Casi muerto) "
+                                    ElseIf MinHp < (MaxHp * 0.25) Then
+                                        estatus = "(Muy Malherido) "
+                                    ElseIf MinHp < (MaxHp * 0.5) Then
+                                        estatus = "(Herido) "
+                                    ElseIf MinHp < (MaxHp * 0.75) Then
+                                        estatus = "(Levemente herido) "
+                                    ElseIf MinHp < (MaxHp) Then
+                                        estatus = "(Sano) "
+                                    Else
+                                        estatus = "(Intacto) "
+
+                                    End If
+
+                                Else
+                                    estatus = "(" & MinHp & "/" & MaxHp & ") "
+
+                                End If
+
                             End If
+
                         End If
                         
-                    End If
-                
-                    FoundSomething = 1
-                    .TargetNpcTipo = Npclist(TempCharIndex).NPCtype
-                    .TargetNPC = TempCharIndex
-                    .TargetUser = 0
-                    .TargetObj = 0
+                        'Lorwik> Tiene 100 skills en supervivencia?
+                        If UserList(Userindex).Stats.UserSkills(eSkill.Supervivencia) = 100 Then
 
+                            'Lorwik> Esta paralizado o inmovilizado? Si lo esta miramos el tiempo que le queda.
+                            If Npclist(TempCharIndex).flags.Paralizado = 1 Or Npclist(TempCharIndex).flags.Inmovilizado = 1 Then
+                                TimeParalizado = " - Tiempo de paralisis: " & Npclist(TempCharIndex).Contadores.Paralisis & " segundos."
+                            End If
+                            
+                        End If
+                        
+                        If Len(Npclist(TempCharIndex).Desc) > 1 Then
+                            Stat = Npclist(TempCharIndex).Desc
+                        
+                            'Es el rey o el demonio?
+                            If Npclist(TempCharIndex).NPCtype = eNPCType.Noble Then
+                                If Npclist(TempCharIndex).flags.Faccion = 0 Then 'Es el Rey.
+
+                                    'Si es de la Legion Oscura y usuario comun mostramos el mensaje correspondiente y lo ejecutamos:
+                                    If UserList(Userindex).Faccion.FuerzasCaos = 1 Then
+                                        Stat = MENSAJE_REY_CAOS
+
+                                        If .Privilegios And PlayerType.User Then
+                                            If .Muerto = 0 Then Call UserDie(Userindex)
+
+                                        End If
+
+                                    ElseIf criminal(Userindex) Then
+
+                                        'Nos fijamos si es criminal enlistable o no enlistable:
+                                        If UserList(Userindex).Faccion.CiudadanosMatados > 0 Or UserList(Userindex).Faccion.Reenlistadas > 4 Then 'Es criminal no enlistable.
+                                            Stat = MENSAJE_REY_CRIMINAL_NOENLISTABLE
+                                        Else 'Es criminal enlistable.
+                                            Stat = MENSAJE_REY_CRIMINAL_ENLISTABLE
+
+                                        End If
+
+                                    End If
+
+                                Else 'Es el demonio
+
+                                    'Si es de la Armada Real y usuario comun mostramos el mensaje correspondiente y lo ejecutamos:
+                                    If UserList(Userindex).Faccion.ArmadaReal = 1 Then
+                                        Stat = MENSAJE_DEMONIO_REAL
+
+                                        '
+                                        If .Privilegios And PlayerType.User Then
+                                            If .Muerto = 0 Then Call UserDie(Userindex)
+
+                                        End If
+
+                                    ElseIf Not criminal(Userindex) Then
+
+                                        'Nos fijamos si es ciudadano enlistable o no enlistable:
+                                        If UserList(Userindex).Faccion.RecibioExpInicialReal = 1 Or UserList(Userindex).Faccion.Reenlistadas > 4 Then 'Es ciudadano no enlistable.
+                                            Stat = MENSAJE_DEMONIO_CIUDADANO_NOENLISTABLE
+                                        Else 'Es ciudadano enlistable.
+                                            Stat = MENSAJE_DEMONIO_CIUDADANO_ENLISTABLE
+
+                                        End If
+
+                                    End If
+
+                                End If
+
+                            End If
+                        
+                            'Enviamos el mensaje propiamente dicho:
+                            Call WriteChatOverHead(Userindex, Stat, Npclist(TempCharIndex).Char.CharIndex, vbWhite)
+                        Else
+
+                            If Npclist(TempCharIndex).MaestroUser > 0 Then
+                                Call WriteConsoleMsg(Userindex, estatus & Npclist(TempCharIndex).Name & " es mascota de " & UserList(Npclist(TempCharIndex).MaestroUser).Name & TimeParalizado, FontTypeNames.FONTTYPE_INFO)
+                            
+                            Else
+                                Call WriteConsoleMsg(Userindex, estatus & Npclist(TempCharIndex).Name & TimeParalizado, FontTypeNames.FONTTYPE_INFO)
+                                
+                                If Len(Npclist(TempCharIndex).flags.AttackedFirstBy) > 0 And (UserList(Userindex).flags.Privilegios And (PlayerType.Dios Or PlayerType.Admin)) Then
+                                    Call WriteConsoleMsg(Userindex, "Le pego primero: " & Npclist(TempCharIndex).flags.AttackedFirstBy & ".", FontTypeNames.FONTTYPE_INFO)
+                                End If
+                            End If
+                            
+                        End If
+
+                    Else 'Es un bot
+                        With Npclist(TempCharIndex)
+    
+                            If .BotData.Lvl <= LimiteNewbie Then
+                                Stat = Stat & " <NEWBIE>"
+                            End If
+                        
+                            If .BotData.faccion.ArmadaReal = 1 Then
+                                Stat = Stat & " <Ejercito Real> " & "<" & TituloReal(TempCharIndex, True) & ">"
+                            ElseIf .BotData.faccion.FuerzasCaos = 1 Then
+                                Stat = Stat & " <Legion Oscura> " & "<" & TituloCaos(TempCharIndex, True) & ">"
+                            End If
+                            
+                            Stat = Stat & " Nivel: " & .BotData.Lvl
+
+                            Stat = .Name & " (" & ListaClases(.BotData.Clase) & " " & ListaRazas(.BotData.raza) & Stat & " " & " | "
+
+                            'Aqui le damos informacion sobre el estado de salud del pj.
+                            If .BotData.stats.MinHp < (.BotData.stats.MaxHp * 0.05) Then
+                                Stat = Stat & " Muerto)"
+                            ElseIf .BotData.stats.MinHp < (.BotData.stats.MaxHp * 0.1) Then
+                                Stat = Stat & " Casi muerto)"
+                            ElseIf .BotData.stats.MinHp < (.BotData.stats.MaxHp * 0.25) Then
+                                Stat = Stat & " Muy Malherido)"
+                            ElseIf .BotData.stats.MinHp < (.BotData.stats.MaxHp * 0.5) Then
+                                Stat = Stat & " Malherido)"
+                            ElseIf .BotData.stats.MinHp < (.BotData.stats.MaxHp * 0.75) Then
+                                Stat = Stat & " Herido)"
+                            ElseIf .BotData.stats.MinHp < (.BotData.stats.MaxHp) Then
+                                Stat = Stat & " Levemente Herido)"
+                            Else
+                                Stat = Stat & " Intacto)"
+                            End If
+    
+                            If criminal(TempCharIndex, True) Then
+                                Stat = Stat & " <CRIMINAL>"
+                                ft = FontTypeNames.FONTTYPE_CRIMINAL
+                            Else
+                                Stat = Stat & " <CIUDADANO>"
+                                ft = FontTypeNames.FONTTYPE_CITIZEN
+                                
+                            End If
+    
+                        End With
+                    
+                        If LenB(Stat) > 0 Then
+                            Call WriteConsoleMsg(Userindex, Stat, ft)
+    
+                        End If
+                    End if 'Fin bot
+                        FoundSomething = 1
+                        .TargetNpcTipo = Npclist(TempCharIndex).NPCtype
+                        .TargetNPC = TempCharIndex
+                        .TargetUser = 0
+                        .TargetObj = 0
                 End If
             
                 If FoundChar = 0 Then

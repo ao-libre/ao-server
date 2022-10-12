@@ -2056,7 +2056,7 @@ Public Function PuedeAtacarNPC(ByVal AttackerIndex As Integer, _
         End If
         
         'Es una criatura atacable?
-        If .Attackable = 0 Then
+        If .Attackable = 0 And .esBot = False Then
             Call WriteConsoleMsg(AttackerIndex, "No puedes atacar esta criatura.", FontTypeNames.FONTTYPE_INFO)
             Exit Function
 

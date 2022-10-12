@@ -1782,11 +1782,30 @@ End Type
 
 Public Const MAX_NPC_DROPS As Byte = 5
 
+Private Type tBotData
+    stats As UserStats
+    flags As UserFlags
+    faccion As tFacciones
+    Reputacion As tReputacion
+    
+    BotIndex As Integer
+
+    clase As eClass
+    raza As eRaza
+    genero As eGenero
+    Lvl As Integer
+    
+End Type
+
 Public Type npc
 
     Name As String
     Char As Char 'Define como se vera
+    OrigChar As Char
     Desc As String
+
+    esBot As Boolean
+    BotData As tBotData
 
     NPCtype As eNPCType
     Numero As Integer
@@ -1823,6 +1842,8 @@ Public Type npc
     Contadores As NpcCounters
     
     Invent As Inventario
+
+    Reputacion  As tReputacion
     
     NroExpresiones As Byte
     Expresiones() As String ' le da vida ;)

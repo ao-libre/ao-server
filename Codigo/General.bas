@@ -285,6 +285,8 @@ Sub Main()
     Call CargarCiudades
     Call CargaApuestas
     
+    Call LoadBots
+
     ' Npcs.dat
     frmCargando.Label1(2).Caption = "Cargando NPCs.Dat"
     Call CargaNpcsDat
@@ -1751,13 +1753,13 @@ Public Function Tilde(ByRef data As String) As String
     'Pato
     temp = UCase$(data)
  
-    If InStr(1, temp, "Á") Then temp = Replace$(temp, "Á", "A")
+    If InStr(1, temp, "ï¿½") Then temp = Replace$(temp, "ï¿½", "A")
    
     If InStr(1, temp, "e") Then temp = Replace$(temp, "e", "E")
    
-    If InStr(1, temp, "Í") Then temp = Replace$(temp, "Í", "I")
+    If InStr(1, temp, "ï¿½") Then temp = Replace$(temp, "ï¿½", "I")
    
-    If InStr(1, temp, "Ó") Then temp = Replace$(temp, "Ó", "O")
+    If InStr(1, temp, "ï¿½") Then temp = Replace$(temp, "ï¿½", "O")
    
     If InStr(1, temp, "U") Then temp = Replace$(temp, "U", "U")
    
