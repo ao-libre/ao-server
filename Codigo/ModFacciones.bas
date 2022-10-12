@@ -572,7 +572,7 @@ Public Function TituloReal(ByVal Userindex As Integer, Optional ByVal esBot As B
     'Handles the titles of the members of the "Armada Real"
     '***************************************************
 
-    Select Case IIf(esBot, Npclist(Userindex).BotData.faccion.RecompensasReal, UserList(Userindex).Faccion.RecompensasReal
+    Select Case IIf(esBot, Npclist(Userindex).BotData.faccion.RecompensasReal, UserList(Userindex).Faccion.RecompensasReal)
             'Rango 1: Aprendiz (30 Criminales)
             'Rango 2: Escudero (70 Criminales)
             'Rango 3: Soldado (130 Criminales)
@@ -917,7 +917,7 @@ Public Function TituloCaos(ByVal Userindex As Integer, Optional ByVal esBot As B
     'Rango 14: Guardian del Mal (9300 + lvl 36)
     'Rango 15: Campeon de la Oscuridad (11500 + lvl 37)
 
-    Select Case IIf(esBot, Npclist(Userindex).BotData.faccion.RecompensasCaos, UserList(Userindex).Faccion.RecompensasCaos
+    Select Case IIf(esBot, Npclist(Userindex).BotData.faccion.RecompensasCaos, UserList(Userindex).Faccion.RecompensasCaos)
 
         Case 0
             TituloCaos = "Acolito"

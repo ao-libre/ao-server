@@ -54,16 +54,14 @@ Private Function tieneMana(ByVal npcIndex As Integer, ByVal spindex As Integer, 
 End Function
 Sub BotLanzaUnSpell(ByVal botindex As Byte, ByVal Userindex As Integer, ByVal nSpell As Integer)
 
-    If UserList(Userindex).flags.invisible = 1 Or .flags.Oculto = 1 Then Exit Sub
+    If UserList(Userindex).flags.invisible = 1 Or UserList(Userindex).flags.Oculto = 1 Then Exit Sub
     
-    With Npclist(user_Bot(botindex).npcIndex)
-        Dim i As Long
-        
-        K = RandomNumber(1, Npclist(npcIndex).flags.LanzaSpells)
-        
-        Call NpcLanzaSpellSobreUser(npcIndex, Userindex, Npclist(npcIndex).Spells(K))
-        
-    End With
+    Dim npcIndex As Integer: npcIndex = user_Bot(botindex).npcIndex
+    Dim i, K As Long
+    
+    K = RandomNumber(1, Npclist(npcIndex).flags.LanzaSpells)
+    Call NpcLanzaSpellSobreUser(npcIndex, Userindex, Npclist(npcIndex).Spells(K))
+    
 End Sub
 
 Private Sub EligeLanzaHechizos(ByVal botindex As Byte)
