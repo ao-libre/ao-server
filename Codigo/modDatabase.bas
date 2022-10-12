@@ -1210,8 +1210,7 @@ ErrorHandler:
 End Function
 
 Public Sub SendUserPunishmentsDatabase(ByVal Userindex As Integer, _
-                                       ByVal UserName As String, _
-                                       ByVal Count As Integer)
+                                       ByVal UserName As String)
 
     '***************************************************
     'Author: Juan Andres Dalmasso (CHOTS)
