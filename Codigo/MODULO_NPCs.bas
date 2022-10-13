@@ -111,8 +111,12 @@ Public Sub MuereNpc(ByVal NpcIndex As Integer, ByVal Userindex As Integer)
 
     End If
       
-    'Quitamos el npc
-    Call QuitarNPC(NpcIndex)
+    'Quitamos el bot o npc
+    if Npclist(Npcindex).esBot then
+        disconnectBot(Npclist(Npcindex).BotData.BotIndex)
+    else
+        Call QuitarNPC(NpcIndex)
+    end if
     
     If Userindex > 0 Then ' Lo mato un usuario?
 

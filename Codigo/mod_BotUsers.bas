@@ -169,7 +169,7 @@ Public Sub timer_minuto_bots()
     
     If minutosDeslogear >= frecDisc Then
         For i = 1 To numDisc
-            Call disconnectbot
+            Call disconnectBots()
         Next i
     End If
     '****** *********Fin DESCONEXION DE BOTS*************
@@ -932,17 +932,20 @@ End Sub
 'npclist().
 'esBot As Boolean
 'BotData As tBotData
-Private Sub disconnectbot()
+Private Sub disconnectBots()
     Dim i As Long
     For i = 1 To MAX_BOTS
         If user_Bot(i).online Then
-            'If user_Bot(i).minutosOnline >= MinutosLogeados Then
-                user_Bot(i).online = False
-                Call guardar_Bot(False, i)
-                Call QuitarNPC(user_Bot(i).npcIndex)
-            'End If
+            disconnectBot(i)
         End If
     Next i
+End Sub
+
+Public Sub disconnectBot(botindex)
+    user_Bot(botindex).online = False
+    BotsOnline = BotsOnline - 1
+    Call guardar_Bot(False, botindex)
+    Call QuitarNPC(user_Bot(botindex).npcIndex)
 End Sub
 
 Function SpawnBot(ByVal botindex As Integer, _

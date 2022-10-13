@@ -52,13 +52,14 @@ Private Function tieneMana(ByVal npcIndex As Integer, ByVal spindex As Integer, 
         tieneMana = True
     End If
 End Function
-Sub BotLanzaUnSpell(ByVal botindex As Byte, ByVal Userindex As Integer, ByVal nSpell As Integer)
+Sub BotLanzaUnSpell(ByVal botindex As Byte, ByVal Userindex As Integer)
 
     If UserList(Userindex).flags.invisible = 1 Or UserList(Userindex).flags.Oculto = 1 Then Exit Sub
     
     Dim npcIndex As Integer: npcIndex = user_Bot(botindex).npcIndex
     Dim i, K As Long
-    
+
+    If K < 1 Then Exit Sub 'parche feo hasta que entienda esto de los spells
     K = RandomNumber(1, Npclist(npcIndex).flags.LanzaSpells)
     Call NpcLanzaSpellSobreUser(npcIndex, Userindex, Npclist(npcIndex).Spells(K))
     
@@ -70,7 +71,7 @@ Private Sub EligeLanzaHechizos(ByVal botindex As Byte)
         If .Target <= 0 Then Exit Sub
         'Select Case .BotData.Clase
          If .BotData.Clase = eClass.Mage Or .BotData.Clase = eClass.Druid Then
-            Call NpcLanzaUnSpell(user_Bot(botindex).npcIndex, .Target)
+            Call BotLanzaUnSpell(botindex, .Target)
          ElseIf .BotData.Clase = eClass.Bard Or .BotData.Clase = eClass.Paladin Or .BotData.Clase = eClass.Cleric Or .BotData.Clase = eClass.Assasin Then
             
         End If

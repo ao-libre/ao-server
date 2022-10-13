@@ -6098,7 +6098,7 @@ Private Sub HandleOnline(ByVal Userindex As Integer)
         
         Call WriteConsoleMsg(UserIndex, SB.toString, FontTypeNames.FONTTYPE_INFO)
         Call WriteConsoleMsg(UserIndex, "Usuarios en linea: " & CStr(Count), FontTypeNames.FONTTYPE_INFOBOLD)
-
+        Call WriteConsoleMsg(Userindex, "Bots en linea: " & CStr(BotsOnline), FontTypeNames.FONTTYPE_INFOBOLD)
         ' Si es Cazador y tiene 100 en supervivencia o es Game Master.
         If EsGm(UserIndex) Or (.Clase = eClass.Hunter And .Stats.UserSkills(eSkill.Supervivencia) = 100) Then
             Call WriteConsoleMsg(UserIndex, "Trabajadores en linea:" & CStr(CountTrabajadores), FontTypeNames.FONTTYPE_INFOBOLD)
