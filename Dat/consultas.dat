@@ -1,13 +1,13 @@
 [INIT]
 ConsultaActual= 1
-ConsultaActualTexto= ¿Desde donde juegas?
+ConsultaActualTexto= Â¿Desde donde juegas?
 NivelRequerido= 10
 
 
 [ENCUESTA1]
 CantOpciones=4
 OPCION1=Argentina
-OPCION2=España
+OPCION2=EspaÃ±a
 OPCION3=Otro (America)
 OPCION4=Otro (Europa)
 
