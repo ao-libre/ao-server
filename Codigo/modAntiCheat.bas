@@ -67,6 +67,7 @@ Public Sub AddCount(ByVal Userindex As Integer, _
                     Optional ByVal AddGolpe As Byte = 0, _
                     Optional ByVal AddCast As Byte = 0, _
                     Optional ByVal AddUsar As Byte = 0)
+#If Not BOT_SERVER Then
  
     Dim Msj As String
  
@@ -110,11 +111,13 @@ Public Sub AddCount(ByVal Userindex As Integer, _
                 
     End With
         
+#End If
 End Sub
  
 Private Function CheckInt(ByVal Userindex As Integer, _
                           ByRef Msj As String, _
                           ByVal Intervalo As Byte) As Boolean
+#If Not BOT_SERVER Then
  
     Const MaxTol As Byte = 3
  
@@ -174,6 +177,7 @@ Private Function CheckInt(ByVal Userindex As Integer, _
  
     CheckInt = False
         
+#End If
 End Function
  
 Private Sub MsjCheat(ByVal Userindex As Integer, ByVal Msj As String)

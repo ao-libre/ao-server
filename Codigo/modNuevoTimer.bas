@@ -37,6 +37,10 @@ Option Explicit
 
 Public Function IntervaloPermiteAtacarNpc(ByVal NpcIndex As Integer, _
                                           Optional ByVal Actualizar As Boolean = True) As Boolean
+    #If BOT_SERVER Then
+        IntervaloPermiteAtacarNpc = True
+        Exit Function
+    #End If
     '***************************************************
     'Author: Shak
     'Last Modification: 27/07/2016
@@ -68,6 +72,10 @@ End Function
 ' CASTING DE HECHIZOS
 Public Function IntervaloPermiteLanzarSpell(ByVal Userindex As Integer, _
                                             Optional ByVal Actualizar As Boolean = True) As Boolean
+    #If BOT_SERVER Then
+        IntervaloPermiteLanzarSpell = True
+        Exit Function
+    #End If
     '***************************************************
     'Author: Unknown
     'Last Modification: -
@@ -95,6 +103,10 @@ End Function
 
 Public Function IntervaloPermiteAtacar(ByVal Userindex As Integer, _
                                        Optional ByVal Actualizar As Boolean = True) As Boolean
+    #If BOT_SERVER Then
+        IntervaloPermiteAtacar = True
+        Exit Function
+    #End If
     '***************************************************
     'Author: Unknown
     'Last Modification: -
@@ -123,6 +135,10 @@ End Function
 
 Public Function IntervaloPermiteGolpeUsar(ByVal Userindex As Integer, _
                                           Optional ByVal Actualizar As Boolean = True) As Boolean
+    #If BOT_SERVER Then
+        IntervaloPermiteGolpeUsar = True
+        Exit Function
+    #End If
     '***************************************************
     'Author: ZaMa
     'Checks if the time that passed from the last hit is enough for the user to use a potion.
@@ -149,6 +165,10 @@ End Function
 
 Public Function IntervaloPermiteMagiaGolpe(ByVal Userindex As Integer, _
                                            Optional ByVal Actualizar As Boolean = True) As Boolean
+    #If BOT_SERVER Then
+        IntervaloPermiteMagiaGolpe = True
+        Exit Function
+    #End If
 
     '***************************************************
     'Author: Unknown
@@ -186,6 +206,10 @@ End Function
 
 Public Function IntervaloPermiteGolpeMagia(ByVal Userindex As Integer, _
                                            Optional ByVal Actualizar As Boolean = True) As Boolean
+    #If BOT_SERVER Then
+        IntervaloPermiteGolpeMagia = True
+        Exit Function
+    #End If
     '***************************************************
     'Author: Unknown
     'Last Modification: -
@@ -233,6 +257,10 @@ End Function
 ' TRABAJO
 Public Function IntervaloPermiteTrabajar(ByVal Userindex As Integer, _
                                          Optional ByVal Actualizar As Boolean = True) As Boolean
+    #If BOT_SERVER Then
+        IntervaloPermiteTrabajar = True
+        Exit Function
+    #End If
     '***************************************************
     'Author: Unknown
     'Last Modification: -
@@ -256,6 +284,10 @@ End Function
 ' USAR OBJETOS
 Public Function IntervaloPermiteUsar(ByVal Userindex As Integer, _
                                      Optional ByVal Actualizar As Boolean = True) As Boolean
+    #If BOT_SERVER Then
+        IntervaloPermiteUsar = True
+        Exit Function
+    #End If
     '***************************************************
     'Author: Unknown
     'Last Modification: 25/01/2010 (ZaMa)
@@ -284,6 +316,10 @@ End Function
 
 Public Function IntervaloPermiteUsarArcos(ByVal Userindex As Integer, _
                                           Optional ByVal Actualizar As Boolean = True) As Boolean
+    #If BOT_SERVER Then
+        IntervaloPermiteUsarArcos = True
+        Exit Function
+    #End If
     '***************************************************
     'Author: Unknown
     'Last Modification: -
@@ -307,6 +343,10 @@ End Function
 
 Public Function IntervaloPermiteSerAtacado(ByVal Userindex As Integer, _
                                            Optional ByVal Actualizar As Boolean = False) As Boolean
+    #If BOT_SERVER Then
+        IntervaloPermiteSerAtacado = True
+        Exit Function
+    #End If
 
     '**************************************************************
     'Author: ZaMa
