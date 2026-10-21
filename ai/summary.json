@@ -1,0 +1,11 @@
+{
+  "project_name": "Argentum20",
+  "generated_date": "2026-03-12",
+  "files_analyzed": 82,
+  "modules": 54,
+  "classes": 18,
+  "forms": 10,
+  "total_procedures": 1827,
+  "functions_in_call_graph": 1783,
+  "global_variable_modules": 52
+}
