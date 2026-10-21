@@ -80,6 +80,7 @@ Module=Retos; Codigo\Retos.bas
 Module=Cuentas; Codigo\Cuentas.bas
 Module=Logs; Codigo\Logs.bas
 Module=BotAPI; Codigo\BotAPI.bas
+Module=BotAPITest; Codigo\BotAPITest.bas
 Form=Codigo\frmBotAPI.frm
 Module=Amigos; Codigo\Amigos.bas
 Module=modAntiCheat; Codigo\modAntiCheat.bas
