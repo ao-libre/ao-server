@@ -1620,6 +1620,7 @@ Public Type User
     
     ConnIDValida As Boolean
     ConnID As Long 'ID
+    ObserverConnID As Long  ' aobench: socket ConnID of attached observer (-1 = none)
     
     '[KEVIN]
     BancoInvent As BancoInventario

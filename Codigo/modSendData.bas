@@ -444,6 +444,8 @@ Private Sub SendToUserArea(ByVal Userindex As Integer, ByVal sdData As String)
         If EstanMismoArea(Userindex, tempIndex) Then
             If UserList(tempIndex).ConnIDValida Then
                 Call UserList(tempIndex).outgoingData.WriteASCIIStringFixed(sdData)
+                ' aobench task 14.3: mirror to observer if one is attached
+                Call BotMirrorToObserver(tempIndex, sdData)
             End If
         End If
 

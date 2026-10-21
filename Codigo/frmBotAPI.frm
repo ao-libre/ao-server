@@ -110,11 +110,56 @@ Private Sub Socket_DataArrival(Index As Integer, ByVal bytesTotal As Long)
         line = Trim$(line)
         If Len(line) > 0 Then
             Dim response As String
+
+            ' aobench: handle loginObserver action before general dispatch
+            Dim tmpParsed As Object
+            On Error Resume Next
+            Set tmpParsed = parse(line)
+            On Error GoTo 0
+
+            If Not tmpParsed Is Nothing Then
+                If tmpParsed.Exists("action") Then
+                    If CStr(tmpParsed("action")) = "loginObserver" Then
+                        ' Attach this socket as observer for the named character
+                        Dim obsCharname As String
+                        If tmpParsed.Exists("charname") Then
+                            obsCharname = CStr(tmpParsed("charname"))
+                        Else
+                            obsCharname = ""
+                        End If
+                        If Len(obsCharname) = 0 Then
+                            response = BotError("charname is required")
+                        Else
+                            response = BotAttachObserver(Index, obsCharname)
+                        End If
+                        On Error Resume Next
+                        Socket(Index).SendData response & Chr(10)
+                        On Error GoTo 0
+                        GoTo NextMessage
+                    End If
+
+                    ' aobench task 14.4: if this socket is an observer, only allow say
+                    If BotIsObserverSlot(Index) Then
+                        Dim obsAction As String
+                        obsAction = CStr(tmpParsed("action"))
+                        If obsAction <> "say" Then
+                            response = "{""ok"":false,""error"":""Observer cannot send actions""}"
+                            On Error Resume Next
+                            Socket(Index).SendData response & Chr(10)
+                            On Error GoTo 0
+                            GoTo NextMessage
+                        End If
+                    End If
+                End If
+            End If
+
             response = BotDispatch(line)
             On Error Resume Next
             Socket(Index).SendData response & Chr(10)
             On Error GoTo 0
         End If
+
+        NextMessage:
 
         pos = InStr(m_buffer(Index), Chr(10))
 
@@ -132,6 +177,16 @@ Private Sub Socket_Close(Index As Integer)
     Socket(Index).Close
     Unload Socket(Index)
     On Error GoTo 0
+
+    ' aobench task 14.5: clear observer reference if this slot was watching a bot
+    Dim obsIdx As Integer
+    For obsIdx = 1 To MaxUsers
+        If UserList(obsIdx).flags.UserLogged Then
+            If UserList(obsIdx).ObserverConnID = Index Then
+                UserList(obsIdx).ObserverConnID = -1
+            End If
+        End If
+    Next obsIdx
 
     Call LogStatic("BotAPI: Slot " & Index & " disconnected")
 
@@ -159,3 +214,11 @@ Private Sub Socket_Error(Index As Integer, ByVal Number As Integer, _
     Call LogStatic("BotAPI: Socket error on slot " & Index & ": " & Description)
 
 End Sub
+
+' ---- SendToSlot: send data to a specific socket slot ---------------------
+Public Sub SendToSlot(ByVal slot As Integer, ByVal data As String)
+    On Error Resume Next
+    Socket(slot).SendData data & Chr(10)
+    On Error GoTo 0
+End Sub
+

@@ -592,6 +592,7 @@ Private Sub ResetUsersConnections()
 
     For LoopC = 1 To MaxUsers
         UserList(LoopC).ConnID = -1
+        UserList(LoopC).ObserverConnID = -1  ' aobench: no observer
         UserList(LoopC).ConnIDValida = False
         Set UserList(LoopC).incomingData = New clsByteQueue
         Set UserList(LoopC).outgoingData = New clsByteQueue
@@ -774,6 +775,7 @@ Sub Restart()
     
     For LoopC = 1 To MaxUsers
         UserList(LoopC).ConnID = -1
+        UserList(LoopC).ObserverConnID = -1  ' aobench: no observer
         UserList(LoopC).ConnIDValida = False
         Set UserList(LoopC).incomingData = New clsByteQueue
         Set UserList(LoopC).outgoingData = New clsByteQueue

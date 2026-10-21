@@ -80,7 +80,7 @@ Public Function BotError(ByVal msg As String) As String
 End Function
 
 ' ---- JSON string encoder (escapes quotes and backslashes) -----------------
-Private Function JSON_Encode(ByVal s As String) As String
+Public Function JSON_Encode(ByVal s As String) As String
     Dim result As String
     result = s
     result = Replace(result, "\", "\\")
@@ -178,7 +178,7 @@ End Function
 ' ===========================================================================
 ' getState â€” serialise UserList(i) to JSON
 ' ===========================================================================
-Private Function BotGetState(ByVal i As Integer) As String
+Public Function BotGetState(ByVal i As Integer) As String
 
     Dim sb As cStringBuilder
     Set sb = New cStringBuilder
@@ -623,3 +623,57 @@ Private Sub DoSkillWork(ByVal i As Integer, ByVal sk As eSkill)
             ' use castSpell or attack for those
     End Select
 End Sub
+
+' ===========================================================================
+' aobench: Observer mode (tasks 14.2-14.5)
+' ===========================================================================
+
+' Attach socket observerSlot as observer for charname.
+' Returns JSON response.
+Public Function BotAttachObserver(ByVal observerSlot As Integer, ByVal charname As String) As String
+    Dim i As Integer
+    i = BotFindUser(charname)
+    If i = 0 Then
+        BotAttachObserver = BotError("Character not found: " & charname)
+        Exit Function
+    End If
+    ' Reject if already has an observer (task 14.6)
+    If UserList(i).ObserverConnID <> -1 Then
+        BotAttachObserver = BotError("Already has an observer")
+        Exit Function
+    End If
+    UserList(i).ObserverConnID = observerSlot
+    ' Replay current state to observer immediately
+    Dim stateJson As String
+    stateJson = BotGetState(i)
+    Call frmBotAPI.SendToSlot(observerSlot, stateJson)
+    BotAttachObserver = "{""ok"":true,""observing"":" & JSON_Encode(charname) & "}"
+End Function
+
+' Detach observer from user slot i.
+Public Function BotDetachObserver(ByVal i As Integer) As String
+    UserList(i).ObserverConnID = -1
+    BotDetachObserver = "{""ok"":true}"
+End Function
+
+' Called after each packet is written to a user's outgoingData.
+' If this user has an observer, mirror the packet to the observer socket.
+Public Sub BotMirrorToObserver(ByVal Userindex As Integer, ByVal data As String)
+    If UserList(Userindex).ObserverConnID > 0 Then
+        Call frmBotAPI.SendToSlot(UserList(Userindex).ObserverConnID, data)
+    End If
+End Sub
+
+' Returns True if slot is currently observing any bot.
+Public Function BotIsObserverSlot(ByVal slot As Integer) As Boolean
+    Dim i As Integer
+    For i = 1 To MaxUsers
+        If UserList(i).flags.UserLogged Then
+            If UserList(i).ObserverConnID = slot Then
+                BotIsObserverSlot = True
+                Exit Function
+            End If
+        End If
+    Next i
+    BotIsObserverSlot = False
+End Function
