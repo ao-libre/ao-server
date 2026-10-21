@@ -308,6 +308,26 @@ Public Function BotGetState(ByVal i As Integer) As String
             Call sb.Append("""resting""")
             firstEffect = False
         End If
+        If .flags.Ceguera <> 0 Then
+            If Not firstEffect Then Call sb.Append(",")
+            Call sb.Append("""blind""")
+            firstEffect = False
+        End If
+        If .flags.Estupidez <> 0 Then
+            If Not firstEffect Then Call sb.Append(",")
+            Call sb.Append("""dumb""")
+            firstEffect = False
+        End If
+        If .flags.invisible <> 0 Then
+            If Not firstEffect Then Call sb.Append(",")
+            Call sb.Append("""invisible""")
+            firstEffect = False
+        End If
+        If .flags.Oculto <> 0 Then
+            If Not firstEffect Then Call sb.Append(",")
+            Call sb.Append("""hidden""")
+            firstEffect = False
+        End If
         Call sb.Append("],")
 
         Call sb.Append("""timestamp"":" & CLng(Timer * 1000) & "}")
