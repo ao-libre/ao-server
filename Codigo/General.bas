@@ -346,6 +346,11 @@ Sub Main()
     ' Sockets
     Call SocketConfig
     
+    ' BotAPI TCP listener (aobench)
+    frmBotAPI.Show
+    Call frmBotAPI.StartListening
+
+    
     ' Timers
     Call InitMainTimers
     
