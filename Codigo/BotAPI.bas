@@ -63,7 +63,7 @@ End Function
 ' Returns 0 if not found.
 Public Function BotFindUser(ByVal charname As String) As Integer
     Dim i As Integer
-    For i = 1 To MAX_USERS
+    For i = 1 To MaxUsers
         If UserList(i).flags.UserLogged Then
             If LCase$(UserList(i).Name) = LCase$(charname) Then
                 BotFindUser = i
@@ -263,7 +263,7 @@ Public Function BotGetState(ByVal i As Integer) As String
         Dim pIdx As Integer
         Dim firstP As Boolean
         firstP = True
-        For pIdx = 1 To MAX_USERS
+        For pIdx = 1 To MaxUsers
             If pIdx <> i Then
                 If UserList(pIdx).flags.UserLogged Then
                     If UserList(pIdx).Pos.Map = .Pos.Map Then
@@ -488,7 +488,7 @@ Private Function BotLeftClick(ByVal i As Integer, ByVal p As Object) As String
     Next npcIdx
     ' Find player at target tile
     Dim pIdx As Integer
-    For pIdx = 1 To MAX_USERS
+    For pIdx = 1 To MaxUsers
         If pIdx <> i Then
             If UserList(pIdx).flags.UserLogged Then
                 If UserList(pIdx).Pos.Map = UserList(i).Pos.Map And _
