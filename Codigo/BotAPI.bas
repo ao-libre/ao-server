@@ -10,8 +10,38 @@ Attribute VB_Name = "BotAPI"
 '   client -> server:  {"action":"getState","charname":"Bot1"}\n
 '   server -> client:  {"ok":true,"state":{...}}\n  or  {"ok":false,"error":"..."}\n
 '
-' Supported actions: getState, walk, attack, castSpell, useItem, useSkill,
-'   work, leftClick, say, yell, whisper, pickUp, equipItem, meditate, rest, drop
+' getState fields: charname, pos, heading, hp, maxHp, mana, maxMana, stamina,
+'   maxStamina, gold, exp, expNeeded, level, clase, skills, inventory, nearbyNpcs,
+'   nearbyPlayers, statusEffects, spells, skillPts, assignedSkills, attributes,
+'   bankGold, bank, faction, reputation, party, quests, timestamp
+'
+' Player actions: walk, attack, castSpell, useItem, useSkill, work, leftClick,
+'   say, yell, whisper, pickUp, equipItem, meditate, rest, drop,
+'   doubleClick, changeHeading, workLeftClick, useSpellMacro, moveItem,
+'   commerceStart, commerceBuy, commerceSell, commerceEnd, commerceChat,
+'   userCommerceCreate, userCommerceOffer, userCommerceOk, userCommerceReject,
+'   userCommerceConfirm, userCommerceEnd,
+'   bankStart, bankDeposit, bankExtractItem, bankDepositGold, bankExtractGold,
+'   bankEnd, moveBank,
+'   craftBlacksmith, craftCarpenter, initCrafting, craftsmanCreate,
+'   train, partyCreate, partyJoin, partyLeave, partyAccept, partyKick,
+'   partySetLeader, partyOnline, partyMessage, requestPartyForm,
+'   guildMessage, shareNpc, stopSharingNpc,
+'   resucitate, heal, home, enlist, leaveFaction, changeDescription,
+'   dragSpell, moveSpell, assignSkillPoints, itemUpgrade,
+'   petStand, petFollow, releasePet,
+'   fightSend, fightAccept,
+'   quest, questAccept, questAbandon, questListRequest, questDetailsRequest,
+'   forumPost, lookProcess, consultation, online, discord,
+'   addAmigo, delAmigo, onAmigos, msgAmigos,
+'   guildFundate, guildFundation
+'
+' GM actions (require GM privileges): gmGoToChar, gmWarpChar, gmWarpMe,
+'   gmSummon, gmSpawn, gmKillNpc, gmKillAllNearby, gmCreateItem,
+'   gmDestroyItems, gmRevive, gmKick, gmBan, gmSilence, gmJail,
+'   gmInvisible, gmMessage, gmServerMessage, gmRain, gmTeleportCreate,
+'   gmEditChar, gmSetDesc, gmCreateNpc, gmMakeDumb, gmMakeDumbNoMore,
+'   gmRequestCharInfo
 '
 ' Author: aobench (ao-libre fork)
 ''
@@ -336,6 +366,142 @@ Public Function BotGetState(ByVal i As Integer) As String
             firstEffect = False
         End If
         Call sb.Append("],")
+
+        ' â”€â”€ Spell hotbar (35 slots) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+        Call sb.Append("""spells"":[")
+        Dim spIdx As Integer
+        For spIdx = 1 To MAXUSERHECHIZOS
+            If spIdx > 1 Then Call sb.Append(",")
+            Dim spId As Integer
+            spId = .Stats.UserHechizos(spIdx)
+            If spId > 0 Then
+                Call sb.Append("{""slot"":" & spIdx & _
+                    ",""spellId"":" & spId & _
+                    ",""name"":" & JSON_Encode(Hechizos(spId).Nombre) & _
+                    ",""minSkill"":" & Hechizos(spId).MinSkill & _
+                    ",""manaCost"":" & Hechizos(spId).ManaCosto & "}")
+            Else
+                Call sb.Append("null")
+            End If
+        Next spIdx
+        Call sb.Append("],")
+
+        ' â”€â”€ Skill points â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+        Call sb.Append("""skillPts"":" & .Stats.SkillPts & ",")
+        Call sb.Append("""assignedSkills"":" & .Counters.AsignedSkills & ",")
+
+        ' â”€â”€ Character attributes â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+        Call sb.Append("""attributes"":{")
+        Call sb.Append("""Fuerza"":" & .Stats.UserAtributos(eAtributos.Fuerza) & ",")
+        Call sb.Append("""Agilidad"":" & .Stats.UserAtributos(eAtributos.Agilidad) & ",")
+        Call sb.Append("""Inteligencia"":" & .Stats.UserAtributos(eAtributos.Inteligencia) & ",")
+        Call sb.Append("""Carisma"":" & .Stats.UserAtributos(eAtributos.Carisma) & ",")
+        Call sb.Append("""Constitucion"":" & .Stats.UserAtributos(eAtributos.Constitucion))
+        Call sb.Append("},")
+
+        ' â”€â”€ ELU (XP needed for next level) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+        Call sb.Append("""expNeeded"":" & CLng(.Stats.ELU) & ",")
+
+        ' â”€â”€ Bank â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+        Call sb.Append("""bankGold"":" & .Stats.Banco & ",")
+        Call sb.Append("""bank"":[")
+        Dim bankIdx As Integer
+        Dim firstBank As Boolean
+        firstBank = True
+        For bankIdx = 1 To MAX_BANCOINVENTORY_SLOTS
+            If .BancoInvent.Object(bankIdx).ObjIndex > 0 Then
+                If Not firstBank Then Call sb.Append(",")
+                firstBank = False
+                Call sb.Append("{""slot"":" & bankIdx & _
+                    ",""itemId"":" & .BancoInvent.Object(bankIdx).ObjIndex & _
+                    ",""name"":" & JSON_Encode(ObjData(.BancoInvent.Object(bankIdx).ObjIndex).Name) & _
+                    ",""amount"":" & .BancoInvent.Object(bankIdx).Amount & "}")
+            End If
+        Next bankIdx
+        Call sb.Append("],")
+
+        ' â”€â”€ Faction â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+        Dim factionName As String
+        If .flags.ArmadaReal <> 0 Then
+            factionName = "real"
+        ElseIf .flags.FuerzasCaos <> 0 Then
+            factionName = "caos"
+        Else
+            factionName = "none"
+        End If
+        Call sb.Append("""faction"":" & JSON_Encode(factionName) & ",")
+
+        ' â”€â”€ Reputation â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+        Call sb.Append("""reputation"":{")
+        Call sb.Append("""npcKills"":" & .Stats.NPCsMuertos & ",")
+        Call sb.Append("""playerKills"":" & .Stats.UsuariosMatados & ",")
+        Call sb.Append("""citizensKilled"":" & .flags.CiudadanosMatados & ",")
+        Call sb.Append("""criminalsKilled"":" & .flags.CriminalesMatados)
+        Call sb.Append("},")
+
+        ' â”€â”€ Party â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+        Dim partyIdx As Integer
+        partyIdx = .Counters.PartyIndex
+        If partyIdx > 0 Then
+            Dim pm As Integer
+            Call sb.Append("""party"":{")
+            Call sb.Append("""index"":" & partyIdx & ",")
+            Call sb.Append("""isLeader"":" & IIf(PartyList(partyIdx).LeaderIndex = i, "true", "false") & ",")
+            Call sb.Append("""members"":[")
+            Dim pmFirst As Boolean
+            pmFirst = True
+            For pm = 1 To PartyList(partyIdx).MemberCount
+                Dim pmU As Integer
+                pmU = PartyList(partyIdx).Members(pm)
+                If pmU > 0 And UserList(pmU).flags.UserLogged Then
+                    If Not pmFirst Then Call sb.Append(",")
+                    pmFirst = False
+                    Call sb.Append(JSON_Encode(UserList(pmU).Name))
+                End If
+            Next pm
+            Call sb.Append("]},")
+        Else
+            Call sb.Append("""party"":null,")
+        End If
+
+        ' â”€â”€ Active quests â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+        Call sb.Append("""quests"":{")
+        Call sb.Append("""active"":[")
+        Dim qIdx As Integer
+        Dim firstQ As Boolean
+        firstQ = True
+        For qIdx = 1 To MAXUSERQUESTS
+            Dim qI As Integer
+            qI = .QuestStats.Quests(qIdx).QuestIndex
+            If qI > 0 Then
+                If Not firstQ Then Call sb.Append(",")
+                firstQ = False
+                Call sb.Append("{""slot"":" & qIdx & _
+                    ",""questId"":" & qI & _
+                    ",""name"":" & JSON_Encode(QuestList(qI).Nombre) & _
+                    ",""requiredLevel"":" & QuestList(qI).RequiredLevel & ",")
+                ' Kill progress
+                Call sb.Append("""npcProgress"":[")
+                Dim nkIdx As Integer
+                For nkIdx = 1 To QuestList(qI).RequiredNPCs
+                    If nkIdx > 1 Then Call sb.Append(",")
+                    Call sb.Append("{""npcId"":" & QuestList(qI).RequiredNPC(nkIdx).NpcIndex & _
+                        ",""required"":" & QuestList(qI).RequiredNPC(nkIdx).Amount & _
+                        ",""killed"":" & .QuestStats.Quests(qIdx).NPCsKilled(nkIdx) & "}")
+                Next nkIdx
+                Call sb.Append("],")
+                Call sb.Append("""rewardXp"":" & QuestList(qI).RewardEXP & _
+                    ",""rewardGold"":" & QuestList(qI).RewardGLD & "}")
+            End If
+        Next qIdx
+        Call sb.Append("],")
+        Call sb.Append("""doneIds"":[")
+        Dim dqIdx As Integer
+        For dqIdx = 1 To .QuestStats.NumQuestsDone
+            If dqIdx > 1 Then Call sb.Append(",")
+            Call sb.Append(.QuestStats.QuestsDone(dqIdx))
+        Next dqIdx
+        Call sb.Append("]},")
 
         Call sb.Append("""timestamp"":" & CLng(Timer * 1000) & "}")
         Call sb.Append("}")
@@ -1332,6 +1498,404 @@ Public Function BotDispatchExtended(ByVal action As String, _
         InjectByte i, CByte(eGMCommands.RequestCharInfo)
         InjectString i, CStr(p("target"))
         Call HandleGMCommands(i)
+        BotDispatchExtended = "{""ok"":true}"
+
+    ' â”€â”€ Quest actions â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+
+    Case "quest"
+        ' Talk to quest NPC at (x,y) or the current TargetNPC.
+        ' Sends Quest packet: server shows details on first call, finishes on second.
+        If p.Exists("x") And p.Exists("y") Then
+            ' First set the target NPC by walking onto its tile in the Accion sense.
+            ' We inject a DoubleClick so Accion() sets TargetNPC, then immediately
+            ' inject Quest so HandleQuest() can use it.
+            InjectByte i, ClientPacketID.DoubleClick
+            InjectByte i, CByte(CInt(p("x")) And 255)
+            InjectByte i, CByte(CInt(p("y")) And 255)
+            Call HandleDoubleClick(i)
+        End If
+        InjectByte i, ClientPacketID.Quest
+        Call Quests.HandleQuest(i)
+        BotDispatchExtended = "{""ok"":true}"
+
+    Case "questAccept"
+        ' Accept the quest that was just offered via quest action.
+        InjectByte i, ClientPacketID.QuestAccept
+        InjectByte i, 0  ' padding byte read by HandleQuestAccept
+        Call Quests.HandleQuestAccept(i)
+        BotDispatchExtended = "{""ok"":true}"
+
+    Case "questAbandon"
+        ' Abandon an active quest by slot (1-based).
+        If Not p.Exists("slot") Then
+            BotDispatchExtended = BotError("slot is required")
+            Exit Function
+        End If
+        InjectByte i, ClientPacketID.QuestAbandon
+        InjectByte i, CByte(CInt(p("slot")))
+        Call Quests.HandleQuestAbandon(i)
+        BotDispatchExtended = "{""ok"":true}"
+
+    Case "questListRequest"
+        ' Request the full quest list for this character (active + done).
+        InjectByte i, ClientPacketID.QuestListRequest
+        Call Quests.HandleQuestListRequest(i)
+        BotDispatchExtended = "{""ok"":true}"
+
+    Case "questDetailsRequest"
+        ' Get details for a specific active quest by slot number.
+        If Not p.Exists("slot") Then
+            BotDispatchExtended = BotError("slot is required")
+            Exit Function
+        End If
+        InjectByte i, ClientPacketID.QuestDetailsRequest
+        InjectByte i, CByte(CInt(p("slot")))
+        Call Quests.HandleQuestDetailsRequest(i)
+        BotDispatchExtended = "{""ok"":true}"
+
+    ' â”€â”€ Skill assignment â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+
+    Case "assignSkillPoints"
+        ' Assign free skill points. Pass a distribution object, e.g.:
+        ' {"Armas":3,"Defensa":4,"Tacticas":3}
+        ' All values must sum to <= SkillPts. Unmentioned skills get 0.
+        If Not p.Exists("distribution") Then
+            BotDispatchExtended = BotError("distribution is required")
+            Exit Function
+        End If
+        Dim dist As Object
+        Set dist = p("distribution")
+        Dim pts(1 To NUMSKILLS) As Byte
+        Dim totalPts As Integer
+        Dim sName As String
+        Dim sk2 As eSkill
+        ' Parse distribution
+        Dim dKey As Variant
+        For Each dKey In dist.Keys()
+            sName = CStr(dKey)
+            sk2 = ParseSkill(sName)
+            If sk2 = 0 Then
+                BotDispatchExtended = BotError("Unknown skill: " & sName)
+                Exit Function
+            End If
+            pts(CInt(sk2)) = CByte(CInt(dist(dKey)))
+            totalPts = totalPts + CInt(dist(dKey))
+        Next dKey
+        If totalPts > UserList(i).Stats.SkillPts Then
+            BotDispatchExtended = BotError("Not enough skill points (have " & UserList(i).Stats.SkillPts & ", need " & totalPts & ")")
+            Exit Function
+        End If
+        ' Inject ModifySkills packet: 1 byte header + NUMSKILLS bytes
+        InjectByte i, ClientPacketID.ModifySkills
+        Dim skK As Integer
+        For skK = 1 To NUMSKILLS
+            InjectByte i, pts(skK)
+        Next skK
+        Call HandleModifySkills(i)
+        BotDispatchExtended = "{""ok"":true,""pointsSpent"":" & totalPts & "}"
+
+    ' â”€â”€ Party actions â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+
+    Case "partyAccept"
+        ' Accept a pending party join request from player: member = name
+        If Not p.Exists("member") Then
+            BotDispatchExtended = BotError("member is required")
+            Exit Function
+        End If
+        InjectByte i, ClientPacketID.PartyAcceptMember
+        InjectString i, CStr(p("member"))
+        Call HandlePartyAcceptMember(i)
+        BotDispatchExtended = "{""ok"":true}"
+
+    Case "partyKick"
+        ' Kick a member from your party: member = name
+        If Not p.Exists("member") Then
+            BotDispatchExtended = BotError("member is required")
+            Exit Function
+        End If
+        InjectByte i, ClientPacketID.PartyKick
+        InjectString i, CStr(p("member"))
+        Call HandlePartyKick(i)
+        BotDispatchExtended = "{""ok"":true}"
+
+    Case "partySetLeader"
+        ' Transfer party leadership: member = name of new leader
+        If Not p.Exists("member") Then
+            BotDispatchExtended = BotError("member is required")
+            Exit Function
+        End If
+        InjectByte i, ClientPacketID.PartySetLeader
+        InjectString i, CStr(p("member"))
+        Call HandlePartySetLeader(i)
+        BotDispatchExtended = "{""ok"":true}"
+
+    Case "partyOnline"
+        ' List party members online with their XP
+        InjectByte i, ClientPacketID.PartyOnline
+        Call HandlePartyOnline(i)
+        BotDispatchExtended = "{""ok"":true}"
+
+    Case "requestPartyForm"
+        ' Request party formation info
+        InjectByte i, ClientPacketID.RequestPartyForm
+        Call HandlePartyForm(i)
+        BotDispatchExtended = "{""ok"":true}"
+
+    ' â”€â”€ Faction â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+
+    Case "leaveFaction"
+        ' Leave current army faction (/RETIRAR)
+        InjectByte i, ClientPacketID.LeaveFaction
+        Call HandleLeaveFaction(i)
+        BotDispatchExtended = "{""ok"":true}"
+
+    ' â”€â”€ Pet actions â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+
+    Case "petStand"
+        ' Order pet to stand still (/QUIETO)
+        InjectByte i, ClientPacketID.PetStand
+        Call HandlePetStand(i)
+        BotDispatchExtended = "{""ok"":true}"
+
+    Case "petFollow"
+        ' Order pet to follow owner (/ACOMPANAR)
+        InjectByte i, ClientPacketID.PetFollow
+        Call HandlePetFollow(i)
+        BotDispatchExtended = "{""ok"":true}"
+
+    Case "releasePet"
+        ' Release / free pet (/LIBERAR)
+        InjectByte i, ClientPacketID.ReleasePet
+        Call HandleReleasePet(i)
+        BotDispatchExtended = "{""ok"":true}"
+
+    ' â”€â”€ Item upgrade â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+
+    Case "itemUpgrade"
+        ' Upgrade an item: slot = inventory slot of item to upgrade
+        If Not p.Exists("slot") Then
+            BotDispatchExtended = BotError("slot is required")
+            Exit Function
+        End If
+        InjectByte i, ClientPacketID.ItemUpgrade
+        InjectByte i, CByte(CInt(p("slot")))
+        Call HandleItemUpgrade(i)
+        BotDispatchExtended = "{""ok"":true}"
+
+    ' â”€â”€ Craftsman (artisan) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+
+    Case "initCrafting"
+        ' Open the craftsman's dialogue (doubleClick the artisan NPC first)
+        InjectByte i, ClientPacketID.InitCrafting
+        Call HandleInitCrafting(i)
+        BotDispatchExtended = "{""ok"":true}"
+
+    Case "craftsmanCreate"
+        ' Create an item via the craftsman. item = recipe/item index
+        If Not p.Exists("item") Then
+            BotDispatchExtended = BotError("item is required")
+            Exit Function
+        End If
+        InjectByte i, ClientPacketID.CraftsmanCreate
+        InjectInteger i, CInt(p("item"))
+        Call HandleCraftsmanCreate(i)
+        BotDispatchExtended = "{""ok"":true}"
+
+    ' â”€â”€ Combat challenges (retos / fights) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+
+    Case "fightSend"
+        ' Send a duel challenge to a player: target = name, gold = wager
+        If Not p.Exists("target") Then
+            BotDispatchExtended = BotError("target is required")
+            Exit Function
+        End If
+        InjectByte i, ClientPacketID.FightSend
+        InjectString i, CStr(p("target"))
+        InjectLong i, IIf(p.Exists("gold"), CLng(p("gold")), 0)
+        Call HandleFightSend(i)
+        BotDispatchExtended = "{""ok"":true}"
+
+    Case "fightAccept"
+        ' Accept an incoming duel challenge
+        InjectByte i, ClientPacketID.FightAccept
+        Call HandleFightAccept(i)
+        BotDispatchExtended = "{""ok"":true}"
+
+    ' â”€â”€ User commerce (player-to-player trade) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+
+    Case "userCommerceCreate"
+        ' Initiate a trade with a nearby player: target = player name
+        If Not p.Exists("target") Then
+            BotDispatchExtended = BotError("target is required")
+            Exit Function
+        End If
+        ' Find the target user index and set TargetUser
+        Dim tradeTarget As Integer
+        tradeTarget = BotFindUser(CStr(p("target")))
+        If tradeTarget = 0 Then
+            BotDispatchExtended = BotError("Player not found: " & CStr(p("target")))
+            Exit Function
+        End If
+        UserList(i).flags.TargetUser = tradeTarget
+        ' UserCommerceCreate is handled client-side; server uses TargetUser
+        ' when UserCommerceOffer is sent. Call IniciarComercioConUsuario directly.
+        Call IniciarComercioConUsuario(i, tradeTarget)
+        BotDispatchExtended = "{""ok"":true}"
+
+    Case "userCommerceConfirm"
+        ' Confirm the current trade (both sides must confirm)
+        InjectByte i, ClientPacketID.UserCommerceConfirm
+        Call HandleUserCommerceConfirm(i)
+        BotDispatchExtended = "{""ok"":true}"
+
+    Case "commerceChat"
+        ' Send a chat message during NPC commerce
+        If Not p.Exists("message") Then
+            BotDispatchExtended = BotError("message is required")
+            Exit Function
+        End If
+        InjectByte i, ClientPacketID.CommerceChat
+        InjectString i, CStr(p("message"))
+        Call HandleCommerceChat(i)
+        BotDispatchExtended = "{""ok"":true}"
+
+    ' â”€â”€ Bank â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+
+    Case "moveBank"
+        ' Move an item from inventory to bank or bank to inventory
+        ' fromBank=true moves bank->inv, false moves inv->bank
+        If Not p.Exists("slot") Then
+            BotDispatchExtended = BotError("slot is required")
+            Exit Function
+        End If
+        InjectByte i, ClientPacketID.MoveBank
+        InjectByte i, CByte(CInt(p("slot")))
+        InjectByte i, IIf(p.Exists("fromBank") And CBool(p("fromBank")), 1, 0)
+        Call HandleMoveBank(i)
+        BotDispatchExtended = "{""ok"":true}"
+
+    ' â”€â”€ Spells â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+
+    Case "moveSpell"
+        ' Move a spell from one hotbar slot to another
+        If Not p.Exists("from") Or Not p.Exists("to") Then
+            BotDispatchExtended = BotError("from and to are required")
+            Exit Function
+        End If
+        InjectByte i, ClientPacketID.MoveSpell
+        InjectByte i, CByte(CInt(p("from")))
+        InjectByte i, CByte(CInt(p("to")))
+        Call HandleMoveSpell(i)
+        BotDispatchExtended = "{""ok"":true}"
+
+    ' â”€â”€ Forum â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+
+    Case "forumPost"
+        ' Post a message to the in-game forum
+        ' type: 0=general, 1=real, 2=caos â€” title, body
+        If Not p.Exists("title") Or Not p.Exists("body") Then
+            BotDispatchExtended = BotError("title and body are required")
+            Exit Function
+        End If
+        InjectByte i, ClientPacketID.ForumPost
+        InjectByte i, IIf(p.Exists("type"), CByte(CInt(p("type"))), 0)
+        InjectString i, CStr(p("title"))
+        InjectString i, CStr(p("body"))
+        Call HandleForumPost(i)
+        BotDispatchExtended = "{""ok"":true}"
+
+    ' â”€â”€ Friends (amigos) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+
+    Case "addAmigo"
+        ' Add a player to friends list: name = player name
+        If Not p.Exists("name") Then
+            BotDispatchExtended = BotError("name is required")
+            Exit Function
+        End If
+        InjectByte i, ClientPacketID.AddAmigos
+        InjectString i, CStr(p("name"))
+        Call Amigos.HandleAddAmigo(i)
+        BotDispatchExtended = "{""ok"":true}"
+
+    Case "delAmigo"
+        ' Remove a player from friends list: name = player name
+        If Not p.Exists("name") Then
+            BotDispatchExtended = BotError("name is required")
+            Exit Function
+        End If
+        InjectByte i, ClientPacketID.DelAmigos
+        InjectString i, CStr(p("name"))
+        Call Amigos.HandleDelAmigo(i)
+        BotDispatchExtended = "{""ok"":true}"
+
+    Case "onAmigos"
+        ' List online friends
+        InjectByte i, ClientPacketID.OnAmigos
+        Call Amigos.HandleOnAmigo(i)
+        BotDispatchExtended = "{""ok"":true}"
+
+    Case "msgAmigos"
+        ' Send a message to all online friends: message = text
+        If Not p.Exists("message") Then
+            BotDispatchExtended = BotError("message is required")
+            Exit Function
+        End If
+        InjectByte i, ClientPacketID.MsgAmigos
+        InjectString i, CStr(p("message"))
+        Call Amigos.HandleMsgAmigo(i)
+        BotDispatchExtended = "{""ok"":true}"
+
+    ' â”€â”€ Misc â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+
+    Case "lookProcess"
+        ' Look up information about another character: name = player name
+        If Not p.Exists("name") Then
+            BotDispatchExtended = BotError("name is required")
+            Exit Function
+        End If
+        InjectByte i, ClientPacketID.LookProcess
+        InjectString i, CStr(p("name"))
+        Call HandleLookProcess(i)
+        BotDispatchExtended = "{""ok"":true}"
+
+    Case "consultation"
+        ' Open the consultation / help panel
+        InjectByte i, ClientPacketID.Consultation
+        Call HandleConsultation(i)
+        BotDispatchExtended = "{""ok"":true}"
+
+    Case "discord"
+        ' Link Discord account: code = discord auth code
+        If Not p.Exists("code") Then
+            BotDispatchExtended = BotError("code is required")
+            Exit Function
+        End If
+        InjectByte i, ClientPacketID.Discord
+        InjectString i, CStr(p("code"))
+        Call HandleDiscord(i)
+        BotDispatchExtended = "{""ok"":true}"
+
+    Case "online"
+        ' Request online player count / list
+        InjectByte i, ClientPacketID.Online
+        Call HandleOnline(i)
+        BotDispatchExtended = "{""ok"":true}"
+
+    Case "guildFundate"
+        ' Initiate guild founding (/FUNDARCLAN): guildName = name
+        If Not p.Exists("guildName") Then
+            BotDispatchExtended = BotError("guildName is required")
+            Exit Function
+        End If
+        InjectByte i, ClientPacketID.GuildFundate
+        InjectString i, CStr(p("guildName"))
+        Call HandleGuildFundate(i)
+        BotDispatchExtended = "{""ok"":true}"
+
+    Case "guildFundation"
+        ' Confirm/complete guild founding (second packet after guildFundate)
+        InjectByte i, ClientPacketID.GuildFundation
+        Call HandleGuildFundation(i)
         BotDispatchExtended = "{""ok"":true}"
 
     Case Else

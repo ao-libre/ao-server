@@ -130,38 +130,36 @@ RewardOBJ1=1146-1
 RewardOBJ2=403-6
 
 [QUEST9]
-Nombre=Espiritu Guerrero
-Desc=Mithandrill es un elfo del bosque radicado en Arghal que no puede salir a recolectar moras por una constante amenaza de criaturas salvajes, asesinos y bandidos. Ayuda al elfo y seras recompensado con objetos y monedas.
-RequiredLevel=25
+Nombre=El protector del bosque
+Desc=Mithandrill, un elfo del bosque en el mapa 7, necesita que limpies la zona de lobos y hormigas que acechan su aldea. Mata los que encuentres y vuelve a verme.
+RequiredLevel=5
 
-RequiredNPCs=3
-RequiredNPC1=531-100
-RequiredNPC2=530-100
-RequiredNPC3=523-100
- 
-RewardEXP=50000
-RewardGLD=100000
- 
+RequiredNPCs=2
+RequiredNPC1=501-5
+RequiredNPC2=535-5
+
+RewardEXP=1200
+RewardGLD=800
+
 RewardOBJs=2
-RewardOBJ1=1138-1
-RewardOBJ2=532-1
+RewardOBJ1=38-8
+RewardOBJ2=37-5
 
 [QUEST10]
-Nombre= Ojo por ojo
-Desc=Orfeo, el huerfano, ha jurado vengar la muerte de sus padres y por ello a decidido entregar parte de su herencia a quienes maten las criaturas que asaltaron su ciudad.
-RequiredLevel=25
+Nombre=Ojo por ojo
+Desc=Orfeo el huerfano pide ayuda: serpientes y murcielagos mataron a sus padres en el camino al sur. Vengalos matando algunos de esos malditos bichos en el mapa 2.
+RequiredLevel=3
 
-RequiredNPCs=4
-RequiredNPC1=510-2000
-RequiredNPC2=518-5
-RequiredNPC3=542-2
-RequiredNPC4=552-2
+RequiredNPCs=2
+RequiredNPC1=504-8
+RequiredNPC2=500-5
 
-RewardEXP=50000
-RewardGLD=500000
- 
-RewardOBJs=1
-RewardOBJ1=1134-1
+RewardEXP=600
+RewardGLD=400
+
+RewardOBJs=2
+RewardOBJ1=38-5
+RewardOBJ2=37-3
 
 [QUEST11]
 Nombre=Marcando un nuevo comienzo
@@ -186,39 +184,37 @@ RewardOBJ1=481-1
 RewardOBJ2=483-1
 
 [QUEST12]
-Nombre=Un cazador en apuros.
-Desc=Ayudame a controlar las plagas del bosque y te recompenzare!
-RequiredLevel=15
- 
-RequiredNPCs=4
-RequiredNPC1=515-15
-RequiredNPC2=510-15
-RequiredNPC3=523-25
-RequiredNPC4=506-150
+Nombre=Un cazador en apuros
+Desc=Arkerolo necesita que limpies el mapa de gallos salvajes y lobos que estan destruyendo sus trampas. Mata los que encuentres y vuelve a buscar tu recompensa.
+RequiredLevel=5
 
-RewardGLD=15000
-RewardEXP=15000
- 
-RewardOBJs=1
-RewardOBJ1=664-15
+RequiredNPCs=2
+RequiredNPC1=506-5
+RequiredNPC2=501-3
+
+RewardGLD=700
+RewardEXP=1500
+
+RewardOBJs=2
+RewardOBJ1=38-8
+RewardOBJ2=37-5
 
 [QUEST13]
-Nombre=Un mago en apuros.
-Desc=Ayudame a controlar las plagas del bosque y te recompenzare!
-RequiredLevel=15
- 
-RequiredNPCs=4
-RequiredNPC1=515-15
-RequiredNPC2=510-15
-RequiredNPC3=523-25
-RequiredNPC4=506-100
+Nombre=Un mago en apuros
+Desc=Miha, un mago errante en el mapa 38, esta rodeado de orcos y gallos salvajes. Ayudalo eliminando algunos y te premiara con pociones y oro.
+RequiredLevel=12
 
-RewardGLD=15000
-RewardEXP=15000
- 
-RewardOBJs=2
-RewardOBJ1=37-5000
-RewardOBJ2=394-1
+RequiredNPCs=2
+RequiredNPC1=523-8
+RequiredNPC2=506-10
+
+RewardGLD=3000
+RewardEXP=5000
+
+RewardOBJs=3
+RewardOBJ1=38-10
+RewardOBJ2=37-8
+RewardOBJ3=36-3
 
 [QUEST14]
 Nombre=Bestias de las profundidades.
@@ -369,61 +365,51 @@ RewardOBJ3=36-2000
 RewardOBJ4=39-2000
 
 [QUEST22]
-Nombre=En busca de las jaurias.
-Desc=Jaurias de lobos atacan mis mineros por todo el mundo y pronto dejaremos de poder pagarle la cuota al rey. Necesitamos un viajero audaz que termine con estos lobos!
-RequiredLevel=25
- 
-RequiredNPCs=6
-RequiredNPC1=501-100
-RequiredNPC2=765-15
-RequiredNPC3=703-15
-RequiredNPC4=702-15
-RequiredNPC5=766-15
-RequiredNPC6=701-5
+Nombre=En busca de las jaurias
+Desc=Nelmasil, el pregonero de Ulla, ha recibido el encargo del gobernador de reducir la poblacion de lobos que amenazan los caminos al norte. Sal a cazar y trae prueba de tu trabajo.
+RequiredLevel=6
 
-RewardGLD=75000
-RewardEXP=125000
- 
-RewardOBJs=4
-RewardOBJ1=37-7000
-RewardOBJ2=38-5000
-RewardOBJ3=36-3000
-RewardOBJ4=39-2000
+RequiredNPCs=1
+RequiredNPC1=501-10
+
+RewardGLD=1500
+RewardEXP=2000
+
+RewardOBJs=2
+RewardOBJ1=38-10
+RewardOBJ2=37-6
 
 [QUEST23]
-Nombre=Todos a estribor!
-Desc=El mundo entero cree que por que somos pocos somos un pueblo debil. ja! Traeme escamas de Leviatan y armare fuertes armaduras.
-RequiredLevel=26
- 
-RequiredNPCs=1
-RequiredNPC1=548-200
+Nombre=El mendigo y los muertos
+Desc=Manrique el mendigo sobrevivio un ataque de zombies en los mapas del este. Esta aterrorizado y pide que alguien limpie la zona. Matando unos pocos ya bastara para que se quede tranquilo.
+RequiredLevel=8
 
-RewardGLD=125000
-RewardEXP=250000
- 
-RewardOBJs=1
-RewardOBJ1=403-1
+RequiredNPCs=1
+RequiredNPC1=502-8
+
+RewardGLD=2000
+RewardEXP=3000
+
+RewardOBJs=2
+RewardOBJ1=38-12
+RewardOBJ2=37-8
 
 [QUEST24]
-Nombre=Cava tu propia tumba.
-Desc=Llevo mucho tiempo en el mercado negro de la muerte pero nunca antes me habian hecho un pedido de huesos tan grande. Ayudame a completar mi pedido y te pagare.
-RequiredLevel=16
- 
-RequiredNPCs=6
-RequiredNPC1=598-20
-RequiredNPC2=596-20
-RequiredNPC3=599-20
-RequiredNPC4=601-20
-RequiredNPC5=600-10
-RequiredNPC6=757-2
+Nombre=Cava tu propia tumba
+Desc=Fethresor ha visto goblins merodeando cerca de los caminos del sur. Pide que un aventurero valiente los reduzca antes de que se atrevan a llegar a la ciudad.
+RequiredLevel=8
 
-RewardGLD=40000
-RewardEXP=40000
- 
+RequiredNPCs=2
+RequiredNPC1=505-8
+RequiredNPC2=516-8
+
+RewardGLD=2500
+RewardEXP=3500
+
 RewardOBJs=3
-RewardOBJ1=37-1500
-RewardOBJ2=38-1500
-RewardOBJ3=380-1
+RewardOBJ1=38-12
+RewardOBJ2=37-8
+RewardOBJ3=36-3
 
 
 

@@ -1407,7 +1407,7 @@ BackUp=0
 [NPC128] 'Pregonero
 Name=Nelmasil - [Pregonero Ulla]
 NpcType=0
-Desc=El pueblo de Ullathorpe en contra del alcalde... Todos aquellos que esten en contra se presenten en el castillo del rey en Banderbill!
+Desc=Los lobos amenazan los caminos al norte. Escribe /QUEST si quieres ayudar.
 Head=0
 Body=410
 Heading=3
@@ -1418,6 +1418,7 @@ Hostile=0
 Domable=0
 Alineacion=0
 Comercia=0
+QuestNumber=22
 
 ##############################################
 
@@ -1560,7 +1561,7 @@ Comercia=0
 [NPC137] 'Mendigo
 Name=Manrique - [Mendigo Ulla]
 NpcType=0
-Desc=El Rey es avaro y sus terratenientes tambien, dame algo por favor, no seas como el...
+Desc=Sobrevivi un ataque de zombies... escribe /QUEST si quieres ayudarme.
 Head=0
 Body=411
 Heading=3
@@ -1571,6 +1572,7 @@ Hostile=0
 Domable=0
 Alineacion=0
 Comercia=0
+QuestNumber=23
 
 ##############################################
 
@@ -1661,7 +1663,7 @@ Comercia=0
 [NPC143] 'Bardo
 Name=Fethresor
 NpcType=0
-Desc=En las batallas mas escalofriantes, mas sangrientas... Un bardo siempre esta presente.
+Desc=He visto goblins merodeando al sur. Escribe /QUEST si te atreves a enfrentarlos.
 Head=0
 Body=418
 Heading=3
@@ -1672,6 +1674,7 @@ Hostile=0
 Domable=0
 Alineacion=0
 Comercia=0
+QuestNumber=24
 
 ##############################################
 
@@ -14006,9 +14009,9 @@ BackUp=0
 QuestNumber=21
 
 [NPC957]
-Name=Meef [Quest 22]
+Name=Meef
 NpcType=0
-Desc= Si vas a estar andando por aqui haz algo util, Escribe /QUEST.
+Desc=Viajero sin destino, sin proposito.
 Head=101
 Heading=3
 Body=92
@@ -14020,12 +14023,11 @@ Domable=0
 Alineacion=0
 Comercia=0
 BackUp=0
-QuestNumber=22
 
 [NPC958]
-Name=Lyso [Quest 23]
+Name=Lyso
 NpcType=0
-Desc=No creo que tengas las agallas... Escribe /QUEST.
+Desc=Un rostro inexpresivo te mira en silencio.
 Head=217
 Heading=3
 Body=601
@@ -14037,12 +14039,11 @@ Domable=0
 Alineacion=0
 Comercia=0
 BackUp=0
-QuestNumber=23
 
 [NPC959]
-Name=YIYO [Quest 24]
+Name=YIYO
 NpcType=0
-Desc=Si no le temes a la muerte Escribe /QUEST.
+Desc=Un personaje misterioso que no dice nada.
 Head=11
 Heading=3
 Body=47
@@ -14054,7 +14055,6 @@ Domable=0
 Alineacion=0
 Comercia=0
 BackUp=0
-QuestNumber=24
 
 
 
