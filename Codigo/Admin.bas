@@ -220,16 +220,16 @@ Sub WorldSave()
         If MapInfo(j).BackUp = 1 Then K = K + 1
     Next j
     
-    FrmStat.ProgressBar1.min = 0
-    FrmStat.ProgressBar1.max = K
-    FrmStat.ProgressBar1.Value = 0
+    FrmStat.ProgressBar1.Caption = "0"  ' was: .min = 0
+    'FrmStat.ProgressBar1.max = K      ' no-op: Label has no max
+    'FrmStat.ProgressBar1.Value = 0    ' no-op: Label has no Value
     
     For loopX = 1 To NumMaps
         'DoEvents
         
         If MapInfo(loopX).BackUp = 1 Then
             Call GrabarMapa(loopX, App.Path & "\WorldBackUp\Mapa" & loopX)
-            FrmStat.ProgressBar1.Value = FrmStat.ProgressBar1.Value + 1
+            'FrmStat.ProgressBar1.Value = FrmStat.ProgressBar1.Value + 1  ' no-op: Label
 
         End If
     
